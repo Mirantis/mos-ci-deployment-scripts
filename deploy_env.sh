@@ -2,6 +2,10 @@
 # This script allows to deploy OpenStack environments
 # using simple configuration file
 
+sudo apt-get update
+sudo apt-get install -y python-dev libxml2-dev libxslt1-dev
+sudo apt-get install -y expect
+
 sudo apt-get install -y git \
 postgresql \
 postgresql-server-dev-all \
@@ -43,5 +47,3 @@ sudo -u postgres createdb fuel_devops -O fuel_devops
 
 django-admin.py syncdb --settings=devops.settings
 django-admin.py migrate devops --settings=devops.settings
-
-pip install git+https://github.com/openstack/fuel-qa.git --upgrade
