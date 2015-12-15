@@ -47,3 +47,12 @@ sudo -u postgres createdb fuel_devops -O fuel_devops
 
 django-admin.py syncdb --settings=devops.settings
 django-admin.py migrate devops --settings=devops.settings
+
+rm -rf fuel-qa
+git clone https://github.com/openstack/fuel-qa
+cp mos_tests.yaml fuel-qa/system_test/tests_templates/devops_configs/
+cp 3_controllers_2compute_neutronVLAN_and_ceph_env.yaml fuel-qa/system_test/tests_templates/tests_configs
+cd fuel-qa
+sudo pip install -r fuelweb_test/requirements.txt
+
+./utils/jenkins/system_tests.sh -K -j fuelweb_test -t test -v /qa_environments/fuel-devops-venv -w $(pwd) -o --group=system_test.deploy_and_check_radosgw.3_controllers_2compute_neutronVLAN_and_ceph_env
