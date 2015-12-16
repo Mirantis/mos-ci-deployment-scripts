@@ -48,6 +48,8 @@ sudo -u postgres createdb fuel_devops -O fuel_devops
 django-admin.py syncdb --settings=devops.settings
 django-admin.py migrate devops --settings=devops.settings
 
+# erase previous environments
+for i in `dos.py list | grep MOS`; do dos.py erase $i; done
 
 export ENV_NAME="Test_Deployment_MOS_CI_$RANDOM"
 rm -rf fuel-qa
@@ -57,4 +59,5 @@ cp 3_controllers_2compute_neutronVLAN_and_ceph_env.yaml fuel-qa/system_test/test
 cd fuel-qa
 sudo pip install -r fuelweb_test/requirements.txt
 
+# create new environment
 ./utils/jenkins/system_tests.sh -k -K -j fuelweb_test -t test -v /qa_environments/fuel-devops-venv -w $(pwd) -o --group=system_test.deploy_and_check_radosgw.3_controllers_2compute_neutronVLAN_and_ceph_env
