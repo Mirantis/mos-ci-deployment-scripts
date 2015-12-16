@@ -15,8 +15,8 @@ storages-config: &storages-config
 nodes: &nodes
  - roles:
     - controller
-    - mongo
-   count: 3
+   # - mongo
+   count: 1
  - roles:
     - compute
     - ceph-osd
@@ -24,16 +24,16 @@ nodes: &nodes
 
 template:
  name: 3 Controller, 2 Compute & Ceph on Neutron/VLAN
- slaves: 5
+ slaves: 3
  devops_settings: !include devops_configs/mos_tests.yaml
  cluster_template: &environment-config
-  name: nos-tests
+  name: mos-tests
   release: ubuntu
   settings:
    components:
     sahara: true
     murano: false
-    ceilometer: true
+    ceilometer: false
    storages: *storages-config
   network: *network-config
   nodes: *nodes
