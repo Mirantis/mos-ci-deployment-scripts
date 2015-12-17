@@ -172,12 +172,12 @@ groups:
     - name: slave-01
       role: fuel_slave
       params: *rack-01-controller-node-params
-#    - name: slave-02
-#      role: fuel_slave
-#      params: *rack-01-controller-node-params
-#    - name: slave-03
-#      role: fuel_slave
-#      params: *rack-01-controller-node-params
+    - name: slave-02
+      role: fuel_slave
+      params: *rack-01-controller-node-params
+    - name: slave-03
+      role: fuel_slave
+      params: *rack-01-controller-node-params
     - name: slave-04
       role: fuel_slave
       params: *rack-01-compute-node-params
