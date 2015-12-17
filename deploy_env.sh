@@ -2,6 +2,12 @@
 # This script allows to deploy OpenStack environments
 # using simple configuration file
 
+if [ -z "$ISO_PATH" ]
+then
+    echo "Please download ISO and define env variable ISO_PATH"
+    exit 1
+fi
+
 sudo apt-get update
 sudo apt-get install -y python-dev libxml2-dev libxslt1-dev
 sudo apt-get install -y expect
