@@ -65,5 +65,7 @@ cp 3_controllers_2compute_neutronVLAN_and_ceph_env.yaml fuel-qa/system_test/test
 cd fuel-qa
 sudo pip install -r fuelweb_test/requirements.txt
 
+pip install git+https://github.com/openstack/fuel-devops.git@2.9.15 --upgrade
+
 # create new environment
 ./utils/jenkins/system_tests.sh -k -K -j fuelweb_test -t test -v /qa_environments/fuel-devops-venv -w $(pwd) -o --group="system_test.deploy_and_check_radosgw(3_controllers_2compute_neutronVLAN_and_ceph_env)"
