@@ -63,6 +63,8 @@ git clone https://github.com/openstack/fuel-qa
 cp mos_tests.yaml fuel-qa/system_test/tests_templates/devops_configs/
 cp 3_controllers_2compute_neutronVLAN_and_ceph_env.yaml fuel-qa/system_test/tests_templates/tests_configs
 cd fuel-qa
+# the last working code:
+git checkout 16c327382babce82d4de2498040010c0f3c279fd
 sudo pip install -r fuelweb_test/requirements.txt
 
 # create new environment
