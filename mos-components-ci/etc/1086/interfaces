@@ -1,0 +1,34 @@
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+auto eth1
+iface eth1 inet dhcp
+
+# VID:
+# private
+auto eth1.1086
+iface eth1.1086 inet manual
+	vlan-raw-devices eth1
+
+# PXE bridge
+auto br-admin
+iface br-admin inet static
+	bridge_ports eth1.1086
+	bridge_stp off
+	bridge_fd 0
+	bridge_maxwait 0
+	address 10.20.0.1
+	netmask 255.255.255.0
+
+# Bridge with all vlans
+auto br-all
+iface br-all inet dhcp
+	bridge_ports eth1
+	bridge_stp off
+	bridge_fd 0
+	bridge_maxwait 0
+

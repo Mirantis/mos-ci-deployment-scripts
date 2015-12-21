@@ -1,0 +1,72 @@
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+auto p4p1
+iface p4p1 inet manual
+
+# VID: 1430
+# public
+# CIDR: 172.16.50.192/26
+# GW: 172.16.50.193
+# ------------------------
+# parameters
+# ------------------------
+# broadcast: 172.16.50.255
+# netmask: 255.255.255.192
+# address: 172.16.50.196
+# network 172.16.50.192
+# dns: 172.18.176.6
+# gateway: 172.16.50.193
+# ------------------------
+auto p4p1.1430
+iface p4p1.1430 inet manual
+	vlan-raw-devices p4p1
+
+# VID: 1431
+# private
+auto p4p1.1431
+iface p4p1.1431 inet manual
+	vlan-raw-devices p4p1
+
+# PXE bridge
+auto br-admin
+iface br-admin inet static
+	bridge_ports p4p1.1431
+	bridge_stp off
+	bridge_fd 0
+	bridge_maxwait 0
+	address 10.20.0.1
+	netmask 255.255.255.0
+
+# Public bridge
+auto br-public
+iface br-public inet manual
+	bridge_ports p4p1.1430
+	bridge_stp off
+	bridge_fd 0
+	bridge_maxwait 0
+#	address 172.16.50.196
+#	netmask 255.255.255.192
+#	network 172.16.50.192
+#	broadcast 172.16.50.255
+#	dns-nameservers 172.18.176.6
+#	gateway 172.16.50.193
+
+# secondary iface
+auto p5p1
+iface p5p1 inet manual
+	pre-up ip link set up dev $IFACE
+	post-down ip link set down dev $IFACE
+
+# Bridge with all vlans
+auto br-all
+iface br-all inet dhcp
+	bridge_ports p5p1
+	bridge_stp off
+	bridge_fd 0
+	bridge_maxwait 0
+

@@ -1,0 +1,55 @@
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+auto p4p1
+iface p4p1 inet manual
+
+# VID: 491
+auto p4p1.491
+iface p4p1.491 inet manual
+        vlan-raw-devices p4p1
+
+# Admin net = PXE
+auto br-admin
+iface br-admin inet static
+        bridge_ports p4p1.491
+        bridge_stp off
+        bridge_fd 0
+        bridge_maxwait 0
+        address 10.20.0.1
+	    netmask 255.255.255.0
+
+# All vlans
+audo br-all
+iface br-all inet manual
+        bridge_ports p4p1
+        bridge_stp off
+        bridge_fd 0
+        bridge_maxwait 0
+
+# Iface without IP
+auto p5p1
+iface p5p1 inet static
+        address 172.18.161.26
+        netmask 255.255.255.0
+        network 172.18.161.0
+        broadcast 172.18.161.255
+        dns-nameservers 172.18.176.6 8.8.8.8
+        gateway 172.18.161.1
+
+# VID: 496
+auto p5p1.496
+iface p5p1.496 inet manual
+        vlan-raw-devices p5p1
+
+# Public = Ext net
+auto br-public
+iface br-public inet manual
+        bridge_ports p5p1.496
+        bridge_stp off
+        bridge_fd 0
+        bridge_maxwait 0
