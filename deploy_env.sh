@@ -10,7 +10,7 @@ fi
 
 if [ -z "$NEUTRONCONF" ]
 then
-    echo "Please define env variable $NEUTRONCONF as 'VLAN' or 'VxLAN'"
+    echo "Please define env variable NEUTRONCONF as 'VLAN' or 'VxLAN'"
     exit 1
 fi
 
@@ -77,10 +77,12 @@ sudo pip install -r fuelweb_test/requirements.txt
 pip install git+https://github.com/openstack/fuel-devops.git@2.9.15 --upgrade
 
 # create new environment
-if [ "${NEUTRONCONF}" -eq "VLAN" ]
+if [ ${NEUTRONCONF} == "VLAN" ]
+then
     ./utils/jenkins/system_tests.sh -k -K -j fuelweb_test -t test -v /qa_environments/fuel-devops-venv -w $(pwd) -o --group="system_test.deploy_env(3_controllers_2compute_neutronVLAN_and_ceph_env)"
 fi
 
-if [ "${NEUTRONCONF}" -eq "VxLAN" ]
+if [ ${NEUTRONCONF} == "VxLAN" ]
+then
     ./utils/jenkins/system_tests.sh -k -K -j fuelweb_test -t test -v /qa_environments/fuel-devops-venv -w $(pwd) -o --group="system_test.deploy_env(3_controllers_2compute_neutronVxLAN_and_ceph_env)"
 fi
