@@ -12,6 +12,7 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
+from proboscis import register
 from proboscis import factory
 from proboscis.asserts import assert_true
 
@@ -20,6 +21,20 @@ from system_test.helpers.utils import case_factory
 from system_test.helpers.decorators import deferred_decorator
 from system_test.helpers.decorators import make_snapshot_if_step_fail
 from system_test.helpers.decorators import action
+
+
+def define_custom_groups():
+    # Should move to system_test.__init__.py after upgrade devops to 2.9.13
+    groups_list = [
+        {"groups": ["system_test.deploy_env"],
+         "depends": [
+             "system_test.deploy_env("
+             "ceph_all_on_neutron_vlan)"]}
+    ]
+
+    for new_group in groups_list:
+        register(groups=new_group['groups'],
+                 depends_on_groups=new_group['depends'])
 
 
 class DeployEnv(actions_base.ActionsBase):
