@@ -8,6 +8,12 @@ then
     exit 1
 fi
 
+if [ -z "$NEUTRONCONF" ]
+then
+    echo "Please define env variable $NEUTRONCONF as 'VLAN' or 'VxLAN'"
+    exit 1
+fi
+
 sudo apt-get update
 sudo apt-get install -y python-dev libxml2-dev libxslt1-dev
 sudo apt-get install -y expect
@@ -59,13 +65,22 @@ for i in `dos.py list | grep MOS`; do dos.py erase $i; done
 
 export ENV_NAME="Test_Deployment_MOS_CI_$RANDOM"
 rm -rf fuel-qa
+
 git clone https://github.com/openstack/fuel-qa
+cp deploy_env.py fuel-qa/system_test/tests/
 cp mos_tests.yaml fuel-qa/system_test/tests_templates/devops_configs/
 cp 3_controllers_2compute_neutronVLAN_and_ceph_env.yaml fuel-qa/system_test/tests_templates/tests_configs
+
 cd fuel-qa
 sudo pip install -r fuelweb_test/requirements.txt
 
 pip install git+https://github.com/openstack/fuel-devops.git@2.9.15 --upgrade
 
 # create new environment
-./utils/jenkins/system_tests.sh -k -K -j fuelweb_test -t test -v /qa_environments/fuel-devops-venv -w $(pwd) -o --group="system_test.deploy_and_check_radosgw(3_controllers_2compute_neutronVLAN_and_ceph_env)"
+if [ "${NEUTRONCONF}" -eq "VLAN" ]
+    ./utils/jenkins/system_tests.sh -k -K -j fuelweb_test -t test -v /qa_environments/fuel-devops-venv -w $(pwd) -o --group="system_test.deploy_env(3_controllers_2compute_neutronVLAN_and_ceph_env)"
+fi
+
+if [ "${NEUTRONCONF}" -eq "VxLAN" ]
+    ./utils/jenkins/system_tests.sh -k -K -j fuelweb_test -t test -v /qa_environments/fuel-devops-venv -w $(pwd) -o --group="system_test.deploy_env(3_controllers_2compute_neutronVxLAN_and_ceph_env)"
+fi
