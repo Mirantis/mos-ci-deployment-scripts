@@ -33,7 +33,6 @@ echo ""
 
 sudo apt-get update && sudo apt-get upgrade -y
 
-sudo apt-get update
 sudo apt-get install -y python-dev libxml2-dev libxslt1-dev
 sudo apt-get install -y expect
 
