@@ -67,6 +67,7 @@ export ENV_NAME="Test_Deployment_MOS_CI_$RANDOM"
 rm -rf fuel-qa
 
 git clone https://github.com/openstack/fuel-qa
+cp __init__.py fuel-qa/system_test/
 cp deploy_env.py fuel-qa/system_test/tests/
 cp mos_tests.yaml fuel-qa/system_test/tests_templates/devops_configs/
 cp 3_controllers_2compute_neutronVLAN_and_ceph_env.yaml fuel-qa/system_test/tests_templates/tests_configs
