@@ -94,4 +94,6 @@ sudo pip install -r fuelweb_test/requirements.txt
 sudo pip install git+https://github.com/openstack/fuel-devops.git@${fuel_devops_ver} --upgrade
 
 # create new environment
-./utils/jenkins/system_tests.sh -k -K -j fuelweb_test -t test -v ${v_env_dir} -w $(pwd) -o --group="system_test.deploy_and_check_radosgw(3_controllers_2compute_neutronVLAN_and_ceph_env)"
+./utils/jenkins/system_tests.sh -k -K -j fuelweb_test -t test -v ${v_env_dir} \
+-w $(pwd) -o \
+--group="system_test.deploy_and_check_radosgw(3_controllers_2compute_neutronVLAN_and_ceph_env)" ;
