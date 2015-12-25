@@ -34,8 +34,8 @@ aliases:
        - private
 
   rack-01-controller-node-params: &rack-01-controller-node-params
-    vcpu: !os_env SLAVE_NODE_CPU, 2
-    memory: !os_env SLAVE_NODE_MEMORY, 3072
+    vcpu: !os_env SLAVE_NODE_CPU, 1
+    memory: !os_env SLAVE_NODE_MEMORY, 4096
     boot:
       - network
       - hd
@@ -147,8 +147,8 @@ groups:
     - name: admin        # Custom name of VM for Fuel admin node
       role: fuel_master  # Fixed role for Fuel master node properties
       params:
-        vcpu: !os_env ADMIN_NODE_CPU, 2
-        memory: !os_env ADMIN_NODE_MEMORY, 3072
+        vcpu: !os_env ADMIN_NODE_CPU, 1
+        memory: !os_env ADMIN_NODE_MEMORY, 4096
         boot:
           - hd
           - cdrom  # for boot from usb - without 'cdrom'
