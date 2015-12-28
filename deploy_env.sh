@@ -95,7 +95,7 @@ git clone -b "${fuel_qa_ver}" https://github.com/openstack/fuel-qa
 cp __init__.py fuel-qa/system_test/
 cp deploy_env.py fuel-qa/system_test/tests/
 cp mos_tests.yaml fuel-qa/system_test/tests_templates/devops_configs/
-cp 3_controllers_2compute_neutronVLAN_and_ceph_env.yaml fuel-qa/system_test/tests_templates/tests_configs
+cp 3_controllers_2compute_neutron*.yaml fuel-qa/system_test/tests_templates/tests_configs
 
 cd fuel-qa
 sudo pip install -r fuelweb_test/requirements.txt
