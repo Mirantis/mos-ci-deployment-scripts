@@ -6,11 +6,10 @@ network-config: &network-config
 
 storages-config: &storages-config
  volume-lvm: false
- volume-ceph: true
- image-ceph: true
- rados-ceph: true
- ephemeral-ceph: true
- replica-ceph: 2
+ volume-ceph: false
+ image-ceph: false
+ rados-ceph: false
+ ephemeral-ceph: false
 
 nodes: &nodes
  - roles:
@@ -19,7 +18,7 @@ nodes: &nodes
    count: 3
  - roles:
     - compute
-    - ceph-osd
+   # - ceph-osd
    count: 2
 
 template:
