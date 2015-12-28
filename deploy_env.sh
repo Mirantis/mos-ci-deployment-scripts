@@ -105,10 +105,20 @@ pip install git+https://github.com/openstack/fuel-devops.git@${fuel_devops_ver} 
 # create new environment
 if [ ${NEUTRONCONF} == "VLAN" ]
 then
-    ./utils/jenkins/system_tests.sh -k -K -j fuelweb_test -t test -v /qa_environments/fuel-devops-venv -w $(pwd) -o --group="system_test.deploy_env(3_controllers_2compute_neutronVLAN_and_ceph_env)"
+    if [ ${CEPH_ENABLE} == "TRUE" ]
+    then
+        ./utils/jenkins/system_tests.sh -k -K -j fuelweb_test -t test -v /qa_environments/fuel-devops-venv -w $(pwd) -o --group="system_test.deploy_env(3_controllers_2compute_neutronVLAN_and_ceph_env)"
+    else
+        ./utils/jenkins/system_tests.sh -k -K -j fuelweb_test -t test -v /qa_environments/fuel-devops-venv -w $(pwd) -o --group="system_test.deploy_env(3_controllers_2compute_neutronVLAN_env)"
+    fi
 fi
 
 if [ ${NEUTRONCONF} == "VxLAN" ]
 then
-    ./utils/jenkins/system_tests.sh -k -K -j fuelweb_test -t test -v /qa_environments/fuel-devops-venv -w $(pwd) -o --group="system_test.deploy_env(3_controllers_2compute_neutronVxLAN_and_ceph_env)"
+    if [ ${CEPH_ENABLE} == "TRUE" ]
+    then
+        ./utils/jenkins/system_tests.sh -k -K -j fuelweb_test -t test -v /qa_environments/fuel-devops-venv -w $(pwd) -o --group="system_test.deploy_env(3_controllers_2compute_neutronVxLAN_and_ceph_env)"
+    else
+        ./utils/jenkins/system_tests.sh -k -K -j fuelweb_test -t test -v /qa_environments/fuel-devops-venv -w $(pwd) -o --group="system_test.deploy_env(3_controllers_2compute_neutronVxLAN_env)"
+    fi
 fi
