@@ -1,7 +1,7 @@
 ---
 network-config: &network-config
  provider: neutron
- segment-type: vxlan
+ segment-type: tun
  pubip-to-all: false
 
 storages-config: &storages-config
