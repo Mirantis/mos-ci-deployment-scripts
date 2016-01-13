@@ -1,0 +1,33 @@
+#!/bin/sh
+
+#############################
+# this params are mandatory #
+#############################
+
+# path to ISO file
+export ISO_PATH=
+
+# must be VLAN or VxLAN
+export SEGMENT_TYPE=
+
+############################
+# this params are optional #
+############################
+
+# can be any
+export JOB_NAME=
+
+# can be TRUE or FALSE
+export ERASE_PREV_ENV=
+
+# network params (can be TRUE or FALSE)
+export DVR_ENABLE=
+export L3_HA_ENABLE=
+export L2_POP_ENABLE=
+
+# can be TRUE or FALSE
+export CEPH_ENABLE=
+
+# libs versions
+export FUEL_DEV_VER=
+export FUEL_QA_VER=

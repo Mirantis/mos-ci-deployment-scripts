@@ -1,7 +1,10 @@
 ---
 network-config: &network-config
  provider: neutron
- segment-type: vlan
+ segment-type: <%SEGMENT_TYPE%>
+ neutron-l2-pop: <%L2_POP_ENABLE%>
+ neutron-dvr: <%DVR_ENABLE%>
+ neutron-l3-ha: <%L3_HA_ENABLE%>
  pubip-to-all: false
 
 storages-config: &storages-config
@@ -14,15 +17,14 @@ storages-config: &storages-config
 nodes: &nodes
  - roles:
     - controller
-   # - mongo
    count: 3
  - roles:
     - compute
-   # - ceph-osd
+    # - ceph-osd
    count: 2
 
 template:
- name: 3 Controller, 2 Compute & Ceph on Neutron/VLAN
+ name: 3 Controller, 2 Compute on Neutron
  slaves: 5
  devops_settings: !include devops_configs/mos_tests.yaml
  cluster_template: &environment-config
