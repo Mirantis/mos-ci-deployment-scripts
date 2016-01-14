@@ -3,10 +3,12 @@
 # using simple configuration file
 
 boolean(){
-    if [ -z "$2" ] || [ ${2^^} == 'FALSE' ]
+    eval val=\$$1
+
+    if [ -z "$val" ] || [ ${val^^} == 'FALSE' ]
     then
         echo 'false'
-    elif [ ${2^^} == 'TRUE' ]
+    elif [ ${val^^} == 'TRUE' ]
     then
         echo 'true'
     else
@@ -33,21 +35,28 @@ cp 3_controllers_2compute_neutron_env_template.yaml ${CONFIG_NAME}
 
 if [ "$SEGMENT_TYPE" == 'VLAN' ]
 then
-    SEGMENT_TYPE="vlan"
+    SEGMENT_TYPE='vlan'
+    SNAPSHOT_NAME='ha_deploy_VLAN'
 elif [ "$SEGMENT_TYPE" == 'VxLAN' ]
 then
-    SEGMENT_TYPE="tun"
+    SEGMENT_TYPE='tun'
+    SNAPSHOT_NAME='ha_deploy_VxLAN'
 else
     echo "Please define env variable SEGMENT_TYPE as 'VLAN' or 'VxLAN'"
     exit 1
 fi
 
-L2_POP_ENABLE=$(boolean "L2_POP_ENABLE" "$L2_POP_ENABLE")
-DVR_ENABLE=$(boolean "DVR_ENABLE" "$DVR_ENABLE")
-L3_HA_ENABLE=$(boolean "L3_HA_ENABLE" "$L3_HA_ENABLE")
+# all vars which should be set to true or false
+BOOL_VARS="L2_POP_ENABLE DVR_ENABLE L3_HA_ENABLE SAHARA_ENABLE MURANO_ENABLE CEILOMETR_ENABLE RADOS_ENABLE"
+for var in $BOOL_VARS
+do
+    eval $var=$(boolean $var)
+done
+# Note: CEPH param should be processed separately as
+# it should be uncommented in config (not set to true or false as other)
+CEPH_ENABLE=$(boolean 'CEPH_ENABLE')
 
-CEPH_ENABLE=$(boolean "CEPH_ENABLE" "$CEPH_ENABLE")
-
+# check limitations
 if [ ${L2_POP_ENABLE} == 'true' ]
 then
     if [ ${SEGMENT_TYPE} != 'tun' ]
@@ -55,10 +64,8 @@ then
         echo "Error: L2_POP_ENABLE can be set to TRUE only for VxLAN configuration."
         exit 1
     fi
-
 fi
 
-# check limitations
 if [ ${DVR_ENABLE} == 'true' ]
 then
     if [ ${L3_HA_ENABLE} == 'true' ]
@@ -73,15 +80,29 @@ then
     fi
 fi
 
+if [ ${RADOS_ENABLE} == 'true' ]; then
+    if [ ${CEPH_ENABLE} != 'true' ];then
+        echo "Please set env variable CEPH_ENABLE to 'TRUE' if you want to use RADOS."
+        exit 1
+    fi
+fi
+
 # replace vars with its values in config files
-sed -i -e "s/<%SEGMENT_TYPE%>/${SEGMENT_TYPE}/g" ${CONFIG_NAME}
-sed -i -e "s/<%L2_POP_ENABLE%>/${L2_POP_ENABLE}/g" ${CONFIG_NAME}
-sed -i -e "s/<%DVR_ENABLE%>/${DVR_ENABLE}/g" ${CONFIG_NAME}
-sed -i -e "s/<%L3_HA_ENABLE%>/${L3_HA_ENABLE}/g" ${CONFIG_NAME}
+for var in SEGMENT_TYPE $BOOL_VARS
+do
+    eval value=\$$var
+    # replace variable in config with its value
+    sed -i -e "s/<%${var}%>/${value}/g" ${CONFIG_NAME}
+    if [ ${value} == 'true' ]; then
+         # Add the name of var without word '_ENABLE' to snapshot name
+         SNAPSHOT_NAME="${SNAPSHOT_NAME}_$(echo ${var} | sed 's/_ENABLE//')"
+    fi
+done
 
 if [ ${CEPH_ENABLE} == 'true' ]
 then
     sed -i -e "s/# - ceph-osd/- ceph-osd/" ${CONFIG_NAME}
+    SNAPSHOT_NAME="${SNAPSHOT_NAME}_CEPH"
 fi
 
 # Set fuel dev version
@@ -105,6 +126,13 @@ fi
 
 V_ENV_DIR="`pwd`/fuel-devops-venv"
 
+# set ENV_NAME if it is not defined
+if [ -z ${ENV_NAME} ]; then
+    export ENV_NAME="Test_Deployment_MOS_CI_$RANDOM"
+fi
+
+echo "Env name:         ${ENV_NAME}"
+echo "Snapshot name:    ${SNAPSHOT_NAME}"
 echo "Fuel Dev version: ${FUEL_DEV_VER}"
 echo "Fuel QA branch:   ${FUEL_QA_VER}"
 echo ""
@@ -124,8 +152,6 @@ django-admin.py migrate devops --settings=devops.settings
 if [ ${ERASE_PREV_ENV} == true ]; then
     for i in `dos.py list | grep MOS`; do dos.py erase $i; done
 fi
-
-export ENV_NAME="Test_Deployment_MOS_CI_$RANDOM"
 
 # Check if fuel-qa folder exist
 if [ ! -d fuel-qa ]; then
@@ -157,4 +183,9 @@ pip uninstall -y python-neutronclient
 pip install 'python-neutronclient<4.0.0'
 
 # create new environment
-./utils/jenkins/system_tests.sh -k -K -j fuelweb_test -t test -v ${V_ENV_DIR} -w $(pwd) -o --group="system_test.create_deploy_ostf($GROUP_NAME)"
+./utils/jenkins/system_tests.sh -k -K -j fuelweb_test -t test -V ${V_ENV_DIR} -w $(pwd) -o --group="system_test.create_deploy_ostf($GROUP_NAME)"
+
+# make snapshot
+dos.py suspend ${ENV_NAME}
+dos.py snapshot ${ENV_NAME} ${SNAPSHOT_NAME}
+dos.py resume ${ENV_NAME}

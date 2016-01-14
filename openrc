@@ -15,6 +15,9 @@ export SEGMENT_TYPE=
 ############################
 
 # can be any
+export ENV_NAME=
+
+# can be any
 export JOB_NAME=
 
 # can be TRUE or FALSE
@@ -27,6 +30,10 @@ export L2_POP_ENABLE=
 
 # can be TRUE or FALSE
 export CEPH_ENABLE=
+export RADOS_ENABLE=
+export SAHARA_ENABLE=
+export MURANO_ENABLE=
+export CEILOMETR_ENABLE=
 
 # libs versions
 export FUEL_DEV_VER=

@@ -11,7 +11,7 @@ storages-config: &storages-config
  volume-lvm: false
  volume-ceph: false
  image-ceph: false
- rados-ceph: false
+ rados-ceph: <%RADOS_ENABLE%>
  ephemeral-ceph: false
 
 nodes: &nodes
@@ -32,9 +32,9 @@ template:
   release: ubuntu
   settings:
    components:
-    sahara: false
-    murano: false
-    ceilometer: false
+    sahara: <%SAHARA_ENABLE%>
+    murano: <%MURANO_ENABLE%>
+    ceilometer: <%CEILOMETR_ENABLE%>
    storages: *storages-config
   network: *network-config
   nodes: *nodes
