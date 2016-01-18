@@ -29,11 +29,12 @@ export L3_HA_ENABLE=
 export L2_POP_ENABLE=
 
 # can be TRUE or FALSE
+export MONGO_ENABLE=
 export CEPH_ENABLE=
 export RADOS_ENABLE=
 export SAHARA_ENABLE=
 export MURANO_ENABLE=
-export CEILOMETR_ENABLE=
+export CEILOMETER_ENABLE=
 
 # libs versions
 export FUEL_DEV_VER=
