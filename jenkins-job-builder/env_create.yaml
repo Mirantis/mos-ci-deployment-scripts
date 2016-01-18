@@ -1,0 +1,43 @@
+- scm:
+    name: mos-ci-deployment-scripts
+    scm:
+      - git:
+         url: https://github.com/Mirantis/mos-ci-deployment-scripts.git
+         branches:
+          - origin/master
+- job:
+    name: create_environment
+    builders:
+        - shell: |
+            ISO_NAME='8.0-425-2016-01-11_13-52-54'
+            export ISO_PATH=/var/www/fuelweb-iso/fuel-8.0-425-2016-01-11_13-52-54.iso
+            export ENV_NAME=MOS_CI_"$ISO_NAME"
+            export ERASE_PREV_ENV=FALSE
+            export SEGMENT_TYPE=VLAN
+            export DVR_ENABLE=FALSE
+            export L3_HA_ENABLE=FALSE
+            export L2_POP_ENABLE=FALSE
+            export CEPH_ENABLE=FALSE
+            export RADOS_ENABLE=FALSE
+            export SAHARA_ENABLE=FALSE
+            export MURANO_ENABLE=FALSE
+            export CEILOMETR_ENABLE=FALSE
+
+            ./deploy_env.sh
+
+    scm:
+        - mos-ci-deployment-scripts
+    project-type: freestyle
+    defaults: global
+    description: 'Create multi-conf environment'
+    disabled: false
+    display-name: 'Environment createion'
+    concurrent: false
+    browser: githubweb
+    retry-count: 3
+    logrotate:
+      daysToKeep: 5
+      numToKeep: 20
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+
