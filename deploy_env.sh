@@ -47,14 +47,15 @@ else
 fi
 
 # all vars which should be set to true or false
-BOOL_VARS="L2_POP_ENABLE DVR_ENABLE L3_HA_ENABLE SAHARA_ENABLE MURANO_ENABLE CEILOMETR_ENABLE RADOS_ENABLE"
+BOOL_VARS="L2_POP_ENABLE DVR_ENABLE L3_HA_ENABLE SAHARA_ENABLE MURANO_ENABLE CEILOMETER_ENABLE RADOS_ENABLE"
 for var in $BOOL_VARS
 do
     eval $var=$(boolean $var)
 done
-# Note: CEPH param should be processed separately as
-# it should be uncommented in config (not set to true or false as other)
+# Note: CEPH and MONGODB params should be processed separately as
+# they should be uncommented in config (not set to true or false as other)
 CEPH_ENABLE=$(boolean 'CEPH_ENABLE')
+MONGO_ENABLE=$(boolean 'MONGO_ENABLE')
 
 # check limitations
 if [ ${L2_POP_ENABLE} == 'true' ]
@@ -81,8 +82,15 @@ then
 fi
 
 if [ ${RADOS_ENABLE} == 'true' ]; then
-    if [ ${CEPH_ENABLE} != 'true' ];then
+    if [ ${CEPH_ENABLE} != 'true' ]; then
         echo "Please set env variable CEPH_ENABLE to 'TRUE' if you want to use RADOS."
+        exit 1
+    fi
+fi
+
+if [ ${CEILOMETER_ENABLE} == 'true' ]; then
+    if [ ${MONGO_ENABLE} != 'true' ]; then
+        echo "Please set env variable MONGO_ENABLE to 'TRUE' if you want to use CEILOMETR."
         exit 1
     fi
 fi
@@ -103,6 +111,12 @@ if [ ${CEPH_ENABLE} == 'true' ]
 then
     sed -i -e "s/# - ceph-osd/- ceph-osd/" ${CONFIG_NAME}
     SNAPSHOT_NAME="${SNAPSHOT_NAME}_CEPH"
+fi
+
+if [ ${MONGO_ENABLE} == 'true' ]
+then
+    sed -i -e "s/# - mongo/- mongo/" ${CONFIG_NAME}
+    SNAPSHOT_NAME="${SNAPSHOT_NAME}_MONGO"
 fi
 
 # Set fuel dev version
@@ -164,14 +178,6 @@ else
     git pull
     popd
 fi
-
-# TEMPORARY: Delete code below after
-# https://bugs.launchpad.net/fuel/+bug/1529230 merging
-cd fuel-qa
-git fetch https://review.openstack.org/openstack/fuel-qa refs/changes/71/262771/4
-git checkout FETCH_HEAD
-cd ..
-#####
 
 cp mos_tests.yaml fuel-qa/system_test/tests_templates/devops_configs/
 cp ${CONFIG_NAME} fuel-qa/system_test/tests_templates/tests_configs

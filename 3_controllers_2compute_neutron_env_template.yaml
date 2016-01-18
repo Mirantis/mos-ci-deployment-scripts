@@ -17,6 +17,7 @@ storages-config: &storages-config
 nodes: &nodes
  - roles:
     - controller
+    # - mongo
    count: 3
  - roles:
     - compute
@@ -34,7 +35,7 @@ template:
    components:
     sahara: <%SAHARA_ENABLE%>
     murano: <%MURANO_ENABLE%>
-    ceilometer: <%CEILOMETR_ENABLE%>
+    ceilometer: <%CEILOMETER_ENABLE%>
    storages: *storages-config
   network: *network-config
   nodes: *nodes
