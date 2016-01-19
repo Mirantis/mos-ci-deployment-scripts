@@ -22,6 +22,7 @@ bridge-utils
 
 sudo apt-get install -y python-virtualenv libpq-dev libgmp-dev
 
+sudo apt-get install -y tshark
 
 sudo virsh pool-define-as --type=dir --name=default --target=/var/lib/libvirt/images
 sudo virsh pool-autostart default
