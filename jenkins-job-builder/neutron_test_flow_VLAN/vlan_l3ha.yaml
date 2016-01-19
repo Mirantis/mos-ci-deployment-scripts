@@ -1,0 +1,57 @@
+- scm:
+    name: mos-ci-deployment-scripts
+    scm:
+      - git:
+         url: https://github.com/Mirantis/mos-ci-deployment-scripts.git
+         branches:
+          - origin/master
+- job:
+    name: create_environment_VLAN_L3HA
+    builders:
+        - shell: |
+            ISO_DIR=/var/www/fuelweb-iso
+            ISO_NAME=`ls "$ISO_DIR"`
+            ENV_NAME=MOS_CI_"$ISO_NAME"
+            SNAPSHOT_NAME=ha_deploy_VLAN_L3_HA
+            #Check if snapshot is exist
+            set +e
+            OUT=`dos.py snapshot-list "$ENV_NAME" || true | grep "$SNAPSHOT_NAME"`
+            set -e
+            if [ -n "$OUT" ];
+            then
+            exit 0
+            else
+            export ISO_PATH="$ISO_DIR"/"$ISO_NAME"
+            export ENV_NAME=MOS_CI_"$ISO_NAME"
+            export ERASE_PREV_ENV=FALSE
+            export SEGMENT_TYPE=VLAN
+            export DVR_ENABLE=FALSE
+            export L3_HA_ENABLE=TRUE
+            export L2_POP_ENABLE=FALSE
+            export CEPH_ENABLE=FALSE
+            export RADOS_ENABLE=FALSE
+            export SAHARA_ENABLE=FALSE
+            export MURANO_ENABLE=FALSE
+            export MONGO_ENABLE=FALSEE
+            export CEILOMETER_ENABLE=FALSE
+
+            ./deploy_env.sh
+
+            fi
+
+    scm:
+        - mos-ci-deployment-scripts
+    project-type: freestyle
+    defaults: global
+    description: 'Create environment with VLAN, L3_HA'
+    disabled: false
+    display-name: 'VLAN_L3_HA'
+    concurrent: false
+    browser: githubweb
+    retry-count: 3
+    logrotate:
+      daysToKeep: 5
+      numToKeep: 20
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+

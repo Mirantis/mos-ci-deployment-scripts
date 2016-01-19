@@ -1,0 +1,53 @@
+- job:
+    name: super_job_for_VLAN
+    builders:
+      - trigger-builds:
+        - project: 'create_environment_VLAN'
+          block: true
+      - trigger-builds:
+        - project: 'neutron_tests'
+          block: true
+          predefined-parameters:
+            SHAPSHOT_NAME=ha_deploy_VLAN
+            ISO_DIR=/var/www/fuelweb-iso
+
+      - trigger-builds:
+        - project: "create_environment_VLAN_DVR"
+          block: true
+      - trigger-builds:
+        - project: 'neutron_tests'
+          block: true
+          predefined-parameters:
+            SHAPSHOT_NAME=ha_deploy_VLAN_DVR
+            ISO_DIR=/var/www/fuelweb-iso
+
+      - trigger-builds:
+        - project: "create_environment_VLAN_L3HA"
+          block: true
+      - trigger-builds:
+        - project: 'neutron_tests'
+          block: true
+          predefined-parameters:
+            SHAPSHOT_NAME=ha_deploy_VLAN_L3_HA
+            ISO_DIR=/var/www/fuelweb-iso
+
+    triggers:
+        - monitor-folders:
+            path: '/var/www/fuelweb-iso/'
+            check-modification-date: false
+            check-content: false
+            check-fewer: false
+            cron: 'H/15 * * * *'
+    project-type: freestyle
+    defaults: global
+    description: 'Super Job to run all VLAN configs testing.'
+    disabled: false
+    display-name: 'Super Job for VLAN'
+    concurrent: false
+    retry-count: 3
+    logrotate:
+      daysToKeep: 5
+      numToKeep: 20
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+
