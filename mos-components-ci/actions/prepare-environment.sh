@@ -166,8 +166,10 @@ if [ ! -f "/proc/1/cgroup" ] || grep -q "/$" /proc/1/cgroup; then
     echo -n "Checking for network settings... "
     ifconfig $private_interface &>/dev/null || virsh net-info $private_interface &>/dev/null
     check_return_code_after_command_execution $? "info for interface:$private_interface not found, please change network settings or parameters in config file"
-    ifconfig $public_interface &>/dev/null || virsh net-info $public_interface &>/dev/null
-    check_return_code_after_command_execution $? "info for interface:$public_interface not found, please change network settings or parameters in config file"
+    if [ ! -z "$public_interface" ]; then
+        ifconfig $public_interface &>/dev/null || virsh net-info $public_interface &>/dev/null
+        check_return_code_after_command_execution $? "info for interface:$public_interface not found, please change network settings or parameters in config file"
+    fi
     echo_ok
 fi
 
