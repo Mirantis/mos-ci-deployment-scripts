@@ -18,15 +18,18 @@ nodes: &nodes
  - roles:
     - controller
     # - mongo
-   count: 3
+   count: <%CONTROLLERS_COUNT%>
  - roles:
     - compute
     # - ceph-osd
-   count: 2
+   count: <%COMPUTES_COUNT%>
+ - roles:
+    - ironic
+   count: <%IRONICS_COUNT%>
 
 template:
  name: 3 Controller, 2 Compute on Neutron
- slaves: 5
+ slaves: 9
  devops_settings: !include devops_configs/mos_tests.yaml
  cluster_template: &environment-config
   name: mos-tests
@@ -36,6 +39,7 @@ template:
     sahara: <%SAHARA_ENABLE%>
     murano: <%MURANO_ENABLE%>
     ceilometer: <%CEILOMETER_ENABLE%>
+    ironic: <%IRONIC_ENABLE%>
    storages: *storages-config
   network: *network-config
   nodes: *nodes

@@ -15,6 +15,8 @@ aliases:
      l2_network_device: management
    - label: eth4
      l2_network_device: private
+   - label: eth5
+     l2_network_device: baremetal
 
   rack-01-slave-network_config: &rack-01-slave-network_config
     eth0:
@@ -32,6 +34,9 @@ aliases:
     eth4:
       networks:
        - private
+    eth5:
+      networks:
+       - baremetal
 
   rack-01-controller-node-params: &rack-01-controller-node-params
     vcpu: !os_env SLAVE_NODE_CPU, 1
@@ -96,6 +101,10 @@ address_pools:
     net: *pool_default
     params:
       tag: 103
+  baremetal-pool01:
+    net: *pool_default
+    params:
+      tag: 104
 
 groups:
  - name: rack-01
@@ -117,6 +126,7 @@ groups:
      storage: storage-pool01
      management: management-pool01
      private: private-pool01
+     baremetal: baremetal-pool01
 
    l2_network_devices:  # Libvirt bridges. It is *NOT* Nailgun networks
      admin:
@@ -141,6 +151,10 @@ groups:
 
      private:
        address_pool: private-pool01
+       dhcp: false
+
+     baremetal:
+       address_pool: baremetal-pool01
        dhcp: false
 
    nodes:
@@ -185,5 +199,14 @@ groups:
       role: fuel_slave
       params: *rack-01-compute-node-params
     - name: slave-06
+      role: fuel_slave
+      params: *rack-01-compute-node-params
+    - name: slave-07
+      role: fuel_slave
+      params: *rack-01-compute-node-params
+    - name: slave-08
+      role: fuel_slave
+      params: *rack-01-compute-node-params
+    - name: slave-09
       role: fuel_slave
       params: *rack-01-compute-node-params
