@@ -43,6 +43,11 @@ echo -n "Checking for 'virt-tools'... "
 virt-edit --version >/dev/null 2>&1 || sudo apt-get install libvirt-dev libguestfs-tools | tee -a install.log || { echo >&2 "'virt-tools' is not available in the path, but it's required. Likely, virt-tools is not installed. Aborting."; exit 1; }
 echo_ok
 
+# Check for virt-tools
+echo -n "Checking for 'virt-install'... "
+virt-install --version >/dev/null 2>&1 || sudo apt-get install virtinst -y >>${PREPARE_ENV_LOG} 2>&1 || { echo >&2 "'virtinst' is not available in the path, but it's required. Likely, virtinst is not installed. Aborting."; exit 1; }
+echo_ok
+
 # Check for sshpass
 echo -n "Checking for sshpass... "
 sshpass -V >/dev/null 2>&1 || sudo apt-get install sshpass -y >>${PREPARE_ENV_LOG} 2>&1 || { echo >&2 "'sshpass' is not available in the path, but it's required. Likely, sshpass is not installed. Aborting."; exit 1; }
