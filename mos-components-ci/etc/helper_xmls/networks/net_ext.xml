@@ -1,0 +1,6 @@
+<network>
+        <name>net-ext</name>
+        <forward mode="bridge"/>
+        <bridge name="br-ext"/>
+</network>
+

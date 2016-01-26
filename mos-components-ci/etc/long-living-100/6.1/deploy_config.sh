@@ -15,9 +15,9 @@
 #    under the License.
 
 
-private_interface=br-100
+private_interface=net-admin
 
-internet_interface=br-ext
+internet_interface=net-ext
 internet_int_type=bridge
 internet_bootproto=dhcp
 #internet_netmask=
