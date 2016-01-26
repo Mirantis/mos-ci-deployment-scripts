@@ -35,6 +35,12 @@ export RADOS_ENABLE=
 export SAHARA_ENABLE=
 export MURANO_ENABLE=
 export CEILOMETER_ENABLE=
+export IRONIC_ENABLE=
+
+# nodes count (can be from 0, 1, 2 3)
+export CONTROLLERS_COUNT=
+export COMPUTES_COUNT=
+export IRONICS_COUNT=
 
 # libs versions
 export FUEL_DEV_VER=

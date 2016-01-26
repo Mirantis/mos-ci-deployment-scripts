@@ -17,6 +17,25 @@ boolean(){
     fi
 }
 
+digit_from_range(){
+    eval val=\$$1
+
+    if [ -z ${val} ]; then
+        # set default value
+        val=$4
+    fi
+
+    if [ ${val} -ge $2 ] && [ ${val} -le $3 ]; then
+        echo ${val}
+    else
+        echo "Error: variable $1 can be from $2 to $3 or empty (will be set to $4 in this case)."
+        exit 1
+    fi
+}
+
+# exit from shell if error happens
+set -e
+
 # Hide trace on jenkins
 if [ -z "$JOB_NAME" ]; then
     set -o xtrace
@@ -33,6 +52,25 @@ GROUP_NAME='3_controllers_2compute_neutron_env'
 CONFIG_NAME="${GROUP_NAME}.yaml"
 cp 3_controllers_2compute_neutron_env_template.yaml ${CONFIG_NAME}
 
+# set up nodes count
+# CONTROLLERS_COUNT can be from 1 to 3 (default value 3)
+CONTROLLERS_COUNT=$(digit_from_range 'CONTROLLERS_COUNT' 1 3 3)
+# CONTROLLERS_COUNT can be from 1 to 3 (default value 2)
+COMPUTES_COUNT=$(digit_from_range 'COMPUTES_COUNT' 0 3 2)
+# CONTROLLERS_COUNT can be from 1 to 3 (default value 0)
+IRONICS_COUNT=$(digit_from_range 'IRONICS_COUNT' 0 3 0)
+
+NODES_COUNT=$(($CONTROLLERS_COUNT + $COMPUTES_COUNT + $IRONICS_COUNT))
+
+# replace vars with its values in config files
+for var in CONTROLLERS_COUNT COMPUTES_COUNT IRONICS_COUNT NODES_COUNT
+do
+    eval value=\$$var
+    # replace variable in config with its value
+    sed -i -e "s/<%${var}%>/${value}/g" ${CONFIG_NAME}
+done
+
+# set up segmet type
 if [ "$SEGMENT_TYPE" == 'VLAN' ]
 then
     SEGMENT_TYPE='vlan'
@@ -46,8 +84,8 @@ else
     exit 1
 fi
 
-# all vars which should be set to true or false
-BOOL_VARS="L2_POP_ENABLE DVR_ENABLE L3_HA_ENABLE SAHARA_ENABLE MURANO_ENABLE CEILOMETER_ENABLE RADOS_ENABLE"
+# set up all vars which should be set to true or false
+BOOL_VARS="L2_POP_ENABLE DVR_ENABLE L3_HA_ENABLE SAHARA_ENABLE MURANO_ENABLE CEILOMETER_ENABLE IRONIC_ENABLE RADOS_ENABLE"
 for var in $BOOL_VARS
 do
     eval $var=$(boolean $var)
@@ -58,13 +96,9 @@ CEPH_ENABLE=$(boolean 'CEPH_ENABLE')
 MONGO_ENABLE=$(boolean 'MONGO_ENABLE')
 
 # check limitations
-if [ ${L2_POP_ENABLE} == 'true' ]
-then
-    if [ ${SEGMENT_TYPE} != 'tun' ]
-    then
-        echo "Error: L2_POP_ENABLE can be set to TRUE only for VxLAN configuration."
-        exit 1
-    fi
+if [ ${L2_POP_ENABLE} == 'true' ] && [ ${SEGMENT_TYPE} != 'tun' ]; then
+    echo "Error: L2_POP_ENABLE can be set to TRUE only for VxLAN configuration."
+    exit 1
 fi
 
 if [ ${DVR_ENABLE} == 'true' ]
@@ -81,18 +115,24 @@ then
     fi
 fi
 
-if [ ${RADOS_ENABLE} == 'true' ]; then
-    if [ ${CEPH_ENABLE} != 'true' ]; then
-        echo "Please set env variable CEPH_ENABLE to 'TRUE' if you want to use RADOS."
-        exit 1
-    fi
+if [ ${RADOS_ENABLE} == 'true' ] && [ ${CEPH_ENABLE} != 'true' ]; then
+    echo "Please set env variable CEPH_ENABLE to 'TRUE' if you want to use RADOS."
+    exit 1
 fi
 
-if [ ${CEILOMETER_ENABLE} == 'true' ]; then
-    if [ ${MONGO_ENABLE} != 'true' ]; then
-        echo "Please set env variable MONGO_ENABLE to 'TRUE' if you want to use CEILOMETR."
-        exit 1
-    fi
+if [ ${CEILOMETER_ENABLE} == 'true' ] && [ ${MONGO_ENABLE} != 'true' ]; then
+    echo "Please set env variable MONGO_ENABLE to 'TRUE' if you want to use CEILOMETER."
+    exit 1
+fi
+
+if [ ${IRONIC_ENABLE} == 'true' ] && [ ${SEGMENT_TYPE} != 'vlan' ]; then
+    echo "Please set env variable SEGMENT_TYPE to 'VLAN' if you want to use IRONIC."
+    exit 1
+fi
+
+if [ ${IRONICS_COUNT} -gt 0 ] && [ ${IRONIC_ENABLE} != 'true' ]; then
+    echo "Please set env variable IRONIC_ENABLE to 'TRUE' if you want to use IRONIC nodes."
+    exit 1
 fi
 
 # replace vars with its values in config files
@@ -179,6 +219,14 @@ else
     popd
 fi
 
+## TEMPORARY: Delete code below after
+## https://bugs.launchpad.net/fuel/+bug/1534559 merging
+cd fuel-qa
+git fetch https://review.openstack.org/openstack/fuel-qa refs/changes/21/271721/1
+git checkout FETCH_HEAD
+cd ..
+######
+
 cp mos_tests.yaml fuel-qa/system_test/tests_templates/devops_configs/
 cp ${CONFIG_NAME} fuel-qa/system_test/tests_templates/tests_configs
 
@@ -189,9 +237,12 @@ pip uninstall -y python-neutronclient
 pip install 'python-neutronclient<4.0.0'
 
 # create new environment
+# more time can be required to deploy env
+export DEPLOYMENT_TIMEOUT=10000
+
 ./utils/jenkins/system_tests.sh -k -K -j fuelweb_test -t test -V ${V_ENV_DIR} -w $(pwd) -o --group="system_test.create_deploy_ostf($GROUP_NAME)"
 
-# make snapshot
+# make snapshot if deployment is successful
 dos.py suspend ${ENV_NAME}
 dos.py snapshot ${ENV_NAME} ${SNAPSHOT_NAME}
 dos.py resume ${ENV_NAME}
