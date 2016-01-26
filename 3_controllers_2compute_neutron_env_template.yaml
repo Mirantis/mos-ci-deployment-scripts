@@ -28,8 +28,8 @@ nodes: &nodes
    count: <%IRONICS_COUNT%>
 
 template:
- name: 3 Controller, 2 Compute on Neutron
- slaves: 9
+ name: <%CONTROLLERS_COUNT%> Controller, <%COMPUTES_COUNT%> Compute, <%IRONICS_COUNT%> Ironic on Neutron
+ slaves: <%NODES_COUNT%>
  devops_settings: !include devops_configs/mos_tests.yaml
  cluster_template: &environment-config
   name: mos-tests

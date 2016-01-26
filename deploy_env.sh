@@ -60,8 +60,10 @@ COMPUTES_COUNT=$(digit_from_range 'COMPUTES_COUNT' 0 3 2)
 # CONTROLLERS_COUNT can be from 1 to 3 (default value 0)
 IRONICS_COUNT=$(digit_from_range 'IRONICS_COUNT' 0 3 0)
 
+NODES_COUNT=$(($CONTROLLERS_COUNT + $COMPUTES_COUNT + $IRONICS_COUNT))
+
 # replace vars with its values in config files
-for var in CONTROLLERS_COUNT COMPUTES_COUNT IRONICS_COUNT
+for var in CONTROLLERS_COUNT COMPUTES_COUNT IRONICS_COUNT NODES_COUNT
 do
     eval value=\$$var
     # replace variable in config with its value
@@ -83,7 +85,7 @@ else
 fi
 
 # set up all vars which should be set to true or false
-BOOL_VARS="L2_POP_ENABLE DVR_ENABLE L3_HA_ENABLE SAHARA_ENABLE MURANO_ENABLE CEILOMETR_ENABLE IRONIC_ENABLE RADOS_ENABLE"
+BOOL_VARS="L2_POP_ENABLE DVR_ENABLE L3_HA_ENABLE SAHARA_ENABLE MURANO_ENABLE CEILOMETER_ENABLE IRONIC_ENABLE RADOS_ENABLE"
 for var in $BOOL_VARS
 do
     eval $var=$(boolean $var)
@@ -118,8 +120,8 @@ if [ ${RADOS_ENABLE} == 'true' ] && [ ${CEPH_ENABLE} != 'true' ]; then
     exit 1
 fi
 
-if [ ${CEILOMETR_ENABLE} == 'true' ] && [ ${MONGO_ENABLE} != 'true' ]; then
-    echo "Please set env variable MONGO_ENABLE to 'TRUE' if you want to use CEILOMETR."
+if [ ${CEILOMETER_ENABLE} == 'true' ] && [ ${MONGO_ENABLE} != 'true' ]; then
+    echo "Please set env variable MONGO_ENABLE to 'TRUE' if you want to use CEILOMETER."
     exit 1
 fi
 
