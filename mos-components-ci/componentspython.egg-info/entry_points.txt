@@ -1,7 +1,0 @@
-[console_scripts]
-configure_env = componentspython.configure_env:main
-controller_ip = componentspython.nailgun:return_controller_ip
-deploy_cluster = componentspython.nailgun:main
-get_node_type = componentspython.nailgun:get_node_type
-job_parameters = componentspython.nailgun:return_job_parameters
-

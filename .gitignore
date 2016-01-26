@@ -1,0 +1,17 @@
+.idea
+*.py[co]
+*.log
+*.txt
+.tox/
+mos-components-ci/deploy_config*
+mos-components-ci/env_config*
+mos-components-ci/iso_settings.py
+mos-components-ci/componentspython/settings.py
+mos-components-ci/iso/*
+mos-components-ci/iso
+mos-components-ci/mos-tempest-runner/
+mos-components-ci/logs/
+mos-components-ci/fuel-qa/
+mos-components-ci/.tox/
+mos-components-ci/componentspython.egg-info/
+mos-components-ci/build/
