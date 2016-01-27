@@ -211,7 +211,7 @@ wait_for_product_vm_to_install() {
                     if [ -n "${internet_ip}" ]; then
                         ifcfg+="\nIPADDR=${internet_ip}"
                     fi
-                    echo -e "${ifcfg}" > ${fuel_disk_directory}/etc/sysconfig/network-scripts/ifcfg-eth1
+                    echo -e "${ifcfg}" | sudo tee ${fuel_disk_directory}/etc/sysconfig/network-scripts/ifcfg-eth1
                 fi
 
                 # Umount disk to host
