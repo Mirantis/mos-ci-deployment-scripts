@@ -16,13 +16,20 @@
 
 
 private_interface=net-admin
+vm_master_ip=10.20.1.2
+vm_master_gateway=10.20.1.1
+vm_master_netmask=255.255.255.0
+vm_master_cidr=10.20.1.2/24
+vm_master_net_size=256
+vm_master_dhcp_pool_start=10.20.1.3
+vm_master_dhcp_pool_end=10.20.1.254
 
 internet_interface=net-ext
-internet_int_type=bridge
-internet_bootproto=dhcp
-#internet_netmask=
-#internet_ip=
-internet_gateway=172.18.173.1
+internet_int_type=network
+internet_bootproto=static
+internet_netmask=255.255.255.128
+internet_ip=172.16.168.100
+internet_gateway=172.16.168.97
 
 kvm_nodes_count=0
 
