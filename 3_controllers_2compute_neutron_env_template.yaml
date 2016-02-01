@@ -8,7 +8,7 @@ network-config: &network-config
  pubip-to-all: false
 
 storages-config: &storages-config
- volume-lvm: false
+ volume-lvm: true
  volume-ceph: false
  image-ceph: false
  rados-ceph: <%RADOS_ENABLE%>
@@ -17,6 +17,7 @@ storages-config: &storages-config
 nodes: &nodes
  - roles:
     - controller
+    - cinder
     # - mongo
    count: <%CONTROLLERS_COUNT%>
  - roles:
