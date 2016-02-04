@@ -219,14 +219,6 @@ else
     popd
 fi
 
-## TEMPORARY: Delete code below after
-## https://bugs.launchpad.net/fuel/+bug/1534559 merging
-cd fuel-qa
-git fetch https://review.openstack.org/openstack/fuel-qa refs/changes/21/271721/1
-git checkout FETCH_HEAD
-cd ..
-######
-
 cp mos_tests.yaml fuel-qa/system_test/tests_templates/devops_configs/
 cp ${CONFIG_NAME} fuel-qa/system_test/tests_templates/tests_configs
 
