@@ -27,9 +27,9 @@ private_int_type=network
 private_int_model=e1000
 
 #
-#public_interface=net-all
-#public_int_type=network
-#public_int_model=e1000
+public_interface=net-all
+public_int_type=network
+public_int_model=e1000
 
 # Parameters for public network of master node
 # internet_interface=
