@@ -40,7 +40,7 @@ echo_ok
 
 # Check for virt-tools
 echo -n "Checking for 'virt-tools'... "
-virt-edit --version >/dev/null 2>&1 || sudo apt-get install libvirt-dev libvirt-bin libguestfs-tools | tee -a install.log || { echo >&2 "'virt-tools' is not available in the path, but it's required. Likely, virt-tools is not installed. Aborting."; exit 1; }
+virt-edit --version >/dev/null 2>&1 || sudo apt-get install libvirt-dev libvirt-bin libguestfs-tools -y | tee -a install.log || { echo >&2 "'virt-tools' is not available in the path, but it's required. Likely, virt-tools is not installed. Aborting."; exit 1; }
 echo_ok
 
 # Check for virt-tools

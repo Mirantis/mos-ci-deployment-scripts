@@ -54,10 +54,10 @@ if [[ ${kvm_nodes_count} > 0 ]]; then
                             --pool default \
                             | tee -a ${LOG}
 
-        private_int_type=${private_int_type:-"bridge"}
-        public_int_type=${public_int_type:-"bridge"}
-        private_int_model=${private_int_model:-"virtio"}
-        public_int_model=${public_int_model:-"virtio"}
+        private_int_type=${private_int_type:-"network"}
+        public_int_type=${public_int_type:-"network"}
+        private_int_model=${private_int_model:-"e1000"}
+        public_int_model=${public_int_model:-"e1000"}
         disk_bus=${vm_slave_disk_bus:-"virtio"}
 
         # get memory

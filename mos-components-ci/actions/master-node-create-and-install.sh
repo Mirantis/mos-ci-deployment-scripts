@@ -66,10 +66,10 @@ virsh vol-create-as --name ${name}.qcow2 \
     | tee -a ${LOG}
 
 
-private_int_type=${private_int_type:-"bridge"}
-internet_int_type=${internet_int_type:-"bridge"}
-private_int_model=${private_int_model:-"virtio"}
-internet_int_model=${internet_int_model:-"virtio"}
+private_int_type=${private_int_type:-"network"}
+internet_int_type=${internet_int_type:-"network"}
+private_int_model=${private_int_model:-"e1000"}
+internet_int_model=${internet_int_model:-"e1000"}
 disk_bus=${vm_master_disk_bus:-"virtio"}
 interfaces="-w $private_int_type=${private_interface},model=${private_int_model}"
 if [ ! -z ${internet_interface} ]; then
