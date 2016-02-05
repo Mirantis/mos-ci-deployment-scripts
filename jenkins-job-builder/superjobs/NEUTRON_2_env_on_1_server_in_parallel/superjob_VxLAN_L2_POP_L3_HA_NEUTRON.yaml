@@ -1,0 +1,54 @@
+- job:
+    name: superjob_for_VxLAN_L2_POP_L3_HA_NEUTRON
+    builders:
+      - trigger-builds:
+        - project: 'create_param_environment'
+          same-node: true
+          block: true
+          predefined-parameters: |
+            SNAPSHOT_NAME=ha_deploy_VxLAN_L2_POP_L3_HA
+            TEST_TYPE=NEUTRON
+            SEGMENT_TYPE=VxLAN
+            DISABLE_SSL=TRUE
+            L2_POP_ENABLE=TRUE
+            L3_HA_ENABLE=TRUE
+            ENV_CHANGER=L3_HA_2flow
+      - trigger-builds:
+        - project: 'neutron_tests'
+          same-node: true
+          block: true
+          block-thresholds:
+            build-step-failure-threshold: 'never'    
+          predefined-parameters: |
+            SNAPSHOT_NAME=ha_deploy_VxLAN_L2_POP_L3_HA
+            ENV_CHANGER=L3_HA_2flow
+      - trigger-builds:
+        - project: 'test_rail_reporter'
+          same-node: true
+          block: true
+          predefined-parameters: |
+            SNAPSHOT_NAME=ha_deploy_VxLAN_L2_POP_L3_HA
+            TEST_GROUP=NEUTRON
+            ENV_CHANGER=L3_HA_2flow
+
+    triggers:
+        - monitor-folders:
+            path: '/var/www/fuelweb-iso/'
+            check-modification-date: false
+            check-content: false
+            check-fewer: false
+            cron: 'H/15 * * * *'
+    project-type: freestyle
+    defaults: global
+    node: master
+    description: 'VxLAN+L2_POP+L3_HA NEUTRON tests'
+    disabled: false
+    display-name: 'VxLAN+L2_POP+L3_HA'
+    concurrent: false
+    retry-count: 3
+    logrotate:
+      daysToKeep: 5
+      numToKeep: 20
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+

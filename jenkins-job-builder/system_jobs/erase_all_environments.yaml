@@ -1,0 +1,33 @@
+- job:
+    name: erase_all_environments
+    builders:
+        - shell: |
+            git clone https://github.com/openstack/fuel-devops.git
+            cd fuel-devops
+            virutalenv venv
+            . venv/bin/activate
+            python setup.py install
+            dos.py list > temp
+            while read -r line
+            do
+            set -e
+            dos.py erase $line || true
+            done < temp
+            deactivate
+    triggers:
+        - timed: "0 22 * * *"
+    project-type: freestyle
+    defaults: global
+    description: 'Erase all environments'
+    disabled: false
+    display-name: 'Erase all environments'
+    concurrent: true
+    retry-count: 3
+    logrotate:
+      daysToKeep: 1
+      numToKeep: 5
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+    publishers:
+      - email:
+          recipients: efazliev@mirantis.com

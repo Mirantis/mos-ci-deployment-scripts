@@ -1,0 +1,39 @@
+- job:
+    name: superjob_for_ERASING_ALL_ENVS
+    builders:
+      - trigger-builds:
+        - project: 'erase_all_environments'
+          same-node: false
+          block: false
+          node-label-name: NODE
+          node-label: master
+      - trigger-builds:
+        - project: 'erase_all_environments'
+          same-node: false
+          block: false
+          node-label-name: NODE
+          node-label: slave-7774
+      - trigger-builds:
+        - project: 'erase_all_environments'
+          same-node: false
+          block: false
+          node-label-name: NODE
+          node-label: slave-7775
+      - trigger-builds:
+        - project: 'erase_all_environments'
+          same-node: false
+          block: false
+          node-label-name: NODE
+          node-label: slave-7777
+    project-type: freestyle
+    defaults: global
+    description: 'ERASE ALL ENV ON ALL SLAVES'
+    disabled: false
+    display-name: 'ERASE ALL ENV ON ALL SLAVES'
+    concurrent: false
+    retry-count: 3
+    logrotate:
+      daysToKeep: 5
+      numToKeep: 10
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1

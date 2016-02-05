@@ -1,0 +1,41 @@
+- scm:
+    name: scripts_collection
+    scm:
+      - git:
+         url: https://github.com/EduardFazliev/scripts_collection.git
+         branches:
+          - origin/master
+- job:
+    name: get_new_iso
+    parameters:
+      - string:
+          name: PARSED_LINK
+          default: http://product-jenkins-reports.vm.mirantis.net/iso/8.0
+      - string:
+          name: ISO_DIR
+          default: /var/www/fuelweb-iso
+    builders:
+        - shell: |
+             cd python_scripts/parse_jenkins_reports
+             virtualenv venv
+             . venv/bin/activate
+             pip install -r reqirements.txt
+             sudo python parser.py --link "$PARSED_LINK" -d "$ISO_DIR"
+
+    project-type: freestyle
+    defaults: global
+    scm:
+       - scripts_collection
+    description: 'Download last succesful job'
+    disabled: false
+    display-name: 'Get new ISO with PASS in ubuntu.bvt2'
+    concurrent: true
+    retry-count: 3
+    logrotate:
+      daysToKeep: 1
+      numToKeep: 5
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+    publishers:
+      - email:
+          recipients: efazliev@mirantis.com
