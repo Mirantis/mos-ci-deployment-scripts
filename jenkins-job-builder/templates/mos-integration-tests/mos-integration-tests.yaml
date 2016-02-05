@@ -1,0 +1,141 @@
+- scm:
+    name: mos-integration-tests-repository
+    scm:
+      - git:
+         url: https://github.com/Mirantis/mos-integration-tests.git
+         branches:
+          - origin/master
+
+
+
+- job-template:
+    name: '{name}_tests_generated_from_template'
+    parameters:
+      - string:
+          name: ISO_DIR
+          default: '{iso_dir}'
+      - string:
+          name: SNAPSHOT_NAME
+      - string:
+          name: REPORT_PREFIX
+          default: '{report_prefix}'
+      - string:
+          name: ENV_CHANGER
+    builders:
+        - shell: |
+            set -e
+            ISO_NAME=`ls "$ISO_DIR"`
+            ISO_ID=`echo "$ISO_NAME" | cut -f3 -d-`
+            ENV_NAME=MOS_CI_"$ISO_NAME"
+
+            if [ -n "$ENV_CHANGER" ];
+            then
+            export ENV_NAME="$ENV_NAME""$ENV_CHANGER"
+            fi
+
+            REPORT_PATH="$REPORT_PREFIX"/"$ENV_NAME"_"$SNAPSHOT_NAME"
+            echo "$REPORT_PATH" > ./param.pm
+            echo "$BUILD_URL" > ./build_url
+
+            virtualenv venv
+            . venv/bin/activate
+
+            pip install -r requirements.txt
+            py.test '{test_path}' -E "$ENV_NAME" -S "$SNAPSHOT_NAME" -v
+
+            deactivate
+    scm:
+        - mos-integration-tests-repository
+    project-type: freestyle
+    defaults: global
+    description: '{description}'
+    disabled: false
+    display-name: '{display-name}'
+    concurrent: true
+    browser: githubweb
+    retry-count: 3
+    logrotate:
+      daysToKeep: 5
+      numToKeep: 20
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+    publishers:
+      - email:
+          recipients: '{email-recipients}'
+
+      - postbuildscript:
+          script-only-if-succeeded: False
+          builders:
+            - shell: |
+                set -e
+                REPORT_PATH=`cat ./param.pm`
+                sudo mkdir -p "$REPORT_PATH"
+                sudo cp report.xml "$REPORT_PATH"
+                sudo cp build_url "$REPORT_PATH"
+      - archive:
+          artifacts: 'report.xml'
+          allow-empty: 'true'
+          fingerprint: true
+
+      - archive:
+          artifacts: 'test.log'
+          allow-empty: 'true'
+          fingerprint: true
+
+      - junit:
+          results: report.xml
+
+      - workspace-cleanup:
+          fail-build: false
+
+
+
+- project:
+    name: NEUTRON
+    iso_dir: /var/www/fuelweb-iso
+    report_prefix: /srv/jenkins/cinder
+    test_path: mos_tests/cinder
+    description: it works
+    display-name: NEUTRON test from template
+    email-recipients: efazliev@mirantis.com
+    jobs:
+      - '{name}_tests_generated_from_template'
+
+
+
+- project:
+    name: HEAT
+    iso_dir: /var/www/fuelweb-iso
+    report_prefix: /srv/jenkins/heat
+    test_path: mos_tests/heat
+    description: HEAT test runner
+    display-name: HEAT tests /from template/
+    email-recipients: efazliev@mirantis.com
+    jobs:
+      - '{name}_tests_generated_from_template'
+
+
+
+- project:
+    name: CINDER
+    iso_dir: /var/www/fuelweb-iso
+    report_prefix: /srv/jenkins/cinder
+    test_path: mos_tests/cinder
+    description: CINDER tests runner
+    display-name: CINDER tests /from template/
+    email-recipients: efazliev@mirantis.com
+    jobs:
+      - '{name}_tests_generated_from_template'
+
+
+
+- project:
+    name: NOVA
+    iso_dir: /var/www/fuelweb-iso
+    report_prefix: /srv/jenkins/nova
+    test_path: mos_tests/nova
+    description: NOVA tests runner
+    display-name: NOVA tests /from template/
+    email-recipients: efazliev@mirantis.com
+    jobs:
+      - '{name}_tests_generated_from_template'
