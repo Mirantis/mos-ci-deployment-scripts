@@ -1,0 +1,9 @@
+---
+
+- name: Creates directory for images
+  file: path={{ jenkins_image_dir }}  state=directory owner=efazliev group=mirantis mode=0775 recurse=yes
+- name: Copy fedora images
+  copy: src=fedora-software-config.qcow2  dest={{ jenkins_image_dir }}  owner=efazliev group=mirantis mode=0755
+- name: Copy ubuntu qcow files
+  copy: src=ubuntu-iperf.qcow2 dest={{ jenkins_image_dir }} owner=efazliev group=mirantis mode=0755
+
