@@ -1,0 +1,10 @@
+---
+
+  - name: Add additional servers to zabbix-servers list
+    replace: dest=/etc/zabbix/zabbix_agentd.conf regexp='Server=.*$' replace='Server=172.18.173.8,zbxproxy01-cz.vm.mirantis.net, 
+                      zbxproxy02-bud.infra.mirantis.net, 127.0.0.1, 
+                      cz7776.bud.mirantis.net'
+    become: yes
+    become_method: sudo 
+    notify:
+    - restart zabbix-agent

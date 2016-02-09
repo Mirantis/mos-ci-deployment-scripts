@@ -1,0 +1,7 @@
+---
+
+- name: Install dos.py
+  pip: name='git+https://github.com/openstack/fuel-devops.git' editable=false
+- name: Run prepare.sh from mos-ci-deployment-scripts
+  script: ./prepare.sh 
+

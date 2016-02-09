@@ -1,0 +1,7 @@
+---
+
+- name: Creates directory
+  file: path=/var/www/test_rail state=directory owner=efazliev group=mirantis mode=0775 recurse=yes
+- name: Copy
+  copy: src=user.sh dest=/var/www/test_rail/ owner=efazliev group=mirantis mode=0755
+
