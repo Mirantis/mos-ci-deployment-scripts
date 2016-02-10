@@ -197,6 +197,7 @@ if [ ! -d "${V_ENV_DIR}" ]; then
 fi
 
 source ${V_ENV_DIR}/bin/activate
+pip install -U pip
 pip install git+https://github.com/openstack/fuel-devops.git@${FUEL_DEV_VER} --upgrade
 
 django-admin.py syncdb --settings=devops.settings
