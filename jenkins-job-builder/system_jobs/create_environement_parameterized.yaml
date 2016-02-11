@@ -1,5 +1,5 @@
 - scm:
-    !include: ../mos-ci-deployment-scripts-repository
+    !include: ../mos-ci-deployment-scripts-repository.yaml
 
 - job:
     parameters:
@@ -57,8 +57,7 @@
     name: create_param_environment
     wrappers:
       - build-name:
-          name: Build_Number:${BUILD_NUMBER}_
-                ISO_ID:${FILE,path="build-name-setter.info"}
+          name: Build_Number:${BUILD_NUMBER}_ISO_ID:${FILE,path="build-name-setter.info"}
       - ansicolor
     builders:
         - shell: |

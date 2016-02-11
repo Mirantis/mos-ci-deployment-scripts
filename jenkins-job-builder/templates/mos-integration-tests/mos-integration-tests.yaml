@@ -6,8 +6,7 @@
     name: '{name}_tests_generated_from_template'
     wrappers:
       - build-name:
-          name: Build_Number:${{BUILD_NUMBER}}_
-                ID:${{FILE,path="build-name-setter.info"}}
+          name: Build_Number:${{BUILD_NUMBER}}_ID:${{FILE,path="build-name-setter.info"}}
     parameters:
       - string:
           name: ISO_DIR
