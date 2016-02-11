@@ -2,11 +2,7 @@
     name: erase_all_environments
     builders:
         - shell: |
-            git clone https://github.com/openstack/fuel-devops.git
-            cd fuel-devops
-            virutalenv venv
-            . venv/bin/activate
-            python setup.py install
+            set +e
             dos.py list > temp
             while read -r line
             do
@@ -14,13 +10,11 @@
             dos.py erase $line || true
             done < temp
             deactivate
-    triggers:
-        - timed: "0 22 * * *"
     project-type: freestyle
     defaults: global
-    description: 'Erase all environments'
+    description: 'Erase all environments on node'
     disabled: false
-    display-name: 'Erase all environments'
+    display-name: 'Erase all environments on node'
     concurrent: true
     retry-count: 3
     logrotate:

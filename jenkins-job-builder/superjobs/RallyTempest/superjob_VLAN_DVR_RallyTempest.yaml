@@ -7,7 +7,7 @@
           block: true
           predefined-parameters: |
             SNAPSHOT_NAME=ha_deploy_VLAN_DVR
-            TEST_TYPE=TEMPEST
+            TEST_TYPE='TEMPEST,Cinder LVM,Swift'
             SEGMENT_TYPE=VLAN
             DISABLE_SSL=TRUE
             DVR_ENABLE=TRUE
@@ -28,7 +28,7 @@
           block: true
           predefined-parameters: |
             SNAPSHOT_NAME=ha_deploy_VLAN_DVR
-            TEST_GROUP=TEMPEST
+            TEST_GROUP='TEMPEST,HA,Cinder LVM,Swift'
             REPORT_PREFIX=/srv/jenkins/rally-tempest
             REPORT_FILE=verification.xml
             SUITE=[8.0][MOSQA] Tempest 8.0
@@ -43,7 +43,7 @@
             cron: 'H/15 * * * *'
     project-type: freestyle
     defaults: global
-    node: slave-srv62
+    node: slave-7774
     description: 'VLAN+DVR TEMPEST tests'
     disabled: false
     display-name: 'RALLY-TEMPEST VLAN+DVR'

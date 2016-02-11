@@ -37,12 +37,18 @@
           block: false
           node-label-name: NODE
           node-label: slave-srv96
+#      - trigger-builds:
+#        - project: 'get_new_iso'
+#          same-node: false
+#          block: false
+#          node-label-name: NODE
+#          node-label: slave-srv98
 
     triggers:
-        - timed: "30 22 * * *"
+        - timed: "15 21 * * *"
     project-type: freestyle
     defaults: global
-    description: 'ERASE ALL ENV ON ALL SLAVES'
+    description: 'Get new ISO on all slaves'
     disabled: false
     display-name: 'Get new ISO on all slaves'
     concurrent: false
