@@ -3,7 +3,6 @@
 
 sudo apt-get update && sudo apt-get upgrade -y
 sudo apt-get install -y python-dev libxml2-dev libxslt1-dev
-sudo apt-get install -y expect
 
 sudo apt-get install -y git \
 postgresql \
@@ -33,5 +32,11 @@ sudo usermod $(whoami) -a -G libvirtd
 sudo sed -ir 's/peer/trust/' /etc/postgresql/9.*/main/pg_hba.conf
 sudo service postgresql restart
 
-sudo expect -c 'spawn sudo -u postgres createuser -P fuel_devops; expect "password" {send -- "fuel_devops\rfuel_devops\r"};'
-sudo -u postgres createdb fuel_devops -O fuel_devops
+sleep 1
+
+sudo -u postgres psql <<EOF
+CREATE DATABASE fuel_devops;
+CREATE USER fuel_devops WITH password 'fuel_devops';
+GRANT ALL privileges ON DATABASE fuel_devops TO fuel_devops;
+\q
+EOF
