@@ -14,7 +14,7 @@
             DVR_ENABLE=TRUE
             ENV_CHANGER=DVR_2flow
       - trigger-builds:
-        - project: 'neutron_tests'
+        - project: 'NEUTRON_tests_generated_from_template'
           same-node: true
           block: true
           block-thresholds:

@@ -1,10 +1,5 @@
 - scm:
-    name: scripts_collection
-    scm:
-      - git:
-         url: https://github.com/EduardFazliev/scripts_collection.git
-         branches:
-          - origin/master
+    !include: ../mos-ci-deployment-scripts-repository.yaml
 - job:
     name: get_new_iso
     parameters:
@@ -16,19 +11,16 @@
           default: /var/www/fuelweb-iso
     builders:
         - shell: |
-             cd python_scripts/parse_jenkins_reports
-             virtualenv venv
-             . venv/bin/activate
-             pip install -r reqirements.txt
+             cd jenkins-job-builder/python_scripts/parse_jenkins_reports
              sudo python parser.py --link "$PARSED_LINK" -d "$ISO_DIR"
 
     project-type: freestyle
     defaults: global
     scm:
-       - scripts_collection
-    description: 'Download last succesful job'
+       - mos-ci-deployment-scripts
+    description: 'Download last succesful ISO, that will be used for swarm'
     disabled: false
-    display-name: 'Get new ISO with PASS in ubuntu.bvt2'
+    display-name: 'Get new swarm-ISO'
     concurrent: true
     retry-count: 3
     logrotate:

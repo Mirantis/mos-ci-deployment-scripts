@@ -11,7 +11,7 @@
             SEGMENT_TYPE=VLAN
             DISABLE_SSL=TRUE
       - trigger-builds:
-        - project: 'neutron_tests'
+        - project: 'NEUTRON_tests_generated_from_template'
           same-node: true
           block: true
           block-thresholds:
