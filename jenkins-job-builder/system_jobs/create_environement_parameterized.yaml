@@ -1,5 +1,5 @@
 - scm:
-    !include: ../mos-ci-deployment-scripts-repository
+    !include: ../mos-ci-deployment-scripts-repository.yaml
 
 - job:
     parameters:

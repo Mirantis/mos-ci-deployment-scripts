@@ -1,5 +1,5 @@
 - scm:
-    !include: ../../dockerfiles-repository.yaml
+    !include: dockerfiles-repository.yaml
 
 - job:
     name: rally_tempest_tests_for_second_flow
