@@ -6,6 +6,7 @@
     wrappers:
       - build-name:
           name: Build_Number:${BUILD_NUMBER}_ISO_ID:${FILE,path="build-name-setter.info"}
+      - ansicolor
       - string:
           name: ISO_DIR
           default: /var/www/fuelweb-iso
