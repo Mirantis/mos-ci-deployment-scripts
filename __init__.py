@@ -1,8 +1,4 @@
-import fuelweb_test
 from proboscis import register
-
-
-logger = fuelweb_test.logger
 
 # Dark magic with hardcode for the fuel-qa moster:
 from system_test.tests import deploy_env  # noqa
