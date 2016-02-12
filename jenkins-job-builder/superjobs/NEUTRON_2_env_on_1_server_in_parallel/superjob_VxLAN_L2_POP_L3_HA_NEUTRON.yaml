@@ -13,6 +13,7 @@
             L2_POP_ENABLE=TRUE
             L3_HA_ENABLE=TRUE
             ENV_CHANGER=L3_HA_2flow
+            COMPUTES_COUNT=3
       - trigger-builds:
         - project: 'NEUTRON_tests_generated_from_template'
           same-node: true
