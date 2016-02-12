@@ -350,6 +350,11 @@ if [ ${ERASE_PREV_ENV} == true ]; then
     for i in `dos.py list | grep MOS`; do dos.py erase $i; done
 fi
 
+# erase previous environments
+if [ ${ERASE_PREV_ENV} == true ]; then
+    for i in `dos.py list | grep MOS`; do dos.py erase $i; done
+fi
+
 # create new environment
 # more time can be required to deploy env
 if [ -z ${DEPLOYMENT_TIMEOUT} ]; then
