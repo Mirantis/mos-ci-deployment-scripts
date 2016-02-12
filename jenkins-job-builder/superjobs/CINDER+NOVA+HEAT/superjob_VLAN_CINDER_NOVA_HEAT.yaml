@@ -13,24 +13,24 @@
 
 
 
-      - trigger-builds:
-        - project: 'CINDER_tests_generated_from_template'
-          same-node: true
-          block: true
-          block-thresholds:
-            build-step-failure-threshold: 'never'
-          predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VLAN
-      - trigger-builds:
-        - project: 'test_rail_reporter'
-          same-node: true
-          block: true
-          block-thresholds:
-            build-step-failure-threshold: 'never'
-          predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VLAN
-            TEST_GROUP=CINDER
-            REPORT_PREFIX=/srv/jenkins/cinder
+#      - trigger-builds:
+#        - project: 'CINDER_tests_generated_from_template'
+#          same-node: true
+#          block: true
+#          block-thresholds:
+#            build-step-failure-threshold: 'never'
+#          predefined-parameters: |
+#            SNAPSHOT_NAME=ha_deploy_VLAN
+#      - trigger-builds:
+#        - project: 'test_rail_reporter'
+#          same-node: true
+#          block: true
+#          block-thresholds:
+#            build-step-failure-threshold: 'never'
+#          predefined-parameters: |
+#            SNAPSHOT_NAME=ha_deploy_VLAN
+#            TEST_GROUP=CINDER
+#            REPORT_PREFIX=/srv/jenkins/cinder
 
 
 
