@@ -16,13 +16,13 @@ import os
 
 from proboscis import factory
 
-from system_test import logger
-from system_test.tests import actions_base
-from system_test.helpers.utils import case_factory
+from system_test.helpers.decorators import action
 from system_test.helpers.decorators import deferred_decorator
 from system_test.helpers.decorators import make_snapshot_if_step_fail
-from system_test.helpers.decorators import action
+from system_test.helpers.utils import case_factory
 from system_test.helpers.utils import load_yaml
+from system_test import logger
+from system_test.tests import actions_base
 
 
 class DeployEnv(actions_base.ActionsBase):
@@ -80,8 +80,8 @@ class DeployEnv(actions_base.ActionsBase):
             nodes = self.env_config['nodes']
             for plugin_name in self.plugins_paths.keys():
                 for node in nodes:
-                    if node['roles'] is not None and \
-                            self.plugins_to_roles[plugin_name] in node['roles']:
+                    if (node['roles'] is not None and
+                            self.plugins_to_roles[plugin_name] in node['roles']):
                         self._required_plugins.add(plugin_name)
                         break
             self._sort_required_plugins()
@@ -94,11 +94,11 @@ class DeployEnv(actions_base.ActionsBase):
     def _sort_required_plugins(self):
         """Sort the list of required plugins considering dependencies."""
         def plugins_compare(x, y):
-            if x in self.plugins_dependencies and \
-                    y in self.plugins_dependencies[x]:
+            if (x in self.plugins_dependencies and
+                    y in self.plugins_dependencies[x]):
                 return 1
-            elif y in self.plugins_dependencies and \
-                    x in self.plugins_dependencies[y]:
+            elif (y in self.plugins_dependencies and
+                  x in self.plugins_dependencies[y]):
                 return -1
             return 0
         self._required_plugins = sorted(list(self._required_plugins),

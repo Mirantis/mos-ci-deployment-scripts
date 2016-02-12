@@ -274,7 +274,6 @@ fi
 source ${V_ENV_DIR}/bin/activate
 pip install -U pip
 
-
 # Check if fuel-qa folder exist
 if [ ! -d fuel-qa ]; then
     git clone -b "${FUEL_QA_VER}" https://github.com/openstack/fuel-qa
@@ -335,6 +334,11 @@ if [ ${DVR_ENABLE} == 'true' ] || [ ${L3_HA_ENABLE} == 'true' ] || [ ${L2_POP_EN
     fi
 fi
 
+
+# erase previous environments
+if [ ${ERASE_PREV_ENV} == true ]; then
+    for i in `dos.py list | grep MOS`; do dos.py erase $i; done
+fi
 
 # create new environment
 # more time can be required to deploy env
