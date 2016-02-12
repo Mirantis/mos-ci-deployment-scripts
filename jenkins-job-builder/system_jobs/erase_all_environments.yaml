@@ -9,7 +9,6 @@
             set -e
             dos.py erase $line || true
             done < temp
-            deactivate
     project-type: freestyle
     defaults: global
     description: 'Erase all environments on node'
