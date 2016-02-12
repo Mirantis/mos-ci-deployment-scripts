@@ -23,14 +23,18 @@ export JOB_NAME=
 # can be TRUE or FALSE
 export ERASE_PREV_ENV=
 
+# block storage (we should choose CEPH or LVM, LVM is used by default)
+export LVM_ENABLE=
+export CEPH_ENABLE=
+
 # network params (can be TRUE or FALSE)
 export DVR_ENABLE=
 export L3_HA_ENABLE=
 export L2_POP_ENABLE=
 
 # can be TRUE or FALSE
+export CINDER_ENABLE=
 export MONGO_ENABLE=
-export CEPH_ENABLE=
 export RADOS_ENABLE=
 export SAHARA_ENABLE=
 export MURANO_ENABLE=
@@ -41,7 +45,20 @@ export IRONIC_ENABLE=
 export CONTROLLERS_COUNT=
 export COMPUTES_COUNT=
 export IRONICS_COUNT=
+export SEPARATE_SERVICES_COUNT=
+
+# separate components params (can be TRUE or FALSE)
+export SEPARATE_SERVICE_RABBIT_ENABLE=
+export SEPARATE_SERVICE_DB_ENABLE=
+export SEPARATE_SERVICE_KEYSTONE_ENABLE=
+
+# paths to plugins
+export SEPARATE_SERVICE_RABBIT_PLUGIN_PATH=
+export SEPARATE_SERVICE_DB_PLUGIN_PATH=
+export SEPARATE_SERVICE_KEYSTONE_PLUGIN_PATH=
 
 # libs versions
-export FUEL_DEV_VER=
 export FUEL_QA_VER=
+
+# path to config file for plugins
+export PLUGINS_CONFIG_PATH=
