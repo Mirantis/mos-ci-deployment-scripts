@@ -57,7 +57,7 @@
     name: create_param_environment
     wrappers:
       - build-name:
-          name: Build_Number:${BUILD_NUMBER}_ISO_ID:${FILE,path="build-name-setter.info"}
+          name: ${BUILD_NUMBER}.${FILE,path="build-name-setter.info"}
       - ansicolor
     builders:
         - shell: |
@@ -68,7 +68,7 @@
 
 
             SNAPSHOT=`echo $SNAPSHOT_NAME | sed 's/ha_deploy_//'`
-            echo "$ISO_ID"_CONF:"$SNAPSHOT" > build-name-setter.info
+            echo "$ISO_ID"_"$SNAPSHOT" > build-name-setter.info
 
             if [ -n "$ENV_CHANGER" ];
             then

@@ -95,9 +95,9 @@
 - project:
     name: NEUTRON
     iso_dir: /var/www/fuelweb-iso
-    report_prefix: /srv/jenkins/cinder
-    test_path: mos_tests/cinder
-    description: it works
+    report_prefix: /srv/jenkins/neutron
+    test_path: mos_tests/neutron
+    description: NEUTRON tests
     display-name: NEUTRON test /from template/
     email-recipients: efazliev@mirantis.com
     jobs:
