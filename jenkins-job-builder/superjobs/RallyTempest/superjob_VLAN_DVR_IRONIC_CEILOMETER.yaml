@@ -16,6 +16,7 @@
             IRONIC=TRUE
             MONGO=TRUE
             ENV_CHANGER=2flow
+            IRONICS_COUNT=1
       - trigger-builds:
         - project: 'rally_tempest_tests'
           same-node: true

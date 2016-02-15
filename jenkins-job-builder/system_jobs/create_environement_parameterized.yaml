@@ -55,7 +55,9 @@
       - string:
           name: COMPUTES_COUNT
           default: "2"
-
+      - string:
+          name: IRONICS_COUNT
+          default: "0"
 
     name: create_param_environment
     wrappers:
