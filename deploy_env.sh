@@ -220,6 +220,13 @@ else
     popd
 fi
 
+# Workaround for error during deploy
+# AssertionError: Command awk '/COLLECTOR.*URL/' /usr/lib/python2.7/site-packages/nailgun/settings.yaml returned exit code "2", but expected "0". Output: []; ["awk: fatal: cannot open file `/usr/lib/python2.7/site-packages/nailgun/settings.yaml' for reading (No such file or directory)\n"]
+pushd fuel-qa
+git checkout 1c58aae501b0dfe41b45f27c2b866cb5d0f01e8b
+git reset --hard
+popd
+
 cp mos_tests.yaml fuel-qa/system_test/tests_templates/devops_configs/
 cp ${CONFIG_NAME} fuel-qa/system_test/tests_templates/tests_configs
 
