@@ -52,6 +52,9 @@
           name: ENV_CHANGER
       - string:
           name: SLAVE_COMPUTE_NODE_MEMORY
+      - string:
+          name: COMPUTES_COUNT
+          default: "2"
 
 
     name: create_param_environment
@@ -102,6 +105,7 @@
             export CEILOMETER_ENABLE="$CEILOMETER_ENABLE"
             export DISABLE_SSL="$DISABLE_SSL"
             export FUEL_DEV_VER="$FUEL_DEV_VER"
+            export COMPUTES_COUNT="$COMPUTES_COUNT"
 
             ./deploy_env.sh
             fi

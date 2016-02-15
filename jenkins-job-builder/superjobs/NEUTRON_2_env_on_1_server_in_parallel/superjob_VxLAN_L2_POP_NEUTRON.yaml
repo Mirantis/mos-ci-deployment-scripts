@@ -11,6 +11,7 @@
             SEGMENT_TYPE=VxLAN
             DISABLE_SSL=TRUE
             L2_POP_ENABLE=TRUE
+            COMPUTES_COUNT=3
       - trigger-builds:
         - project: 'NEUTRON_tests_generated_from_template'
           same-node: true
