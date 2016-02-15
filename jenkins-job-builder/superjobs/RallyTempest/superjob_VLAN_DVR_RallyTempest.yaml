@@ -40,7 +40,7 @@
     defaults: global
     node: slave-7774
     description: 'VLAN+DVR TEMPEST tests'
-    disabled: false
+    disabled: true
     display-name: 'RALLY-TEMPEST VLAN+DVR'
     concurrent: false
     retry-count: 3
