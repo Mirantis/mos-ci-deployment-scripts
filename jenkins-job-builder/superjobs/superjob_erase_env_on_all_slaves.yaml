@@ -37,12 +37,12 @@
           block: false
           node-label-name: NODE
           node-label: slave-srv96
-#      - trigger-builds:
-#        - project: 'erase_all_environments'
-#          same-node: false
-#          block: false
-#          node-label-name: NODE
-#          node-label: slave-srv98
+      - trigger-builds:
+        - project: 'erase_all_environments'
+          same-node: false
+          block: false
+          node-label-name: NODE
+          node-label: slave-srv98
     triggers:
         - timed: "0 21 * * *"
     project-type: freestyle
