@@ -13,7 +13,7 @@
             DVR_ENABLE=TRUE
             ENV_CHANGER=2flow
       - trigger-builds:
-        - project: 'rally_tempest_tests'
+        - project: 'rally_tempest_tests_for_second_flow'
           same-node: true
           block: true
           block-thresholds:
