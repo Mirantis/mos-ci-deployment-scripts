@@ -108,6 +108,7 @@
             export DISABLE_SSL="$DISABLE_SSL"
             export FUEL_DEV_VER="$FUEL_DEV_VER"
             export COMPUTES_COUNT="$COMPUTES_COUNT"
+            export IRONICS_COUNT="$IRONICS_COUNT"
 
             ./deploy_env.sh
             fi
