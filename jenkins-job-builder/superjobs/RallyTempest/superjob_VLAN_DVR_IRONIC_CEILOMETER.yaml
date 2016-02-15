@@ -12,9 +12,9 @@
             SEGMENT_TYPE=VLAN
             DISABLE_SSL=TRUE
             DVR_ENABLE=TRUE
-            CEILOMETER=TRUE
-            IRONIC=TRUE
-            MONGO=TRUE
+            CEILOMETER_ENABLE=TRUE
+            IRONIC_ENABLE=TRUE
+            MONGO_ENABLE=TRUE
             ENV_CHANGER=2flow
             IRONICS_COUNT=1
       - trigger-builds:
