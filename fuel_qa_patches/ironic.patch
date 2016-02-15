@@ -1,8 +1,19 @@
+From d5d99fad5cda783e57707a9545dba8411bf0cb1f Mon Sep 17 00:00:00 2001
+From: Alexander Gromov <agromov@mirantis.com>
+Date: Sat, 23 Jan 2016 22:47:12 +0300
+Subject: [PATCH] Added Ironic support for configs.
+
+Added possibility to deploy environments with Ironic using yaml templates.
+
+Change-Id: I5e6264057e6a3e50f50e03605ae9f8125744b02e
+Closes-Bug: #1534559
+---
+
 diff --git a/system_test/tests/actions_base.py b/system_test/tests/actions_base.py
-index 0d3959a..c865b2a 100644
+index d2365dc..99d8fb4 100644
 --- a/system_test/tests/actions_base.py
 +++ b/system_test/tests/actions_base.py
-@@ -218,6 +218,7 @@ class ActionsBase(PrepareBase, HealthCheckActions, PluginsActions):
+@@ -218,6 +218,7 @@
              "sahara": self.env_settings['components'].get('sahara', False),
              "ceilometer": self.env_settings['components'].get('ceilometer',
                                                                False),

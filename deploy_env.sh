@@ -223,12 +223,16 @@ cp ${CONFIG_NAME} fuel-qa/system_test/tests_templates/tests_configs
 
 cd fuel-qa
 
-# Apply ironic patch
-git apply --check ../ironic.patch 2> /dev/null
-if [ $? -eq 0 ]; then
-    echo "Patching for ironic"
-    git apply ../ironic.patch
-fi
+# Apply fuel-qa patches
+for p in $(ls ../fuel_qa_patches); do
+    patch_file=../fuel_qa_patches/$p
+    echo "Check for patch $p"
+    git apply --check $patch_file 2> /dev/null
+    if [ $? -eq 0 ]; then
+        echo "Applying patch $p"
+        git apply $patch_file
+    fi
+done
 
 # create new environment
 # more time can be required to deploy env

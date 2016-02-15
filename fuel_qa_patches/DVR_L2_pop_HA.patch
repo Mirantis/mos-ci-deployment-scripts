@@ -1,0 +1,74 @@
+From 103146770e8dfe4abf39f7559b955ef0c3ee9008 Mon Sep 17 00:00:00 2001
+From: Alexander Gromov <agromov@mirantis.com>
+Date: Thu, 31 Dec 2015 14:59:22 +0300
+Subject: [PATCH] Added DVR, L2 population and L3 agents HA support.
+
+Added possibility to deploy environments with DVR, L2 population and L3 agents HA
+(Neutron options) to system tests templates in fuel-qa.
+
+Change-Id: I45b9a2b96cd7af218c4715cec0c7478b5d7bb387
+Closes-Bug: #1529230
+---
+
+diff --git a/fuelweb_test/models/fuel_web_client.py b/fuelweb_test/models/fuel_web_client.py
+index b585cf2..c95bb4a 100644
+--- a/fuelweb_test/models/fuel_web_client.py
++++ b/fuelweb_test/models/fuel_web_client.py
+@@ -480,6 +480,9 @@
+                     section = 'access'
+                 if option == 'assign_to_all_nodes':
+                     section = 'public_network_assignment'
++                if option in ('neutron_l3_ha', 'neutron_dvr',
++                              'neutron_l2_pop'):
++                    section = 'neutron_advanced_configuration'
+                 if option in 'dns_list':
+                     section = 'external_dns'
+                 if option in 'ntp_list':
+@@ -488,6 +491,26 @@
+                     attributes['editable'][section][option]['value'] =\
+                         settings[option]
+ 
++            # we should check DVR limitations
++            section = 'neutron_advanced_configuration'
++            if attributes['editable'][section]['neutron_dvr']['value']:
++                if attributes['editable'][section]['neutron_l3_ha']['value']:
++                    raise Exception("Neutron DVR and Neutron L3 HA can't be"
++                                    " used simultaneously.")
++
++                if 'net_segment_type' in settings:
++                    net_segment_type = settings['net_segment_type']
++                elif NEUTRON_SEGMENT_TYPE:
++                    net_segment_type = NEUTRON_SEGMENT[NEUTRON_SEGMENT_TYPE]
++                else:
++                    net_segment_type = None
++
++                if not attributes['editable'][section]['neutron_l2_pop'][
++                        'value'] and net_segment_type == 'tun':
++                    raise Exception("neutron_l2_pop is not enabled but "
++                                    "it is required for VxLAN DVR "
++                                    "network configuration.")
++
+             public_gw = self.environment.d_env.router(router_name="public")
+ 
+             remote = self.environment.d_env.get_admin_remote()
+diff --git a/system_test/tests/actions_base.py b/system_test/tests/actions_base.py
+index bf30d23..8046433 100644
+--- a/system_test/tests/actions_base.py
++++ b/system_test/tests/actions_base.py
+@@ -239,8 +239,15 @@
+                                                                'vlan'),
+             "assign_to_all_nodes": self.env_config['network'].get(
+                 'pubip-to-all',
+-                False)
++                False),
++            "neutron_l3_ha": self.env_config['network'].get(
++                'neutron-l3-ha', False),
++            "neutron_dvr": self.env_config['network'].get(
++                'neutron-dvr', False),
++            "neutron_l2_pop": self.env_config['network'].get(
++                'neutron-l2-pop', False)
+         }
++
+         self.cluster_id = self.fuel_web.create_cluster(
+             name=self.env_config['name'],
+             mode=test_settings.DEPLOYMENT_MODE,
