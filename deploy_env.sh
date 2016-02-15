@@ -159,13 +159,6 @@ then
     SNAPSHOT_NAME="${SNAPSHOT_NAME}_MONGO"
 fi
 
-# Set fuel dev version
-# https://github.com/openstack/fuel-devops/releases
-if [ -z "$FUEL_DEV_VER" ]
-then
-    FUEL_DEV_VER='2.9.15'
-fi
-
 # Set fuel QA version
 # https://github.com/openstack/fuel-qa/branches
 if [ -z "$FUEL_QA_VER" ]
@@ -187,7 +180,6 @@ fi
 
 echo "Env name:         ${ENV_NAME}"
 echo "Snapshot name:    ${SNAPSHOT_NAME}"
-echo "Fuel Dev version: ${FUEL_DEV_VER}"
 echo "Fuel QA branch:   ${FUEL_QA_VER}"
 echo ""
 
@@ -198,15 +190,7 @@ fi
 
 source ${V_ENV_DIR}/bin/activate
 pip install -U pip
-pip install git+https://github.com/openstack/fuel-devops.git@${FUEL_DEV_VER} --upgrade
 
-django-admin.py syncdb --settings=devops.settings
-django-admin.py migrate devops --settings=devops.settings
-
-# erase previous environments
-if [ ${ERASE_PREV_ENV} == true ]; then
-    for i in `dos.py list | grep MOS`; do dos.py erase $i; done
-fi
 
 # Check if fuel-qa folder exist
 if [ ! -d fuel-qa ]; then
@@ -220,21 +204,31 @@ else
     popd
 fi
 
-# Workaround for error during deploy
-# AssertionError: Command awk '/COLLECTOR.*URL/' /usr/lib/python2.7/site-packages/nailgun/settings.yaml returned exit code "2", but expected "0". Output: []; ["awk: fatal: cannot open file `/usr/lib/python2.7/site-packages/nailgun/settings.yaml' for reading (No such file or directory)\n"]
-pushd fuel-qa
-git checkout 1c58aae501b0dfe41b45f27c2b866cb5d0f01e8b
-git reset --hard
-popd
+pip install -r fuel-qa/fuelweb_test/requirements.txt --upgrade
+# https://bugs.launchpad.net/oslo.service/+bug/1525992 workaround
+pip uninstall -y python-neutronclient
+pip install 'python-neutronclient<4.0.0'
+
+django-admin.py syncdb --settings=devops.settings
+django-admin.py migrate devops --settings=devops.settings
+
+# erase previous environments
+if [ ${ERASE_PREV_ENV} == true ]; then
+    for i in `dos.py list | grep MOS`; do dos.py erase $i; done
+fi
+
 
 cp mos_tests.yaml fuel-qa/system_test/tests_templates/devops_configs/
 cp ${CONFIG_NAME} fuel-qa/system_test/tests_templates/tests_configs
 
 cd fuel-qa
-pip install -r fuelweb_test/requirements.txt --upgrade
-# https://bugs.launchpad.net/oslo.service/+bug/1525992 workaround
-pip uninstall -y python-neutronclient
-pip install 'python-neutronclient<4.0.0'
+
+# Apply ironic patch
+git apply --check ../ironic.patch 2> /dev/null
+if [ $? -eq 0 ]; then
+    echo "Patching for ironic"
+    git apply ../ironic.patch
+fi
 
 # create new environment
 # more time can be required to deploy env
