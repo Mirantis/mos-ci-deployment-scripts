@@ -174,7 +174,7 @@ fi
 V_ENV_DIR="`pwd`/fuel-devops-venv"
 
 # set ENV_NAME if it is not defined
-if [ -z ${ENV_NAME} ]; then
+if [ -z "${ENV_NAME}" ]; then
     export ENV_NAME="Test_Deployment_MOS_CI_$RANDOM"
 fi
 
@@ -224,15 +224,26 @@ cp ${CONFIG_NAME} fuel-qa/system_test/tests_templates/tests_configs
 cd fuel-qa
 
 # Apply fuel-qa patches
-for p in $(ls ../fuel_qa_patches); do
+if [ ${IRONIC_ENABLE} == 'true' ]; then
+    file_name=ironic.patch
     patch_file=../fuel_qa_patches/$p
     echo "Check for patch $p"
-    git apply --check $patch_file 2> /dev/null
     if [ $? -eq 0 ]; then
         echo "Applying patch $p"
         git apply $patch_file
     fi
-done
+fi
+
+if [ ${DVR_ENABLE} == 'true' ]; then
+    file_name=DVR_L2_pop_HA.patch
+    patch_file=../fuel_qa_patches/$p
+    echo "Check for patch $p"
+    if [ $? -eq 0 ]; then
+        echo "Applying patch $p"
+        git apply $patch_file
+    fi
+fi
+
 
 # create new environment
 # more time can be required to deploy env
