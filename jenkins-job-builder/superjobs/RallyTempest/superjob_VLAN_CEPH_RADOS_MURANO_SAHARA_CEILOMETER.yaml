@@ -2,7 +2,7 @@
     name: superjob_for_TEMPEST_TESTS_VLAN_DVR_SAHARA_MURANO_CEILOMETER_RADOS_CEPH_MOGO
     builders:
       - trigger-builds:
-        - project: 'create_param_environment'
+        - project: 'rally_tempest_tests_for_second_flow'
           same-node: true
           block: true
           predefined-parameters: |

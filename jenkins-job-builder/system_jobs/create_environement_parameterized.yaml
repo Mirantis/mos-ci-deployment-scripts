@@ -55,7 +55,9 @@
       - string:
           name: COMPUTES_COUNT
           default: "2"
-
+      - string:
+          name: IRONICS_COUNT
+          default: "0"
 
     name: create_param_environment
     wrappers:
@@ -106,6 +108,7 @@
             export DISABLE_SSL="$DISABLE_SSL"
             export FUEL_DEV_VER="$FUEL_DEV_VER"
             export COMPUTES_COUNT="$COMPUTES_COUNT"
+            export IRONICS_COUNT="$IRONICS_COUNT"
 
             ./deploy_env.sh
             fi

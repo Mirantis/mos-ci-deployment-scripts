@@ -33,12 +33,7 @@
             ENV_CHANGER=L3_HA_2flow
 
     triggers:
-        - monitor-folders:
-            path: '/var/www/fuelweb-iso/'
-            check-modification-date: false
-            check-content: false
-            check-fewer: false
-            cron: 'H/15 * * * *'
+        - timed: "33 21 * * *"
     project-type: freestyle
     defaults: global
     node: master
