@@ -6,7 +6,7 @@
     name: '{name}_tests_generated_from_template'
     wrappers:
       - build-name:
-          name: Build_Number:${{BUILD_NUMBER}}_ID:${{FILE,path="build-name-setter.info"}}
+          name: ${{BUILD_NUMBER}}.${{FILE,path="build-name-setter.info"}}
     parameters:
       - string:
           name: ISO_DIR
@@ -26,7 +26,7 @@
 
             # Generate file for build-name plugin
             SNAPSHOT=`echo $SNAPSHOT_NAME | sed 's/ha_deploy_//'`
-            echo "$ISO_ID"_CONF:"$SNAPSHOT" > build-name-setter.info
+            echo "$ISO_ID"_"$SNAPSHOT" > build-name-setter.info
 
             ENV_NAME=MOS_CI_"$ISO_NAME"
             # Change ENV_NAME if there is more than one environments on host
