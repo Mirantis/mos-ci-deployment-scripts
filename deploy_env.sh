@@ -246,7 +246,7 @@ fi
 # https://github.com/openstack/fuel-qa/branches
 if [ -z "$FUEL_QA_VER" ]
 then
-    FUEL_QA_VER='master'
+    FUEL_QA_VER='stable/8.0'
 fi
 
 # Erase all previous environments by default
@@ -280,6 +280,7 @@ if [ ! -d fuel-qa ]; then
 else
     pushd fuel-qa
     git clean -f -d -x
+    git checkout -- system_test/__init__.py
     git checkout "${FUEL_QA_VER}"
     git reset --hard
     git pull
@@ -317,6 +318,7 @@ cp ${CONFIG_NAME} fuel-qa/system_test/tests_templates/tests_configs
 cd fuel-qa
 
 # Apply fuel-qa patches
+set +e
 if [ ${IRONIC_ENABLE} == 'true' ]; then
     file_name=ironic.patch
     patch_file=../fuel_qa_patches/$file_name
@@ -338,7 +340,7 @@ if [ ${DVR_ENABLE} == 'true' ] || [ ${L3_HA_ENABLE} == 'true' ] || [ ${L2_POP_EN
         git apply $patch_file
     fi
 fi
-
+set -e
 
 # erase previous environments
 if [ ${ERASE_PREV_ENV} == true ]; then
@@ -347,7 +349,9 @@ fi
 
 # create new environment
 # more time can be required to deploy env
-export DEPLOYMENT_TIMEOUT=10000
+if [ -z ${DEPLOYMENT_TIMEOUT} ]; then
+    export DEPLOYMENT_TIMEOUT=10000
+fi
 
 ./utils/jenkins/system_tests.sh -k -K -j fuelweb_test -t test -V ${V_ENV_DIR} -w $(pwd) -o --group="system_test.deploy_env($GROUP_NAME)"
 
