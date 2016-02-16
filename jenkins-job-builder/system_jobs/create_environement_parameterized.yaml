@@ -105,6 +105,7 @@
             export MURANO_ENABLE="$MURANO_ENABLE"
             export MONGO_ENABLE="$MONGO_ENABLE"
             export CEILOMETER_ENABLE="$CEILOMETER_ENABLE"
+            export IRONIC_ENABLE="$IRONIC_ENABLE"
             export DISABLE_SSL="$DISABLE_SSL"
             export FUEL_DEV_VER="$FUEL_DEV_VER"
             export COMPUTES_COUNT="$COMPUTES_COUNT"
