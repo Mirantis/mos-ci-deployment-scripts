@@ -1,0 +1,105 @@
+- scm:
+    name: mos-integration-tests-repository
+    scm:
+      - git:
+         url: https://github.com/Mirantis/mos-integration-tests.git
+         branches:
+          - origin/master
+         skip-tag: true
+
+- job:
+    name: 7.0.neutron_tests
+    parameters:
+      - string:
+          name: MAGNET_LINK
+          default: 'magnet:?xt=urn:btih:21b4d46c9f1cec02e336b1f9771d4f7c27ec724b&dn=MirantisOpenStack-7.0.iso&tr=http%3A%2F%2Ftracker01-bud.infra.mirantis.net%3A8080%2Fannounce&tr=http%3A%2F%2Ftracker01-scc.infra.mirantis.net%3A8080%2Fannounce&tr=http%3A%2F%2Ftracker01-msk.infra.mirantis.net%3A8080%2Fannounce&ws=http%3A%2F%2Fvault.infra.mirantis.net%2FMirantisOpenStack-7.0.iso'
+          description: 'ISO magnet link'
+      - string:
+          name: ISO_DIR
+          default: /var/www/fuelweb-iso
+      - string:
+          name: SNAPSHOT_NAME
+      - string:
+          name: REPORT_PREFIX
+          default: /srv/jenkins
+      - string:
+          name: EXTRA_DEB_REPOS
+          default: 'deb http://mirror.seed-cz1.fuel-infra.org/mos-repos/ubuntu/snapshots/7.0-latest mos7.0-proposed main restricted'
+          description: 'Additional repository for Ubuntu'
+    builders:
+      - shell: | # Get description from MAGNET_LINK variable
+          set +e
+          export EXTRA_DEB_REPOS="$EXTRA_DEB_REPOS"
+          #
+          # including of file's "get_version_from_magnet.sh" body
+          #
+          ISO_VERSION=$(echo "${MAGNET_LINK##*dn=}" | cut -d '%' -f 1)
+          echo "Description string: $ISO_VERSION"
+          #
+          #
+          # install the seedclient-wrapper
+          #
+          wget -O /tmp/python-seed-client.deb http://mirror.fuel-infra.org/devops/ubuntu/all/python-seed-client_0.17-ubuntu55_all.deb  
+          sudo dpkg -i /tmp/python-seed-client.deb
+          sudo apt-get -y -f install
+          echo $PATH
+          ISO_PATH=$(seedclient-wrapper -d -m "${MAGNET_LINK}" -v --force-set-symlink -o "${WORKSPACE}")
+          ISO_NAME=`echo ${ISO_PATH}##*/}`
+          ISO_ID=`echo "$ISO_NAME" | cut -f3 -d-`
+          ENV_NAME=MOS_CI_"$ISO_NAME"
+          if [ -n "$ENV_CHANGER" ];
+          then
+          export ENV_NAME="$ENV_NAME""$ENV_CHANGER"
+          fi
+          REPORT_PATH="$REPORT_PREFIX"/"$ENV_NAME"_"$SNAPSHOT_NAME"
+          echo "$REPORT_PATH" > ./param.pm
+          virtualenv venv
+          . venv/bin/activate
+          echo $EXTRA_DEB_REPOS
+          sudo pip install -r requirements.txt
+          sudo apt-get install wireshark -y
+          sudo py.test mos_tests/neutron -E "$ENV_NAME" -S "$SNAPSHOT_NAME" -v
+          deactivate
+    scm:
+        - mos-integration-tests-repository
+    project-type: freestyle
+    node: maintenance
+    defaults: global
+    description: 'Runs mos_tests/neutron tests'
+    disabled: false
+    display-name: 'Neutron tests from MOS QA (7.0 maintenance)'
+    concurrent: true
+    browser: githubweb
+    retry-count: 3
+    logrotate:
+      daysToKeep: 5
+      numToKeep: 20
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+    publishers:
+      - email:
+          recipients: mlaptev@mirantis.com
+
+      - postbuildscript:
+          script-only-if-succeeded: False
+          builders:
+            - shell: |
+                set +e  
+                REPORT_PATH=`cat ./param.pm`
+                sudo mkdir -p "$REPORT_PATH"
+                sudo cp report.xml "$REPORT_PATH"
+      - archive:
+          artifacts: 'report.xml'
+          allow-empty: 'true'
+          fingerprint: true
+
+      - archive:
+          artifacts: 'test.log'
+          allow-empty: 'true'
+          fingerprint: true
+           
+      - junit:
+          results: report.xml
+
+      - workspace-cleanup:
+          fail-build: false
