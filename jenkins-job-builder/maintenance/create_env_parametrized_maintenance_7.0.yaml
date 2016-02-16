@@ -58,7 +58,7 @@
             export FUEL_QA_VER="$FUEL_QA_VER"
             export FILE="$FILE"
             export GROUP="$GROUP"
-            ./maintenance/maintenance_deploy_env.sh
+            ./maintenance_deploy_env.sh
     project-type: freestyle
     node: maintenance
     defaults: global
