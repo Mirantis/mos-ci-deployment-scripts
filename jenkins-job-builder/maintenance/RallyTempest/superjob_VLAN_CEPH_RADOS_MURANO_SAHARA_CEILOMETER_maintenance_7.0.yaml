@@ -1,5 +1,5 @@
 - job:
-    name: superjob_for_TEMPEST_TESTS_VLAN_SAHARA_MURANO_CEILOMETER_RADOS_CEPH_MOGO_maintenance_7_0
+    name: superjob_for_TEMPEST_TESTS_VLAN_SAHARA_MURANO_CEILOMETER_RADOS_CEPH_MONGO_maintenance_7_0
     builders:
       - trigger-builds:
         - project: 'create_param_environment_maintenance_7_0'
@@ -8,16 +8,8 @@
           predefined-parameters: |
             SNAPSHOT_NAME=ha_deploy_VLAN_SAHARA_MURANO_CEILOMETER_RADOS_CEPH_MONGO
             TEST_TYPE=TEMPEST
-            SEGMENT_TYPE=VLAN
-            DISABLE_SSL=TRUE
-            DVR_ENABLE=FALSE
-            CEPH_ENABLE=TRUE
-            SAHARA_ENABLE=TRUE
-            MURANO_ENABLE=TRUE
-            RADOS_ENABLE=TRUE
-            CEILOMETER_ENABLE=TRUE
-            MONGO_ENABLE=TRUE
-            MASTER_IS_CENTOS7=FALSE
+            FILE=test_tempest_ceph_services.py
+            GROUP=tempest_ceph_services
       - trigger-builds:
         - project: 'rally_tempest_tests'
           same-node: true
