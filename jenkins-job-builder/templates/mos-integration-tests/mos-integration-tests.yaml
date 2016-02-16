@@ -6,8 +6,7 @@
     name: '{name}_tests_generated_from_template'
     wrappers:
       - build-name:
-          name: Build_Number:${{BUILD_NUMBER}}_
-                ID:${{FILE,path="build-name-setter.info"}}
+          name: Build_Number:${{BUILD_NUMBER}}_ID:${{FILE,path="build-name-setter.info"}}
     parameters:
       - string:
           name: ISO_DIR
@@ -96,9 +95,9 @@
 - project:
     name: NEUTRON
     iso_dir: /var/www/fuelweb-iso
-    report_prefix: /srv/jenkins/cinder
-    test_path: mos_tests/cinder
-    description: it works
+    report_prefix: /srv/jenkins/neutron
+    test_path: mos_tests/neutron
+    description: NEUTRON tests
     display-name: NEUTRON test /from template/
     email-recipients: efazliev@mirantis.com
     jobs:

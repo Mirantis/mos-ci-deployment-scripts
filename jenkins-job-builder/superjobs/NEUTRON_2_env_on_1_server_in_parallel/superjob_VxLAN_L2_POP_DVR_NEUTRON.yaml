@@ -13,6 +13,7 @@
             L2_POP_ENABLE=TRUE
             DVR_ENABLE=TRUE
             ENV_CHANGER=DVR_2flow
+            COMPUTES_COUNT=3
       - trigger-builds:
         - project: 'NEUTRON_tests_generated_from_template'
           same-node: true
@@ -32,12 +33,7 @@
             ENV_CHANGER=DVR_2flow
 
     triggers:
-        - monitor-folders:
-            path: '/var/www/fuelweb-iso/'
-            check-modification-date: false
-            check-content: false
-            check-fewer: false
-            cron: 'H/15 * * * *'
+        - timed: "34 21 * * *"
     project-type: freestyle
     defaults: global
     node: slave-7775

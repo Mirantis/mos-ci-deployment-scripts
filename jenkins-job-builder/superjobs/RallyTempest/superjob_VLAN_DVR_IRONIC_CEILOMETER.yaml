@@ -1,17 +1,22 @@
 - job:
-    name: superjob_for_VLAN_DVR_TEMPEST
+    name: superjob_for_VLAN_DVR_IRONIC_CEILOMETER_TEMPEST
     builders:
       - trigger-builds:
         - project: 'create_param_environment'
           same-node: true
           block: true
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VLAN_DVR
+            # BOOL_VARS="L2_POP_ENABLE DVR_ENABLE L3_HA_ENABLE SAHARA_ENABLE MURANO_ENABLE CEILOMETER_ENABLE IRONIC_ENABLE RADOS_ENABLE"
+            SNAPSHOT_NAME=ha_deploy_VLAN_DVR_CEILOMETER_IRONIC_MONGO
             TEST_TYPE='TEMPEST,Cinder LVM,Swift'
             SEGMENT_TYPE=VLAN
             DISABLE_SSL=TRUE
             DVR_ENABLE=TRUE
+            CEILOMETER_ENABLE=TRUE
+            IRONIC_ENABLE=TRUE
+            MONGO_ENABLE=TRUE
             ENV_CHANGER=2flow
+            IRONICS_COUNT=1
       - trigger-builds:
         - project: 'rally_tempest_tests_for_second_flow'
           same-node: true
@@ -19,7 +24,7 @@
           block-thresholds:
             build-step-failure-threshold: 'never'
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VLAN_DVR
+            SNAPSHOT_NAME=ha_deploy_VLAN_DVR_CEILOMETER_IRONIC_MONGO
             REPORT_PREFIX=/srv/jenkins/rally-tempest
             ENV_CHANGER=2flow
       - trigger-builds:
@@ -27,7 +32,7 @@
           same-node: true
           block: true
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VLAN_DVR
+            SNAPSHOT_NAME=ha_deploy_VLAN_DVR_CEILOMETER_IRONIC_MONGO
             TEST_GROUP='TEMPEST,HA,Cinder LVM,Swift'
             REPORT_PREFIX=/srv/jenkins/rally-tempest
             REPORT_FILE=verification.xml
@@ -39,9 +44,9 @@
     project-type: freestyle
     defaults: global
     node: slave-7774
-    description: 'VLAN+DVR TEMPEST tests'
-    disabled: true
-    display-name: 'RALLY-TEMPEST VLAN+DVR'
+    description: 'VLAN+DVR+IRONIC+CEILOMETER+MONGO TEMPEST tests'
+    disabled: false
+    display-name: 'RALLY-TEMPEST VLAN+DVR+IRONIC+CEILOMETER+MONGO'
     concurrent: false
     retry-count: 3
     logrotate:

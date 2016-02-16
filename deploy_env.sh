@@ -159,13 +159,6 @@ then
     SNAPSHOT_NAME="${SNAPSHOT_NAME}_MONGO"
 fi
 
-# Set fuel dev version
-# https://github.com/openstack/fuel-devops/releases
-if [ -z "$FUEL_DEV_VER" ]
-then
-    FUEL_DEV_VER='2.9.15'
-fi
-
 # Set fuel QA version
 # https://github.com/openstack/fuel-qa/branches
 if [ -z "$FUEL_QA_VER" ]
@@ -181,13 +174,12 @@ fi
 V_ENV_DIR="`pwd`/fuel-devops-venv"
 
 # set ENV_NAME if it is not defined
-if [ -z ${ENV_NAME} ]; then
+if [ -z "${ENV_NAME}" ]; then
     export ENV_NAME="Test_Deployment_MOS_CI_$RANDOM"
 fi
 
 echo "Env name:         ${ENV_NAME}"
 echo "Snapshot name:    ${SNAPSHOT_NAME}"
-echo "Fuel Dev version: ${FUEL_DEV_VER}"
 echo "Fuel QA branch:   ${FUEL_QA_VER}"
 echo ""
 
@@ -198,15 +190,7 @@ fi
 
 source ${V_ENV_DIR}/bin/activate
 pip install -U pip
-pip install git+https://github.com/openstack/fuel-devops.git@${FUEL_DEV_VER} --upgrade
 
-django-admin.py syncdb --settings=devops.settings
-django-admin.py migrate devops --settings=devops.settings
-
-# erase previous environments
-if [ ${ERASE_PREV_ENV} == true ]; then
-    for i in `dos.py list | grep MOS`; do dos.py erase $i; done
-fi
 
 # Check if fuel-qa folder exist
 if [ ! -d fuel-qa ]; then
@@ -220,14 +204,48 @@ else
     popd
 fi
 
+pip install -r fuel-qa/fuelweb_test/requirements.txt --upgrade
+# https://bugs.launchpad.net/oslo.service/+bug/1525992 workaround
+pip uninstall -y python-neutronclient
+pip install 'python-neutronclient<4.0.0'
+
+django-admin.py syncdb --settings=devops.settings
+django-admin.py migrate devops --settings=devops.settings
+
+# erase previous environments
+if [ ${ERASE_PREV_ENV} == true ]; then
+    for i in `dos.py list | grep MOS`; do dos.py erase $i; done
+fi
+
+
 cp mos_tests.yaml fuel-qa/system_test/tests_templates/devops_configs/
 cp ${CONFIG_NAME} fuel-qa/system_test/tests_templates/tests_configs
 
 cd fuel-qa
-pip install -r fuelweb_test/requirements.txt --upgrade
-# https://bugs.launchpad.net/oslo.service/+bug/1525992 workaround
-pip uninstall -y python-neutronclient
-pip install 'python-neutronclient<4.0.0'
+
+# Apply fuel-qa patches
+if [ ${IRONIC_ENABLE} == 'true' ]; then
+    file_name=ironic.patch
+    patch_file=../fuel_qa_patches/$file_name
+    echo "Check for patch $file_name"
+    git apply --check $patch_file 2> /dev/null
+    if [ $? -eq 0 ]; then
+        echo "Applying patch $file_name"
+        git apply $patch_file
+    fi
+fi
+
+if [ ${DVR_ENABLE} == 'true' ] || [ ${L3_HA_ENABLE} == 'true' ] || [ ${L2_POP_ENABLE} == 'true' ]; then
+    file_name=DVR_L2_pop_HA.patch
+    patch_file=../fuel_qa_patches/$file_name
+    echo "Check for patch $file_name"
+    git apply --check $patch_file 2> /dev/null
+    if [ $? -eq 0 ]; then
+        echo "Applying patch $file_name"
+        git apply $patch_file
+    fi
+fi
+
 
 # create new environment
 # more time can be required to deploy env

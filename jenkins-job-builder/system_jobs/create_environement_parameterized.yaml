@@ -1,5 +1,5 @@
 - scm:
-    !include: ../mos-ci-deployment-scripts-repository
+    !include: ../mos-ci-deployment-scripts-repository.yaml
 
 - job:
     parameters:
@@ -52,13 +52,17 @@
           name: ENV_CHANGER
       - string:
           name: SLAVE_COMPUTE_NODE_MEMORY
-
+      - string:
+          name: COMPUTES_COUNT
+          default: "2"
+      - string:
+          name: IRONICS_COUNT
+          default: "0"
 
     name: create_param_environment
     wrappers:
       - build-name:
-          name: Build_Number:${BUILD_NUMBER}_
-                ISO_ID:${FILE,path="build-name-setter.info"}
+          name: ${BUILD_NUMBER}.${FILE,path="build-name-setter.info"}
       - ansicolor
     builders:
         - shell: |
@@ -69,7 +73,7 @@
 
 
             SNAPSHOT=`echo $SNAPSHOT_NAME | sed 's/ha_deploy_//'`
-            echo "$ISO_ID"_CONF:"$SNAPSHOT" > build-name-setter.info
+            echo "$ISO_ID"_"$SNAPSHOT" > build-name-setter.info
 
             if [ -n "$ENV_CHANGER" ];
             then
@@ -103,6 +107,8 @@
             export CEILOMETER_ENABLE="$CEILOMETER_ENABLE"
             export DISABLE_SSL="$DISABLE_SSL"
             export FUEL_DEV_VER="$FUEL_DEV_VER"
+            export COMPUTES_COUNT="$COMPUTES_COUNT"
+            export IRONICS_COUNT="$IRONICS_COUNT"
 
             ./deploy_env.sh
             fi
