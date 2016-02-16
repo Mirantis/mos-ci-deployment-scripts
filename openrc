@@ -62,3 +62,6 @@ export FUEL_QA_VER=
 
 # path to config file for plugins
 export PLUGINS_CONFIG_PATH=
+
+# deployment timeout
+export DEPLOYMENT_TIMEOUT=
