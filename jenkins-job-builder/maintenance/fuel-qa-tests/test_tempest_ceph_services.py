@@ -16,18 +16,19 @@ from proboscis import test
 
 from fuelweb_test.helpers.decorators import log_snapshot_after_test
 from fuelweb_test import settings
-from fuelweb_test.tests import base_test_case
+from fuelweb_test.tests.base_test_case import SetupEnvironment
 from fuelweb_test.tests.base_test_case import TestBasic
 
 @test(groups=["tempest", "tempest.ceph"])
 class TempestCeph(TestBasic):
     """TempestCeph."""
 
-    @test(depends_on=[base_test_case.SetupEnvironment.prepare_slaves_9],
+    @test(depends_on=[SetupEnvironment.prepare_slaves_5],
           groups=["tempest_ceph_services"])
     @log_snapshot_after_test
     def tempest_ceph_services(self):
-        """Deploy ceph with cinder in ha mode with 1 controller
+        """Deploy env with 3 controller_mongo and 2 
+           Compute +ceph nodes.
 
         Scenario:
             1. Create cluster
@@ -40,7 +41,7 @@ class TempestCeph(TestBasic):
         Snapshot tempest_test_ceph
         """
 
-        self.env.revert_snapshot("ready_with_9_slaves")
+        self.env.revert_snapshot("ready_with_5_slaves")
 
         cluster_id = self.fuel_web.create_cluster(
             name=self.__class__.__name__,
