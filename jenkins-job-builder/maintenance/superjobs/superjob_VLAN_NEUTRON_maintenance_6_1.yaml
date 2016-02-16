@@ -1,0 +1,34 @@
+- job:
+    name: superjob_for_VLAN_NEUTRON_maintenance_6_1
+    builders:
+      - trigger-builds:
+        - project: 'create_param_environment_maintenance_6_1'
+          same-node: true
+          block: true
+          predefined-parameters: |
+            SNAPSHOT_NAME=ha_deploy_VLAN
+            TEST_TYPE=NEUTRON
+            SEGMENT_TYPE=VLAN
+            DISABLE_SSL=TRUE
+            MASTER_IS_CENTOS7=FALSE
+      - trigger-builds:
+        - project: '6.1.neutron_tests'
+          same-node: true
+          block: true
+          block-thresholds:
+            build-step-failure-threshold: 'never'    
+          predefined-parameters: |
+            SNAPSHOT_NAME=ha_deploy_VLAN
+    project-type: freestyle
+    defaults: global
+    node: maintenance
+    description: 'VLAN NEUTRON tests (6.1 maintenance)'
+    disabled: false
+    display-name: 'VLAN for maintenance (6.1 maintenance)'
+    concurrent: false
+    retry-count: 3
+    logrotate:
+      daysToKeep: 5
+      numToKeep: 20
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1

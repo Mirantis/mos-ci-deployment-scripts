@@ -1,0 +1,43 @@
+- job:
+    name: superjob_for_TEMPEST_TESTS_VLAN_SAHARA_MURANO_CEILOMETER_RADOS_CEPH_MOGO_maintenance_7_0
+    builders:
+      - trigger-builds:
+        - project: 'create_param_environment_maintenance_7_0'
+          same-node: true
+          block: true
+          predefined-parameters: |
+            SNAPSHOT_NAME=ha_deploy_VLAN_SAHARA_MURANO_CEILOMETER_RADOS_CEPH_MONGO
+            TEST_TYPE=TEMPEST
+            SEGMENT_TYPE=VLAN
+            DISABLE_SSL=TRUE
+            DVR_ENABLE=FALSE
+            CEPH_ENABLE=TRUE
+            SAHARA_ENABLE=TRUE
+            MURANO_ENABLE=TRUE
+            RADOS_ENABLE=TRUE
+            CEILOMETER_ENABLE=TRUE
+            MONGO_ENABLE=TRUE
+            MASTER_IS_CENTOS7=FALSE
+      - trigger-builds:
+        - project: 'rally_tempest_tests'
+          same-node: true
+          block: true
+          block-thresholds:
+            build-step-failure-threshold: 'never'
+          predefined-parameters: |
+            SNAPSHOT_NAME=ha_deploy_VLAN_SAHARA_MURANO_CEILOMETER_RADOS_CEPH_MONGO
+            REPORT_PREFIX=/srv/jenkins/rally-tempest
+    project-type: freestyle
+    defaults: global
+    node: maintenance
+    description: 'VLAN+CEPH+SAHARA+MURANO_CEILOMETER_RADOS_MONGO TEMPEST tests (7.0 maintenance)'
+    disabled: false
+    display-name: 'VLAN+CEPH+SAHARA+MURANO_CEILOMETER_RADOS_MONGO TEMPEST tests (7.0 maintenance)'
+    concurrent: false
+    retry-count: 3
+    logrotate:
+      daysToKeep: 5
+      numToKeep: 20
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+
