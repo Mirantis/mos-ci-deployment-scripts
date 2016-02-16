@@ -1,15 +1,13 @@
 - scm:
-    name: mos-integration-tests-repository
-    scm:
-      - git:
-         url: https://github.com/Mirantis/mos-integration-tests.git
-         branches:
-          - origin/master
-
+    !include: ../../mos-integration-tests-repository.yaml
 
 
 - job-template:
     name: '{name}_tests_generated_from_template'
+    wrappers:
+      - build-name:
+          name: Build_Number:${{BUILD_NUMBER}}_
+                ID:${{FILE,path="build-name-setter.info"}}
     parameters:
       - string:
           name: ISO_DIR
@@ -23,26 +21,31 @@
           name: ENV_CHANGER
     builders:
         - shell: |
-            set -e
+            set +e
             ISO_NAME=`ls "$ISO_DIR"`
             ISO_ID=`echo "$ISO_NAME" | cut -f3 -d-`
-            ENV_NAME=MOS_CI_"$ISO_NAME"
 
+            # Generate file for build-name plugin
+            SNAPSHOT=`echo $SNAPSHOT_NAME | sed 's/ha_deploy_//'`
+            echo "$ISO_ID"_CONF:"$SNAPSHOT" > build-name-setter.info
+
+            ENV_NAME=MOS_CI_"$ISO_NAME"
+            # Change ENV_NAME if there is more than one environments on host
             if [ -n "$ENV_CHANGER" ];
             then
             export ENV_NAME="$ENV_NAME""$ENV_CHANGER"
             fi
 
+            # Storing path for xml reports, that will be used in
+            # report_to_testrail job
             REPORT_PATH="$REPORT_PREFIX"/"$ENV_NAME"_"$SNAPSHOT_NAME"
             echo "$REPORT_PATH" > ./param.pm
             echo "$BUILD_URL" > ./build_url
 
             virtualenv venv
             . venv/bin/activate
-
             pip install -r requirements.txt
             py.test '{test_path}' -E "$ENV_NAME" -S "$SNAPSHOT_NAME" -v
-
             deactivate
     scm:
         - mos-integration-tests-repository
@@ -96,7 +99,7 @@
     report_prefix: /srv/jenkins/cinder
     test_path: mos_tests/cinder
     description: it works
-    display-name: NEUTRON test from template
+    display-name: NEUTRON test /from template/
     email-recipients: efazliev@mirantis.com
     jobs:
       - '{name}_tests_generated_from_template'

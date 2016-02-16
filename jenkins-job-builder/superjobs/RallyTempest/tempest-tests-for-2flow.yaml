@@ -1,12 +1,11 @@
 - scm:
-    name: dockerfiles
-    scm:
-      - git:
-         url: https://review.fuel-infra.org/fuel-infra/dockerfiles
-         branches:
-          - origin/master
+    !include: ../../dockerfiles-repository.yaml
+
 - job:
-    name: rally_tempest_tests
+    name: rally_tempest_tests_for_second_flow
+    wrappers:
+      - build-name:
+          name: Build_Number:${BUILD_NUMBER}_ISO_ID:${FILE,path="build-name-setter.info"}
     parameters:
       - string:
           name: ISO_DIR
@@ -23,6 +22,9 @@
             ISO_NAME=`ls "$ISO_DIR"`
             ISO_ID=`echo "$ISO_NAME" | cut -f3 -d-`
             ENV_NAME=MOS_CI_"$ISO_NAME"
+
+            SNAPSHOT=`echo $SNAPSHOT_NAME | sed 's/ha_deploy_//'`
+            echo "$ISO_ID"_CONF:"$SNAPSHOT" > build-name-setter.info
 
             if [ -n "$ENV_CHANGER" ];
             then
@@ -68,13 +70,24 @@
 
             echo 'docker run -tid -v /var/lib/rally-tempest-container-home-dir:/home/rally --net host "$ID" > dock.id' >> ssh_scr.sh
             echo 'DOCK_ID=`cat dock.id`' >> ssh_scr.sh
+            echo 'echo '\''export OS_AUTH_URL=http://10.109.7.3:5000/v2.0'\'' >> /var/lib/rally-tempest-container-home-dir/openrc' >> ssh_scr.sh
             echo 'docker exec "$DOCK_ID" setup-tempest' >> ssh_scr.sh
+
+            #temp_fix
+
+            #echo 'OS_AUTH=`fgrep OS_AUTH_URL /var/lib/rally-tempest-container-home-dir/openrc`' >> ssh_scr.sh
+            #echo '$OS_AUTH_URL_V="$OS_AUTH"v2.0' >> ssh_scr.sh
+            #echo 'echo "$OS_AUTH_URL_V" >> /var/lib/rally-tempest-container-home-dir/openrc' >> ssh_scr.sh
             echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start --system-wide"' >> ssh_scr.sh
+
+
+
+
             echo 'docker exec "$DOCK_ID" bash -c "rally verify results --json --output-file output.json" ' >> ssh_scr.sh
             echo 'docker exec "$DOCK_ID" bash -c "rm -rf rally_json2junit && git clone https://github.com/EduardFazliev/rally_json2junit.git && python rally_json2junit/rally_json2junit/results_parser.py output.json" ' >> ssh_scr.sh
             chmod +x ssh_scr.sh
             sshpass -p 'r00tme' scp -o "StrictHostKeyChecking no" ssh_scr.sh root@"$MASTER_NODE_IP":/root/
-            echo 'chmod +x /root/ssh_scr.sh && /bin/bash -xe /root/ssh_scr.sh > /root/log.log' | sshpass -p 'r00tme' ssh -T root@"$MASTER_NODE_IP"             
+            echo 'chmod +x /root/ssh_scr.sh && /bin/bash -xe /root/ssh_scr.sh > /root/log.log' | sshpass -p 'r00tme' ssh -T root@"$MASTER_NODE_IP"
             sshpass -p 'r00tme' scp -o "StrictHostKeyChecking no" root@"$MASTER_NODE_IP":/root/log.log ./
             sshpass -p 'r00tme' scp -o "StrictHostKeyChecking no" root@"$MASTER_NODE_IP":/var/lib/rally-tempest-container-home-dir/verification.xml ./
             deactivate
@@ -82,10 +95,9 @@
         - dockerfiles
     project-type: freestyle
     defaults: global
-    node: slave-7774
     description: 'Runs Tempest tests'
     disabled: false
-    display-name: 'Rally Tempest Testing'
+    display-name: 'Rally Tempest Testing for 2FLOW'
     concurrent: true
     browser: githubweb
     retry-count: 3
