@@ -191,8 +191,10 @@ def create_environment(fuel_ip, kvm_count, machines_count, cluster_settings):
             cluster_settings['node_roles']).items():
 
         #   Add all available nodes to cluster
-
-        if 'version' in params:
+        if 'mac' in params:
+            node = next(k for k in client.list_nodes()
+                        if k['mac'] == params['mac'])
+        elif 'version' in params:
             node = next(k for k in client.list_nodes()
                         if k['platform_name'] == node_name
                         and k['manufacturer'] == params['manufacturer']
@@ -213,15 +215,31 @@ def create_environment(fuel_ip, kvm_count, machines_count, cluster_settings):
         #   Disks configuration on nodes
 
         if 'disks' in params:
-            default_disks = client.get_node_disks(node['id'])
+            all_disks = client.get_node_disks(node['id'])
             list_for_update = []
             for disk in params['disks']:
-                for default_disk in default_disks:
-                    if disk['name'] == default_disk['name']:
-                        default_disk['volumes'] = disk['volumes']
-                        list_for_update.append(default_disk)
-                        default_disks.remove(default_disk)
-            list_for_update += default_disks
+                default_disks = [i for i in all_disks
+                                 if i['name'] == disk['name']]
+                if default_disks:
+                    default_disk = default_disks[0]
+                else:
+                    msg = "Disk with name: {name} on node:{node} not found"
+                    logger.warning(msg.format(name=disk['name'],
+                                              node=node['id']))
+                    continue
+                volumes = []
+                for volume, size in disk['volumes'].iteritems():
+                    if not size.isdigit():
+                        if size == "full":
+                            size = int(default_disk['size'])
+                        if size == "half":
+                            size = int(default_disk['size'])/2 - 1
+                        if size == "third":
+                            size = int(default_disk['size'])/3 - 1
+                    volumes.append({'name': volume, 'size': size})
+                default_disk['volumes'] = volumes
+                list_for_update.append(default_disk)
+                all_disks.remove(default_disk)
             client.put_node_disks(node['id'], list_for_update)
 
         #   Network configuration on nodes
