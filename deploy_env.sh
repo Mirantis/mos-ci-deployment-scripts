@@ -226,20 +226,22 @@ cd fuel-qa
 # Apply fuel-qa patches
 if [ ${IRONIC_ENABLE} == 'true' ]; then
     file_name=ironic.patch
-    patch_file=../fuel_qa_patches/$p
-    echo "Check for patch $p"
+    patch_file=../fuel_qa_patches/$file_name
+    echo "Check for patch $file_name"
+    git apply --check $patch_file 2> /dev/null
     if [ $? -eq 0 ]; then
-        echo "Applying patch $p"
+        echo "Applying patch $file_name"
         git apply $patch_file
     fi
 fi
 
-if [ ${DVR_ENABLE} == 'true' ]; then
+if [ ${DVR_ENABLE} == 'true' ] || [ ${L3_HA_ENABLE} == 'true' ] || [ ${L2_POP_ENABLE} == 'true' ]; then
     file_name=DVR_L2_pop_HA.patch
-    patch_file=../fuel_qa_patches/$p
-    echo "Check for patch $p"
+    patch_file=../fuel_qa_patches/$file_name
+    echo "Check for patch $file_name"
+    git apply --check $patch_file 2> /dev/null
     if [ $? -eq 0 ]; then
-        echo "Applying patch $p"
+        echo "Applying patch $file_name"
         git apply $patch_file
     fi
 fi
