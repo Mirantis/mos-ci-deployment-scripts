@@ -115,6 +115,8 @@
             export IRONICS_COUNT="$IRONICS_COUNT"
             export FUEL_QA_VER="$FUEL_QA_VER"
 
+            sed -i 's|export DEPLOYMENT_TIMEOUT=10000|export DEPLOYMENT_TIMEOUT=15000|g' deploy_env.sh
+
             ./deploy_env.sh
             fi
 

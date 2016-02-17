@@ -47,7 +47,7 @@
     defaults: global
     node: slave-srv98
     description: 'VLAN+DVR+CEPH+SAHARA+MURANO_CEILOMETER_RADOS_MONGO TEMPEST tests'
-    disabled: false
+    disabled: true
     display-name: 'VLAN+DVR+CEPH+SAHARA+MURANO_CEILOMETER_RADOS_MONGO TEMPEST tests'
     concurrent: false
     retry-count: 3

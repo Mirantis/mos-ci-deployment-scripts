@@ -27,6 +27,7 @@
           predefined-parameters: |
             SNAPSHOT_NAME=ha_deploy_VLAN
             TEST_GROUP=NEUTRON
+            REPORT_PREFIX=/srv/jenkins/neutron
     triggers:
         - timed: "35 21 * * *"
     project-type: freestyle

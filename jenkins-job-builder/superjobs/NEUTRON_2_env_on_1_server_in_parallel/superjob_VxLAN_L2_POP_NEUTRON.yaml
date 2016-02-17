@@ -27,6 +27,7 @@
           predefined-parameters: |
             SNAPSHOT_NAME=ha_deploy_VxLAN_L2_POP
             TEST_GROUP=NEUTRON
+            REPORT_PREFIX=/srv/jenkins/neutron
 
     triggers:
         - timed: "32 21 * * *"
