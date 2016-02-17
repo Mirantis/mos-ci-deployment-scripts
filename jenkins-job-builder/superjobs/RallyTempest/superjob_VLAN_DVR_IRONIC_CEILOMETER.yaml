@@ -17,6 +17,7 @@
             MONGO_ENABLE=TRUE
             ENV_CHANGER=2flow
             IRONICS_COUNT=1
+            NOVA_QUOTAS_ENABLED=TRUE
       - trigger-builds:
         - project: 'rally_tempest_tests_for_second_flow'
           same-node: true

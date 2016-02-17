@@ -58,6 +58,9 @@
       - string:
           name: IRONICS_COUNT
           default: "0"
+      - string:
+          name: NOVA_QUOTAS_ENABLED
+          default: "FALSE"
 
     name: create_param_environment
     wrappers:
@@ -111,6 +114,7 @@
             export COMPUTES_COUNT="$COMPUTES_COUNT"
             export IRONICS_COUNT="$IRONICS_COUNT"
             export FUEL_QA_VER="$FUEL_QA_VER"
+            export NOVA_QUOTAS_ENABLED="$NOVA_QUOTAS_ENABLED"
 
             sed -i 's|export DEPLOYMENT_TIMEOUT=10000|export DEPLOYMENT_TIMEOUT=15000|g' deploy_env.sh
 
