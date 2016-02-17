@@ -1,6 +1,3 @@
-- scm:
-    !include: ../../mos-integration-tests-repository.yaml
-
 - job:
     name: sahara-scenario_tests
     parameters:

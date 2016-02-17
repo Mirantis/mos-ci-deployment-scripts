@@ -144,6 +144,7 @@ export DEPLOYMENT_TIMEOUT=10000
 export ADMIN_NODE_MEMORY=4096
 export SLAVE_NODE_CPU=2
 export SLAVE_NODE_MEMORY=4096
+export KVM_USE=true
 
 ./utils/jenkins/system_tests.sh -k -K -j fuelweb_test -t test -V ${V_ENV_DIR} -w $(pwd) -o --group="${GROUP}"
 

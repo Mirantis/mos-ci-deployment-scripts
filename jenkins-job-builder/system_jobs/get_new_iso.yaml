@@ -1,5 +1,3 @@
-- scm:
-    !include: ../mos-ci-deployment-scripts-repository.yaml
 - job:
     name: get_new_iso
     parameters:

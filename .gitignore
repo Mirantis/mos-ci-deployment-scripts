@@ -3,6 +3,7 @@
 *.log
 *.txt
 .tox/
+output
 mos-components-ci/deploy_config*
 mos-components-ci/env_config*
 mos-components-ci/iso_settings.py

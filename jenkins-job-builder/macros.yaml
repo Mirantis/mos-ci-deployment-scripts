@@ -1,0 +1,35 @@
+########################################################################
+# Section: SCM
+########################################################################
+
+- scm:
+    name: test-rail-reporter
+    scm:
+      - git:
+          url: https://github.com/gdyuldin/testrail_reporter.git
+          branches:
+            - origin/master
+
+- scm:
+    name: mos-integration-tests-repository
+    scm:
+      - git:
+          url: https://github.com/Mirantis/mos-integration-tests.git
+          branches:
+            - origin/master
+
+- scm:
+    name: mos-ci-deployment-scripts
+    scm:
+      - git:
+         url: https://github.com/Mirantis/mos-ci-deployment-scripts.git
+         branches:
+          - origin/master
+
+- scm:
+    name: dockerfiles
+    scm:
+      - git:
+         url: https://review.fuel-infra.org/fuel-infra/dockerfiles
+         branches:
+          - origin/master

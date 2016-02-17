@@ -1,7 +1,3 @@
-- scm:
-    !include: ../../mos-integration-tests-repository.yaml
-
-
 - job-template:
     name: '{name}_tests_generated_from_template'
     wrappers:
