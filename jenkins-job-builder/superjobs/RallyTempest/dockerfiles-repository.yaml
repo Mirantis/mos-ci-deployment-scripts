@@ -1,6 +1,0 @@
-name: dockerfiles
-scm:
-  - git:
-     url: https://review.fuel-infra.org/fuel-infra/dockerfiles
-     branches:
-      - origin/master
