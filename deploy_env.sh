@@ -204,11 +204,10 @@ else
     popd
 fi
 
+echo "Applaying patch"
 cd fuel-qa
 git fetch https://review.openstack.org/openstack/fuel-qa refs/changes/81/281281/1 && git checkout FETCH_HEAD
 cd ../
-
-
 
 pip install -r fuel-qa/fuelweb_test/requirements.txt --upgrade
 # https://bugs.launchpad.net/oslo.service/+bug/1525992 workaround
