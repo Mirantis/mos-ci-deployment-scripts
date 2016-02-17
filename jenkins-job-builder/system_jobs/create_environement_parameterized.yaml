@@ -137,5 +137,7 @@
       artifactDaysToKeep: -1
       artifactNumToKeep: -1
     publishers:
+      - workspace-cleanup:
+          fail-build: false
       - email:
           recipients: efazliev@mirantis.com
