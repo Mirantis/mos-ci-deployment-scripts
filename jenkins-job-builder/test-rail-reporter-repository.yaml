@@ -1,6 +1,0 @@
-name: test-rail-reporter
-scm:
-  - git:
-     url: https://github.com/gdyuldin/testrail_reporter.git
-     branches:
-      - origin/master

@@ -1,6 +1,3 @@
-- scm:
-    !include: test-rail-reporter-repository.yaml
-
 - job:
     name: test_rail_reporter
     wrappers:
@@ -63,7 +60,7 @@
             report -v --iso-id "$ISO_ID" --env-description "$SNAPSHOT-$TEST_GROUP" --testrail-url  "${TESTRAIL_URL}" --testrail-user  "${TESTRAIL_USER}" --testrail-password "${TESTRAIL_PASSWORD}" --testrail-project "${TESTRAIL_PROJECT}" --testrail-milestone "${TESTRAIL_MILESTONE}" --testrail-suite "${TESTRAIL_SUITE}" --test-results-link "$BUILD" "$REPORT_XML"
 
     scm:
-        - test-rail-reporter
+      - test-rail-reporter
     project-type: freestyle
     defaults: global
     description: 'Send XUnit reports to TestRail'
