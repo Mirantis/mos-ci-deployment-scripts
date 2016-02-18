@@ -8,17 +8,15 @@
           name: ISO_DIR
           default: "/var/www/fuelweb-iso"
       - string:
-          name: SNAPSHOT_NAME
+          name: ENV_NAME
       - string:
           name: TEST_TYPE
-      - string:
+      - bool:
           name: ERASE_PREV_ENV
-          default: "FALSE"
+          default: true
       - string:
           name: FUEL_QA_VER
           default: "stable/7.0"
-      - string:
-          name: ENV_CHANGER
       - string:
           name: FILE
       - string:
@@ -38,14 +36,12 @@
             fi
             ISO_PATH=$(sudo seedclient-wrapper -d -m "${MAGNET_LINK}" -v --force-set-symlink -o "${ISO_DIR}")
             ISO_NAME=`ls "$ISO_DIR"`
-            ENV_NAME=MOS_CI_"$ISO_NAME"
-            if [ -n "$ENV_CHANGER" ];
-            then
-                ENV_NAME="$ENV_NAME""$ENV_CHANGER"
-            fi
+            ENV_NAME=${ENV_NAME:-maintenance_env_7.0}
+
+
             export ISO_PATH="$ISO_DIR"/"$ISO_NAME"
             export ENV_NAME="$ENV_NAME"
-            export ERASE_PREV_ENV="$ERASE_PREV_ENV"
+            export ERASE_PREV_ENV=$ERASE_PREV_ENV
             export FUEL_QA_VER="$FUEL_QA_VER"
             export FILE="$FILE"
             export GROUP="$GROUP"
