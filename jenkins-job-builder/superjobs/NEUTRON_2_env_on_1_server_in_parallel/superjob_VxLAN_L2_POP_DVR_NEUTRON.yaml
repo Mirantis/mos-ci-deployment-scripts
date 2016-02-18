@@ -31,6 +31,7 @@
             SNAPSHOT_NAME=ha_deploy_VxLAN_L2_POP_DVR
             TEST_GROUP=NEUTRON
             ENV_CHANGER=DVR_2flow
+            REPORT_PREFIX=/srv/jenkins/neutron
 
     triggers:
         - timed: "34 21 * * *"

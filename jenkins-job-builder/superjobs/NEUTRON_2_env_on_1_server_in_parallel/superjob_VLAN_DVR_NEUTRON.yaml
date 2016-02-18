@@ -26,6 +26,7 @@
           predefined-parameters: |
             SNAPSHOT_NAME=ha_deploy_VLAN_DVR
             TEST_GROUP=NEUTRON
+            REPORT_PREFIX=/srv/jenkins/neutron
 
     triggers:
         - timed: "38 21 * * *"
