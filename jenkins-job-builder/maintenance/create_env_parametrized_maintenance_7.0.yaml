@@ -49,6 +49,7 @@
             export FUEL_QA_VER="$FUEL_QA_VER"
             export FILE="$FILE"
             export GROUP="$GROUP"
+            export DRIVER_USE_HOST_CPU=false
             ./jenkins-job-builder/maintenance/maintenance_deploy_env_7_0.sh
     project-type: freestyle
     node: maintenance
