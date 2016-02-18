@@ -66,7 +66,8 @@
 
             echo 'docker run -tid -v /var/lib/rally-tempest-container-home-dir:/home/rally --net host "$ID" > dock.id' >> ssh_scr.sh
             echo 'DOCK_ID=`cat dock.id`' >> ssh_scr.sh
-            echo 'echo '\''export OS_AUTH_URL=http://10.109.7.3:5000/v2.0'\'' >> /var/lib/rally-tempest-container-home-dir/openrc' >> ssh_scr.sh
+            #     echo 'echo '\''export OS_AUTH_URL=http://10.109.7.3:5000/v2.0'\'' >> /var/lib/rally-tempest-container-home-dir/openrc' >> ssh_scr.sh
+            echo 'OAU=`fgrep OS_AUTH_URL /var/lib/rally-tempest-container-home-dir/openrc` && OAUV2="$OAU"v2.0 && echo "$OAUV2" >> /var/lib/rally-tempest-container-home-dir/openrc' >> ssh_scr.sh
             echo 'docker exec "$DOCK_ID" setup-tempest' >> ssh_scr.sh
 
             #temp_fix

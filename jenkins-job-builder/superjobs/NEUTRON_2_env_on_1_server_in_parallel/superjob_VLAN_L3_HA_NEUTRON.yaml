@@ -29,6 +29,7 @@
             SNAPSHOT_NAME=ha_deploy_VLAN_L3_HA
             TEST_GROUP=NEUTRON
             ENV_CHANGER=L3_HA2flow
+            REPORT_PREFIX=/srv/jenkins/neutron
 
     triggers:
         - timed: "37 21 * * *"

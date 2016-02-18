@@ -36,18 +36,18 @@
             REPORT_PREFIX=/srv/jenkins/rally-tempest
             REPORT_FILE=verification.xml
             SUITE=[8.0][MOSQA] Tempest 8.0
-    triggers:
-        - monitor-folders:
-            path: '/var/www/fuelweb-iso/'
-            check-modification-date: false
-            check-content: false
-            check-fewer: false
-            cron: 'H/15 * * * *'
+#    triggers:
+#        - monitor-folders:
+#            path: '/var/www/fuelweb-iso/'
+#            check-modification-date: false
+#            check-content: false
+#            check-fewer: false
+#            cron: 'H/15 * * * *'
     project-type: freestyle
     defaults: global
     node: slave-srv98
     description: 'VLAN+DVR+CEPH+SAHARA+MURANO_CEILOMETER_RADOS_MONGO TEMPEST tests'
-    disabled: false
+    disabled: true
     display-name: 'VLAN+DVR+CEPH+SAHARA+MURANO_CEILOMETER_RADOS_MONGO TEMPEST tests'
     concurrent: false
     retry-count: 3
