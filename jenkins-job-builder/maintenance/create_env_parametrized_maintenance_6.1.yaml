@@ -23,49 +23,14 @@
           name: ERASE_PREV_ENV
           default: "FALSE"
       - string:
-          name: SEGMENT_TYPE
-      - string:
-          name: DVR_ENABLE
-          default: "FALSE"
-      - string:
-          name: L3_HA_ENABLE
-          default: "FALSE"
-      - string:
-          name: L2_POP_ENABLE
-          default: "FALSE"
-      - string:
-          name: CEPH_ENABLE
-          default: "FALSE"
-      - string:
-          name: RADOS_ENABLE
-          default: "FALSE"
-      - string:
-          name: SAHARA_ENABLE
-          default: "FALSE"
-      - string:
-          name: MURANO_ENABLE
-          default: "FALSE"
-      - string:
-          name: MONGO_ENABLE
-          default: "FALSE"
-      - string:
-          name: CEILOMETER_ENABLE
-          default: "FALSE"
-      - string:
-          name: DISABLE_SSL
-          default: "TRUE"
-      - string:
-          name: FUEL_DEV_VER
-          default: "2.9.16"
-      - string:
           name: FUEL_QA_VER
           default: "stable/6.1"
       - string:
-          name: MASTER_IS_CENTOS7
-          default: "FALSE"
-      - string:
           name: ENV_CHANGER
-
+      - string:
+          name: FILE
+      - string:
+          name: GROUP
     name: create_param_environment_maintenance_6_1
     builders:
         - shell: |
@@ -86,41 +51,13 @@
             then
                 ENV_NAME="$ENV_NAME""$ENV_CHANGER"
             fi
-            set +e
-            #git clone https://github.com/openstack/fuel-devops.git
-            #cd fuel-devops
-            virtualenv venv
-            . venv/bin/activate
-            pip install git+https://github.com/openstack/fuel-devops.git@${FUEL_DEV_VER} --upgrade
-            #pip install setuptools --upgrade
-            #pip install test-requirements.txt
-            #python setup.py install
-            UT=`dos.py snapshot-list "$ENV_NAME" || true`
-            OUT=`echo "$UT" | grep "$SNAPSHOT_NAME"`
-            deactivate
-            set -e
-            if [ -n "$OUT" ];
-            then
-                exit 0
-            else
-                export ISO_PATH="$ISO_DIR"/"$ISO_NAME"
-                export ENV_NAME="$ENV_NAME"
-                export ERASE_PREV_ENV="$ERASE_PREV_ENV"
-                export SEGMENT_TYPE="$SEGMENT_TYPE"
-                export DVR_ENABLE="$DVR_ENABLE"
-                export L3_HA_ENABLE="$L3_HA_ENABLE"
-                export L2_POP_ENABLE="$L2_POP_ENABLE"
-                export CEPH_ENABLE="$CEPH_ENABLE"
-                export RADOS_ENABLE="$RADOS_ENABLE"
-                export SAHARA_ENABLE="$SAHARA_ENABLE"
-                export MURANO_ENABLE="$MURANO_ENABLE"
-                export MONGO_ENABLE="$MONGO_ENABLE"
-                export CEILOMETER_ENABLE="$CEILOMETER_ENABLE"
-                export DISABLE_SSL="$DISABLE_SSL"
-                export FUEL_DEV_VER="$FUEL_DEV_VER"
-                export FUEL_QA_VER="$FUEL_QA_VER"
-                ./deploy_env.sh
-            fi
+            export ISO_PATH="$ISO_DIR"/"$ISO_NAME"
+            export ENV_NAME="$ENV_NAME"
+            export ERASE_PREV_ENV="$ERASE_PREV_ENV"
+            export FUEL_QA_VER="$FUEL_QA_VER"
+            export FILE="$FILE"
+            export GROUP="$GROUP"
+            ./jenkins-job-builder/maintenance/maintenance_deploy_env_6_1.sh
     project-type: freestyle
     node: maintenance
     defaults: global
