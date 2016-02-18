@@ -2,36 +2,6 @@
 # This script allows to deploy OpenStack environments
 # using simple configuration file
 
-boolean(){
-    eval val=\$$1
-
-    if [ -z "$val" ] || [ ${val^^} == 'FALSE' ]
-    then
-        echo 'false'
-    elif [ ${val^^} == 'TRUE' ]
-    then
-        echo 'true'
-    else
-        echo "Please set env variable $1 to empty, 'TRUE' or 'FALSE'."
-        exit 1
-    fi
-}
-
-digit_from_range(){
-    eval val=\$$1
-
-    if [ -z ${val} ]; then
-        # set default value
-        val=$4
-    fi
-
-    if [ ${val} -ge $2 ] && [ ${val} -le $3 ]; then
-        echo ${val}
-    else
-        echo "Error: variable $1 can be from $2 to $3 or empty (will be set to $4 in this case)."
-        exit 1
-    fi
-}
 
 # exit from shell if error happens
 set -e
@@ -48,13 +18,6 @@ then
 fi
 
 
-# set up all vars which should be set to true or false
-BOOL_VARS="L2_POP_ENABLE DVR_ENABLE L3_HA_ENABLE SAHARA_ENABLE MURANO_ENABLE CEILOMETER_ENABLE IRONIC_ENABLE RADOS_ENABLE"
-for var in $BOOL_VARS
-do
-    eval $var=$(boolean $var)
-done
-
 # Set fuel QA version
 # https://github.com/openstack/fuel-qa/branches
 FUEL_QA_VER=${FUEL_QA_VER:-master}
@@ -69,14 +32,10 @@ GROUP=${GROUP:-tempest_ceph_services}
 V_ENV_DIR="`pwd`/fuel-devops-venv"
 
 # set ENV_NAME if it is not defined
-if [ -z "${ENV_NAME}" ]; then
-    export ENV_NAME="Test_Deployment_MOS_CI_$RANDOM"
-fi
+ENV_NAME=${ENV_NAME:-Test_Deployment_MOS_CI_$RANDOM}
 
 echo "Env name:         ${ENV_NAME}"
-echo "Snapshot name:    ${SNAPSHOT_NAME}"
-echo "Fuel QA branch:   ${FUEL_QA_VER}"
-echo ""
+echo -n "Fuel QA branch:   ${FUEL_QA_VER}"
 
 # Check if folder for virtual env exist
 if [ ! -d "${V_ENV_DIR}" ]; then
@@ -141,10 +100,6 @@ fi
 # more time can be required to deploy env
 export DEPLOYMENT_TIMEOUT=10000
 export DRIVER_USE_HOST_CPU=false
+export ENV_NAME=$ENV_NAME
 
 ./utils/jenkins/system_tests.sh -k -K -j fuelweb_test -t test -V ${V_ENV_DIR} -w $(pwd) -o --group="${GROUP}"
-
-# make snapshot if deployment is successful
-dos.py suspend ${ENV_NAME}
-dos.py snapshot ${ENV_NAME} ${SNAPSHOT_NAME}
-dos.py resume ${ENV_NAME}

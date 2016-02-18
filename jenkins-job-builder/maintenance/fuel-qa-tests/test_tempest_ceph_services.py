@@ -27,8 +27,8 @@ class TempestCeph(TestBasic):
           groups=["tempest_ceph_services"])
     @log_snapshot_after_test
     def tempest_ceph_services(self):
-        """Deploy env with 3 controller_mongo and 2 
-           Compute +ceph nodes.
+        """Deploy env with 3 controller+mongo and 2
+           compute +ceph nodes.
 
         Scenario:
             1. Create cluster
@@ -36,6 +36,7 @@ class TempestCeph(TestBasic):
             3. Add 2 nodes with compute role
             4. Add 2 nodes with cinder and ceph OSD roles
             5. Deploy the cluster
+            6. Run OSTF
 
         Duration 40m
         Snapshot tempest_test_ceph
@@ -77,5 +78,5 @@ class TempestCeph(TestBasic):
         # Run ostf
         self.fuel_web.run_ostf(cluster_id=cluster_id)
 
-        self.env.make_snapshot("ceph_ha_one_controller_with_cinder",
+        self.env.make_snapshot("tempest_test_ceph",
                                is_make=True)

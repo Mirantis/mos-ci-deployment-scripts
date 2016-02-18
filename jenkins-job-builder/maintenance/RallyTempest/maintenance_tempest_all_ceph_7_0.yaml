@@ -1,23 +1,25 @@
 - job:
-    name: superjob_for_TEMPEST_TESTS_VLAN_SAHARA_MURANO_CEILOMETER_RADOS_CEPH_MONGO_maintenance_7_0
+    name: maintenance_tempest_all_ceph_7_0
     builders:
       - trigger-builds:
         - project: 'create_param_environment_maintenance_7_0'
           same-node: true
           block: true
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VLAN_SAHARA_MURANO_CEILOMETER_RADOS_CEPH_MONGO
+            ENV_NAME=maintenance_tempest_all_ceph_7_0
             TEST_TYPE=TEMPEST
             FILE=test_tempest_ceph_services.py
             GROUP=tempest_ceph_services
+            ERASE_PREV_ENV=$delete_old_env
       - trigger-builds:
-        - project: 'rally_tempest_tests'
+        - project: 'maintenance_tempest_runner'
           same-node: true
           block: true
           block-thresholds:
             build-step-failure-threshold: 'never'
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VLAN_SAHARA_MURANO_CEILOMETER_RADOS_CEPH_MONGO
+            ENV_NAME=maintenance_tempest_all_ceph_7_0
+            SNAPSHOT_NAME=tempest_test_ceph
             REPORT_PREFIX=/srv/jenkins/rally-tempest
     project-type: freestyle
     defaults: global
