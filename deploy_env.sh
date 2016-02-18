@@ -195,7 +195,7 @@ if [ ${SEPARATE_SERVICE_KEYSTONE_ENABLE} == 'true' ]; then
 fi
 
 # replace vars with its values in config files
-for var in SEGMENT_TYPE $BOOL_VARS LVM_ENABLE CEPH_ENABLE
+for var in SEGMENT_TYPE $BOOL_VARS CEPH_ENABLE
 do
     eval value=\$$var
     # replace variable in config with its value
@@ -205,6 +205,9 @@ do
          SNAPSHOT_NAME="${SNAPSHOT_NAME}_$(echo ${var} | sed 's/_ENABLE//')"
     fi
 done
+
+# replace LVM var with its value in config without adding it to snapshot name
+sed -i -e "s/<%LVM_ENABLE%>/${LVM_ENABLE}/g" ${CONFIG_NAME}
 
 # uncomment some roles if it is required
 if [ ${CEPH_ENABLE} == 'true' ]
