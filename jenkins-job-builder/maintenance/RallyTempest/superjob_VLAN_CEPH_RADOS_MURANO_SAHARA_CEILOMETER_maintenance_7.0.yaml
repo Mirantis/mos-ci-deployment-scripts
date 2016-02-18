@@ -21,7 +21,7 @@
             REPORT_PREFIX=/srv/jenkins/rally-tempest
     project-type: freestyle
     defaults: global
-    node: maintenance
+    node: maintenance_173_13
     description: 'VLAN+CEPH+SAHARA+MURANO_CEILOMETER_RADOS_MONGO TEMPEST tests (7.0 maintenance)'
     disabled: false
     display-name: 'VLAN+CEPH+SAHARA+MURANO_CEILOMETER_RADOS_MONGO TEMPEST tests (7.0 maintenance)'
