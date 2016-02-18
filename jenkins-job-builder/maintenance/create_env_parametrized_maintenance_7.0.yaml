@@ -43,14 +43,13 @@
             then
                 ENV_NAME="$ENV_NAME""$ENV_CHANGER"
             fi
-
             export ISO_PATH="$ISO_DIR"/"$ISO_NAME"
             export ENV_NAME="$ENV_NAME"
             export ERASE_PREV_ENV="$ERASE_PREV_ENV"
             export FUEL_QA_VER="$FUEL_QA_VER"
             export FILE="$FILE"
             export GROUP="$GROUP"
-            ./jenkins-job-builder/maintenance/maintenance_deploy_env.sh
+            ./jenkins-job-builder/maintenance/maintenance_deploy_env_7_0.sh
     project-type: freestyle
     node: maintenance
     defaults: global
