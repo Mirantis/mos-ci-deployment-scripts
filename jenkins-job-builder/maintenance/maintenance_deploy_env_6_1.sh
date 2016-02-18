@@ -100,7 +100,6 @@ else
 fi
 
 pip install -r fuel-qa/fuelweb_test/requirements.txt --upgrade
-# https://bugs.launchpad.net/oslo.service/+bug/1525992 workaround
 
 django-admin.py syncdb --settings=devops.settings
 django-admin.py migrate devops --settings=devops.settings
