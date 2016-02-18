@@ -1,0 +1,71 @@
+- job:
+    parameters:
+      - string:
+          name: MAGNET_LINK
+          default: 'magnet:?xt=urn:btih:9d59953417e0c2608f8fa0ffe43ceac00967708f&dn=MirantisOpenStack-6.1.iso&tr=http%3A%2F%2Ftracker01-bud.infra.mirantis.net%3A8080%2Fannounce&tr=http%3A%2F%2Ftracker01-scc.infra.mirantis.net%3A8080%2Fannounce&tr=http%3A%2F%2Ftracker01-msk.infra.mirantis.net%3A8080%2Fannounce&ws=http%3A%2F%2Fvault.infra.mirantis.net%2FMirantisOpenStack-6.1.iso'
+          description: 'ISO magnet link'
+      - string:
+          name: ISO_DIR
+          default: "/var/www/fuelweb-iso"
+      - string:
+          name: SNAPSHOT_NAME
+      - string:
+          name: TEST_TYPE
+      - string:
+          name: ERASE_PREV_ENV
+          default: "FALSE"
+      - string:
+          name: FUEL_QA_VER
+          default: "stable/6.1"
+      - string:
+          name: ENV_CHANGER
+      - string:
+          name: FILE
+      - string:
+          name: GROUP
+    name: create_param_environment_maintenance_6_1
+    builders:
+        - shell: |
+            echo `hostname`
+            wget -O /tmp/python-seed-client.deb http://mirror.fuel-infra.org/devops/ubuntu/all/python-seed-client_0.17-ubuntu55_all.deb  
+            sudo apt-get -y -f install
+            sudo dpkg -i /tmp/python-seed-client.deb
+            sudo apt-get -y -f install
+            echo $PATH
+            if [ ! -d ${ISO_DIR} ];
+            then
+                sudo mkdir -p ${ISO_DIR}
+            fi
+            ISO_PATH=$(sudo seedclient-wrapper -d -m "${MAGNET_LINK}" -v --force-set-symlink -o "${ISO_DIR}")
+            ISO_NAME=`ls "$ISO_DIR"`
+            ENV_NAME=MOS_CI_"$ISO_NAME"
+            if [ -n "$ENV_CHANGER" ];
+            then
+                ENV_NAME="$ENV_NAME""$ENV_CHANGER"
+            fi
+            export ISO_PATH="$ISO_DIR"/"$ISO_NAME"
+            export ENV_NAME="$ENV_NAME"
+            export ERASE_PREV_ENV="$ERASE_PREV_ENV"
+            export FUEL_QA_VER="$FUEL_QA_VER"
+            export FILE="$FILE"
+            export GROUP="$GROUP"
+            ./jenkins-job-builder/maintenance/maintenance_deploy_env_6_1.sh
+    project-type: freestyle
+    node: maintenance
+    defaults: global
+    scm: 
+       - mos-ci-deployment-scripts
+    description: 'Create environment with parameters, specified by PARAM string.'
+    disabled: false
+    display-name: 'Create Parameterized Environment (6.1 maintenance)'
+    concurrent: true
+    browser: githubweb
+    retry-count: 3
+    logrotate:
+      daysToKeep: 14
+      numToKeep: 50
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+    publishers:
+      - email:
+          recipients: mlaptev@mirantis.com
