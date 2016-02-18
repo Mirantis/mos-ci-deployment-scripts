@@ -27,7 +27,7 @@
     builders:
         - shell: |
             echo `hostname`
-            wget -O /tmp/python-seed-client.deb http://mirror.fuel-infra.org/devops/ubuntu/all/python-seed-client_0.17-ubuntu55_all.deb  
+            wget -O /tmp/python-seed-client.deb http://mirror.fuel-infra.org/devops/ubuntu/all/python-seed-client_0.17-ubuntu55_all.deb
             sudo apt-get -y -f install
             sudo dpkg -i /tmp/python-seed-client.deb
             sudo apt-get -y -f install
@@ -53,7 +53,7 @@
     project-type: freestyle
     node: maintenance
     defaults: global
-    scm: 
+    scm:
        - mos-ci-deployment-scripts
     description: 'Create environment with parameters, specified by PARAM string.'
     disabled: false
