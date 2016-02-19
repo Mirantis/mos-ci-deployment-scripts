@@ -43,7 +43,7 @@
       - bool:
           name: SKIP_INSTALL_ENV
           default: false
-    name: create_param_environment_maintenance_7_0
+    name: maintenance_create_param_environment_7_0
     builders:
       - shell:
           !include-raw 'builders/maintenance_deploy_env_7_0.sh'
