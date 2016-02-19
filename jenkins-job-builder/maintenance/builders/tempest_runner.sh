@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -xe
 
 REPORT_PATH="${REPORT_PREFIX}/${ENV_NAME}_${SNAPSHOT_NAME}"
 echo "$REPORT_PATH" > ./param.pm
