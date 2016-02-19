@@ -1,6 +1,0 @@
-<network>
-        <name>net-admin</name>
-        <forward mode="bridge"/>
-        <bridge name="br-admin"/>
-</network>
-
