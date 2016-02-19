@@ -5,12 +5,31 @@
           default: 'magnet:?xt=urn:btih:21b4d46c9f1cec02e336b1f9771d4f7c27ec724b&dn=MirantisOpenStack-7.0.iso&tr=http%3A%2F%2Ftracker01-bud.infra.mirantis.net%3A8080%2Fannounce&tr=http%3A%2F%2Ftracker01-scc.infra.mirantis.net%3A8080%2Fannounce&tr=http%3A%2F%2Ftracker01-msk.infra.mirantis.net%3A8080%2Fannounce&ws=http%3A%2F%2Fvault.infra.mirantis.net%2FMirantisOpenStack-7.0.iso'
           description: 'ISO magnet link'
       - string:
-          name: ISO_DIR
-          default: "/var/www/fuelweb-iso"
-      - string:
           name: ENV_NAME
+          default: maintenance_env_7.0
       - string:
-          name: TEST_TYPE
+          name: UPGRADE_TARBALL_MAGNET_LINK
+          default: 'magnet:?xt=urn:btih:e4521941a159cbbf345884c7c7ec6a484a139d3b&dn=MirantisOpenStack-7.0-upgrade.tar.lrz&tr=http%3A%2F%2Ftracker01-bud.infra.mirantis.net%3A8080%2Fannounce&tr=http%3A%2F%2Ftracker01-scc.infra.mirantis.net%3A8080%2Fannounce&tr=http%3A%2F%2Ftracker01-msk.infra.mirantis.net%3A8080%2Fannounce&ws=http%3A%2F%2Fvault.infra.mirantis.net%2FMirantisOpenStack-7.0-upgrade.tar.lrz'
+          description: 'Upgrade tarball magnet link'
+      - string:
+          name: DEB_LATEST
+          default: 'latest'
+          description: "Snapshot timestamp without version id. E.g.: '2015-09-27-173001' or 'latest'"
+      - string:
+          name: RPM_LATEST
+          default: 'latest'
+      - string:
+          name: UBUNTU_MIRROR_ID
+          default: 'latest-stable'
+      - bool:
+          name: ENABLE_PROPOSED
+          default: false
+      - bool:
+          name: ENABLE_SECURITY
+          default: true
+      - bool:
+          name: ENABLE_UPDATES
+          default: true
       - bool:
           name: ERASE_PREV_ENV
           default: true
@@ -21,31 +40,13 @@
           name: FILE
       - string:
           name: GROUP
+      - bool:
+          name: SKIP_INSTALL_ENV
+          default: false
     name: create_param_environment_maintenance_7_0
     builders:
-        - shell: |
-            echo `hostname`
-            wget -O /tmp/python-seed-client.deb http://mirror.fuel-infra.org/devops/ubuntu/all/python-seed-client_0.17-ubuntu55_all.deb  
-            sudo apt-get -y -f install
-            sudo dpkg -i /tmp/python-seed-client.deb
-            sudo apt-get -y -f install
-            echo $PATH
-            if [ ! -d ${ISO_DIR} ];
-            then
-                sudo mkdir -p ${ISO_DIR}
-            fi
-            ISO_PATH=$(sudo seedclient-wrapper -d -m "${MAGNET_LINK}" -v --force-set-symlink -o "${ISO_DIR}")
-            ISO_NAME=`ls "$ISO_DIR"`
-            ENV_NAME=${ENV_NAME:-maintenance_env_7.0}
-
-
-            export ISO_PATH="$ISO_DIR"/"$ISO_NAME"
-            export ENV_NAME="$ENV_NAME"
-            export ERASE_PREV_ENV=$ERASE_PREV_ENV
-            export FUEL_QA_VER="$FUEL_QA_VER"
-            export FILE="$FILE"
-            export GROUP="$GROUP"
-            ./jenkins-job-builder/maintenance/maintenance_deploy_env_7_0.sh
+      - shell:
+          !include-raw 'builders/maintenance_deploy_env_7_0.sh'
     project-type: freestyle
     node: maintenance
     defaults: global
