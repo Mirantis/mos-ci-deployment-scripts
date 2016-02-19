@@ -10,6 +10,7 @@
           default: /srv/jenkins/rally-tempest
     builders:
 <<<<<<< HEAD
+<<<<<<< HEAD
       - shell:
           !include-raw 'builders/tempest_runner.sh'
 =======
@@ -76,6 +77,10 @@
             sshpass -p 'r00tme' scp -o "StrictHostKeyChecking no" root@"$MASTER_NODE_IP":/var/lib/rally-tempest-container-home-dir/verification.xml ./
             deactivate
 >>>>>>> Change logic for run tempest on maintenance jobs
+=======
+      - shell:
+          !include-raw 'builders/tempest_runner.sh'
+>>>>>>> Recreate maintenance jobs structure
     scm:
         - dockerfiles
     project-type: freestyle
