@@ -58,6 +58,15 @@
       - string:
           name: IRONICS_COUNT
           default: "0"
+      - string:
+          name: NOVA_QUOTAS_ENABLED
+          default: "FALSE"
+      - string:
+          name: SLAVE_NODE_CPU
+          default: "1"
+      - string:
+          name: SLAVE_NODE_MEMORY
+          default: "4096"
 
     name: create_param_environment
     wrappers:
@@ -111,10 +120,15 @@
             export COMPUTES_COUNT="$COMPUTES_COUNT"
             export IRONICS_COUNT="$IRONICS_COUNT"
             export FUEL_QA_VER="$FUEL_QA_VER"
+            export NOVA_QUOTAS_ENABLED="$NOVA_QUOTAS_ENABLED"
+            export SLAVE_NODE_CPU="$SLAVE_NODE_CPU"
+            export SLAVE_NODE_MEMORY="$SLAVE_NODE_MEMORY"
 
             sed -i 's|export DEPLOYMENT_TIMEOUT=10000|export DEPLOYMENT_TIMEOUT=15000|g' deploy_env.sh
 
-            ./deploy_env.sh
+            sed -i 's|pip install -r fuel-qa/fuelweb_test/requirements.txt --upgrade|cd fuel-qa \&\& git fetch https://review.openstack.org/openstack/fuel-qa refs/changes/81/281281/1 \&\& git checkout FETCH_HEAD \&\& cd ../ \&\& pip install -r fuel-qa/fuelweb_test/requirements.txt --upgrade|g' deploy_env.sh
+
+            /bin/bash -x deploy_env.sh
             fi
 
     project-type: freestyle
@@ -133,5 +147,7 @@
       artifactDaysToKeep: -1
       artifactNumToKeep: -1
     publishers:
+      - workspace-cleanup:
+          fail-build: false
       - email:
           recipients: efazliev@mirantis.com
