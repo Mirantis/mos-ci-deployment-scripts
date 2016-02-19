@@ -50,4 +50,3 @@
                 sudo cp build_url "$REPORT_PATH"
       - workspace-cleanup:
           fail-build: false
-
