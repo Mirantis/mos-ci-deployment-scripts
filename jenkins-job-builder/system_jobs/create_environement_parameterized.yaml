@@ -61,6 +61,12 @@
       - string:
           name: NOVA_QUOTAS_ENABLED
           default: "FALSE"
+      - string:
+          name: SLAVE_NODE_CPU
+          default: "1"
+      - string:
+          name: SLAVE_NODE_MEMORY
+          default: "4096"
 
     name: create_param_environment
     wrappers:
@@ -115,6 +121,8 @@
             export IRONICS_COUNT="$IRONICS_COUNT"
             export FUEL_QA_VER="$FUEL_QA_VER"
             export NOVA_QUOTAS_ENABLED="$NOVA_QUOTAS_ENABLED"
+            export SLAVE_NODE_CPU="$SLAVE_NODE_CPU"
+            export SLAVE_NODE_MEMORY="$SLAVE_NODE_MEMORY"
 
             sed -i 's|export DEPLOYMENT_TIMEOUT=10000|export DEPLOYMENT_TIMEOUT=15000|g' deploy_env.sh
 
