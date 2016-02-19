@@ -62,17 +62,10 @@ COMPUTES_COUNT=$(digit_from_range 'COMPUTES_COUNT' 0 3 2)
 IRONICS_COUNT=$(digit_from_range 'IRONICS_COUNT' 0 3 0)
 # SEPARATE_SERVICES_COUNT can be from 0 to 3 (default value 0)
 SEPARATE_SERVICES_COUNT=$(digit_from_range 'SEPARATE_SERVICES_COUNT' 0 3 0)
-<<<<<<< HEAD
 
 # check that we have enough nodes
 TOTAL_NODES_COUNT=$(($CONTROLLERS_COUNT + $COMPUTES_COUNT + $IRONICS_COUNT + $SEPARATE_SERVICES_COUNT))
 
-=======
-
-# check that we have enough nodes
-TOTAL_NODES_COUNT=$(($CONTROLLERS_COUNT + $COMPUTES_COUNT + $IRONICS_COUNT + $SEPARATE_SERVICES_COUNT))
-
->>>>>>> f84df4c05b5ef0c1816d5d63da9f0fde525c8092
 # add slaves to mos_tests_template.yaml config
 cp mos_tests_template.yaml mos_tests.yaml
 for i in `seq 1 $TOTAL_NODES_COUNT`
@@ -297,11 +290,6 @@ else
     popd
 fi
 
-echo "Applaying patch"
-cd fuel-qa
-git fetch https://review.openstack.org/openstack/fuel-qa refs/changes/81/281281/1 && git checkout FETCH_HEAD
-cd ../
-
 pip install -r fuel-qa/fuelweb_test/requirements.txt --upgrade
 # https://bugs.launchpad.net/oslo.service/+bug/1525992 workaround
 pip uninstall -y python-neutronclient
@@ -351,14 +339,6 @@ if [ ${DVR_ENABLE} == 'true' ] || [ ${L3_HA_ENABLE} == 'true' ] || [ ${L2_POP_EN
     fi
 fi
 set -e
-<<<<<<< HEAD
-
-# erase previous environments
-if [ ${ERASE_PREV_ENV} == true ]; then
-    for i in `dos.py list | grep MOS`; do dos.py erase $i; done
-fi
-=======
->>>>>>> f84df4c05b5ef0c1816d5d63da9f0fde525c8092
 
 # erase previous environments
 if [ ${ERASE_PREV_ENV} == true ]; then
@@ -377,3 +357,4 @@ fi
 dos.py suspend ${ENV_NAME}
 dos.py snapshot ${ENV_NAME} ${SNAPSHOT_NAME}
 dos.py resume ${ENV_NAME}
+
