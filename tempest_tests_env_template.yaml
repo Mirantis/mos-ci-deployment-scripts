@@ -1,0 +1,50 @@
+---
+network-config: &network-config
+ provider: neutron
+ segment-type: <%SEGMENT_TYPE%>
+ neutron-l2-pop: <%L2_POP_ENABLE%>
+ neutron-dvr: <%DVR_ENABLE%>
+ neutron-l3-ha: <%L3_HA_ENABLE%>
+ pubip-to-all: false
+
+storages-config: &storages-config
+ volume-lvm: true
+ volume-ceph: false
+ image-ceph: false
+ rados-ceph: false
+ ephemeral-ceph: false
+
+nodes: &nodes
+ - roles:
+    - controller
+    - mongo
+   count: <%CONTROLLERS_COUNT%>
+ - roles:
+    - compute
+    - cinder
+   count: <%COMPUTES_COUNT%>
+ - roles:
+    - ironic
+   count: <%IRONICS_COUNT%>
+ - roles:
+    # - standalone-rabbitmq
+    # - standalone-database
+    # - standalone-keystone
+   count: <%SEPARATE_SERVICES_COUNT%>
+
+template:
+ name: <%CONTROLLERS_COUNT%> Controller, <%COMPUTES_COUNT%> Compute, <%IRONICS_COUNT%> Ironic, <%SEPARATE_SERVICES_COUNT%> Separate Services on Neutron
+ slaves: <%TOTAL_NODES_COUNT%>
+ devops_settings: !include devops_configs/mos_tests.yaml
+ cluster_template: &environment-config
+  name: mos-tests
+  release: ubuntu
+  settings:
+   components:
+    sahara: false
+    murano: false
+    ceilometer: true
+    ironic: true
+   storages: *storages-config
+  network: *network-config
+  nodes: *nodes
