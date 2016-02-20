@@ -1,10 +1,9 @@
 - job:
     builders:
       - shell:
-          !include-raw 'scripts/prepare_env.sh'
+          !include-raw: 'scripts/prepare_env.sh'
     concurrent: true
-    description: |
-      Creates a python virtual environment for system tests. Stores additional images.<br><br>
+    description: "Creates a python virtual environment for system tests. Stores additional images.<br><br>"
     logrotate:
       daysToKeep: 14
     name: new_prepare_env
@@ -75,7 +74,7 @@
     publishers:
       - email:
           notify-every-unstable-build: false
-          recipients: 'ci+alert@mirantis.com'
+          recipients: 'vrovachev@mirantis.com'
     wrappers:
       - timeout:
           timeout: 60
