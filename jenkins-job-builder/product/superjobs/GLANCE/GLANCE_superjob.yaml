@@ -6,7 +6,7 @@
           same-node: true
           block: true
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VLAN_SAHARA
+            SNAPSHOT_NAME=ha_deploy_VLAN
             TEST_TYPE=GLANCE
             SEGMENT_TYPE=VLAN
             DISABLE_SSL=TRUE
@@ -17,14 +17,14 @@
           block-thresholds:
             build-step-failure-threshold: 'never'
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VLAN_SAHARA
+            SNAPSHOT_NAME=ha_deploy_VLAN
 
     triggers:
         - timed: "40 21 * * *"
     project-type: freestyle
     defaults: global
     node: slave-srv98
-    description: 'VxLAN GLANCE tests'
+    description: 'VLAN GLANCE tests'
     disabled: false
     display-name: 'superjob_for_VLAN_GLANCE'
     concurrent: false
