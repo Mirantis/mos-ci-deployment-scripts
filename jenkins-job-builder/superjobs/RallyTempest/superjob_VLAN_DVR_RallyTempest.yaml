@@ -12,6 +12,9 @@
             DISABLE_SSL=TRUE
             DVR_ENABLE=TRUE
             ENV_CHANGER=2flow
+            SLAVE_NODE_CPU=2
+            SLAVE_NODE_MEMORY=8192
+
       - trigger-builds:
         - project: 'rally_tempest_tests_for_second_flow'
           same-node: true

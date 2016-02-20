@@ -43,6 +43,12 @@
           block: false
           node-label-name: NODE
           node-label: slave-srv98
+      - trigger-builds:
+        - project: 'get_new_iso'
+          same-node: false
+          block: false
+          node-label-name: NODE
+          node-label: slave-srv69
 
     triggers:
         - timed: "15 21 * * *"

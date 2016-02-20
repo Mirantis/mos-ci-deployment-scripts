@@ -357,3 +357,4 @@ fi
 dos.py suspend ${ENV_NAME}
 dos.py snapshot ${ENV_NAME} ${SNAPSHOT_NAME}
 dos.py resume ${ENV_NAME}
+
