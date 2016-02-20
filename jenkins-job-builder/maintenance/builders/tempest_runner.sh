@@ -7,10 +7,12 @@ echo "$BUILD_URL" > ./build_url
 git clone https://github.com/Mirantis/mos-integration-tests
 cd mos-integration-tests
 
+source ${VENV_PATH}/bin/activate
 echo 'from mos_tests.environment.devops_client import DevopsClient' > temp.py
 echo "print DevopsClient.get_admin_node_ip('$ENV_NAME')" >> temp.py
 MASTER_NODE_IP=`python temp.py`
 echo "$MASTER_NODE_IP"
+deactivate
 
 cd ..
 
