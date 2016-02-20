@@ -7,10 +7,10 @@
           name: SNAPSHOT_NAME
       - string:
           name: REPORT_PREFIX
+          default: /srv/jenkins/rally-tempest
       - string:
           name: VENV_PATH
           default: "/home/jenkins/qa-venv-7.0"
-          default: /srv/jenkins/rally-tempest
     builders:
       - shell:
           !include-raw 'builders/tempest_runner.sh'

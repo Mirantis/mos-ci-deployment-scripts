@@ -56,6 +56,7 @@
             ENV_NAME=maintenance_tempest_all_ceph_7_0
             SNAPSHOT_NAME=tempest_test_ceph
             REPORT_PREFIX=/srv/jenkins/rally-tempest
+            VENV_PATH=/home/jenkins/qa-venv-7.0
     project-type: freestyle
     defaults: global
     node: maintenance_173_13
