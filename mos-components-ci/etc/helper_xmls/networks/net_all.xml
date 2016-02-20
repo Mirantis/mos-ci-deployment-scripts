@@ -1,6 +1,0 @@
-<network>
-        <name>net-all</name>
-        <forward mode="bridge"/>
-        <bridge name="br-all"/>
-</network>
-
