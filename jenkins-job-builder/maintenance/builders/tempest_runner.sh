@@ -15,8 +15,7 @@ echo "$MASTER_NODE_IP"
 cd ..
 
 virtualenv venv
-. venv/bin/activate
-sudo apt-get install docker.io sshpass -y
+source venv/bin/activate
 sudo docker build -t rally-tempest custom-scripts/rally-tempest/
 sudo docker save -o ./dimage rally-tempest
 echo '' > ~/.ssh/known_hosts
@@ -25,7 +24,7 @@ sshpass -p 'r00tme' scp -o "StrictHostKeyChecking no" dimage root@"$MASTER_NODE_
 echo '#!/bin/bash -xe' > ssh_scr.sh
 echo 'docker load -i /root/rally' >> ssh_scr.sh
 
-wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/superjobs/RallyTempest/rally_tempest_prepare_host.sh
+wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/product/superjobs/RallyTempest/rally_tempest_prepare_host.sh
 cat rally_tempest_prepare_host.sh >> ssh_scr.sh
 echo '' >> ssh_scr.sh
 
