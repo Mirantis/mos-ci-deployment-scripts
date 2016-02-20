@@ -1,6 +1,0 @@
-<network>
-        <name>net-public</name>
-        <forward mode="bridge"/>
-        <bridge name="br-public"/>
-</network>
-
