@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash -xe
 # This script allows to deploy OpenStack environments
 # using simple configuration file
 

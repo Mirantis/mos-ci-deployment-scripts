@@ -4,17 +4,13 @@ REPORT_PATH="${REPORT_PREFIX}/${ENV_NAME}_${SNAPSHOT_NAME}"
 echo "$REPORT_PATH" > ./param.pm
 echo "$BUILD_URL" > ./build_url
 
-git clone https://github.com/Mirantis/mos-integration-tests
-cd mos-integration-tests
-
 source ${VENV_PATH}/bin/activate
-echo 'from mos_tests.environment.devops_client import DevopsClient' > temp.py
-echo "print DevopsClient.get_admin_node_ip('$ENV_NAME')" >> temp.py
-MASTER_NODE_IP=`python temp.py`
+echo 'from devops.models import Environment' > temp.py
+echo "env = Environment.get(name='$ENV_NAME')" >> temp.py
+echo "print env.nodes().admin.get_ip_address_by_network_name('admin')" >> temp.py
+MASTER_NODE_IP=$(python temp.py)
 echo "$MASTER_NODE_IP"
 deactivate
-
-cd ..
 
 virtualenv venv
 source venv/bin/activate
