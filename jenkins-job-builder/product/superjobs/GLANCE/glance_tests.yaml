@@ -1,4 +1,4 @@
-- job-template:
+- job:
     name: glance_tests
     wrappers:
       - build-name:
