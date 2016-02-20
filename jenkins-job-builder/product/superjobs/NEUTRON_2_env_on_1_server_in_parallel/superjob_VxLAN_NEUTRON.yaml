@@ -33,7 +33,7 @@
     defaults: global
     node: slave-7774
     description: 'VxLAN NEUTRON tests'
-    disabled: false
+    disabled: true
     display-name: 'VxLAN'
     concurrent: false
     retry-count: 3
