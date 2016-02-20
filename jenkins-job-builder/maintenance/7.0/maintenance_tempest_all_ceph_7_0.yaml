@@ -36,7 +36,7 @@
           default: false
     builders:
       - trigger-builds:
-        - project: 'create_param_environment_maintenance_7_0'
+        - project: 'maintenance_create_param_environment_7_0'
           same-node: true
           block: true
           predefined-parameters: |

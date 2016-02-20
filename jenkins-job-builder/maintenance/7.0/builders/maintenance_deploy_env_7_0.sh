@@ -10,11 +10,14 @@ fi
 SKIP_INSTALL_ENV=${SKIP_INSTALL_ENV:-false}
 
 if $SKIP_INSTALL_ENV ; then
-    echo "qwe"
+    exit 0
 fi
 
 # exit from shell if error happens
 set -e
+
+# Download and link ISO
+ISO_PATH=$(seedclient-wrapper -d -m "${MAGNET_LINK}" -v --force-set-symlink -o "${WORKSPACE}")
 
 # Source python virtualenv and run db migration
 source ${VENV_PATH}/bin/activate
@@ -22,9 +25,6 @@ pip install -U pip
 
 django-admin.py syncdb --settings=devops.settings
 django-admin.py migrate devops --settings=devops.settings
-
-# Download and link ISO
-ISO_PATH=$(seedclient-wrapper -d -m "${MAGNET_LINK}" -v --force-set-symlink -o "${WORKSPACE}")
 
 if [ -z "$ISO_PATH" ]
 then
