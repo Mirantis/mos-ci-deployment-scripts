@@ -65,4 +65,4 @@
       artifactNumToKeep: -1
     publishers:
       - email:
-          recipients: mlaptev@mirantis.com
+          recipients: vrovachev@mirantis.com
