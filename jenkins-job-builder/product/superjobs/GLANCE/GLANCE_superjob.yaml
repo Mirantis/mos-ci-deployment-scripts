@@ -25,7 +25,7 @@
     defaults: global
     node: slave-srv98
     description: 'VxLAN GLANCE tests'
-    disabled: true
+    disabled: false
     display-name: 'superjob_for_VLAN_GLANCE'
     concurrent: false
     retry-count: 3
