@@ -6,7 +6,7 @@
     description: "Creates a python virtual environment for system tests. Stores additional images.<br><br>"
     logrotate:
       daysToKeep: 14
-    name: new_prepare_env
+    name: prepare_env
     parameters:
       - bool:
           name: 'update_release_6_1'
