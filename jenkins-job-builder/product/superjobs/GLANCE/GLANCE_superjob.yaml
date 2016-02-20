@@ -1,0 +1,37 @@
+- job:
+    name: superjob_for_VLAN_GLANCE
+    builders:
+      - trigger-builds:
+        - project: 'create_param_environment'
+          same-node: true
+          block: true
+          predefined-parameters: |
+            SNAPSHOT_NAME=ha_deploy_VLAN_SAHARA
+            TEST_TYPE=GLANCE
+            SEGMENT_TYPE=VLAN
+            DISABLE_SSL=TRUE
+      - trigger-builds:
+        - project: 'glance_tests'
+          same-node: true
+          block: true
+          block-thresholds:
+            build-step-failure-threshold: 'never'
+          predefined-parameters: |
+            SNAPSHOT_NAME=ha_deploy_VLAN_SAHARA
+
+    triggers:
+        - timed: "40 21 * * *"
+    project-type: freestyle
+    defaults: global
+    node: slave-srv98
+    description: 'VxLAN GLANCE tests'
+    disabled: true
+    display-name: 'GLANCE VxLAN'
+    concurrent: false
+    retry-count: 3
+    logrotate:
+      daysToKeep: 5
+      numToKeep: 20
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+

@@ -1,0 +1,87 @@
+- job-template:
+    name: 'glance_tests'
+    wrappers:
+      - build-name:
+          name: ${{BUILD_NUMBER}}.${{FILE,path="build-name-setter.info"}}
+    parameters:
+      - string:
+          name: ISO_DIR
+          default: '{iso_dir}'
+      - string:
+          name: SNAPSHOT_NAME
+      - string:
+          name: REPORT_PREFIX
+          default: /srv/jenkins/glance
+      - string:
+          name: ENV_CHANGER
+    builders:
+        - shell: |
+            set +e
+            ISO_NAME=`ls "$ISO_DIR"`
+            ISO_ID=`echo "$ISO_NAME" | cut -f3 -d-`
+
+            # Generate file for build-name plugin
+            SNAPSHOT=`echo $SNAPSHOT_NAME | sed 's/ha_deploy_//'`
+            echo "$ISO_ID"_"$SNAPSHOT" > build-name-setter.info
+
+            ENV_NAME=MOS_CI_"$ISO_NAME"
+            # Change ENV_NAME if there is more than one environments on host
+            if [ -n "$ENV_CHANGER" ];
+            then
+            export ENV_NAME="$ENV_NAME""$ENV_CHANGER"
+            fi
+
+            # Storing path for xml reports, that will be used in
+            # report_to_testrail job
+            REPORT_PATH="$REPORT_PREFIX"/"$ENV_NAME"_"$SNAPSHOT_NAME"
+            echo "$REPORT_PATH" > ./param.pm
+            echo "$BUILD_URL" > ./build_url
+
+            virtualenv venv
+            . venv/bin/activate
+            pip install tox
+            tox -e glance -- -v -E "$ENV_NAME" -S "$SNAPSHOT_NAME"
+            deactivate
+    scm:
+        - mos-integration-tests-repository
+    project-type: freestyle
+    defaults: global
+    description: 'VLAN Glance tests'
+    disabled: false
+    display-name: 'Glance VLAN'
+    concurrent: true
+    browser: githubweb
+    retry-count: 3
+    logrotate:
+      daysToKeep: 5
+      numToKeep: 20
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+    publishers:
+      - email:
+          recipients: efazliev@mirantis.com
+
+      - postbuildscript:
+          script-only-if-succeeded: False
+          builders:
+            - shell: |
+                set -e
+                REPORT_PATH=`cat ./param.pm`
+                sudo mkdir -p "$REPORT_PATH"
+                sudo cp report.xml "$REPORT_PATH"
+                sudo cp build_url "$REPORT_PATH"
+      - archive:
+          artifacts: 'report.xml'
+          allow-empty: 'true'
+          fingerprint: true
+
+      - archive:
+          artifacts: 'test.log'
+          allow-empty: 'true'
+          fingerprint: true
+
+      - junit:
+          results: report.xml
+
+      - workspace-cleanup:
+          fail-build: false
