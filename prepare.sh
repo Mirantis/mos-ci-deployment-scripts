@@ -5,9 +5,8 @@
 if [ -z "$LC_ALL" ]; then echo "LC_ALL=C" >> ~/.bashrc; source ~/.bashrc; fi
 
 sudo apt-get update && sudo apt-get upgrade -y
-sudo apt-get install -y python-dev libxml2-dev libxslt1-dev
 
-sudo apt-get install -y git \
+sudo apt-get install -y --force-yes git \
 postgresql \
 postgresql-server-dev-all \
 libyaml-dev \
@@ -20,11 +19,16 @@ qemu-utils \
 libvirt-bin \
 libvirt-dev \
 ubuntu-vm-builder \
-bridge-utils
-
-sudo apt-get install -y python-virtualenv libpq-dev libgmp-dev
-
-sudo apt-get install -y tshark
+bridge-utils \
+docker.io \
+sshpass \
+python-virtualenv \
+python-dev \
+libxml2-dev \
+libxslt1-dev \
+libpq-dev \
+libgmp-dev \
+tshark
 
 # Install seedclient
 wget -O /tmp/python-seed-client.deb http://mirror.fuel-infra.org/devops/ubuntu/all/python-seed-client_0.17-ubuntu55_all.deb

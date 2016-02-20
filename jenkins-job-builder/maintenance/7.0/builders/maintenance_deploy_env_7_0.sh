@@ -2,6 +2,11 @@
 # This script allows to deploy OpenStack environments
 # using simple configuration file
 
+# Hide trace on jenkins
+if [ -z "$JOB_NAME" ]; then
+    set -o xtrace
+fi
+
 SKIP_INSTALL_ENV=${SKIP_INSTALL_ENV:-false}
 
 if $SKIP_INSTALL_ENV ; then
@@ -11,7 +16,23 @@ fi
 # exit from shell if error happens
 set -e
 
+# Source python virtualenv and run db migration
+source ${VENV_PATH}/bin/activate
+pip install -U pip
+
+django-admin.py syncdb --settings=devops.settings
+django-admin.py migrate devops --settings=devops.settings
+
+# Download and link ISO
 ISO_PATH=$(seedclient-wrapper -d -m "${MAGNET_LINK}" -v --force-set-symlink -o "${WORKSPACE}")
+
+if [ -z "$ISO_PATH" ]
+then
+    echo "Please download ISO and define env variable ISO_PATH"
+    exit 1
+fi
+
+# Set env name
 ENV_NAME=${ENV_NAME:-maintenance_env_7.0}
 
 # Set fuel QA version
@@ -23,32 +44,6 @@ ERASE_PREV_ENV=${ERASE_PREV_ENV:-true}
 
 # Sat GROUP. By default tempest_ceph_services
 GROUP=${GROUP:-tempest_ceph_services}
-
-# Hide trace on jenkins
-if [ -z "$JOB_NAME" ]; then
-    set -o xtrace
-fi
-
-if [ -z "$ISO_PATH" ]
-then
-    echo "Please download ISO and define env variable ISO_PATH"
-    exit 1
-fi
-
-V_ENV_DIR="`pwd`/fuel-devops-venv"
-
-
-echo "Env name:         ${ENV_NAME}"
-echo -n "Fuel QA branch:   ${FUEL_QA_VER}"
-
-# Check if folder for virtual env exist
-if [ ! -d "${V_ENV_DIR}" ]; then
-    virtualenv --no-site-packages ${V_ENV_DIR}
-fi
-
-source ${V_ENV_DIR}/bin/activate
-pip install -U pip
-
 
 # Check if fuel-qa folder exist
 if [ ! -d fuel-qa ]; then
@@ -62,17 +57,12 @@ else
     popd
 fi
 
-pip install -r fuel-qa/fuelweb_test/requirements.txt --upgrade
-
-django-admin.py syncdb --settings=devops.settings
-django-admin.py migrate devops --settings=devops.settings
-
 # erase previous environments
-if [ ${ERASE_PREV_ENV} == true ]; then
-    for i in `dos.py list | grep MOS`; do dos.py erase $i; done
+if ${ERASE_PREV_ENV} ; then
+    dos.py list | tail -n+3 | xargs -I {} dos.py erase {}
 fi
 
-cat jenkins-job-builder/maintenance/fuel-qa-tests/$FILE >  fuel-qa/fuelweb_test/tests/test_services.py
+cat jenkins-job-builder/maintenance/helpers/$FILE >  fuel-qa/fuelweb_test/tests/test_services.py
 
 cd fuel-qa
 
@@ -180,4 +170,4 @@ export DEPLOYMENT_TIMEOUT=10000
 export DRIVER_USE_HOST_CPU=false
 export ENV_NAME=$ENV_NAME
 
-./utils/jenkins/system_tests.sh -k -K -j fuelweb_test -t test -V ${V_ENV_DIR} -w $(pwd) -o --group="${GROUP}"
+./utils/jenkins/system_tests.sh -k -K -j fuelweb_test -t test -w $(pwd) -e "$ENV_NAME" -o --group="$TEST_GROUP" -i "$ISO_PATH"

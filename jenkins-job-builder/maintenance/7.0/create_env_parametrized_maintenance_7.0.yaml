@@ -43,6 +43,9 @@
       - bool:
           name: SKIP_INSTALL_ENV
           default: false
+      - string:
+          name: VENV_PATH
+          default: "/home/jenkins/qa-venv-7.0"
     name: maintenance_create_param_environment_7_0
     builders:
       - shell:
