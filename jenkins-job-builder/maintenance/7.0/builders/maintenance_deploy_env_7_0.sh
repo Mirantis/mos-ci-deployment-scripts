@@ -177,5 +177,6 @@ export ADMIN_NODE_MEMORY=4096
 export SLAVE_NODE_CPU=3
 export SLAVE_NODE_MEMORY=16384
 export DISABLE_SSL=$DISABLE_SSL
+export KVM_USE=true
 
 ./utils/jenkins/system_tests.sh -k -K -j fuelweb_test -t test -w $(pwd) -e "$ENV_NAME" -o --group="$GROUP" -i "$ISO_PATH"
