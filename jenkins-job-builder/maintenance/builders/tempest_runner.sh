@@ -22,7 +22,7 @@ sshpass -p 'r00tme' scp -o "StrictHostKeyChecking no" dimage root@"$MASTER_NODE_
 echo '#!/bin/bash -xe' > ssh_scr.sh
 echo 'docker load -i /root/rally' >> ssh_scr.sh
 
-wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/maintenance/helpers/run_rally.sh
+wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/maintenance/helpers/rally_run.sh
 
 chmod +x run_rally.sh
 
