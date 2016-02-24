@@ -24,10 +24,10 @@ echo 'docker load -i /root/rally' >> ssh_scr.sh
 
 wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/maintenance/helpers/rally_run.sh
 
-chmod +x run_rally.sh
+chmod +x rally_run.sh
 
-sshpass -p 'r00tme' scp -o "StrictHostKeyChecking no" run_rally.sh root@"$MASTER_NODE_IP":/root/
-echo 'chmod +x /root/run_rally.sh && /bin/bash -xe /root/run_rally.sh > /root/log.log' | sshpass -p 'r00tme' ssh -T root@"$MASTER_NODE_IP"
+sshpass -p 'r00tme' scp -o "StrictHostKeyChecking no" rally_run.sh root@"$MASTER_NODE_IP":/root/
+echo 'chmod +x /root/rally_run.sh && /bin/bash -xe /root/rally_run.sh > /root/log.log' | sshpass -p 'r00tme' ssh -T root@"$MASTER_NODE_IP"
 sshpass -p 'r00tme' scp -o "StrictHostKeyChecking no" root@"$MASTER_NODE_IP":/root/log.log ./
 sshpass -p 'r00tme' scp -o "StrictHostKeyChecking no" root@"$MASTER_NODE_IP":/var/lib/rally-tempest-container-home-dir/verification.xml ./
 deactivate
