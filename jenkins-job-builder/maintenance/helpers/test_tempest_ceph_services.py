@@ -110,7 +110,7 @@ class TempestCeph(TestBasic):
                 'volumes_ceph': False,
                 'images_ceph': False,
                 'objects_ceph': False,
-                'volumes_lvm': False,
+                'volumes_lvm': True,
                 'sahara': False,
                 'murano': False,
                 'ceilometer': False,
