@@ -34,6 +34,9 @@
       - bool:
           name: SKIP_INSTALL_ENV
           default: false
+      - bool:
+          name: DISABLE_SSL
+          default: false
     builders:
       - trigger-builds:
         - project: 'maintenance_create_param_environment_7_0'
@@ -50,6 +53,7 @@
             ENABLE_UPDATES=$ENABLE_UPDATES
             ERASE_PREV_ENV=$ERASE_PREV_ENV
             SKIP_INSTALL_ENV=$SKIP_INSTALL_ENV
+            DISABLE_SSL=$DISABLE_SSL
             ENV_NAME=maintenance_tempest_all_ceph_7_0
             FILE=test_tempest_ceph_services.py
             GROUP=tempest_ceph_services
