@@ -80,3 +80,60 @@ class TempestCeph(TestBasic):
 
         self.env.make_snapshot("tempest_test_ceph",
                                is_make=True)
+
+
+    @test(depends_on=[SetupEnvironment.prepare_slaves_5],
+          groups=["tempest_cinder_glance_swift_tun"])
+    @log_snapshot_after_test
+    def tempest_cinder_glance_swift_tun(self):
+        """Deploy env with 3 controller and 2 compute nodes.
+
+        Scenario:
+            1. Create cluster
+            2. Add 3 nodes with controller role
+            3. Add 2 nodes with compute role
+            4. Deploy the cluster
+            5. Run OSTF
+
+        Duration 40m
+        Snapshot tempest_cinder_glance_swift_tun
+        """
+
+        self.env.revert_snapshot("ready_with_5_slaves")
+
+        cluster_id = self.fuel_web.create_cluster(
+            name=self.__class__.__name__,
+            mode=settings.DEPLOYMENT_MODE,
+            settings={
+                "net_provider": 'neutron',
+                "net_segment_type": 'tun',
+                'volumes_ceph': False,
+                'images_ceph': False,
+                'objects_ceph': False,
+                'volumes_lvm': False,
+                'sahara': False,
+                'murano': False,
+                'ceilometer': False,
+                'tenant': 'tempest',
+                'user': 'tempest',
+                'password': 'tempest',
+            }
+        )
+        self.fuel_web.update_nodes(
+            cluster_id,
+            {
+                'slave-01': ['controller'],
+                'slave-02': ['controller'],
+                'slave-03': ['controller'],
+                'slave-04': ['compute', 'cinder'],
+                'slave-05': ['compute', 'cinder']
+            }
+        )
+        # Cluster deploy
+        self.fuel_web.deploy_cluster_wait(cluster_id)
+
+        # Run ostf
+        self.fuel_web.run_ostf(cluster_id=cluster_id)
+
+        self.env.make_snapshot("tempest_cinder_glance_swift_tun",
+                               is_make=True)
