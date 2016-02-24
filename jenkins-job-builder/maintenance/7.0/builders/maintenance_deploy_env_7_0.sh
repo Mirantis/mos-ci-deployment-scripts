@@ -172,5 +172,8 @@ fi
 # more time can be required to deploy env
 export DEPLOYMENT_TIMEOUT=10000
 export ENV_NAME=$ENV_NAME
+export ADMIN_NODE_MEMORY=4096
+export SLAVE_NODE_CPU=3
+export SLAVE_NODE_MEMORY=16384
 
 ./utils/jenkins/system_tests.sh -k -K -j fuelweb_test -t test -w $(pwd) -e "$ENV_NAME" -o --group="$GROUP" -i "$ISO_PATH"

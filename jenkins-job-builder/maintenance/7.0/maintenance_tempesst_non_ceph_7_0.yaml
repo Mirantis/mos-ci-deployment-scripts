@@ -1,5 +1,5 @@
 - job:
-    name: maintenance_tempest_all_ceph_7_0
+    name: maintenance_tempest_cinder_glance_swift_tun_7_0
     parameters:
       - string:
           name: MAGNET_LINK
@@ -50,9 +50,9 @@
             ENABLE_UPDATES=$ENABLE_UPDATES
             ERASE_PREV_ENV=$ERASE_PREV_ENV
             SKIP_INSTALL_ENV=$SKIP_INSTALL_ENV
-            ENV_NAME=maintenance_tempest_all_ceph_7_0
+            ENV_NAME=maintenance_tempest_cinder_glance_swift_tun_7_0
             FILE=test_tempest_ceph_services.py
-            GROUP=tempest_ceph_services
+            GROUP=tempest_cinder_glance_swift_tun
       - trigger-builds:
         - project: 'maintenance_tempest_runner'
           same-node: true
@@ -60,16 +60,16 @@
           block-thresholds:
             build-step-failure-threshold: 'never'
           predefined-parameters: |
-            ENV_NAME=maintenance_tempest_all_ceph_7_0
-            SNAPSHOT_NAME=tempest_test_ceph
+            ENV_NAME=tempest_cinder_glance_swift_tun_7_0
+            SNAPSHOT_NAME=tempest_cinder_glance_swift_tun
             REPORT_PREFIX=/srv/jenkins/rally-tempest
             VENV_PATH=/home/jenkins/qa-venv-7.0
     project-type: freestyle
     defaults: global
-    node: maintenance_173_13
-    description: 'VLAN+CEPH+SAHARA+MURANO_CEILOMETER_RADOS_MONGO TEMPEST tests (7.0 maintenance)'
+    node: maintenance_173_12
+    description: 'TUN+VOLUME+IMAGE+SWIFT TEMPEST tests (7.0 maintenance)'
     disabled: false
-    display-name: 'VLAN+CEPH+SAHARA+MURANO_CEILOMETER_RADOS_MONGO TEMPEST tests (7.0 maintenance)'
+    display-name: 'TUN+VOLUME+IMAGE+SWIFT TEMPEST tests (7.0 maintenance)'
     concurrent: false
     retry-count: 3
     logrotate:
