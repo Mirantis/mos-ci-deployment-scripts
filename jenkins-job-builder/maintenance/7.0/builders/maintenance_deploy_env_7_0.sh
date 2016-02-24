@@ -93,6 +93,8 @@ fi
 
 MIRROR_HOST="http://mirror.seed-cz1.fuel-infra.org/"
 
+TEST_ISO_JOB_URL="${TEST_ISO_JOB_URL:-https://product-ci.infra.mirantis.net/job/7.0.test_all/}"
+
 if [[ ! "${MIRROR_UBUNTU}" ]]; then
 
     case "${UBUNTU_MIRROR_ID}" in
