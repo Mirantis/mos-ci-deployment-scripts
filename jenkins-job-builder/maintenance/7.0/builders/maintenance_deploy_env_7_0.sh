@@ -1,4 +1,4 @@
-#!/bin/bash -xe
+#!/usr/bin/env bash
 # This script allows to deploy OpenStack environments
 # using simple configuration file
 
@@ -42,7 +42,7 @@ FUEL_QA_VER=${FUEL_QA_VER:-master}
 # Erase all previous environments by default
 ERASE_PREV_ENV=${ERASE_PREV_ENV:-true}
 
-# Sat GROUP. By default tempest_ceph_services
+# Set GROUP. By default tempest_ceph_services
 GROUP=${GROUP:-tempest_ceph_services}
 
 # Check if fuel-qa folder exist
@@ -67,7 +67,7 @@ cat jenkins-job-builder/maintenance/helpers/$FILE >  fuel-qa/fuelweb_test/tests/
 cd fuel-qa
 
 # Apply fuel-qa patches
-if [ ${IRONIC_ENABLE} == 'true' ]; then
+if [[ ${IRONIC_ENABLE} == 'true' ]]; then
     file_name=ironic.patch
     patch_file=../fuel_qa_patches/$file_name
     echo "Check for patch $file_name"
@@ -78,7 +78,7 @@ if [ ${IRONIC_ENABLE} == 'true' ]; then
     fi
 fi
 
-if [ ${DVR_ENABLE} == 'true' ] || [ ${L3_HA_ENABLE} == 'true' ] || [ ${L2_POP_ENABLE} == 'true' ]; then
+if [[ ${DVR_ENABLE} == 'true' ]] || [[ ${L3_HA_ENABLE} == 'true' ]] || [[ ${L2_POP_ENABLE} == 'true' ]]; then
     file_name=DVR_L2_pop_HA.patch
     patch_file=../fuel_qa_patches/$file_name
     echo "Check for patch $file_name"
@@ -170,4 +170,4 @@ export DEPLOYMENT_TIMEOUT=10000
 export DRIVER_USE_HOST_CPU=false
 export ENV_NAME=$ENV_NAME
 
-./utils/jenkins/system_tests.sh -k -K -j fuelweb_test -t test -w $(pwd) -e "$ENV_NAME" -o --group="$TEST_GROUP" -i "$ISO_PATH"
+./utils/jenkins/system_tests.sh -k -K -j fuelweb_test -t test -w $(pwd) -e "$ENV_NAME" -o --group="$GROUP" -i "$ISO_PATH"
