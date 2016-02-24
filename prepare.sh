@@ -2,7 +2,7 @@
 # This script install all necessary dependencies to deploy OpenStack environment
 
 # Set default locale if it's empty
-if [ -z "$LC_ALL" ]; then echo "LC_ALL=C" >> ~/.bashrc; source ~/.bashrc; fi
+if [ -z "$LC_ALL" ]; then echo "export LC_ALL=C" >> ~/.bashrc; source ~/.bashrc; fi
 
 sudo apt-get update && sudo apt-get upgrade -y
 
