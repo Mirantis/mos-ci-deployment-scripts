@@ -33,6 +33,9 @@
       - bool:
           name: ERASE_PREV_ENV
           default: true
+      - bool:
+          name: DISABLE_SSL
+          default: false
       - string:
           name: FUEL_QA_VER
           default: "stable/7.0"
