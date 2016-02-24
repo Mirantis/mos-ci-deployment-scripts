@@ -146,6 +146,7 @@ elif [ ${LVM_ENABLE} != 'true' ]; then
     # LVM and CEPH hasn't been set up so we should set default value
     echo "lvm-volume will be used by default."
     LVM_ENABLE='true'
+    CINDER_ENABLE='true'
 fi
 
 if [ ${RADOS_ENABLE} == 'true' ] && [ ${CEPH_ENABLE} != 'true' ]; then

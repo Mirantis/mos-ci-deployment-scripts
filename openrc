@@ -66,6 +66,9 @@ export PLUGINS_CONFIG_PATH=
 # deployment timeout
 export DEPLOYMENT_TIMEOUT=
 
+# TRUE or FALSE
+export DISABLE_SSL=
+
 ##########################
 # Virtualization options #
 ##########################
