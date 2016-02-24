@@ -10,7 +10,7 @@ network-config: &network-config
 storages-config: &storages-config
  volume-lvm: <%LVM_ENABLE%>
  volume-ceph: <%CEPH_ENABLE%>
- image-ceph: false
+ image-ceph: <%CEPH_GLANCE_ENABLE%>
  rados-ceph: <%RADOS_ENABLE%>
  ephemeral-ceph: false
 
