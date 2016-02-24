@@ -1,0 +1,23 @@
+- job:
+    name: maintenance_long_living_tempest_7_0
+    builders:
+      - trigger-builds:
+        - project: 'maintenance_long_living_tempest_runner'
+          same-node: true
+          block: true
+          predefined-parameters: |
+            VERSION=7.0
+    project-type: freestyle
+    defaults: global
+    node: maintenance_173_11
+    description: 'VLAN+CEPH+SAHARA+MURANO_CEILOMETER_RADOS_MONGO TEMPEST tests (7.0 maintenance)'
+    disabled: false
+    display-name: 'VLAN+CEPH+SAHARA+MURANO_CEILOMETER_RADOS_MONGO TEMPEST tests (7.0 maintenance)'
+    concurrent: false
+    retry-count: 3
+    logrotate:
+      daysToKeep: 5
+      numToKeep: 20
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+
