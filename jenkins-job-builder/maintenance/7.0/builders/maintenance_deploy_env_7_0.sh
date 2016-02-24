@@ -91,6 +91,8 @@ fi
 
 ###################### Get MIRROR_UBUNTU ###############
 
+MIRROR_HOST="http://mirror.seed-cz1.fuel-infra.org/"
+
 if [[ ! "${MIRROR_UBUNTU}" ]]; then
 
     case "${UBUNTU_MIRROR_ID}" in
