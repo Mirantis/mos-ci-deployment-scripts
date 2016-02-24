@@ -20,7 +20,7 @@
           default: 'latest'
       - string:
           name: UBUNTU_MIRROR_ID
-          default: 'latest-stable'
+          default: 'ubuntu-latest'
       - bool:
           name: ENABLE_PROPOSED
           default: false
