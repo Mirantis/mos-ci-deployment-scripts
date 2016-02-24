@@ -3,29 +3,26 @@ import os
 import sys
 from subprocess import Popen, PIPE
 
-from parse_jenkins_reports import NoBS4ParseJenkinsReports
+from parse_jenkins_reports import IsoJenkinsParser
+from parse_jenkins_reports import PluginsJenkinsParser
 
 
 def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--link', help='Link to parse')
     parser.add_argument('-d', type=str)
+    parser.add_argument('--type', default='iso')
     args = parser.parse_args()
-    return args.d, args.link
+    return args.d, args.link, args.type
 
 
-def main():
-    target_directory, link = get_args()
-    print 'Parsing {}'.format(link)
-
-    nobs4_jenkins_parser = NoBS4ParseJenkinsReports(link)
-    link = nobs4_jenkins_parser.get_iso_link()
-
+def prepare_directory(target_directory):
     if not os.path.exists(target_directory):
         try:
             os.mkdir(target_directory, 0755)
         except Exception as e:
-            print 'Error while trying to create directory {}'.format(target_directory)
+            print 'Error while trying to create directory {}'.format(
+                target_directory)
             print e
             sys.exit(1)
     try:
@@ -36,6 +33,8 @@ def main():
     except IOError as e:
         print 'Error: {0}'.format(e)
 
+
+def load_file_from_link(link):
     try:
         wget_command = 'wget {}'.format(link)
         print 'Executing wget command: {}'.format(wget_command)
@@ -53,6 +52,26 @@ def main():
         print 'ERROR: {0}'.format(e)
         if err:
             print 'wget command error: {0}'.format(err)
+            sys.exit(1)
+
+
+def main():
+    target_directory, link, link_type = get_args()
+    print 'Parsing {}'.format(link)
+
+    if link_type == 'iso':
+        jenkins_parser = IsoJenkinsParser(link)
+    elif link_type == 'plugins':
+        jenkins_parser = PluginsJenkinsParser(link)
+    else:
+        raise ValueError("Error: only the following types are available: "
+                         "'iso', 'plugins'.")
+
+    links = jenkins_parser.get_links()
+
+    prepare_directory(target_directory)
+    for link in links:
+        load_file_from_link(link)
 
 
 if __name__ == '__main__':
