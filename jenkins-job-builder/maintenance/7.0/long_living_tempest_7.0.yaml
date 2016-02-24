@@ -10,9 +10,9 @@
     project-type: freestyle
     defaults: global
     node: maintenance_173_11
-    description: 'VLAN+CEPH+SAHARA+MURANO_CEILOMETER_RADOS_MONGO TEMPEST tests (7.0 maintenance)'
+    description: 'Runs Tempest tests on long living env (7.0 maintenance)'
     disabled: false
-    display-name: 'VLAN+CEPH+SAHARA+MURANO_CEILOMETER_RADOS_MONGO TEMPEST tests (7.0 maintenance)'
+    display-name: 'Runs Tempest tests on long living env (7.0 maintenance)'
     concurrent: false
     retry-count: 3
     logrotate:
