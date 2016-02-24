@@ -167,7 +167,6 @@ fi
 # create new environment
 # more time can be required to deploy env
 export DEPLOYMENT_TIMEOUT=10000
-export DRIVER_USE_HOST_CPU=false
 export ENV_NAME=$ENV_NAME
 
 ./utils/jenkins/system_tests.sh -k -K -j fuelweb_test -t test -w $(pwd) -e "$ENV_NAME" -o --group="$GROUP" -i "$ISO_PATH"
