@@ -75,6 +75,9 @@ class TempestCeph(TestBasic):
         # Cluster deploy
         self.fuel_web.deploy_cluster_wait(cluster_id)
 
+        # Check network
+        self.fuel_web.verify_network(cluster_id)
+
         # Run ostf
         self.fuel_web.run_ostf(cluster_id=cluster_id)
 
@@ -131,6 +134,9 @@ class TempestCeph(TestBasic):
         )
         # Cluster deploy
         self.fuel_web.deploy_cluster_wait(cluster_id)
+
+        # Check network
+        self.fuel_web.verify_network(cluster_id)
 
         # Run ostf
         self.fuel_web.run_ostf(cluster_id=cluster_id)

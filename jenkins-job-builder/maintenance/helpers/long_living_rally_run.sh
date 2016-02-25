@@ -86,6 +86,14 @@ for compute in $(fuel node | awk '/compute/{print $1}'); do
 done
 sleep 180
 
+ntp_server=$(awk '/^server/ && $2 !~ /127.*/ {print $2}' /etc/ntp.conf | head -1)
+ntpdate -p 4 -t 0.2 -bu ${ntp_server}
+for count in $(fuel nodes | awk '/controller|compute/{print $1}'); do
+    ssh node-${count} "ntpdate -p 4 -t 0.2 -bu ${ntp_server}"
+done
+
+#TODO(vrovachev): need to check nova-manage service list
+
 ID=$(docker images | awk '/rally/{print $3}')
 echo "ID: ${ID}"
 DOCK_ID=$(docker run -tid -v /var/lib/rally-tempest-container-home-dir:/home/rally --net host "$ID")
