@@ -70,6 +70,9 @@
       - string:
           name: CHANGE_CONF_YAML
           default: "NO"
+      - string:
+          name: DEPLOYMENT_TIMEOUT
+          default: "10000"
 
 
     name: create_param_environment
@@ -132,6 +135,7 @@
             export NOVA_QUOTAS_ENABLED="$NOVA_QUOTAS_ENABLED"
             export SLAVE_NODE_CPU="$SLAVE_NODE_CPU"
             export SLAVE_NODE_MEMORY="$SLAVE_NODE_MEMORY"
+            export DEPLOYMENT_TIMEOUT="$DEPLOYMENT_TIMEOUT"
 
             sed -i 's|export DEPLOYMENT_TIMEOUT=10000|export DEPLOYMENT_TIMEOUT=15000|g' deploy_env.sh
 
