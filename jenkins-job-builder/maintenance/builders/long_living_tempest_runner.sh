@@ -2,6 +2,8 @@
 
 REPORT_PATH="${REPORT_PREFIX}/long_living_tempest_${VERSION}"
 echo "$REPORT_PATH" > ./param.pm
+echo "$BUILD_URL" > ./build_url
+
 wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/maintenance/helpers/long_living_rally_run.sh
 
 chmod +x long_living_rally_run.sh
