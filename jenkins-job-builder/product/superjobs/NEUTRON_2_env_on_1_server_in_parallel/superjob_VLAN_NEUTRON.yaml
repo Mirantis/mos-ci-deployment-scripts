@@ -34,7 +34,7 @@
     defaults: global
     node: slave-7777
     description: 'VLAN NEUTRON tests'
-    disabled: false
+    disabled: true
     display-name: 'VLAN'
     concurrent: false
     retry-count: 3

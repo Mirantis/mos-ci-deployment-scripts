@@ -39,7 +39,7 @@
     defaults: global
     node: slave-7775
     description: 'VxLAN+L2_POP+DVR NEUTRON tests'
-    disabled: false
+    disabled: true
     display-name: 'VxLAN+L2_POP+DVR'
     concurrent: false
     retry-count: 3

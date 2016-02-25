@@ -39,7 +39,7 @@
     defaults: global
     node: master
     description: 'VxLAN+L2_POP+L3_HA NEUTRON tests'
-    disabled: false
+    disabled: true
     display-name: 'VxLAN+L2_POP+L3_HA'
     concurrent: false
     retry-count: 3

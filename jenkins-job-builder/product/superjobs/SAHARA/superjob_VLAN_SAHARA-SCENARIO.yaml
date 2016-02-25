@@ -35,7 +35,7 @@
     defaults: global
     node: slave-srv98
     description: 'VLAN SAHARA-SCENARIO tests'
-    disabled: false
+    disabled: true
     display-name: 'VLAN_SAHARA-SCENARIO'
     concurrent: false
     retry-count: 3
