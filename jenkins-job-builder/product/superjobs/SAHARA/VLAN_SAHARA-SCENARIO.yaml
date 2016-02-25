@@ -88,7 +88,7 @@
     node: slave-srv96
     defaults: global
     description: 'Runs mos_tests/sahara-scenario tests'
-    disabled: false
+    disabled: true
     display-name: 'SAHARA-SCENARIO tests'
     concurrent: true
     browser: githubweb
