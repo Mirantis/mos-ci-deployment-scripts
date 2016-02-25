@@ -121,7 +121,7 @@ else
 fi
 
 # set up all vars which should be set to true or false
-BOOL_VARS="L2_POP_ENABLE DVR_ENABLE L3_HA_ENABLE SAHARA_ENABLE MURANO_ENABLE CEILOMETER_ENABLE IRONIC_ENABLE RADOS_ENABLE"
+BOOL_VARS="L2_POP_ENABLE DVR_ENABLE L3_HA_ENABLE SAHARA_ENABLE MURANO_ENABLE CEILOMETER_ENABLE IRONIC_ENABLE RADOS_ENABLE CEPH_GLANCE_ENABLE"
 SEPARATE_SERVICES="SEPARATE_SERVICE_RABBIT_ENABLE SEPARATE_SERVICE_DB_ENABLE SEPARATE_SERVICE_KEYSTONE_ENABLE"
 for var in $BOOL_VARS $SEPARATE_SERVICES
 do
@@ -146,11 +146,15 @@ elif [ ${LVM_ENABLE} != 'true' ]; then
     # LVM and CEPH hasn't been set up so we should set default value
     echo "lvm-volume will be used by default."
     LVM_ENABLE='true'
-    CINDER_ENABLE='true'
 fi
 
 if [ ${RADOS_ENABLE} == 'true' ] && [ ${CEPH_ENABLE} != 'true' ]; then
     echo "Please set env variable CEPH_ENABLE to 'TRUE' if you want to use RADOS."
+    exit 1
+fi
+
+if [ ${CEPH_GLANCE_ENABLE} == 'true' ] && [ ${CEPH_ENABLE} != 'true' ]; then
+    echo "Please set env variable CEPH_ENABLE to 'TRUE' if you want to use Ceph to Glance."
     exit 1
 fi
 
@@ -215,6 +219,11 @@ if [ ${SEPARATE_SERVICE_KEYSTONE_ENABLE} == 'true' ]; then
         echo "Please set env variable SEPARATE_SERVICE_DB_ENABLE to 'TRUE' if you want to use SEPARATE_SERVICE_KEYSTONE."
         exit 1
     fi
+fi
+
+# set dependent vars
+if [ ${LVM_ENABLE} == 'true' ]; then
+    CINDER_ENABLE='true'
 fi
 
 # replace vars with its values in config files

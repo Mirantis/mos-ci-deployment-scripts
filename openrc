@@ -27,6 +27,10 @@ export ERASE_PREV_ENV=
 export LVM_ENABLE=
 export CEPH_ENABLE=
 
+# advanced Ceph configure (CEPH_ENABLE should be set tu TRUE)
+export CEPH_GLANCE_ENABLE=
+export RADOS_ENABLE=
+
 # network params (can be TRUE or FALSE)
 export DVR_ENABLE=
 export L3_HA_ENABLE=
@@ -35,7 +39,6 @@ export L2_POP_ENABLE=
 # can be TRUE or FALSE
 export CINDER_ENABLE=
 export MONGO_ENABLE=
-export RADOS_ENABLE=
 export SAHARA_ENABLE=
 export MURANO_ENABLE=
 export CEILOMETER_ENABLE=
