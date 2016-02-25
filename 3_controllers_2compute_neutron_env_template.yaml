@@ -17,11 +17,11 @@ storages-config: &storages-config
 nodes: &nodes
  - roles:
     - controller
-    # - cinder
     # - mongo
    count: <%CONTROLLERS_COUNT%>
  - roles:
     - compute
+    # - cinder
     # - ceph-osd
    count: <%COMPUTES_COUNT%>
  - roles:

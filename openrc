@@ -65,3 +65,15 @@ export PLUGINS_CONFIG_PATH=
 
 # deployment timeout
 export DEPLOYMENT_TIMEOUT=
+
+# TRUE or FALSE
+export DISABLE_SSL=
+
+##########################
+# Virtualization options #
+##########################
+
+# May be one of virtio, e1000, pcnet, rtl8139
+export INTERFACE_MODEL=e1000
+
+export KVM_USE=true

@@ -1,0 +1,31 @@
+diff --git a/fuelweb_test/models/environment.py b/fuelweb_test/models/environment.py
+index ecba404..85017ab 100644
+--- a/fuelweb_test/models/environment.py
++++ b/fuelweb_test/models/environment.py
+@@ -225,7 +225,7 @@ class EnvironmentModel(object):
+             # CentOS 7 is pretty stable with admin iface.
+             # TODO(akostrikov) add tests for menu items/kernel parameters
+             # TODO(akostrikov) refactor it.
+-            iface = 'enp0s3'
++            iface = 'eth0'
+             if iso_connect_as == 'usb':
+                 keys = (
+                     "<Wait>\n"  # USB boot uses boot_menu=yes for master node
+@@ -597,7 +597,7 @@ class EnvironmentModel(object):
+     def dhcrelay_check(self):
+         # CentOS 7 is pretty stable with admin iface.
+         # TODO(akostrikov) refactor it.
+-        iface = 'enp0s3'
++        iface = 'eth0'
+         command = "dhcpcheck discover " \
+                   "--ifaces {iface} " \
+                   "--repeat 3 " \
+@@ -759,7 +759,7 @@ class EnvironmentModel(object):
+             if 'admin' in network_name and 'admin' != network_name:
+                 # This will be replaced with actual interface labels
+                 # form fuel-devops
+-                iface_name = 'enp0s' + str(i + 3)
++                iface_name = 'eth' + str(i)
+                 logger.info("Describe Fuel admin node interface {0} for "
+                             "network {1}".format(iface_name, network_name))
+                 self.describe_admin_interface(iface_name, network_name)

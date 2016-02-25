@@ -33,6 +33,28 @@ digit_from_range(){
     fi
 }
 
+patch_fuel_qa(){
+    # Check and apply patch to fuel_qa
+    set +e
+    file_name=$1
+    patch_file=../fuel_qa_patches/$file_name
+    echo "Check for patch $file_name"
+    git apply --check $patch_file 2> /dev/null
+    if [ $? -eq 0 ]; then
+        echo "Applying patch $file_name"
+        git apply $patch_file
+    fi
+    set -e
+}
+
+set_default(){
+    eval val=\$$1
+
+    if [ -z ${val} ]; then
+        eval $1=$2
+    fi
+}
+
 # exit from shell if error happens
 set -e
 
@@ -124,6 +146,7 @@ elif [ ${LVM_ENABLE} != 'true' ]; then
     # LVM and CEPH hasn't been set up so we should set default value
     echo "lvm-volume will be used by default."
     LVM_ENABLE='true'
+    CINDER_ENABLE='true'
 fi
 
 if [ ${RADOS_ENABLE} == 'true' ] && [ ${CEPH_ENABLE} != 'true' ]; then
@@ -247,22 +270,16 @@ fi
 
 # Set fuel QA version
 # https://github.com/openstack/fuel-qa/branches
-if [ -z "$FUEL_QA_VER" ]
-then
-    FUEL_QA_VER='stable/8.0'
-fi
+set_default FUEL_QA_VER 'stable/8.0'
 
 # Erase all previous environments by default
-if [ -z "$ERASE_PREV_ENV" ]; then
-    ERASE_PREV_ENV=true
-fi
+set_default ERASE_PREV_ENV true
 
 V_ENV_DIR="`pwd`/fuel-devops-venv"
 
 # set ENV_NAME if it is not defined
-if [ -z "${ENV_NAME}" ]; then
-    export ENV_NAME="Test_Deployment_MOS_CI_$RANDOM"
-fi
+set_default ENV_NAME "Test_Deployment_MOS_CI_$RANDOM"
+set_default USE_KVM true
 
 echo "Env name:         ${ENV_NAME}"
 echo "Snapshot name:    ${SNAPSHOT_NAME}"
@@ -316,29 +333,22 @@ cp ${CONFIG_NAME} fuel-qa/system_test/tests_templates/tests_configs
 cd fuel-qa
 
 # Apply fuel-qa patches
-set +e
 if [ ${IRONIC_ENABLE} == 'true' ]; then
-    file_name=ironic.patch
-    patch_file=../fuel_qa_patches/$file_name
-    echo "Check for patch $file_name"
-    git apply --check $patch_file 2> /dev/null
-    if [ $? -eq 0 ]; then
-        echo "Applying patch $file_name"
-        git apply $patch_file
-    fi
+    patch_fuel_qa ironic.patch
 fi
 
 if [ ${DVR_ENABLE} == 'true' ] || [ ${L3_HA_ENABLE} == 'true' ] || [ ${L2_POP_ENABLE} == 'true' ]; then
-    file_name=DVR_L2_pop_HA.patch
-    patch_file=../fuel_qa_patches/$file_name
-    echo "Check for patch $file_name"
-    git apply --check $patch_file 2> /dev/null
-    if [ $? -eq 0 ]; then
-        echo "Applying patch $file_name"
-        git apply $patch_file
-    fi
+    patch_fuel_qa DVR_L2_pop_HA.patch
 fi
-set -e
+
+if [ ${INTERFACE_MODEL} == 'virtio' ]; then
+    # Virtio network interfaces have names eth0..eth5
+    # (rather than default names - enp0s3..enp0s8)
+    patch_fuel_qa virtio.patch
+    for i in {0..5}; do
+        export IFACE_$i=eth$i
+    done
+fi
 
 # erase previous environments
 if [ ${ERASE_PREV_ENV} == true ]; then
@@ -347,9 +357,7 @@ fi
 
 # create new environment
 # more time can be required to deploy env
-if [ -z ${DEPLOYMENT_TIMEOUT} ]; then
-    export DEPLOYMENT_TIMEOUT=10000
-fi
+set_default DEPLOYMENT_TIMEOUT 10000
 
 ./utils/jenkins/system_tests.sh -k -K -j fuelweb_test -t test -V ${V_ENV_DIR} -w $(pwd) -o --group="system_test.deploy_env($GROUP_NAME)"
 
