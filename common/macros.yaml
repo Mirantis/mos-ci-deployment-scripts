@@ -33,3 +33,11 @@
          url: https://review.fuel-infra.org/fuel-infra/dockerfiles
          branches:
           - origin/master
+
+- scm:
+    name: murano-dashboard-repository
+    scm:
+      - git:
+         url: https://review.openstack.org/openstack/murano-dashboard
+         branches:
+          - origin/master
