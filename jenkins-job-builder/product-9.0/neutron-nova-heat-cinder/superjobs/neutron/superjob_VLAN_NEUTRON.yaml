@@ -1,5 +1,5 @@
 - job:
-    name:9.0-superjob_for_VLAN_NEUTRON
+    name: 9.0-superjob_for_VLAN_NEUTRON
     builders:
       - trigger-builds:
         - project: 'create_param_environment'
