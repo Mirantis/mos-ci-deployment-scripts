@@ -1,5 +1,5 @@
 - job:
-    name: 9.0-superjob_for_VxLAN_NEUTRON
+    name: 9.0-superjob_for_VxLAN_NEUTRON-kilo
     builders:
       - trigger-builds:
         - project: 'create_param_environment'
@@ -28,13 +28,13 @@
 #            REPORT_PREFIX=/srv/jenkins/neutron
 
     triggers:
-        - timed: "20 21 * * *"
+        - timed: "30 21 * * *"
     project-type: freestyle
     defaults: global
     node: 9.0-NEUTRON
     description: 'VxLAN NEUTRON tests'
-    disabled: true
-    display-name: 'NEUTRON:VxLAN'
+    disabled: false
+    display-name: 'kilo-9.0-NEUTRON:VxLAN'
     concurrent: false
     retry-count: 3
     logrotate:
