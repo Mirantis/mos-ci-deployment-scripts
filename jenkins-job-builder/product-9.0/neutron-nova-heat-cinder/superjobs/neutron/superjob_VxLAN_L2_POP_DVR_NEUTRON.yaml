@@ -1,0 +1,51 @@
+- job:
+    name: superjob_for_VxLAN_L2_POP_DVR_NEUTRON
+    builders:
+      - trigger-builds:
+        - project: 'create_param_environment'
+          same-node: true
+          block: true
+          predefined-parameters: |
+            SNAPSHOT_NAME=ha_deploy_VxLAN_L2_POP_DVR
+            TEST_TYPE=NEUTRON
+            SEGMENT_TYPE=VxLAN
+            DISABLE_SSL=TRUE
+            L2_POP_ENABLE=TRUE
+            DVR_ENABLE=TRUE
+            ENV_CHANGER=DVR_2flow
+            COMPUTES_COUNT=3
+      - trigger-builds:
+        - project: 'NEUTRON_tests_generated_from_template'
+          same-node: true
+          block: true
+          block-thresholds:
+            build-step-failure-threshold: 'never'    
+          predefined-parameters: |
+            SNAPSHOT_NAME=ha_deploy_VxLAN_L2_POP_DVR
+            ENV_CHANGER=DVR_2flow
+      - trigger-builds:
+        - project: 'test_rail_reporter'
+          same-node: true
+          block: true
+          predefined-parameters: |
+            SNAPSHOT_NAME=ha_deploy_VxLAN_L2_POP_DVR
+            TEST_GROUP=NEUTRON
+            ENV_CHANGER=DVR_2flow
+            REPORT_PREFIX=/srv/jenkins/neutron
+
+    triggers:
+        - timed: "34 21 * * *"
+    project-type: freestyle
+    defaults: global
+    node: slave-7775
+    description: 'VxLAN+L2_POP+DVR NEUTRON tests'
+    disabled: true
+    display-name: 'VxLAN+L2_POP+DVR'
+    concurrent: false
+    retry-count: 3
+    logrotate:
+      daysToKeep: 5
+      numToKeep: 20
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+
