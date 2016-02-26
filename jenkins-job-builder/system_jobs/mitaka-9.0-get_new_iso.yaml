@@ -1,12 +1,12 @@
 - job:
-    name: get_new_iso_9.0
+    name: mitaka-9.0-get_new_iso
     parameters:
       - string:
           name: PARSED_LINK
-          default: https://product-ci.infra.mirantis.net/view/9.0-mitaka/job/9.0-mitaka.all/lastSuccessfulBuild/api/python
+          default: "https://product-ci.infra.mirantis.net/view/9.0-mitaka/job/9.0-mitaka.all/lastSuccessfulBuild/api/python"
       - string:
           name: ISO_DIR
-          default: /var/www/fuelweb-iso
+          default: "/var/www/fuelweb-iso"
     parameters:
       - node:
           name: SLAVE_NAMES
