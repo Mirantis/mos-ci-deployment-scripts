@@ -8,28 +8,7 @@
           name: ISO_DIR
           default: /var/www/fuelweb-iso
 
-      - node:
-          name: SLAVE_NAMES
-          default-slaves:
-            - Slave-srv129
-            - Slave-srv130
-            - Slave-srv131
-            - Slave-srv132
-            - Slave-srv133
-            - Slave-srv134
-            - Slave-srv135
-            - Slave-srv136
-          allowed-slaves:
-            - Slave-srv129
-            - Slave-srv130
-            - Slave-srv131
-            - Slave-srv132
-            - Slave-srv133
-            - Slave-srv134
-            - Slave-srv135
-            - Slave-srv136
-          ignore-offline-nodes: true
-          allowed-multiselect: true
+
     builders:
         - shell: |
              cd jenkins-job-builder/product/python_scripts/parse_jenkins_reports
