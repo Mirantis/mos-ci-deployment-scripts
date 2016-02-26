@@ -44,7 +44,7 @@
        - mos-ci-deployment-scripts
     description: 'Download last succesful ISO, that will be used for swarm'
     disabled: false
-    display-name: 'Get new swarm-ISO for 9.0'
+    display-name: '9.0-kilo Get new swarm-ISO'
     concurrent: true
     retry-count: 3
     logrotate:
