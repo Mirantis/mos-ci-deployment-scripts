@@ -36,7 +36,7 @@
          url: https://review.fuel-infra.org/fuel-infra/dockerfiles
          branches:
           - origin/master
-          skip-tag: true
+         skip-tag: true
 
 - scm:
     name: murano-dashboard-repository
