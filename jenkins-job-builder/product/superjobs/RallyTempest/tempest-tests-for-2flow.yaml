@@ -85,7 +85,9 @@
             #echo 'OS_AUTH=`fgrep OS_AUTH_URL /var/lib/rally-tempest-container-home-dir/openrc`' >> ssh_scr.sh
             #echo '$OS_AUTH_URL_V="$OS_AUTH"v2.0' >> ssh_scr.sh
             #echo 'echo "$OS_AUTH_URL_V" >> /var/lib/rally-tempest-container-home-dir/openrc' >> ssh_scr.sh
-            echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start --system-wide"' >> ssh_scr.sh
+
+            #echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start --system-wide"' >> ssh_scr.sh
+            echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start"' >> ssh_scr.sh
 
 
 
