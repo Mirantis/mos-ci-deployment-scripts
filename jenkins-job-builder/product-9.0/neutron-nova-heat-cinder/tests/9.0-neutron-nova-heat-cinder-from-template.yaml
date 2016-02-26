@@ -94,7 +94,7 @@
     report_prefix: /srv/jenkins/neutron
     test_path: mos_tests/neutron
     description: NEUTRON tests
-    display-name: NEUTRON test /from template/
+    display-name: 9.0 NEUTRON test /from template/
     email-recipients: efazliev@mirantis.com
     jobs:
       - '9.0-{name}_tests_generated_from_template'
@@ -107,7 +107,7 @@
     report_prefix: /srv/jenkins/heat
     test_path: mos_tests/heat
     description: HEAT test runner
-    display-name: HEAT tests /from template/
+    display-name: 9.0 HEAT tests /from template/
     email-recipients: efazliev@mirantis.com
     jobs:
       - '9.0-{name}_tests_generated_from_template'
@@ -120,7 +120,7 @@
     report_prefix: /srv/jenkins/cinder
     test_path: mos_tests/cinder
     description: CINDER tests runner
-    display-name: CINDER tests /from template/
+    display-name: 9.0 CINDER tests /from template/
     email-recipients: efazliev@mirantis.com
     jobs:
       - '9.0-{name}_tests_generated_from_template'
@@ -133,7 +133,7 @@
     report_prefix: /srv/jenkins/nova
     test_path: mos_tests/nova
     description: NOVA tests runner
-    display-name: NOVA tests /from template/
+    display-name: 9.0 NOVA tests /from template/
     email-recipients: efazliev@mirantis.com
     jobs:
       - '9.0-{name}_tests_generated_from_template'
