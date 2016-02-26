@@ -32,6 +32,8 @@
             echo "$REPORT_PATH" > ./param.pm
             echo "$BUILD_URL" > ./build_url
 
+            sed -i 's|rally verify install --source /var/lib/tempest --no-tempest-venv|rally verify install --source /var/lib/tempest|g' custom-scripts/rally-tempest/setup_tempest.sh
+
             dos.py revert-resume "$ENV_NAME" "$SNAPSHOT_NAME"
 
             git clone https://github.com/Mirantis/mos-integration-tests
