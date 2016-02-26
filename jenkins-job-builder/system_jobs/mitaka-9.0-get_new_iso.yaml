@@ -7,7 +7,6 @@
       - string:
           name: ISO_DIR
           default: "/var/www/fuelweb-iso"
-    parameters:
       - node:
           name: SLAVE_NAMES
           default-slaves:
