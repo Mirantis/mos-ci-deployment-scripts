@@ -12,6 +12,7 @@
             DISABLE_SSL=TRUE
             L2_POP_ENABLE=TRUE
             COMPUTES_COUNT=3
+            MOS_VERSION=mitaka
       - trigger-builds:
         - project: '9.0-NEUTRON_tests_generated_from_template'
           same-node: true
@@ -20,6 +21,7 @@
             build-step-failure-threshold: 'never'    
           predefined-parameters: |
             SNAPSHOT_NAME=ha_deploy_VxLAN_L2_POP_CINDER
+            MOS_VERSION=mitaka
       - trigger-builds:
         - project: 'test_rail_reporter'
           same-node: true
@@ -28,6 +30,7 @@
             SNAPSHOT_NAME=ha_deploy_VxLAN_L2_POP_CINDER
             TEST_GROUP=NEUTRON
             REPORT_PREFIX=/srv/jenkins/neutron
+            MOS_VERSION=mitaka
 
     triggers:
         - timed: "30 21 * * *"

@@ -17,7 +17,14 @@
     builders:
         - shell: |
             ISO_NAME=`ls "$ISO_DIR"`
+
+            if [ "$MOS_VERSION" == 'mitaka' ] || [ "$MOS_VERSION" == 'kilo' ] ;
+            then
+            ISO_ID=`echo "$ISO_NAME" | cut -f4 -d-`
+            else
             ISO_ID=`echo "$ISO_NAME" | cut -f3 -d-`
+            fi
+
             ENV_NAME=MOS_CI_"$ISO_NAME"
 
             SNAPSHOT=`echo $SNAPSHOT_NAME | sed 's/ha_deploy_//'`

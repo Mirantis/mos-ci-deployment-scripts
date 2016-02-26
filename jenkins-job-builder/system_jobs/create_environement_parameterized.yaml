@@ -73,6 +73,8 @@
       - string:
           name: DEPLOYMENT_TIMEOUT
           default: "10000"
+      - string:
+          name: MOS_VERSION
 
 
     name: create_param_environment
@@ -85,7 +87,13 @@
             echo `hostname`
             ISO_NAME=`ls "$ISO_DIR"`
             ENV_NAME=MOS_CI_"$ISO_NAME"
+
+            if [ "$MOS_VERSION" == 'mitaka' ] || [ "$MOS_VERSION" == 'kilo' ] ;
+            then
+            ISO_ID=`echo "$ISO_NAME" | cut -f4 -d-`
+            else
             ISO_ID=`echo "$ISO_NAME" | cut -f3 -d-`
+            fi
 
 
             SNAPSHOT=`echo $SNAPSHOT_NAME | sed 's/ha_deploy_//'`
