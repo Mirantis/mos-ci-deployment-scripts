@@ -6,7 +6,7 @@
           same-node: true
           block: true
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VLAN
+            SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
             TEST_TYPE=NEUTRON
             SEGMENT_TYPE=VLAN
             DISABLE_SSL=TRUE
@@ -17,7 +17,7 @@
           block-thresholds:
             build-step-failure-threshold: 'never'    
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VLAN
+            SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
       - trigger-builds:
         - project: 'test_rail_reporter'
           same-node: true
@@ -25,7 +25,7 @@
           block-thresholds:
             build-step-failure-threshold: 'never'
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VLAN
+            SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
             TEST_GROUP=NEUTRON
             REPORT_PREFIX=/srv/jenkins/neutron
     triggers:

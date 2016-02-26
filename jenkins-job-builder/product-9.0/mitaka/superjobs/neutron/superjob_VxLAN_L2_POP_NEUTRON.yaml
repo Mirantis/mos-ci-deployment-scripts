@@ -6,7 +6,7 @@
           same-node: true
           block: true
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VxLAN_L2_POP
+            SNAPSHOT_NAME=ha_deploy_VxLAN_L2_POP_CINDER
             TEST_TYPE=NEUTRON
             SEGMENT_TYPE=VxLAN
             DISABLE_SSL=TRUE
@@ -19,13 +19,13 @@
           block-thresholds:
             build-step-failure-threshold: 'never'    
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VxLAN_L2_POP
+            SNAPSHOT_NAME=ha_deploy_VxLAN_L2_POP_CINDER
       - trigger-builds:
         - project: 'test_rail_reporter'
           same-node: true
           block: true
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VxLAN_L2_POP
+            SNAPSHOT_NAME=ha_deploy_VxLAN_L2_POP_CINDER
             TEST_GROUP=NEUTRON
             REPORT_PREFIX=/srv/jenkins/neutron
 
