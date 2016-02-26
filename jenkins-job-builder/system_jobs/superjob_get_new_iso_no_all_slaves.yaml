@@ -58,8 +58,8 @@
           predefined-parameters: |
             PARSED_LINK= http://product-jenkins-reports.vm.mirantis.net/iso/9.0
 
-    triggers:
-        - timed: "15 21 * * *"
+#    triggers:
+#        - timed: "15 21 * * *"
     project-type: freestyle
     defaults: global
     description: 'Get new ISO on all slaves'

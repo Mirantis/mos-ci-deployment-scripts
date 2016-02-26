@@ -12,6 +12,14 @@
             - Slave-srv134
             - Slave-srv135
             - Slave-srv136
+            - Slave-srv137
+            - Slave-srv138
+            - Slave-srv139
+            - Slave-srv140
+            - Slave-srv141
+            - Slave-srv142
+            - Slave-srv143
+            - Slave-srv144
           allowed-slaves:
             - Slave-srv129
             - Slave-srv130
@@ -21,6 +29,14 @@
             - Slave-srv134
             - Slave-srv135
             - Slave-srv136
+            - Slave-srv137
+            - Slave-srv138
+            - Slave-srv139
+            - Slave-srv140
+            - Slave-srv141
+            - Slave-srv142
+            - Slave-srv143
+            - Slave-srv144
           ignore-offline-nodes: true
           allowed-multiselect: true
     builders:
@@ -34,6 +50,8 @@
             done < temp
     project-type: freestyle
     defaults: global
+    triggers:
+        - timed: "0 21 * * *"
     description: 'Erase all environments on node'
     disabled: false
     display-name: 'Erase all environments on node'

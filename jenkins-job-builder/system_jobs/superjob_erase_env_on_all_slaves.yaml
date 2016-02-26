@@ -50,8 +50,8 @@
           node-label-name: NODE
           node-label: 9.0-NEUTRON
 
-    triggers:
-        - timed: "0 21 * * *"
+#    triggers:
+#        - timed: "0 21 * * *"
     project-type: freestyle
     defaults: global
     description: 'ERASE ALL ENV ON ALL SLAVES'

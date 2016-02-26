@@ -20,14 +20,14 @@
             build-step-failure-threshold: 'never'    
           predefined-parameters: |
             SNAPSHOT_NAME=ha_deploy_VxLAN_L2_POP
-#      - trigger-builds:
-#        - project: 'test_rail_reporter'
-#          same-node: true
-#          block: true
-#          predefined-parameters: |
-#            SNAPSHOT_NAME=ha_deploy_VxLAN_L2_POP
-#            TEST_GROUP=NEUTRON
-#            REPORT_PREFIX=/srv/jenkins/neutron
+      - trigger-builds:
+        - project: 'test_rail_reporter'
+          same-node: true
+          block: true
+          predefined-parameters: |
+            SNAPSHOT_NAME=ha_deploy_VxLAN_L2_POP
+            TEST_GROUP=NEUTRON
+            REPORT_PREFIX=/srv/jenkins/neutron
 
     triggers:
         - timed: "30 21 * * *"

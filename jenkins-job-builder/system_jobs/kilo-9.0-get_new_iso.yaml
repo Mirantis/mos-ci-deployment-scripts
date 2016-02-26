@@ -39,6 +39,8 @@
 
     project-type: freestyle
     defaults: global
+    triggers:
+        - timed: "10 21 * * *"
     scm:
        - mos-ci-deployment-scripts
     description: 'Download last succesful ISO, that will be used for swarm'

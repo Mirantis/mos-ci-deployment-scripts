@@ -18,16 +18,16 @@
             build-step-failure-threshold: 'never'    
           predefined-parameters: |
             SNAPSHOT_NAME=ha_deploy_VLAN
-#      - trigger-builds:
-#        - project: 'test_rail_reporter'
-#          same-node: true
-#          block: true
-#          block-thresholds:
-#            build-step-failure-threshold: 'never'
-#          predefined-parameters: |
-#            SNAPSHOT_NAME=ha_deploy_VLAN
-#            TEST_GROUP=NEUTRON
-#            REPORT_PREFIX=/srv/jenkins/neutron
+      - trigger-builds:
+        - project: 'test_rail_reporter'
+          same-node: true
+          block: true
+          block-thresholds:
+            build-step-failure-threshold: 'never'
+          predefined-parameters: |
+            SNAPSHOT_NAME=ha_deploy_VLAN
+            TEST_GROUP=NEUTRON
+            REPORT_PREFIX=/srv/jenkins/neutron
     triggers:
         - timed: "30 21 * * *"
     project-type: freestyle

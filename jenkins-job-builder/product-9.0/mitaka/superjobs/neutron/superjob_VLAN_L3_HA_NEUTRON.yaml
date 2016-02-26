@@ -11,7 +11,6 @@
             SEGMENT_TYPE=VLAN
             DISABLE_SSL=TRUE
             L3_HA_ENABLE=TRUE
-            ENV_CHANGER=L3_HA2flow
       - trigger-builds:
         - project: '9.0-NEUTRON_tests_generated_from_template'
           same-node: true
@@ -20,16 +19,14 @@
             build-step-failure-threshold: 'never'    
           predefined-parameters: |
             SNAPSHOT_NAME=ha_deploy_VLAN_L3_HA
-            ENV_CHANGER=L3_HA2flow
-#      - trigger-builds:
-#        - project: 'test_rail_reporter'
-#          same-node: true
-#          block: true
-#          predefined-parameters: |
-#            SNAPSHOT_NAME=ha_deploy_VLAN_L3_HA
-#            TEST_GROUP=NEUTRON
-#            ENV_CHANGER=L3_HA2flow
-#            REPORT_PREFIX=/srv/jenkins/neutron
+      - trigger-builds:
+        - project: 'test_rail_reporter'
+          same-node: true
+          block: true
+          predefined-parameters: |
+            SNAPSHOT_NAME=ha_deploy_VLAN_L3_HA
+            TEST_GROUP=NEUTRON
+            REPORT_PREFIX=/srv/jenkins/neutron
 
     triggers:
         - timed: "30 21 * * *"
