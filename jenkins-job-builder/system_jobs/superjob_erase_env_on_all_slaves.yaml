@@ -43,12 +43,12 @@
 #          block: false
 #          node-label-name: NODE
 #          node-label: slave-srv98
-#      - trigger-builds:
-#        - project: 'erase_all_environments'
-#          same-node: false
-#          block: false
-#          node-label-name: NODE
-#          node-label: 9.0-NEUTRON
+      - trigger-builds:
+        - project: 'erase_all_environments'
+          same-node: false
+          block: false
+          node-label-name: NODE
+          node-label: 9.0-NEUTRON
 
     triggers:
         - timed: "0 21 * * *"
