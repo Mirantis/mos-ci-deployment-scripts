@@ -30,6 +30,15 @@
          skip-tag: true
 
 - scm:
+    name: 9.0-mos-ci-deployment-scripts
+    scm:
+      - git:
+         url: https://github.com/Mirantis/mos-ci-deployment-scripts.git
+         branches:
+          - origin/stable/9.0
+         skip-tag: true
+
+- scm:
     name: dockerfiles
     scm:
       - git:
