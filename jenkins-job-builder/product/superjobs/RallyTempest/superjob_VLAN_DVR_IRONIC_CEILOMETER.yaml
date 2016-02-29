@@ -7,7 +7,7 @@
           block: true
           predefined-parameters: |
             # BOOL_VARS="L2_POP_ENABLE DVR_ENABLE L3_HA_ENABLE SAHARA_ENABLE MURANO_ENABLE CEILOMETER_ENABLE IRONIC_ENABLE RADOS_ENABLE"
-            SNAPSHOT_NAME=ha_deploy_VLAN_DVR_CEILOMETER_IRONIC_MONGO_CINDER
+            SNAPSHOT_NAME=ha_deploy_VLAN_DVR_SAHARA_CEILOMETER_IRONIC_MONGO_CINDER
             TEST_TYPE=TEMPEST, Cinder LVM, Swift
             SEGMENT_TYPE=VLAN
             DISABLE_SSL=TRUE
@@ -32,7 +32,7 @@
           block-thresholds:
             build-step-failure-threshold: 'never'
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VLAN_DVR_CEILOMETER_IRONIC_MONGO_CINDER
+            SNAPSHOT_NAME=ha_deploy_VLAN_DVR_SAHARA_CEILOMETER_IRONIC_MONGO_CINDER
             REPORT_PREFIX=/srv/jenkins/rally-tempest
 
       - trigger-builds:
@@ -40,7 +40,7 @@
           same-node: true
           block: true
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VLAN_DVR_CEILOMETER_IRONIC_MONGO_CINDER
+            SNAPSHOT_NAME=ha_deploy_VLAN_DVR_SAHARA_CEILOMETER_IRONIC_MONGO_CINDER
             TEST_GROUP='TEMPEST,HA,Cinder LVM,Swift'
             REPORT_PREFIX=/srv/jenkins/rally-tempest
             REPORT_FILE=verification.xml
