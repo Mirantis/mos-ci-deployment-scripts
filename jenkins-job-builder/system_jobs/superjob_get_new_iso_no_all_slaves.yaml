@@ -63,7 +63,7 @@
     project-type: freestyle
     defaults: global
     description: 'Get new ISO on all slaves'
-    disabled: false
+    disabled: true
     display-name: 'Get new ISO on all slaves'
     concurrent: false
     retry-count: 3
