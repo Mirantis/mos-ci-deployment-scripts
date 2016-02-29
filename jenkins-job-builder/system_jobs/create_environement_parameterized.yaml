@@ -150,6 +150,9 @@
             export SLAVE_NODE_CPU="$SLAVE_NODE_CPU"
             export SLAVE_NODE_MEMORY="$SLAVE_NODE_MEMORY"
             export DEPLOYMENT_TIMEOUT="$DEPLOYMENT_TIMEOUT"
+            export INTERFACE_MODEL="$INTERFACE_MODEL"
+            export KVM_USE="$KVM_USE"
+
 
             sed -i 's|export DEPLOYMENT_TIMEOUT=10000|export DEPLOYMENT_TIMEOUT=15000|g' deploy_env.sh
 
