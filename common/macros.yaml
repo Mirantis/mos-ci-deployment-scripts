@@ -39,6 +39,15 @@
          skip-tag: true
 
 - scm:
+    name: 9.0-mos-ci-deployment-scripts-gd
+    scm:
+      - git:
+         url: https://github.com/gdyuldin/mos-ci-deployment-scripts.git
+         branches:
+          - origin/stable/9.0
+         skip-tag: true
+
+- scm:
     name: dockerfiles
     scm:
       - git:

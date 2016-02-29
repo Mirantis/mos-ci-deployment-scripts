@@ -167,7 +167,7 @@
     project-type: freestyle
     defaults: global
     scm:
-       - 9.0-mos-ci-deployment-scripts
+       - 9.0-mos-ci-deployment-scripts-gd
     description: 'Create environment with parameters, specified by PARAM string.'
     disabled: false
     display-name: 'Create Parameterized Environment with 9.0 stable'
