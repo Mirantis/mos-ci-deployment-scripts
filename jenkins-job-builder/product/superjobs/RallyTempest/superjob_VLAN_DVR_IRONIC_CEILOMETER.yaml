@@ -8,7 +8,7 @@
           predefined-parameters: |
             # BOOL_VARS="L2_POP_ENABLE DVR_ENABLE L3_HA_ENABLE SAHARA_ENABLE MURANO_ENABLE CEILOMETER_ENABLE IRONIC_ENABLE RADOS_ENABLE"
             SNAPSHOT_NAME=ha_deploy_VLAN_DVR_CEILOMETER_IRONIC_MONGO_CINDER
-            TEST_TYPE='TEMPEST, Cinder LVM, Swift'
+            TEST_TYPE=TEMPEST, Cinder LVM, Swift
             SEGMENT_TYPE=VLAN
             DISABLE_SSL=TRUE
             DVR_ENABLE=TRUE
@@ -22,6 +22,7 @@
             CHANGE_CONF_YAML=YES
             DEPLOYMENT_TIMEOUT=15000
             FUEL_QA_VER=stable/8.0
+            TEMPEST=TRUE
 
       - trigger-builds:
         - project: 'rally_tempest_tests_for_second_flow'
