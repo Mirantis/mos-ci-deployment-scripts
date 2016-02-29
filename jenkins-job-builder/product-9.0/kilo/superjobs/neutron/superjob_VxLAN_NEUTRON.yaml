@@ -34,7 +34,7 @@
         - timed: "30 21 * * *"
     project-type: freestyle
     defaults: global
-    node: 9.0-NEUTRON
+    node: Slave-srv135
     description: 'VxLAN NEUTRON tests'
     disabled: false
     display-name: 'kilo-9.0-NEUTRON:VxLAN'

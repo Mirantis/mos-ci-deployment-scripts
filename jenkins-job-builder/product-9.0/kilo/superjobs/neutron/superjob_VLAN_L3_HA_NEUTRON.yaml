@@ -35,7 +35,7 @@
         - timed: "30 21 * * *"
     project-type: freestyle
     defaults: global
-    node: 9.0-NEUTRON
+    node: Slave-srv130
     description: 'VLAN+L3_HA NEUTRON tests'
     disabled: false
     display-name: 'kilo-9.0-NEUTRON:VLAN+L3_HA'

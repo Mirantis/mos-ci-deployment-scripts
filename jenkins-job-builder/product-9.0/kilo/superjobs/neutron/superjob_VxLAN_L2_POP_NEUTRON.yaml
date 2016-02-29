@@ -36,7 +36,7 @@
         - timed: "30 21 * * *"
     project-type: freestyle
     defaults: global
-    node: 9.0-NEUTRON
+    node: Slave-srv134
     description: 'VxLAN+L2_POP NEUTRON tests'
     disabled: false
     display-name: 'kilo-9.0-NEUTRON:VxLAN+L2_POP'
