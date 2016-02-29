@@ -79,7 +79,7 @@ class TempestCeph(TestBasic):
         self.fuel_web.verify_network(cluster_id)
 
         # Run ostf
-        self.fuel_web.run_ostf(cluster_id=cluster_id)
+        # self.fuel_web.run_ostf(cluster_id=cluster_id)
 
         self.env.make_snapshot("tempest_test_ceph",
                                is_make=True)

@@ -8,7 +8,7 @@
           default: /srv/jenkins/rally-tempest
     builders:
       - shell:
-          !include-raw 'builders/long_living_tempest_runner.sh'
+          !include-raw: 'builders/long_living_tempest_runner.sh'
     scm:
         - dockerfiles
     project-type: freestyle

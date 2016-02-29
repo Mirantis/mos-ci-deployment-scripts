@@ -37,6 +37,11 @@
       - bool:
           name: DISABLE_SSL
           default: false
+      - choice:
+          name: RALLY_TEMPEST
+          choices:
+            - 'rally_run'
+            - 'run_tempest'
     builders:
       - trigger-builds:
         - project: 'maintenance_create_param_environment_7_0'
@@ -68,6 +73,7 @@
             SNAPSHOT_NAME=tempest_test_ceph
             REPORT_PREFIX=/srv/jenkins/rally-tempest
             VENV_PATH=/home/jenkins/qa-venv-7.0
+            RALLY_TEMPEST=$RALLY_TEMPEST
     project-type: freestyle
     defaults: global
     node: maintenance_173_13
