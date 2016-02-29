@@ -12,6 +12,7 @@
             DISABLE_SSL=TRUE
             DVR_ENABLE=TRUE
             MOS_VERSION=kilo
+
       - trigger-builds:
         - project: '9.0-NEUTRON_tests_generated_from_template'
           same-node: true
