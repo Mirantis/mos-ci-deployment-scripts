@@ -15,6 +15,7 @@
             CEILOMETER_ENABLE=TRUE
             IRONIC_ENABLE=TRUE
             MONGO_ENABLE=TRUE
+            SAHARA_ENABLE=TRUE
             IRONICS_COUNT=1
             NOVA_QUOTAS_ENABLED=TRUE
             SLAVE_NODE_CPU=2
