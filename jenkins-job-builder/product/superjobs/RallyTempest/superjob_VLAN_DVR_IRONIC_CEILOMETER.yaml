@@ -21,6 +21,7 @@
             SLAVE_NODE_MEMORY=8192
             CHANGE_CONF_YAML=YES
             DEPLOYMENT_TIMEOUT=15000
+            FUEL_QA_VER=stable/8.0
 
       - trigger-builds:
         - project: 'rally_tempest_tests_for_second_flow'

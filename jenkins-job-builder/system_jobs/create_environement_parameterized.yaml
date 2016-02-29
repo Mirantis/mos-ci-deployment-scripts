@@ -47,7 +47,7 @@
           default: "2.9.16"
       - string:
           name: FUEL_QA_VER
-          default: "stable/8.0"
+          default: "master"
       - string:
           name: ENV_CHANGER
       - string:
@@ -75,6 +75,12 @@
           default: "10000"
       - string:
           name: MOS_VERSION
+      - string:
+          name: INTERFACE_MODEL
+          default: "virtion"
+      - string:
+          name: KVM_USE
+          default: "TRUE"
 
 
     name: create_param_environment
