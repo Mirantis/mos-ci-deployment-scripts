@@ -57,7 +57,7 @@
             virtualenv venv
             . venv/bin/activate
             sudo apt-get install docker.io sshpass -y
-            sudo docker build -t rally-tempest custom-scripts/rally-tempest/
+            sudo docker build -t rally-tempest rally-tempest/
             sudo docker save -o ./dimage rally-tempest
             echo '' > ~/.ssh/known_hosts
             sshpass -p 'r00tme' scp -o "StrictHostKeyChecking no" dimage root@"$MASTER_NODE_IP":/root/rally
