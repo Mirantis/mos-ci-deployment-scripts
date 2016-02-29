@@ -1,6 +1,9 @@
 - job:
     name: superjob_for_VLAN_DVR_IRONIC_CEILOMETER_TEMPEST
     builders:
+      - shell: |
+          sudo rm -rf "$ISO_DIR"
+          sudo wget http://srv52-bud.infra.mirantis.net/fuelweb-iso/fuel-8.0-570-2016-02-15_13-42-00.iso -P "$ISO_DIR"
       - trigger-builds:
         - project: 'create_param_environment'
           same-node: true
