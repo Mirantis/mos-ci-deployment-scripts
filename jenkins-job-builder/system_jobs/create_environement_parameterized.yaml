@@ -77,7 +77,7 @@
           name: MOS_VERSION
       - string:
           name: INTERFACE_MODEL
-          default: "virtion"
+          default: "virtio"
       - string:
           name: KVM_USE
           default: "TRUE"
