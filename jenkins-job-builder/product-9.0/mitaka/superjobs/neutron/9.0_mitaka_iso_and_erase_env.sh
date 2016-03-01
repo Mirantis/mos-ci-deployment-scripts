@@ -1,3 +1,4 @@
+sudo rm -rf mos-ci-deployment-scripts
 git clone https://github.com/Mirantis/mos-ci-deployment-scripts.git
 PARSED_LINK='https://product-ci.infra.mirantis.net/view/9.0-mitaka/job/9.0-kilo.all/lastSuccessfulBuild/api/python'
 ISO_DIR='/var/www/fuelweb-iso'
