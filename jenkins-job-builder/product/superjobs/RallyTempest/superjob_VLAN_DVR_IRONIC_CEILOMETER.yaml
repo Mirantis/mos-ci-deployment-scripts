@@ -2,6 +2,7 @@
     name: superjob_for_VLAN_DVR_IRONIC_CEILOMETER_TEMPEST
     builders:
       - shell: |
+          ISO_DIR='/var/www/fuelweb-iso'
           sudo rm -rf "$ISO_DIR"
           sudo wget http://srv52-bud.infra.mirantis.net/fuelweb-iso/fuel-8.0-570-2016-02-15_13-42-00.iso -P "$ISO_DIR"
       - trigger-builds:
