@@ -36,7 +36,6 @@
 
     triggers:
         - timed: "30 21 * * *"
-    scm: mos-ci-deployment-scripts
     project-type: freestyle
     defaults: global
     node: Slave-srv129
