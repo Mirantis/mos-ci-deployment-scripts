@@ -13,11 +13,11 @@
           description: 'Upgrade tarball magnet link'
       - string:
           name: DEB_LATEST
-          default: 'latest'
+          default: 'snapshots/ubuntu-latest'
           description: "Snapshot timestamp without version id. E.g.: '2015-09-27-173001' or 'latest'"
       - string:
           name: RPM_LATEST
-          default: 'latest'
+          default: 'snapshots/centos-6-latest'
       - string:
           name: UBUNTU_MIRROR_ID
           default: 'ubuntu-latest'
