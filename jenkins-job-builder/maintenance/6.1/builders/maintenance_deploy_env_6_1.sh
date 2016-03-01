@@ -60,7 +60,7 @@ fi
 
 # erase previous environments
 if ${ERASE_PREV_ENV} ; then
-    dos.py list | tail -n+3 | xargs -I {} dos.py erase {}
+    dos.py list | xargs -I {} dos.py erase {}
 fi
 
 if [ -n ${FILE} ]; then
