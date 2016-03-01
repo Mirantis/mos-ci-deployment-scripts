@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 # This script allows to deploy OpenStack environments
 # using simple configuration file
 
@@ -14,7 +14,7 @@ if $SKIP_INSTALL_ENV ; then
 fi
 
 # exit from shell if error happens
-set -e
+set -ex
 
 # Download and link ISO
 ISO_PATH=$(seedclient-wrapper -d -m "${MAGNET_LINK}" -v --force-set-symlink -o "${WORKSPACE}")
@@ -63,7 +63,9 @@ if ${ERASE_PREV_ENV} ; then
     dos.py list | tail -n+3 | xargs -I {} dos.py erase {}
 fi
 
-cat jenkins-job-builder/maintenance/helpers/$FILE >  fuel-qa/fuelweb_test/tests/test_services.py
+if [ -n ${FILE} ]; then
+    cat jenkins-job-builder/maintenance/helpers/${FILE} > fuel-qa/fuelweb_test/tests/test_services.py
+fi
 
 cd fuel-qa
 

@@ -24,7 +24,7 @@ class TempestCeph(TestBasic):
     """TempestCeph."""
 
     @test(depends_on=[SetupEnvironment.prepare_slaves_5],
-          groups=["tempest_ceph_services"])
+          groups=["tempest_ceph_services_centos"])
     @log_snapshot_after_test
     def tempest_ceph_services_centos(self):
         """Deploy env with 3 controller+mongo and 2
@@ -86,7 +86,7 @@ class TempestCeph(TestBasic):
 
 
     @test(depends_on=[SetupEnvironment.prepare_slaves_5],
-          groups=["tempest_cinder_glance_swift_tun"])
+          groups=["tempest_cinder_glance_swift_tun_centos"])
     @log_snapshot_after_test
     def tempest_cinder_glance_swift_tun_centos(self):
         """Deploy env with 3 controller and 2 compute nodes.
