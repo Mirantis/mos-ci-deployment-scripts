@@ -78,7 +78,7 @@
     defaults: global
     node: slave-srv62
     description: 'VLAN CINDER-NOVA-HEAT tests with reporting to TestRail in a row.'
-    disabled: false
+    disabled: true
     display-name: 'VLAN CINDER-NOVA-HEAT'
     concurrent: false
     retry-count: 3

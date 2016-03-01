@@ -20,10 +20,10 @@
             SNAPSHOT_NAME=ha_deploy_VLAN
 
     triggers:
-        - timed: "40 21 * * *"
+        - timed: "* */1 * * *"
     project-type: freestyle
     defaults: global
-    node: slave-srv98
+    node: slave-srv136
     description: 'VLAN GLANCE tests'
     disabled: false
     display-name: 'superjob_for_VLAN_GLANCE'

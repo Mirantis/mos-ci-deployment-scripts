@@ -1,6 +1,8 @@
 - job:
     name: 9.0-superjob_for_VxLAN_L2_POP_L3_HA_NEUTRON-mitaka
     builders:
+      - shell:
+          !include-raw: 9.0_mitaka_iso_and_erase_env.sh
       - trigger-builds:
         - project: 'create_param_environment'
           same-node: true

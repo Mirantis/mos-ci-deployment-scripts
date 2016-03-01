@@ -56,6 +56,9 @@
           name: COMPUTES_COUNT
           default: "2"
       - string:
+          name: CONTROLLERS_COUNT
+          default: "3"
+      - string:
           name: IRONICS_COUNT
           default: "0"
       - string:
@@ -84,6 +87,7 @@
       - string:
           name: TEMPEST
           default: "FALSE"
+
 
 
     name: 9.0_create_param_environment
@@ -147,6 +151,7 @@
             export DISABLE_SSL="$DISABLE_SSL"
             export FUEL_DEV_VER="$FUEL_DEV_VER"
             export COMPUTES_COUNT="$COMPUTES_COUNT"
+            export CONTROLLERS_COUNT="$CONTROLLERS_COUNT"
             export IRONICS_COUNT="$IRONICS_COUNT"
             export FUEL_QA_VER="$FUEL_QA_VER"
             export NOVA_QUOTAS_ENABLED="$NOVA_QUOTAS_ENABLED"
