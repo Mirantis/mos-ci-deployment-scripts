@@ -70,22 +70,17 @@ class DeployEnv(actions_base.ActionsBase):
         config = load_yaml(plugins_config)
         self.plugins_dependencies = config['dependencies']
         self.plugins_paths = config['paths']
-        self.plugins_to_roles = config['plugins_to_roles']
+        self.plugins_status = config['plugins_status']
 
     @property
     def required_plugins(self):
         """Get the list of plugins which are going to be used."""
         if self._required_plugins is None:
-            self._required_plugins = set()
-            nodes = self.env_config['nodes']
-            for plugin_name in self.plugins_paths.keys():
-                for node in nodes:
-                    if (node['roles'] is not None and
-                            self.plugins_to_roles[plugin_name] in node['roles']):
-                        self._required_plugins.add(plugin_name)
-                        break
-            self._sort_required_plugins()
+            self._required_plugins = [
+                name for name, status in self.plugins_status.items()
+                if status]
 
+            self._sort_required_plugins()
             logger.info("The following plugins will be used: {}".format(
                 self._required_plugins))
 
