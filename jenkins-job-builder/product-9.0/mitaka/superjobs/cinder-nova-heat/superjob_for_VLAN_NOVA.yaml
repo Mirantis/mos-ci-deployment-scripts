@@ -2,7 +2,7 @@
     name: 9.0-superjob_for_VLAN_NOVA-mitaka
     builders:
       - shell:
-          !include-raw: 9.0_mitaka_iso_and_erase_env.sh
+          !include-raw: ../neutron/9.0_mitaka_iso_and_erase_env.sh
       - trigger-builds:
         - project: '9.0_create_param_environment'
           same-node: true
