@@ -87,4 +87,8 @@
       numToKeep: 20
       artifactDaysToKeep: -1
       artifactNumToKeep: -1
-
+    publishers:
+      - email:
+          recipients: vrovachev@mirantis.com
+      - workspace-cleanup:
+          fail-build: false
