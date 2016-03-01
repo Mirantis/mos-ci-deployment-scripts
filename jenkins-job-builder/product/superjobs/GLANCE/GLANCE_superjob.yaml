@@ -23,7 +23,7 @@
         - timed: "* */1 * * *"
     project-type: freestyle
     defaults: global
-    node: slave-srv136
+    node: Slave-srv136
     description: 'VLAN GLANCE tests'
     disabled: false
     display-name: 'superjob_for_VLAN_GLANCE'
