@@ -39,7 +39,7 @@
     defaults: global
     node: Slave-srv137
     description: 'VLAN+DVR NEUTRON tests'
-    disabled: false
+    disabled: true
     display-name: 'mitaka-9.0-NEUTRON:VLAN+DVR'
     concurrent: false
     retry-count: 3
