@@ -169,7 +169,6 @@ fi
 
 # create new environment
 # more time can be required to deploy env
-export DEPLOYMENT_TIMEOUT=10000
 export ENV_NAME=$ENV_NAME
 export ADMIN_NODE_MEMORY=4096
 export SLAVE_NODE_CPU=3
