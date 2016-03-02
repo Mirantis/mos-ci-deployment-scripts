@@ -2,7 +2,7 @@
     name: 9.0-superjob_for_VxLAN_L2_POP_NEUTRON-kilo
     builders:
       - trigger-builds:
-        - project: 'create_param_environment'
+        - project: '9.0_create_param_environment'
           same-node: true
           block: true
           predefined-parameters: |

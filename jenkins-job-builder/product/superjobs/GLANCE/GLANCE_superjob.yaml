@@ -20,7 +20,7 @@
             SNAPSHOT_NAME=ha_deploy_VLAN
 
     triggers:
-        - timed: "* */1 * * *"
+        - timed: "0 */1 * * *"
     project-type: freestyle
     defaults: global
     node: Slave-srv136
