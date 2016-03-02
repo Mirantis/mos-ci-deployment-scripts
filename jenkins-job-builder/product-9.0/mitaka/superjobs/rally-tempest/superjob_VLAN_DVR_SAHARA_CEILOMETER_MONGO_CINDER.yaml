@@ -9,23 +9,23 @@
           block: true
           predefined-parameters: |
             # BOOL_VARS="L2_POP_ENABLE DVR_ENABLE L3_HA_ENABLE SAHARA_ENABLE MURANO_ENABLE CEILOMETER_ENABLE IRONIC_ENABLE RADOS_ENABLE"
-            SNAPSHOT_NAME=ha_deploy_VLAN_DVR_SAHARA_CEILOMETER_IRONIC_MONGO_CINDER
+            SNAPSHOT_NAME=ha_deploy_VLAN_DVR_SAHARA_CEILOMETER_MONGO_CINDER
             TEST_TYPE=TEMPEST, Cinder LVM, Swift
             SEGMENT_TYPE=VLAN
             DISABLE_SSL=TRUE
             DVR_ENABLE=TRUE
             CEILOMETER_ENABLE=TRUE
-            IRONIC_ENABLE=TRUE
+            IRONIC_ENABLE=FALSE
             MONGO_ENABLE=TRUE
             SAHARA_ENABLE=TRUE
-            IRONICS_COUNT=1
+            #IRONICS_COUNT=1
             #NOVA_QUOTAS_ENABLED=TRUE
             SLAVE_NODE_CPU=2
             SLAVE_NODE_MEMORY=8192
-            # CHANGE_CONF_YAML=YES
+            CHANGE_CONF_YAML=NO
             DEPLOYMENT_TIMEOUT=15000
-            MOS_VERSION=MITAKA
-            #TEMPEST=TRUE
+            MOS_VERSION=mitaka
+            TEMPEST=FALSE
 
       - trigger-builds:
         - project: '9.0_rally_tempest_tests_for_second_flow'
