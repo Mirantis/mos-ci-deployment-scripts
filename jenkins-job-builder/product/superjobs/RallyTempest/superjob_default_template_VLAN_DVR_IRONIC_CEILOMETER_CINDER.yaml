@@ -54,7 +54,7 @@
 #        - timed: "30 21 * * *"
     project-type: freestyle
     defaults: global
-    node: Slave-7775
+    node: Slave-7777
     description: 'VLAN+DVR+IRONIC+CEILOMETER+MONGO TEMPEST tests'
     disabled: false
     display-name: 'RALLY-TEMPEST default_template_VLAN+DVR+IRONIC+CEILOMETER+MONGO'
