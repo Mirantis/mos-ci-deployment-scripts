@@ -279,7 +279,7 @@ fi
 
 # Set fuel QA version
 # https://github.com/openstack/fuel-qa/branches
-set_default FUEL_QA_VER 'stable/8.0'
+set_default FUEL_QA_VER 'master'
 
 # Erase all previous environments by default
 set_default ERASE_PREV_ENV true
@@ -309,7 +309,7 @@ if [ ! -d fuel-qa ]; then
 else
     pushd fuel-qa
     git clean -f -d -x
-    git checkout -- system_test/__init__.py
+    git checkout -- *
     git checkout "${FUEL_QA_VER}"
     git reset --hard
     git pull
@@ -334,8 +334,7 @@ if [ -z ${PLUGINS_CONFIG_PATH} ]; then
     export PLUGINS_CONFIG_PATH=$(pwd)/plugins.yaml
 fi
 
-cp __init__.py fuel-qa/system_test/
-cp deploy_env.py fuel-qa/system_test/tests/
+cp test_deploy_env.py fuel-qa/system_test/tests/
 cp mos_tests.yaml fuel-qa/system_test/tests_templates/devops_configs/
 cp ${CONFIG_NAME} fuel-qa/system_test/tests_templates/tests_configs
 
@@ -368,7 +367,7 @@ fi
 # more time can be required to deploy env
 set_default DEPLOYMENT_TIMEOUT 10000
 
-./utils/jenkins/system_tests.sh -k -K -j fuelweb_test -t test -V ${V_ENV_DIR} -w $(pwd) -o --group="system_test.deploy_env($GROUP_NAME)"
+./run_system_test.py run 'system_test.deploy_env' --with-config $GROUP_NAME
 
 # make snapshot if deployment is successful
 dos.py suspend ${ENV_NAME}

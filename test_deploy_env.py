@@ -16,16 +16,20 @@ import os
 
 from proboscis import factory
 
-from system_test.helpers.decorators import action
-from system_test.helpers.decorators import deferred_decorator
+from system_test import action
+from system_test import deferred_decorator
 from system_test.helpers.decorators import make_snapshot_if_step_fail
-from system_test.helpers.utils import case_factory
-from system_test.helpers.utils import load_yaml
+from system_test.core.repository import case_factory
+from system_test.core.discover import load_yaml
 from system_test import logger
-from system_test.tests import actions_base
+from system_test import testcase
+
+from system_test.tests import ActionTest
+from system_test.actions import BaseActions
 
 
-class DeployEnv(actions_base.ActionsBase):
+@testcase(groups=['system_test.deploy_env'])
+class DeployEnv(ActionTest, BaseActions):
     """Deploy cluster for tests
 
     Scenario:
@@ -133,8 +137,3 @@ class DeployEnv(actions_base.ActionsBase):
             self.plugin_path = self.plugins_paths[plugin_name]
             self.enable_plugin()
             logger.info("{} plugin has been enabled.".format(plugin_name))
-
-
-@factory
-def cases():
-    return case_factory(DeployEnv)
