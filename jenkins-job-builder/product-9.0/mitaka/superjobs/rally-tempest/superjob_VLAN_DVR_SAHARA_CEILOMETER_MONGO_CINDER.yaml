@@ -1,5 +1,5 @@
 - job:
-    name: superjob_for_VLAN_DVR_IRONIC_CEILOMETER_TEMPEST
+    name: 9.0_superjob_for_VLAN_DVR_IRONIC_CEILOMETER_TEMPEST
     builders:
       - shell: |
           !include-raw: ../neutron/9.0_mitaka_iso_and_erase_env.sh
