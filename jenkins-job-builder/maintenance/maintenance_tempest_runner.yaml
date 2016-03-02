@@ -52,9 +52,7 @@
           builders:
             - shell: |
                 set -e
-                REPORT_PATH=`cat ./param.pm`
-                sudo mkdir -p "$REPORT_PATH"
+                REPORT_PATH="${REPORT_PREFIX}/${ENV_NAME}_${SNAPSHOT_NAME}/"
                 sudo cp verification.xml "$REPORT_PATH"
-                sudo cp build_url "$REPORT_PATH"
       - workspace-cleanup:
           fail-build: false
