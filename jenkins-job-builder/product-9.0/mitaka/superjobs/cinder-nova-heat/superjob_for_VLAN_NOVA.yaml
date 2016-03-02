@@ -44,7 +44,7 @@
     defaults: global
     node: slave-7775
     description: 'VLAN NOVA tests with reporting to TestRail in a row.'
-    disabled: false
+    disabled: true
     display-name: '9.0-mitaka VLAN NOVA'
     concurrent: false
     retry-count: 3

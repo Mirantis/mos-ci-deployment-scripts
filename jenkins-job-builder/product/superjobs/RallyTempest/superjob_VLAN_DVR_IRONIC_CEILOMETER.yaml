@@ -56,7 +56,7 @@
     defaults: global
     node: Slave-7777
     description: 'VLAN+DVR+IRONIC+CEILOMETER+MONGO TEMPEST tests'
-    disabled: false
+    disabled: true
     display-name: 'RALLY-TEMPEST VLAN+DVR+IRONIC+CEILOMETER+MONGO'
     concurrent: false
     retry-count: 3
