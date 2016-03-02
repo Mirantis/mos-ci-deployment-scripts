@@ -88,7 +88,7 @@
             echo 'file=`find / -name tempest.conf`' >> ssh_scr.sh
             echo 'echo "backup = False" >> $file' >> ssh_scr.sh
             echo ' sed -i "95i ironic = True" $file ' >> ssh_scr.sh
-            # echo ' sed -i "s/sahara = False/sahara = True/g" $file ' >> ssh_scr.sh
+            echo ' sed -i "s/sahara = False/sahara = True/g" $file ' >> ssh_scr.sh
 
             #temp_fix
 
@@ -96,8 +96,8 @@
             #echo '$OS_AUTH_URL_V="$OS_AUTH"v2.0' >> ssh_scr.sh
             #echo 'echo "$OS_AUTH_URL_V" >> /var/lib/rally-tempest-container-home-dir/openrc' >> ssh_scr.sh
 
-            #echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start --system-wide"' >> ssh_scr.sh
-            echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start"' >> ssh_scr.sh
+            echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start --system-wide"' >> ssh_scr.sh
+            #echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start"' >> ssh_scr.sh
 
 
 
@@ -116,7 +116,7 @@
     defaults: global
     description: 'Runs Tempest tests'
     disabled: false
-    display-name: 'Rally Tempest Testing for 2FLOW'
+    display-name: '9.0_Rally Tempest Testing for 2FLOW'
     concurrent: true
     browser: githubweb
     retry-count: 3
