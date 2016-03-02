@@ -350,7 +350,7 @@ if [ ${DVR_ENABLE} == 'true' ] || [ ${L3_HA_ENABLE} == 'true' ] || [ ${L2_POP_EN
     patch_fuel_qa DVR_L2_pop_HA.patch
 fi
 
-if [ ${INTERFACE_MODEL} == 'virtio' ]; then
+if [[ ${INTERFACE_MODEL} == 'virtio' ]]; then
     # Virtio network interfaces have names eth0..eth5
     # (rather than default names - enp0s3..enp0s8)
     patch_fuel_qa virtio.patch

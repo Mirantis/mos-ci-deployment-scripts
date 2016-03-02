@@ -1,24 +1,24 @@
 - job:
-    name: maintenance_tempest_cinder_glance_swift_tun_7_0
+    name: maintenance_tempest_all_ceph_6_1
     parameters:
       - string:
           name: MAGNET_LINK
-          default: 'magnet:?xt=urn:btih:21b4d46c9f1cec02e336b1f9771d4f7c27ec724b&dn=MirantisOpenStack-7.0.iso&tr=http%3A%2F%2Ftracker01-bud.infra.mirantis.net%3A8080%2Fannounce&tr=http%3A%2F%2Ftracker01-scc.infra.mirantis.net%3A8080%2Fannounce&tr=http%3A%2F%2Ftracker01-msk.infra.mirantis.net%3A8080%2Fannounce&ws=http%3A%2F%2Fvault.infra.mirantis.net%2FMirantisOpenStack-7.0.iso'
+          default: 'magnet:?xt=urn:btih:9d59953417e0c2608f8fa0ffe43ceac00967708f&dn=MirantisOpenStack-6.1.iso&tr=http%3A%2F%2Ftracker01-bud.infra.mirantis.net%3A8080%2Fannounce&tr=http%3A%2F%2Ftracker01-scc.infra.mirantis.net%3A8080%2Fannounce&tr=http%3A%2F%2Ftracker01-msk.infra.mirantis.net%3A8080%2Fannounce&ws=http%3A%2F%2Fvault.infra.mirantis.net%2FMirantisOpenStack-6.1.iso'
           description: 'ISO magnet link'
       - string:
           name: UPGRADE_TARBALL_MAGNET_LINK
-          default: 'magnet:?xt=urn:btih:e4521941a159cbbf345884c7c7ec6a484a139d3b&dn=MirantisOpenStack-7.0-upgrade.tar.lrz&tr=http%3A%2F%2Ftracker01-bud.infra.mirantis.net%3A8080%2Fannounce&tr=http%3A%2F%2Ftracker01-scc.infra.mirantis.net%3A8080%2Fannounce&tr=http%3A%2F%2Ftracker01-msk.infra.mirantis.net%3A8080%2Fannounce&ws=http%3A%2F%2Fvault.infra.mirantis.net%2FMirantisOpenStack-7.0-upgrade.tar.lrz'
+          default: 'magnet:?xt=urn:btih:9d59953417e0c2608f8fa0ffe43ceac00967708f&dn=MirantisOpenStack-6.1.iso&tr=http%3A%2F%2Ftracker01-bud.infra.mirantis.net%3A8080%2Fannounce&tr=http%3A%2F%2Ftracker01-mnv.infra.mirantis.net%3A8080%2Fannounce&tr=http%3A%2F%2Ftracker01-msk.infra.mirantis.net%3A8080%2Fannounce&ws=http%3A%2F%2Fvault.infra.mirantis.net%2FMirantisOpenStack-6.1.iso'
           description: 'Upgrade tarball magnet link'
       - string:
           name: DEB_LATEST
-          default: 'latest'
+          default: 'snapshots/ubuntu-latest'
           description: "Snapshot timestamp without version id. E.g.: '2015-09-27-173001' or 'latest'"
       - string:
           name: RPM_LATEST
-          default: 'latest'
+          default: 'snapshots/centos-6-latest'
       - string:
           name: UBUNTU_MIRROR_ID
-          default: 'ubuntu-latest'
+          default: 'latest'
       - bool:
           name: ENABLE_PROPOSED
           default: false
@@ -36,10 +36,10 @@
           default: false
       - bool:
           name: DISABLE_SSL
-          default: true
+          default: false
     builders:
       - trigger-builds:
-        - project: 'maintenance_create_param_environment_7_0'
+        - project: 'maintenance_create_param_environment_6_1'
           same-node: true
           block: true
           predefined-parameters: |
@@ -54,9 +54,9 @@
             ERASE_PREV_ENV=$ERASE_PREV_ENV
             SKIP_INSTALL_ENV=$SKIP_INSTALL_ENV
             DISABLE_SSL=$DISABLE_SSL
-            ENV_NAME=maintenance_tempest_cinder_glance_swift_tun_7_0
-            FILE=test_tempest_ceph_services_7_0.py
-            GROUP=tempest_cinder_glance_swift_tun
+            ENV_NAME=maintenance_tempest_all_ceph_6_1
+            FILE=test_tempest_ceph_services_6_1.py
+            GROUP=tempest_ceph_services_centos
       - trigger-builds:
         - project: 'maintenance_tempest_runner'
           same-node: true
@@ -64,16 +64,16 @@
           block-thresholds:
             build-step-failure-threshold: 'never'
           predefined-parameters: |
-            ENV_NAME=tempest_cinder_glance_swift_tun_7_0
-            SNAPSHOT_NAME=tempest_cinder_glance_swift_tun
+            ENV_NAME=maintenance_tempest_all_ceph_6_1
+            SNAPSHOT_NAME=tempest_test_ceph
             REPORT_PREFIX=/srv/jenkins/rally-tempest
-            VENV_PATH=/home/jenkins/qa-venv-7.0
+            VENV_PATH=/home/jenkins/qa-venv-6.1
     project-type: freestyle
     defaults: global
-    node: maintenance_173_12
-    description: 'TUN+VOLUME+IMAGE+SWIFT TEMPEST tests (7.0 maintenance)'
+    node: maintenance-10
+    description: 'VLAN+CEPH+SAHARA+MURANO_CEILOMETER_RADOS_MONGO TEMPEST tests (6.1 maintenance)'
     disabled: false
-    display-name: 'TUN+VOLUME+IMAGE+SWIFT TEMPEST tests (7.0 maintenance)'
+    display-name: 'VLAN+CEPH+SAHARA+MURANO_CEILOMETER_RADOS_MONGO TEMPEST tests (6.1 maintenance)'
     concurrent: false
     retry-count: 3
     logrotate:
