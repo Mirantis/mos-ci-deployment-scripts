@@ -66,6 +66,10 @@ export FUEL_LDAP_PLUGIN_PATH=
 # can be TRUE or FALSE
 export NOVA_QUOTAS_ENABLED=
 
+# deployment config
+# can be TRUE or FALSE
+export NOVA_QUOTAS_ENABLED=
+
 # libs versions
 export FUEL_QA_VER=
 
