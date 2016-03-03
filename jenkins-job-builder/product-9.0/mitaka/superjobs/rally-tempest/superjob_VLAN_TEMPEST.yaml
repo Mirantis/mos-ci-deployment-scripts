@@ -49,7 +49,7 @@
     node: Slave-srv136
     description: 'VLAN+DVR+IRONIC+CEILOMETER+MONGO TEMPEST tests'
     disabled: false
-    display-name: '9.0-RALLY-TEMPEST VLAN+CEILOMETER+MONGO'
+    display-name: '9.0-RALLY-TEMPEST VLAN'
     concurrent: false
     retry-count: 3
     logrotate:
