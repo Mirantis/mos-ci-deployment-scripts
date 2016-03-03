@@ -159,8 +159,8 @@
             if [[ "$TEMPEST" == 'TRUE' ]];
             then
             sed -i 's|pip install -r fuel-qa/fuelweb_test/requirements.txt --upgrade|cd fuel-qa \&\& git fetch https://review.openstack.org/openstack/fuel-qa refs/changes/81/281281/1 \&\& git checkout FETCH_HEAD \&\& cd ../ \&\& pip install -r fuel-qa/fuelweb_test/requirements.txt --upgrade|g' deploy_env.sh
-            sed -i '181i         - label: eht1' mos_tests_template.yaml
-            sed -i '181i           l2_network_device: public' mos_tests_template.yaml
+            sed -i '181i\         - label: eht1' mos_tests_template.yaml
+            sed -i '181i\           l2_network_device: public' mos_tests_template.yaml
 
             fi
 
