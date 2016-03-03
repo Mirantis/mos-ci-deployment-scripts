@@ -22,7 +22,7 @@
             TEMPEST=FALSE
 
       - trigger-builds:
-        - project: '9.0_rally_tempest_tests_for_VLAN_CEILOMETER_MONGO'
+        - project: '9.0_rally_tempest_tests_for_VLAN'
           same-node: true
           block: true
           block-thresholds:
