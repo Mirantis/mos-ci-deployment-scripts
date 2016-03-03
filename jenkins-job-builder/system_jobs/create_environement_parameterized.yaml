@@ -162,6 +162,10 @@
             sed -i '181i\         - label: eth1' mos_tests_template.yaml
             sed -i '182i\           l2_network_device: public' mos_tests_template.yaml
 
+            echo '          eth1:' >> mos_tests_template.yaml
+            echo '            networks:' >> mos_tests_template.yaml
+            echo '             - public' >> mos_tests_template.yaml
+
             fi
 
             /bin/bash -x deploy_env.sh
