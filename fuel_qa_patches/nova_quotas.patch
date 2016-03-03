@@ -1,0 +1,45 @@
+From 33444395c7701426ffb3fe1533de2a08bae53bd5 Mon Sep 17 00:00:00 2001
+From: Volodymyr Shypyguzov <vshypyguzov@mirantis.com>
+Date: Wed, 17 Feb 2016 15:25:56 +0200
+Subject: [PATCH] Add NOVA_QUOTAS_ENABLED setting
+
+Also, add this setting handling in the create_cluster method
+
+Change-Id: I5ad30753ab42b34931b8d68cc8bfceabf682fa96
+Closes-Bug: #1546539
+---
+
+diff --git a/fuelweb_test/models/fuel_web_client.py b/fuelweb_test/models/fuel_web_client.py
+index 139fd86..31843b1 100644
+--- a/fuelweb_test/models/fuel_web_client.py
++++ b/fuelweb_test/models/fuel_web_client.py
+@@ -65,6 +65,7 @@
+ from fuelweb_test.settings import DNS_SUFFIX
+ from fuelweb_test.settings import KVM_USE
+ from fuelweb_test.settings import MULTIPLE_NETWORKS
++from fuelweb_test.settings import NOVA_QUOTAS_ENABLED
+ from fuelweb_test.settings import NEUTRON
+ from fuelweb_test.settings import NEUTRON_SEGMENT
+ from fuelweb_test.settings import NEUTRON_SEGMENT_TYPE
+@@ -530,6 +531,11 @@
+                 hpv_data = attributes['editable']['common']['use_vcenter']
+                 hpv_data['value'] = True
+ 
++            if NOVA_QUOTAS_ENABLED:
++                logger.info('Enable Nova quotas')
++                nova_quotas = attributes['editable']['common']['nova_quota']
++                nova_quotas['value'] = True
++
+             # Updating attributes is needed before updating
+             # networking configuration because additional networks
+             # may be created by new components like ironic
+diff --git a/fuelweb_test/settings.py b/fuelweb_test/settings.py
+index 7baec81..bec78be 100644
+--- a/fuelweb_test/settings.py
++++ b/fuelweb_test/settings.py
+@@ -603,3 +603,5 @@
+ IRONIC_USER_IMAGE_URL = os.environ.get(
+     "IRONIC_USER_IMAGE_URL", "https://cloud-images.ubuntu.com/trusty/current/"
+                              "trusty-server-cloudimg-amd64.tar.gz")
++
++NOVA_QUOTAS_ENABLED = get_var_as_bool("NOVA_QUOTAS_ENABLED", False)
