@@ -16,15 +16,6 @@
           default: /srv/jenkins/rally-tempest
     builders:
         - shell: |
-            ISO_NAME=`ls "$ISO_DIR"`
-            ENV_NAME=MOS_CI_"$ISO_NAME"
-            SNAPSHOT=`echo $SNAPSHOT_NAME | sed 's/ha_deploy_//'`
-            sudo echo '' > /home/*/.ssh/known_hosts
-
-            dos.py revert-resume "$ENV_NAME" "$SNAPSHOT_NAME"
-        - shell:
-            !include-raw: add_interface.sh
-        - shell: |
             #sudo rm -rf "$ISO_DIR"
             #sudo wget http://srv52-bud.infra.mirantis.net/fuelweb-iso/fuel-8.0-570-2016-02-15_13-42-00.iso -P "$ISO_DIR"
 
