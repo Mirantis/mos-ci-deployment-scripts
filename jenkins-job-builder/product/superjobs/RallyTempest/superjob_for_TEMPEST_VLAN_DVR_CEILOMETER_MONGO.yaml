@@ -1,5 +1,5 @@
 - job:
-    name: superjob_for_default_template_VLAN_DVR_SAHARA_IRONIC_CEILOMETER_CINDER_TEMPEST
+    name: 8.0-superjob_for_TEMPEST_VLAN_DVR_CEILOMETER_MONGO
     builders:
       - shell: |
           ISO_DIR='/var/www/fuelweb-iso'
