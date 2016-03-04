@@ -171,9 +171,6 @@
             /bin/bash -x deploy_env.sh
             fi
 
-        - shell:
-            !include-raw: add_interface.sh
-
     project-type: freestyle
     defaults: global
     scm:
