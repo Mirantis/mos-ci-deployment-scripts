@@ -26,6 +26,8 @@
       - string:
           name: SUITE
       - string:
+          name: MILESTONE
+      - string:
           name: MOS_VERSION
 
     builders:
@@ -60,6 +62,12 @@
             then
             TESTRAIL_SUITE="$SUITE"
             export TESTRAIL_SUITE="$SUITE"
+            fi
+
+            if [ -n "$MILESTONE" ];
+            then
+            TESTRAIL_MILESTONE="$MILESTONE"
+            export TESTRAIL_MILESTONE="$MILESTONE"
             fi
 
             sudo python setup.py install
