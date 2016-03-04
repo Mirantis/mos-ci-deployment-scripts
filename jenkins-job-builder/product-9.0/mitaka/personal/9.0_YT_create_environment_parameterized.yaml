@@ -127,7 +127,7 @@
             export KVM_USE="$KVM_USE"
 
             /bin/bash -x deploy_env.sh
-            fi
+
 
     project-type: freestyle
     defaults: global
