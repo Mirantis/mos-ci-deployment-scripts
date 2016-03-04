@@ -45,7 +45,8 @@ SSH_CMD="sshpass -p r00tme ssh ${SSH_OPTS} root@${FUEL_ADM_IP}"
 
 waitForSSH "$FUEL_ADM_IP"
 
-PUB_INTERFACE=$(${SSH_CMD} 'ifconfig -a ' | grep -E "(flags=|Link encap)" |grep -v  "docker" | sed '2!d' | awk {'print $1'} | cut -d ":" -f1)
+#PUB_INTERFACE=$(${SSH_CMD} 'ifconfig -a ' | grep -E "(flags=|Link encap)" |grep -v  "docker" | sed '2!d' | awk {'print $1'} | cut -d ":" -f1)
+PUB_INTERFACE=eth1
 IFCFG_PATH="/etc/sysconfig/network-scripts"
 IFCFG_PUB_FILE="$IFCFG_PATH/ifcfg-$PUB_INTERFACE"
 
