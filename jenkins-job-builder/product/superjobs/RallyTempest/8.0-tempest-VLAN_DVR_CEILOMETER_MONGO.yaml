@@ -1,5 +1,5 @@
 - job:
-    name: rally_tempest_tests_for_second_flow
+    name: 8.0-tempest-VLAN_DVR_CEILOMETER_MONGO
     wrappers:
       - build-name:
           name: Build_Number:${BUILD_NUMBER}_ISO_ID:${FILE,path="build-name-setter.info"}
@@ -93,8 +93,8 @@
             echo 'docker exec "$DOCK_ID" setup-tempest' >> ssh_scr.sh
             echo 'file=`find / -name tempest.conf`' >> ssh_scr.sh
             echo 'echo "backup = False" >> $file' >> ssh_scr.sh
-            echo ' sed -i "95i ironic = True" $file ' >> ssh_scr.sh
-            echo ' sed -i "s/sahara = False/sahara = True/g" $file ' >> ssh_scr.sh
+            echo ' sed -i "95i ironic = False" $file ' >> ssh_scr.sh
+            #echo ' sed -i "s/sahara = False/sahara = True/g" $file ' >> ssh_scr.sh
 
             #temp_fix
 
@@ -122,7 +122,7 @@
     defaults: global
     description: 'Runs Tempest tests'
     disabled: false
-    display-name: '8.0-Rally_Tempest_Testing '
+    display-name: '8.0-Rally_Tempest_Testing VLAN_DVR_CEILOMETER_MONGO'
     concurrent: true
     browser: githubweb
     retry-count: 3
