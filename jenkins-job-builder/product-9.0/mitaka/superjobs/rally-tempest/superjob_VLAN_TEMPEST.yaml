@@ -14,6 +14,7 @@
             SEGMENT_TYPE=VLAN
             DISABLE_SSL=TRUE
             IRONIC_ENABLE=FALSE
+            NOVA_QUOTAS_ENABLED=TRUE
             SLAVE_NODE_CPU=2
             SLAVE_NODE_MEMORY=8192
             CHANGE_CONF_YAML=NO
@@ -42,8 +43,8 @@
             REPORT_FILE=verification.xml
             SUITE=[9.0][MOSQA] Tempest 9.0
 
-#    triggers:
-#        - timed: "30 21 * * *"
+    triggers:
+        - timed: "30 21 * * *"
     project-type: freestyle
     defaults: global
     node: Slave-srv136
