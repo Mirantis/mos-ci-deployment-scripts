@@ -69,7 +69,7 @@ service sshd restart;
 }
 
 
-
+set +e
 
 ISO_NAME=`ls "$ISO_DIR"`
 ENV_NAME=MOS_CI_"$ISO_NAME"
