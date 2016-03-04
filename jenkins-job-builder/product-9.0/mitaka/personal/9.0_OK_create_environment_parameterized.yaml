@@ -79,12 +79,10 @@
           default: "TRUE"
 
     name: OK_9.0_create_param_environment
-    wrappers:
-      - build-name:
-          name: ${BUILD_NUMBER}.${FILE,path="build-name-setter.info"}
-      - ansicolor
+
     builders:
         - shell: |
+            set +x
             echo `hostname`
             ISO_NAME=`ls "$ISO_DIR"`
             ENV_NAME=MOS_CI_"$ISO_NAME"
