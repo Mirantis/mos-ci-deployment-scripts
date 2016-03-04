@@ -55,7 +55,7 @@
     node: Slave-7777
     description: 'VLAN+DVR+CEILOMETER+MONGO TEMPEST tests'
     disabled: false
-    display-name: '9.0-superjob_for_TEMPEST_VLAN_DVR_CEILOMETER_MONGO'
+    display-name: '8.0-superjob_for_TEMPEST_VLAN_DVR_CEILOMETER_MONGO'
     concurrent: false
     retry-count: 3
     logrotate:
