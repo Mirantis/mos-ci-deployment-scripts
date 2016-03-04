@@ -32,6 +32,7 @@
             SNAPSHOT_NAME=ha_deploy_VLAN_DVR_CINDER
             TEST_GROUP=NEUTRON
             REPORT_PREFIX=/srv/jenkins/neutron
+            MILESTONE=9.0
 
     triggers:
         - timed: "30 21 * * *"

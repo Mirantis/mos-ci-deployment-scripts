@@ -42,6 +42,7 @@
             REPORT_PREFIX=/srv/jenkins/rally-tempest
             REPORT_FILE=verification.xml
             SUITE=[9.0][MOSQA] Tempest 9.0
+            MILESTONE=9.0
 
     triggers:
         - timed: "30 21 * * *"

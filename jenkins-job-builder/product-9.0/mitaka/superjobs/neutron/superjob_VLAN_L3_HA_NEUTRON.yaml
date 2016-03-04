@@ -32,6 +32,7 @@
             TEST_GROUP=NEUTRON
             REPORT_PREFIX=/srv/jenkins/neutron
             MOS_VERSION=mitaka
+            MILESTONE=9.0
 
     triggers:
         - timed: "30 21 * * *"
