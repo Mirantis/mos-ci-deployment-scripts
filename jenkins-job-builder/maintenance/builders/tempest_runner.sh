@@ -1,191 +1,154 @@
 #!/bin/bash -xe
 
 REPORT_PATH="${REPORT_PREFIX}/${ENV_NAME}_${SNAPSHOT_NAME}/"
-LOG_NAME=${LOG_NAME:-"log.txt"}
-export LOG="${REPORT_PATH}${LOG_NAME}"
-if [ -d "${REPORT_PATH}" ]; then
-    sudo rm -rf ${REPORT_PATH}
-fi;
-sudo mkdir ${REPORT_PATH}
-sudo chmod 777 ${REPORT_PATH}
-touch ${LOG}
-chmod 666 ${LOG}
 
-echo "$BUILD_URL" > ${REPORT_PATH}build_url
+echo "$BUILD_URL" > build_url
 
 INSTALL_MOS_TEMPEST_RUNNER_LOG_NAME=${INSTALL_MOS_TEMPEST_RUNNER_LOG_NAME:-"install_mos_tempest_runner_log.txt"}
-export INSTALL_MOS_TEMPEST_RUNNER_LOG="${REPORT_PATH}${INSTALL_MOS_TEMPEST_RUNNER_LOG_NAME}"
+export INSTALL_MOS_TEMPEST_RUNNER_LOG="${INSTALL_MOS_TEMPEST_RUNNER_LOG_NAME}"
 
 RUN_TEMPEST_LOG_NAME=${RUN_TEMPEST_LOG_NAME:-"run_tempest_log.txt"}
-export RUN_TEMPEST_LOG="${REPORT_PATH}${RUN_TEMPEST_LOG_NAME}"
-
-
-
-SSH_OPTIONS="-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
+export RUN_TEMPEST_LOG="${RUN_TEMPEST_LOG_NAME}"
 
 get_master_ip(){
-    source ${VENV_PATH}/bin/activate
     echo 'from devops.models import Environment' > temp.py
     echo "env = Environment.get(name='$ENV_NAME')" >> temp.py
     echo "print env.nodes().admin.get_ip_address_by_network_name('admin')" >> temp.py
-    MASTER_NODE_IP=$(python temp.py)
-    echo "$MASTER_NODE_IP"
-    deactivate
+    echo $(python temp.py)
 }
 
-VM_MASTER_IP=$(get_master_ip)
+source ${VENV_PATH}/bin/activate
+dos.py revert-resume $ENV_NAME --snapshot-name $SNAPSHOT_NAME
+VM_IP=${get_master_ip:-"10.109.0.2"}
+deactivate
 
-    
-ssh_to_master() {
+VM_USERNAME=${vm_master_username:-"root"}
+VM_PASSWORD=${vm_master_password:-"r00tme"}
+
+
+SSH_OPTIONS="-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
+ssh_to_fuel_master() {
     #   $1 - command
-    ip=${VM_MASTER_IP:-"10.20.0.2"}
-    username=${VM_MASTER_USERNAME:-"root"}
-    password=${VM_MASTER_PASSWORD:-"r00tme"}
-    SSH_CMD="sshpass -p ${password} ssh ${SSH_OPTIONS} ${username}@${ip}"
+    SSH_CMD="sshpass -p ${VM_PASSWORD} ssh ${SSH_OPTIONS} ${VM_USERNAME}@${VM_IP}"
     ${SSH_CMD} "$1"
 }
 
 scp_to_fuel_master() {
     #   $1 - file
     #   $2 - target path
-    tpath=$2
-    ip=${VM_MASTER_IP:-"10.20.0.2"}
-    username=${VM_MASTER_USERNAME:-"root"}
-    password=${VM_MASTER_PASSWORD:-"r00tme"}
-    SCP_CMD="sshpass -p ${password} scp ${SSH_OPTIONS}"
-    ${SCP_CMD} "$1" ${username}@${ip}:${tpath:-"."}
-}
-
-scp_from_fuel_master() {
-    #   $1 - command
-    ip=${VM_MASTER_IP:-"10.20.0.2"}
-    username=${VM_MASTER_USERNAME:-"root"}
-    password=${VM_MASTER_PASSWORD:-"r00tme"}
-    SCP_CMD="sshpass -p ${password} scp ${SSH_OPTIONS}"
+    SCP_CMD="sshpass -p ${VM_PASSWORD} scp ${SSH_OPTIONS}"
     case $1 in
         -r|--recursive)
         SCP_CMD+=" -r "
         shift
         ;;
     esac
-    ${SCP_CMD} ${username}@${ip}:$@
+    tpath=$2
+    ${SCP_CMD} "$1" ${VM_USERNAME}@${VM_IP}:${tpath:-"/tmp/"}
+}
+
+scp_from_fuel_master() {
+    #   $1 - command
+    SCP_CMD="sshpass -p ${VM_PASSWORD} scp ${SSH_OPTIONS}"
+    case $1 in
+        -r|--recursive)
+        SCP_CMD+=" -r "
+        shift
+        ;;
+    esac
+    ${SCP_CMD} ${VM_USERNAME}@${VM_IP}:$@
 }
 
 check_return_code_after_command_execution() {
     if [ "$1" -ne 0 ]; then
         if [ -n "$2" ]; then
-            echo_fail "$2"
+            echo "$2"
         fi
         exit 1
     fi
 }
 
-run_with_logs() {
-    eval "$@" | tee -a ${LOG}
-}
-
-py27_virtualenv() {
-    # Create and source python tox virtualenv
-    tox -e py27
-    source .tox/py27/bin/activate
-    python setup.py install
-}
+WORK_FLDR=$(ssh_to_fuel_master "mktemp -d")
+ssh_to_fuel_master "chmod 777 $WORK_FLDR"
 
 
 if [ "$RALLY_TEMPEST" == "run_tempest" ];then
 
-    rm -rf *
-    project_name="compute"
+    source ${VENV_PATH}/bin/activate
+    public_mac=$(virsh dumpxml ${ENV_NAME}_admin | grep -B 1 "${ENV_NAME}_public" | awk -F"'" '{print $2}' | head -1)
+    public_ip=$(dos.py net-list ${ENV_NAME} | awk '/public/{print $2}' | egrep -o "[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}")
+    public_net=$(dos.py net-list ${ENV_NAME} | awk -F/ '/public/{print $2}')
+    deactivate
+
+    echo '#!/bin/bash' > net_setup.sh
+    echo "iface=\$(cat \$(grep -irl \"${public_mac}\" \"/etc/sysconfig/network-scripts/\") | awk -F= '/DEVICE/{print \$2}')" >> net_setup.sh
+    echo 'echo $iface' >> net_setup.sh
+    echo 'ifconfig $iface up' >> net_setup.sh
+    echo "ip addr add ${public_ip}.31/${public_net} dev \${iface}" >> net_setup.sh
+
+    chmod +x net_setup.sh
+    scp_to_fuel_master net_setup.sh $WORK_FLDR
+    ssh_to_fuel_master "$WORK_FLDR/net_setup.sh"
+
+
+    #( ssh_to_fuel_master <<EOF; echo $? ) | tee ${RUN_TEMPEST_LOG}
+#"iface=\$(cat \$(grep -irl \"${public_mac}\" \"/etc/sysconfig/network-scripts/\") | awk -F= '/DEVICE/{print \$2}')"
+#echo $iface
+#EOF
 
     set +e
     echo "Download and install mos-tempest-runner project"
-    fuel_disk_directory=$(mktemp -d)
-
-    name=${ENV_NAME}_admin
-
     git clone https://github.com/Mirantis/mos-tempest-runner.git -b stable/7.0
-    tar -czf mos-tempest-runner.tar.gz mos-tempest-runner
-    ssh_to_master "rm -rf /tmp/mos-tempest-runner*"
-    scp_to_fuel_master mos-tempest-runner.tar.gz /tmp
-
-    ssh_to_master "tar -xf /tmp/mos-tempest-runner.tar.gz -C /tmp"
-
-    ssh_to_master "/tmp/mos-tempest-runner/setup_env.sh" &> ${INSTALL_MOS_TEMPEST_RUNNER_LOG}
+    rm -rf mos-tempest-runner/.git*
+    scp_to_fuel_master -r mos-tempest-runner $WORK_FLDR
+    ssh_to_fuel_master "$WORK_FLDR/mos-tempest-runner/setup_env.sh" &> ${INSTALL_MOS_TEMPEST_RUNNER_LOG}
     set -e
     check_return_code_after_command_execution $? "Install mos-tempest-runner is failure. Please see ${INSTALL_MOS_TEMPEST_RUNNER_LOG}"
 
     echo "Run tempest tests"
-
-    if [ -z "${project_name}" ]; then
-        run_command=""
-        error_message="Run tempest tests is failure."
-    else
-        run_command="tempest.api.${project_name}"
-        if [ "$project_name" == "sahara" ]; then
-            ssh_to_master "scp -r root@${controller_ip}:/usr/lib/python2.7/dist-packages/sahara/tests/tempest/ ."
-            add_sahara_client_tests
-            run_command="tempest.scenario.data_processing.client_tests"
-            ssh_to_master "scp -r root@${controller_ip}:/usr/lib/python2.7/dist-packages/saharaclient /home/developer/mos-tempest-runner/.venv/lib/python2.7/site-packages/saharaclient"
-        fi;
-        error_message="Run tempest tests for ${project_name} is failure."
-        USE_TESTRAIL=false
-    fi;
-
     set +e
-    ( ssh_to_master <<EOF; echo $? ) | tee ${RUN_TEMPEST_LOG}
-/tmp/mos-tempest-runner/rejoin.sh
-echo "rejoin.sh done"
+    ( ssh_to_fuel_master <<EOF; echo $? ) | tee ${RUN_TEMPEST_LOG}
+/$WORK_FLDR/mos-tempest-runner/rejoin.sh
 . /home/developer/mos-tempest-runner/.venv/bin/activate
 . /home/developer/openrc
-echo "activate & openrc done"
-run_tests ${run_command}
+run_tests > $WORK_FLDR/log.log
 EOF
 
-    echo "Add tempest result to folder: ${REPORT_PATH}"
-    run_with_logs scp_from_fuel_master -r /home/developer/mos-tempest-runner/tempest-reports/* ${REPORT_PATH}
+    echo "Add tempest result"
+    scp_from_fuel_master -r /home/developer/mos-tempest-runner/tempest-reports/* .
+    mv tempest-report.xml verification.xml
     echo "DONE"
 
-    #   Add tempest result to testrail
-    #if [ -f ${REPORT_PATH}tempest-report.xml ]; then
+    #Add tempest result to testrail
+    #if [ -f tempest-report.xml ]; then
     #    if ${USE_TESTRAIL}; then
     #        testrail_results "deploy_successful"
     #    fi
     #fi
 
-    #set -e
-    #return_code=$(cat ${RUN_TEMPEST_LOG} | tail -1)
-    #check_return_code_after_command_execution ${return_code} "${error_message}"
-    touch log.log
-    touch verification.xml
+    set -e
+    return_code=$(cat ${RUN_TEMPEST_LOG} | tail -1)
+    check_return_code_after_command_execution ${return_code} "Run tempest tests is failure."
+
+    
 
 elif [ "$RALLY_TEMPEST" == "rally_run" ];then
 
-    source ${VENV_PATH}/bin/activate
-    echo 'from devops.models import Environment' > temp.py
-    echo "env = Environment.get(name='$ENV_NAME')" >> temp.py
-    echo "print env.nodes().admin.get_ip_address_by_network_name('admin')" >> temp.py
-    MASTER_NODE_IP=$(python temp.py)
-    echo "$MASTER_NODE_IP"
-    deactivate
-
     virtualenv venv
     source venv/bin/activate
-    sudo docker build -t rally-tempest custom-scripts/rally-tempest/
+
+    sudo docker build -t rally-tempest rally-tempest/latest
     sudo docker save -o ./dimage rally-tempest
-    echo '' > ~/.ssh/known_hosts
-    sshpass -p 'r00tme' scp -o "StrictHostKeyChecking no" dimage root@"$MASTER_NODE_IP":/root/rally
-
-    echo '#!/bin/bash -xe' > ssh_scr.sh
-    echo 'docker load -i /root/rally' >> ssh_scr.sh
-
-    wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/maintenance/helpers/rally_run.sh
-
-    chmod +x rally_run.sh
-
-    sshpass -p 'r00tme' scp -o "StrictHostKeyChecking no" rally_run.sh root@"$MASTER_NODE_IP":/root/
-    echo 'chmod +x /root/rally_run.sh && /bin/bash -xe /root/rally_run.sh > /root/log.log' | sshpass -p 'r00tme' ssh -T root@"$MASTER_NODE_IP"
-    sshpass -p 'r00tme' scp -o "StrictHostKeyChecking no" root@"$MASTER_NODE_IP":/root/log.log ./
-    sshpass -p 'r00tme' scp -o "StrictHostKeyChecking no" root@"$MASTER_NODE_IP":/var/lib/rally-tempest-container-home-dir/verification.xml ./
     deactivate
+
+    scp_to_fuel_master dimage $WORK_FLDR/rally
+    ssh_to_fuel_master "ln -sf $WORK_FLDR/rally /root/rally"
+    ssh_to_fuel_master "wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/maintenance/helpers/rally_run.sh -P $WORK_FLDR"
+    ssh_to_fuel_master "chmod +x $WORK_FLDR/rally_run.sh"
+    ssh_to_fuel_master "/bin/bash -xe $WORK_FLDR/rally_run.sh > $WORK_FLDR/log.log"
+
+    scp_from_fuel_master /var/lib/rally-tempest-container-home-dir/verification.xml ./
 fi;
 
+
+scp_from_fuel_master $WORK_FLDR/log.log ./
