@@ -13,6 +13,7 @@
             SEGMENT_TYPE=VLAN
             DISABLE_SSL=TRUE
             CONTROLLERS_COUNT=1
+            COMPUTES_COUNT=1
             SLAVE_NODE_CPU=8
             SLAVE_NODE_MEMORY=17408
             MOS_VERSION=mitaka
@@ -25,6 +26,8 @@
             build-step-failure-threshold: 'never'
           predefined-parameters: |
             SNAPSHOT_NAME=ha_deploy_VLAN
+            MOS_VERSION=mitaka
+
 
       - trigger-builds:
         - project: 'test_rail_reporter'
@@ -36,15 +39,18 @@
             SNAPSHOT_NAME=ha_deploy_VLAN
             TEST_GROUP=NOVA
             REPORT_PREFIX=/srv/jenkins/nova
+            MOS_VERSION=mitaka
+            MILESTONE=8.0
+
 
 
     triggers:
         - timed: "30 21 * * *"
     project-type: freestyle
     defaults: global
-    node: slave-7775
+    node: slave-7776
     description: 'VLAN NOVA tests with reporting to TestRail in a row.'
-    disabled: true
+    disabled: false
     display-name: '9.0-mitaka VLAN NOVA'
     concurrent: false
     retry-count: 3
