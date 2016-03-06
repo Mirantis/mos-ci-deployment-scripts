@@ -40,7 +40,7 @@
             TEST_GROUP=NOVA
             REPORT_PREFIX=/srv/jenkins/nova
             MOS_VERSION=mitaka
-            MILESTONE=8.0
+            MILESTONE=9.0
 
 
 
