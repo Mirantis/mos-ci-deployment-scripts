@@ -42,7 +42,7 @@
             echo "$REPORT_PATH" > ./param.pm
             echo "$BUILD_URL" > ./build_url
 
--            sed -i 's|rally verify install --source /var/lib/tempest --no-tempest-venv|rally verify install --source /var/lib/tempest|g' rally-tempest/latest/setup_tempest.sh
+            sed -i 's|rally verify install --source /var/lib/tempest --no-tempest-venv|rally verify install --source /var/lib/tempest|g' rally-tempest/latest/setup_tempest.sh
             sed -i 's|FROM rallyforge/rally:latest|FROM rallyforge/rally:0.3.1|g' rally-tempest/latest/Dockerfile
 
             dos.py revert-resume "$ENV_NAME" "$SNAPSHOT_NAME"
