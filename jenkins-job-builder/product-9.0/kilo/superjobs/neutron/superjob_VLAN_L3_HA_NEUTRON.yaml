@@ -37,7 +37,7 @@
     defaults: global
     node: Slave-srv130
     description: 'VLAN+L3_HA NEUTRON tests'
-    disabled: false
+    disabled: true
     display-name: 'kilo-9.0-NEUTRON:VLAN+L3_HA'
     concurrent: false
     retry-count: 3

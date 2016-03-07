@@ -116,7 +116,7 @@
     defaults: global
     description: 'Runs Tempest tests'
     disabled: false
-    display-name: '9.0_Rally Tempest Testing for 2FLOW(VLAN ONLY)'
+    display-name: '9.0-RALLY-TEMPEST VLAN'
     concurrent: true
     browser: githubweb
     retry-count: 3

@@ -36,7 +36,7 @@
     defaults: global
     node: Slave-srv135
     description: 'VxLAN NEUTRON tests'
-    disabled: false
+    disabled: true
     display-name: 'kilo-9.0-NEUTRON:VxLAN'
     concurrent: false
     retry-count: 3

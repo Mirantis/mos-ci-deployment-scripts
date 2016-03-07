@@ -40,7 +40,7 @@
     defaults: global
     node: Slave-srv129
     description: 'VLAN+DVR NEUTRON tests'
-    disabled: false
+    disabled: true
     display-name: 'kilo-9.0-NEUTRON:VLAN+DVR'
     concurrent: false
     retry-count: 3

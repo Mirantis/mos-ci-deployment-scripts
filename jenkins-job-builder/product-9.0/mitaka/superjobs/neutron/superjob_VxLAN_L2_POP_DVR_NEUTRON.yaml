@@ -40,7 +40,7 @@
         - timed: "30 21 * * *"
     project-type: freestyle
     defaults: global
-    node: Slave-srv140
+    node: Slave-srv132
     description: 'VxLAN+L2_POP+DVR NEUTRON tests'
     disabled: false
     display-name: 'mitaka-9.0-NEUTRON:VxLAN+L2_POP+DVR'

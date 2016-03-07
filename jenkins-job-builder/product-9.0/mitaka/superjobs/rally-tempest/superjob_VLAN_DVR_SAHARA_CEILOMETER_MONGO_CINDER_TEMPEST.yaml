@@ -19,7 +19,7 @@
             MONGO_ENABLE=TRUE
             SAHARA_ENABLE=TRUE
             #IRONICS_COUNT=1
-            #NOVA_QUOTAS_ENABLED=TRUE
+            NOVA_QUOTAS_ENABLED=TRUE
             SLAVE_NODE_CPU=2
             SLAVE_NODE_MEMORY=8192
             CHANGE_CONF_YAML=NO
@@ -55,7 +55,7 @@
     node: Slave-srv136
     description: 'VLAN+DVR+IRONIC+CEILOMETER+MONGO TEMPEST tests'
     disabled: false
-    display-name: '9.0-RALLY-TEMPEST VLAN+DVR+IRONIC+CEILOMETER+MONGO'
+    display-name: 'superjob-9.0-RALLY-TEMPEST VLAN+DVR+SAHARA+IRONIC+CEILOMETER+MONGO'
     concurrent: false
     retry-count: 3
     logrotate:

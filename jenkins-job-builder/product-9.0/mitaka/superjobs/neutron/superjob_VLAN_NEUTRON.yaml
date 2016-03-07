@@ -38,7 +38,7 @@
         - timed: "30 21 * * *"
     project-type: freestyle
     defaults: global
-    node: Slave-srv139
+    node: Slave-srv131
     description: 'VLAN NEUTRON tests'
     disabled: false
     display-name: 'mitaka-9.0-NEUTRON:VLAN'

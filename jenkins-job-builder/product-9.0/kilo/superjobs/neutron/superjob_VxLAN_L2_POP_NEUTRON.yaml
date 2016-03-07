@@ -38,7 +38,7 @@
     defaults: global
     node: Slave-srv134
     description: 'VxLAN+L2_POP NEUTRON tests'
-    disabled: false
+    disabled: true
     display-name: 'kilo-9.0-NEUTRON:VxLAN+L2_POP'
     concurrent: false
     retry-count: 3

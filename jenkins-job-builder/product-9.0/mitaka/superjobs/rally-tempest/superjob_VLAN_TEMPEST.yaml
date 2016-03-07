@@ -50,10 +50,10 @@
         - timed: "30 21 * * *"
     project-type: freestyle
     defaults: global
-    node: Slave-srv136
+    node: Slave-srv137
     description: 'VLAN TEMPEST tests'
     disabled: false
-    display-name: '9.0-RALLY-TEMPEST VLAN'
+    display-name: 'superjob-9.0-RALLY-TEMPEST VLAN'
     concurrent: false
     retry-count: 3
     logrotate:
