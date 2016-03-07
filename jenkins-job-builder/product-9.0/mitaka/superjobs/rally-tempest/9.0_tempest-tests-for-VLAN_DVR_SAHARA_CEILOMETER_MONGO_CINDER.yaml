@@ -116,7 +116,7 @@
     defaults: global
     description: 'Runs Tempest tests'
     disabled: false
-    display-name: '9.0_Rally Tempest Testing for 2FLOW'
+    display-name: '9.0-Rally-Tempest VLAN_DVR_SAHARA_CEILOMETER_MONGO_CINDER'
     concurrent: true
     browser: githubweb
     retry-count: 3
