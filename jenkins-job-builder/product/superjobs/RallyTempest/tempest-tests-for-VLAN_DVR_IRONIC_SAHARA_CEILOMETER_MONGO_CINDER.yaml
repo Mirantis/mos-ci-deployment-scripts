@@ -85,7 +85,16 @@
 
             echo 'docker run -tid -v /var/lib/rally-tempest-container-home-dir:/home/rally --net host "$ID" > dock.id' >> ssh_scr.sh
             echo 'DOCK_ID=`cat dock.id`' >> ssh_scr.sh
-            echo 'sed -i "s|:5000|:5000/v2.0|g" /var/lib/rally-tempest-container-home-dir/openrc' >> ssh_scr.sh
+
+            # Add v2.0 to os auth url
+            #echo 'sed -i "s|:5000|:5000/v2.0|g" /var/lib/rally-tempest-container-home-dir/openrc' >> ssh_scr.sh
+
+            # this is alternate to adding v2.0 to os auth url
+            echo 'CONTROLLER_ID="$(fuel node | grep controller| awk '\''{print$1}'\''| head -1)" ' >> ssh_scr.sh
+            echo ' keystone_id=$(ssh node-${CONTROLLER_ID} ". openrc; openstack endpoint list |grep identity | awk '\''{print\$2}'\'' ") ' >>  ssh_scr.sh
+            echo ' public_url=$(ssh node-${CONTROLLER_ID} ". openrc; openstack endpoint show $keystone_id |grep publicurl | awk '\''{print\$4}'\'' ") ' >> ssh_scr.sh
+            echo 'sed -i "s|export OS_AUTH_URL=.*|export OS_AUTH_URL=$public_url/v2.0/|g" /var/lib/rally-tempest-container-home-dir/openrc' >> ssh_scr.sh
+
             #echo 'echo '\''export OS_AUTH_URL=http://10.109.1.3:5000/v2.0'\'' >> /var/lib/rally-tempest-container-home-dir/openrc' >> ssh_scr.sh
             #echo 'OAU=`fgrep OS_AUTH_URL /var/lib/rally-tempest-container-home-dir/openrc` && OAUV2="$OAU"v2.0 && echo "$OAUV2" >> /var/lib/rally-tempest-container-home-dir/openrc' >> ssh_scr.sh
             echo 'docker exec -u root "$DOCK_ID" sed -i "s|\#swift_operator_role = Member|swift_operator_role=SwiftOperator|g" /etc/rally/rally.conf' >> ssh_scr.sh
