@@ -48,8 +48,8 @@
             REPORT_FILE=verification.xml
             SUITE=[9.0][MOSQA] Tempest 9.0
 
-#    triggers:
-#        - timed: "30 21 * * *"
+    triggers:
+        - timed: "30 21 * * *"
     project-type: freestyle
     defaults: global
     node: Slave-srv136
