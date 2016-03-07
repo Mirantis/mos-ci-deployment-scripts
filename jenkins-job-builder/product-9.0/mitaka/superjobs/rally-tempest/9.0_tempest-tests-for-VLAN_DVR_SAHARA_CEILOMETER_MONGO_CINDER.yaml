@@ -1,5 +1,5 @@
 - job:
-    name: 9.0_rally_tempest_tests_for_second_flow
+    name: 9.0_rally_tempest_tests_VLAN_DVR_SAHARA_CEILOMETER_MONGO_CINDER.yaml
     wrappers:
       - build-name:
           name: Build_Number:${BUILD_NUMBER}_ISO_ID:${FILE,path="build-name-setter.info"}

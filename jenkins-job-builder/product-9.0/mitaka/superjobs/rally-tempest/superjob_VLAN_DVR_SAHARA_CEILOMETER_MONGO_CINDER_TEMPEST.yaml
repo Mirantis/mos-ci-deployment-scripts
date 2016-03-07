@@ -28,7 +28,7 @@
             TEMPEST=FALSE
 
       - trigger-builds:
-        - project: '9.0_rally_tempest_tests_for_second_flow'
+        - project: '9.0_rally_tempest_tests_VLAN_DVR_SAHARA_CEILOMETER_MONGO_CINDER.yaml'
           same-node: true
           block: true
           block-thresholds:

@@ -23,7 +23,7 @@
             TEMPEST=FALSE
 
       - trigger-builds:
-        - project: '9.0_rally_tempest_tests_for_VLAN'
+        - project: '9.0_rally_tempest_tests_for_VLAN_CINDER'
           same-node: true
           block: true
           block-thresholds:
