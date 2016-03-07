@@ -27,6 +27,7 @@
             CHANGE_CONF_YAML=NO
             DEPLOYMENT_TIMEOUT=15000
             FUEL_QA_VER=stable/8.0
+            TEMPEST=TRUE
 
       - trigger-builds:
         - project: '8.0-rally_tempest_tests_VLAN_DVR_IRONIC_SAHARA_CEILOMETER_MONGO_CINDER'
@@ -49,8 +50,8 @@
             REPORT_FILE=verification.xml
             SUITE=[8.0][MOSQA] Tempest 8.0
 
-#    triggers:
-#        - timed: "30 21 * * *"
+    triggers:
+        - timed: "30 21 * * *"
     project-type: freestyle
     defaults: global
     node: Slave-7777
