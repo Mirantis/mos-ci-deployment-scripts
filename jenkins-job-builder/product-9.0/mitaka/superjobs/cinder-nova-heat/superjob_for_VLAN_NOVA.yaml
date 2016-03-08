@@ -41,6 +41,7 @@
             REPORT_PREFIX=/srv/jenkins/nova
             MOS_VERSION=mitaka
             MILESTONE=9.0
+            SUITE=[9.0][MOSQA] NOVA
 
 
 
