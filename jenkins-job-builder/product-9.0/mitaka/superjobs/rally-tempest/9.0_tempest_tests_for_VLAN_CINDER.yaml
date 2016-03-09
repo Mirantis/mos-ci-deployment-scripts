@@ -74,7 +74,7 @@
             echo '#!/bin/bash -xe' > ssh_scr.sh
             echo 'docker load -i /root/rally' >> ssh_scr.sh
 
-            wget https://github.com/Mirantis/mos-ci-deployment-scripts/blob/master/jenkins-job-builder/product-TEMPEST-only/RallyTempest/rally_tempest_prepare_host.sh
+            wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/product-TEMPEST-only/RallyTempest/rally_tempest_prepare_host.sh
             cat rally_tempest_prepare_host.sh >> ssh_scr.sh
             echo '' >> ssh_scr.sh
 
