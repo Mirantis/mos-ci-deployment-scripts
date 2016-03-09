@@ -49,7 +49,7 @@ class TempestCeph(TestBasic):
             mode=settings.DEPLOYMENT_MODE,
             settings={
                 "net_provider": 'neutron',
-                "net_segment_type": settings.NEUTRON_SEGMENT_TYPE,
+                "net_segment_type": "vlan",
                 'volumes_ceph': True,
                 'images_ceph': True,
                 'objects_ceph': True,
@@ -109,7 +109,7 @@ class TempestCeph(TestBasic):
             mode=settings.DEPLOYMENT_MODE,
             settings={
                 "net_provider": 'neutron',
-                "net_segment_type": 'tun',
+                "net_segment_type": 'gre',
                 'volumes_ceph': False,
                 'images_ceph': False,
                 'objects_ceph': False,
