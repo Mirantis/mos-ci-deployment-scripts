@@ -1,49 +1,58 @@
 - job:
-    name: 9.0-superjob_for_VxLAN_L2_POP_NEUTRON-mitaka
+    name: 9.0-superjob_for_VLAN_NOVA-mitaka
     builders:
       - shell:
-          !include-raw: 9.0_mitaka_iso_and_erase_env.sh
+          !include-raw: ../neutron/9.0_mitaka_iso_and_erase_env.sh
       - trigger-builds:
         - project: '9.0_create_param_environment'
           same-node: true
           block: true
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VxLAN_L2_POP_CINDER
+            SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
             TEST_TYPE=NEUTRON
-            SEGMENT_TYPE=VxLAN
+            SEGMENT_TYPE=VLAN
             DISABLE_SSL=TRUE
-            L2_POP_ENABLE=TRUE
-            COMPUTES_COUNT=3
+            CONTROLLERS_COUNT=1
+            COMPUTES_COUNT=1
+            SLAVE_NODE_CPU=8
+            SLAVE_NODE_MEMORY=17408
             MOS_VERSION=all
+
       - trigger-builds:
-        - project: '9.0-NEUTRON_tests_generated_from_template'
+        - project: '9.0-NOVA_tests_generated_from_template'
           same-node: true
           block: true
           block-thresholds:
-            build-step-failure-threshold: 'never'    
+            build-step-failure-threshold: 'never'
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VxLAN_L2_POP_CINDER
+            SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
             MOS_VERSION=all
+
+
       - trigger-builds:
         - project: 'test_rail_reporter'
           same-node: true
           block: true
+          block-thresholds:
+            build-step-failure-threshold: 'never'
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VxLAN_L2_POP_CINDER
-            TEST_GROUP=NEUTRON
-            REPORT_PREFIX=/srv/jenkins/neutron
+            SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
+            TEST_GROUP=NOVA
+            REPORT_PREFIX=/srv/jenkins/nova
             MOS_VERSION=all
             MILESTONE=9.0
             SUITE=[9.0][MOSQA] Automated Cloud Testing
+
+
 
     triggers:
         - timed: "30 21 * * *"
     project-type: freestyle
     defaults: global
-    node: Slave-srv134
-    description: 'VxLAN+L2_POP NEUTRON tests'
+    node: master
+    description: 'VLAN NOVA tests with reporting to TestRail in a row.'
     disabled: false
-    display-name: 'mitaka-9.0-NEUTRON:VxLAN+L2_POP'
+    display-name: '9.0-mitaka VLAN NOVA'
     concurrent: false
     retry-count: 3
     logrotate:

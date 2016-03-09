@@ -1,15 +1,18 @@
 - job:
     name: 9.0-superjob_for_VxLAN_NEUTRON-mitaka
     builders:
+      - shell:
+          !include-raw: 9.0_mitaka_iso_and_erase_env.sh
       - trigger-builds:
-        - project: 'create_param_environment'
+        - project: '9.0_create_param_environment'
           same-node: true
           block: true
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VxLAN
+            SNAPSHOT_NAME=ha_deploy_VxLAN_CINDER
             TEST_TYPE=NEUTRON
             SEGMENT_TYPE=VxLAN
             DISABLE_SSL=TRUE
+            MOS_VERSION=all
       - trigger-builds:
         - project: '9.0-NEUTRON_tests_generated_from_template'
           same-node: true
@@ -17,21 +20,25 @@
           block-thresholds:
             build-step-failure-threshold: 'never'    
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VxLAN
-#      - trigger-builds:
-#        - project: 'test_rail_reporter'
-#          same-node: true
-#          block: true
-#          predefined-parameters: |
-#            SNAPSHOT_NAME=ha_deploy_VxLAN
-#            TEST_GROUP=NEUTRON
-#            REPORT_PREFIX=/srv/jenkins/neutron
+            SNAPSHOT_NAME=ha_deploy_VxLAN_CINDER
+            MOS_VERSION=all
+      - trigger-builds:
+        - project: 'test_rail_reporter'
+          same-node: true
+          block: true
+          predefined-parameters: |
+            SNAPSHOT_NAME=ha_deploy_VxLAN_CINDER
+            TEST_GROUP=NEUTRON
+            REPORT_PREFIX=/srv/jenkins/neutron
+            MOS_VERSION=all
+            MILESTONE=9.0
+            SUITE=[9.0][MOSQA] Automated Cloud Testing
 
     triggers:
         - timed: "30 21 * * *"
     project-type: freestyle
     defaults: global
-    node: 9.0-NEUTRON
+    node: Slave-srv135
     description: 'VxLAN NEUTRON tests'
     disabled: false
     display-name: 'mitaka-9.0-NEUTRON:VxLAN'

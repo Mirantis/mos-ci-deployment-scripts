@@ -56,6 +56,9 @@
           name: COMPUTES_COUNT
           default: "2"
       - string:
+          name: CONTROLLERS_COUNT
+          default: "3"
+      - string:
           name: IRONICS_COUNT
           default: "0"
       - string:
@@ -80,13 +83,14 @@
           default: "virtio"
       - string:
           name: KVM_USE
-          default: "TRUE"
+          default: "FALSE"
       - string:
           name: TEMPEST
           default: "FALSE"
 
 
-    name: create_param_environment
+
+    name: 9.0_create_param_environment
     wrappers:
       - build-name:
           name: ${BUILD_NUMBER}.${FILE,path="build-name-setter.info"}
@@ -147,6 +151,7 @@
             export DISABLE_SSL="$DISABLE_SSL"
             export FUEL_DEV_VER="$FUEL_DEV_VER"
             export COMPUTES_COUNT="$COMPUTES_COUNT"
+            export CONTROLLERS_COUNT="$CONTROLLERS_COUNT"
             export IRONICS_COUNT="$IRONICS_COUNT"
             export FUEL_QA_VER="$FUEL_QA_VER"
             export NOVA_QUOTAS_ENABLED="$NOVA_QUOTAS_ENABLED"
@@ -158,27 +163,24 @@
 
             if [[ "$TEMPEST" == 'TRUE' ]];
             then
-            #sed -i 's|pip install -r fuel-qa/fuelweb_test/requirements.txt --upgrade|cd fuel-qa \&\& git fetch https://review.openstack.org/openstack/fuel-qa refs/changes/81/281281/1 \&\& git checkout FETCH_HEAD \&\& cd ../ \&\& pip install -r fuel-qa/fuelweb_test/requirements.txt --upgrade|g' deploy_env.sh
             sed -i '181i\         - label: eth1' mos_tests_template.yaml
             sed -i '182i\           l2_network_device: public' mos_tests_template.yaml
 
             echo '          eth1:' >> mos_tests_template.yaml
             echo '            networks:' >> mos_tests_template.yaml
             echo '             - public' >> mos_tests_template.yaml
-
             fi
 
             /bin/bash -x deploy_env.sh
-
             fi
 
     project-type: freestyle
     defaults: global
     scm:
-       - mos-ci-deployment-scripts
+       - 9.0-mos-ci-deployment-scripts-gd
     description: 'Create environment with parameters, specified by PARAM string.'
     disabled: false
-    display-name: 'Create Parameterized Environment'
+    display-name: 'Create Parameterized Environment with 9.0 stable'
     concurrent: true
     browser: githubweb
     retry-count: 3
@@ -189,6 +191,10 @@
       artifactNumToKeep: -1
     publishers:
       - workspace-cleanup:
+          clean-if:
+              - success: true
+              - unstable: true
+              - aborted: true
           fail-build: false
       - email:
           recipients: efazliev@mirantis.com

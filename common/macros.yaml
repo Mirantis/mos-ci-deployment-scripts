@@ -8,7 +8,7 @@
       - git:
           url: https://github.com/gdyuldin/testrail_reporter.git
           branches:
-            - origin/master
+            - origin/stable
           skip-tag: true
 
 - scm:
@@ -27,6 +27,24 @@
          url: https://github.com/Mirantis/mos-ci-deployment-scripts.git
          branches:
           - origin/master
+         skip-tag: true
+
+- scm:
+    name: 9.0-mos-ci-deployment-scripts
+    scm:
+      - git:
+         url: https://github.com/Mirantis/mos-ci-deployment-scripts.git
+         branches:
+          - origin/stable/9.0
+         skip-tag: true
+
+- scm:
+    name: 9.0-mos-ci-deployment-scripts-gd
+    scm:
+      - git:
+         url: https://github.com/gdyuldin/mos-ci-deployment-scripts.git
+         branches:
+          - origin/stable/9.0
          skip-tag: true
 
 - scm:
