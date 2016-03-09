@@ -51,7 +51,7 @@
     defaults: global
     node: master
     description: 'VLAN NOVA tests with reporting to TestRail in a row.'
-    disabled: true
+    disabled: false
     display-name: '9.0-mitaka VLAN NOVA'
     concurrent: false
     retry-count: 3
