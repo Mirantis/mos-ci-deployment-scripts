@@ -191,6 +191,10 @@
       artifactNumToKeep: -1
     publishers:
       - workspace-cleanup:
+          clean-if:
+              - success: true
+              - unstable: true
+              - aborted: true
           fail-build: false
       - email:
           recipients: efazliev@mirantis.com
