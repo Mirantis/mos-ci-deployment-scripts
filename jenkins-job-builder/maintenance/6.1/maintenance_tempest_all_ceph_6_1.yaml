@@ -60,7 +60,7 @@
             SKIP_INSTALL_ENV=$SKIP_INSTALL_ENV
             DISABLE_SSL=$DISABLE_SSL
             ENV_NAME=maintenance_tempest_all_ceph_6_1
-            FILE=test_tempest_ceph_services_6_1.py
+            FILE=test_tempest_6_1.py
             GROUP=tempest_ceph_services_centos
       - trigger-builds:
         - project: 'maintenance_tempest_runner'

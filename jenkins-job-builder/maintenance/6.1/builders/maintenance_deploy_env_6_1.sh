@@ -33,11 +33,11 @@ then
 fi
 
 # Set env name
-ENV_NAME=${ENV_NAME:-maintenance_env_7.0}
+ENV_NAME=${ENV_NAME:-maintenance_env_6_1}
 
 # Set fuel QA version
 # https://github.com/openstack/fuel-qa/branches
-FUEL_QA_VER=${FUEL_QA_VER:-master}
+FUEL_QA_VER=${FUEL_QA_VER:-stable/6.1}
 
 # Erase all previous environments by default
 ERASE_PREV_ENV=${ERASE_PREV_ENV:-true}
