@@ -23,7 +23,32 @@
             TEMPEST=TRUE
 
       - trigger-builds:
-        - project: '9.0_rally_tempest_tests_for_VLAN_CINDER'
+        - project: '9.0_rally_tempest_tests_api_for_VLAN_CINDER'
+          same-node: true
+          block: true
+          block-thresholds:
+            build-step-failure-threshold: 'never'
+          predefined-parameters: |
+            SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
+            REPORT_PREFIX=/srv/jenkins/rally-tempest
+            MOS_VERSION=all
+
+      - trigger-builds:
+        - project: 'test_rail_reporter'
+          same-node: true
+          block: true
+          predefined-parameters: |
+            SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
+            TEST_GROUP=TEMPEST,HA,Cinder LVM,Swift
+            REPORT_PREFIX=/srv/jenkins/rally-tempest
+            REPORT_FILE=verification.xml
+            SUITE=[9.0][MOSQA] Tempest 9.0
+            MILESTONE=9.0
+            MOS_VERSION=all
+
+
+      - trigger-builds:
+        - project: '9.0_rally_tempest_tests_scenario_for_VLAN_CINDER'
           same-node: true
           block: true
           block-thresholds:

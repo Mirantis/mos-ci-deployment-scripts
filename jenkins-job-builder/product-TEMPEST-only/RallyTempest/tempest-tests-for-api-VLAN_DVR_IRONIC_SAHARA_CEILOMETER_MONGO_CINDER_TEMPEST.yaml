@@ -1,5 +1,5 @@
 - job:
-    name: 8.0-rally_tempest_tests_VLAN_DVR_IRONIC_SAHARA_CEILOMETER_MONGO_CINDER
+    name: 8.0-rally_tempest_tests_api_VLAN_DVR_IRONIC_SAHARA_CEILOMETER_MONGO_CINDER
     wrappers:
       - build-name:
           name: Build_Number:${BUILD_NUMBER}_ISO_ID:${FILE,path="build-name-setter.info"}
@@ -85,7 +85,7 @@
             echo 'DOCK_ID=`cat dock.id`' >> ssh_scr.sh
 
             # Add v2.0 to os auth url
-            echo 'sed -i "s|:5000|:5000/v2.0/|g" /var/lib/rally-tempest-container-home-dir/openrc' >> ssh_scr.sh
+            echo 'sed -i "s|:5000|:5000/v2.0|g" /var/lib/rally-tempest-container-home-dir/openrc' >> ssh_scr.sh
 
             # this is alternate to adding v2.0 to os auth url
             #echo 'CONTROLLER_ID="$(fuel node | grep controller| awk '\''{print$1}'\''| head -1)" ' >> ssh_scr.sh
@@ -111,9 +111,9 @@
 
             # echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start --system-wide"' >> ssh_scr.sh
 
-            # echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start --regex tempest.api"' >> ssh_scr.sh
+            echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start --regex tempest.api"' >> ssh_scr.sh
 
-            echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start --regex  tempest.scenario"' >> ssh_scr.sh
+            # echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start --regex  tempest.scenario"' >> ssh_scr.sh
 
             # echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start"' >> ssh_scr.sh
 
@@ -134,7 +134,7 @@
     defaults: global
     description: 'Runs Tempest tests'
     disabled: false
-    display-name: '8.0-Rally_Tempest_Testing '
+    display-name: '8.0-Rally_Tempest_Testing API'
     concurrent: true
     browser: githubweb
     retry-count: 3
