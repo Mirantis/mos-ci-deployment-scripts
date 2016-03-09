@@ -24,8 +24,6 @@
         - shell:
             !include-raw: add_interface.sh
         - shell: |
-            #sudo rm -rf "$ISO_DIR"
-            #sudo wget http://srv52-bud.infra.mirantis.net/fuelweb-iso/fuel-8.0-570-2016-02-15_13-42-00.iso -P "$ISO_DIR"
 
             ISO_NAME=`ls "$ISO_DIR"`
 

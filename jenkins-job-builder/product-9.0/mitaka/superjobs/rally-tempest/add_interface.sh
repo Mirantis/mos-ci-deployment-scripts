@@ -41,11 +41,14 @@ FUEL_PUB_IP="$2"
 PUB_NET_PREFIX="$3"
 PUB_GATEWAY="$4"
 
+SSH_OPTS='-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
+
 SSH_CMD="sshpass -p r00tme ssh ${SSH_OPTS} root@${FUEL_ADM_IP}"
 
 waitForSSH "$FUEL_ADM_IP"
 
-PUB_INTERFACE=$(${SSH_CMD} 'ifconfig -a ' | grep -E "(flags=|Link encap)" |grep -v  "docker" | sed '2!d' | awk {'print $1'} | cut -d ":" -f1)
+# PUB_INTERFACE=$(${SSH_CMD} 'ifconfig -a ' | grep -E "(flags=|Link encap)" |grep -v  "docker" | sed '2!d' | awk {'print $1'} | cut -d ":" -f1)
+PUB_INTERFACE='eth1'
 IFCFG_PATH="/etc/sysconfig/network-scripts"
 IFCFG_PUB_FILE="$IFCFG_PATH/ifcfg-$PUB_INTERFACE"
 
@@ -68,12 +71,7 @@ service sshd restart;
 }
 
 
-
-
-if [[ "$TEMPEST" != 'TRUE' ]];
-then
-exit 0
-fi
+set +e
 
 ISO_NAME=`ls "$ISO_DIR"`
 ENV_NAME=MOS_CI_"$ISO_NAME"
@@ -86,10 +84,12 @@ PUB_NET=$(dos.py net-list $ENV_NAME |grep "public" | grep -P "(\d+\.){3}(\d+)" -
 PUB_NET_PREFIX=$(dos.py net-list $ENV_NAME |grep "public" | awk '{print $2}' |cut -d "/" -f 2)
 #Get pub net last octet
 PUB_LAST_OCTET=$(expr ${PUB_NET##*.} + 2)
+
 #Get pub first IP - Gateway
 PUB_GATEWAY=$(virsh net-dumpxml ${ENV_NAME}_public | grep -P "(\d+\.){3}(\d+)" -o)
 #Get pub net second IP - Fuel
-FUEL_PUB_IP=$(virsh net-dumpxml ${ENV_NAME}_public | grep -P "(\d+\.){3}" -o | awk '{print $0}')${PUB_LAST_OCTET}
+# FUEL_PUB_IP=$(virsh net-dumpxml ${ENV_NAME}_public | grep -P "(\d+\.){3}" -o | awk '{print $0}')${PUB_LAST_OCTET}
+FUEL_PUB_IP=10.109.4.254
 
 
 dos.py start $ENV_NAME
