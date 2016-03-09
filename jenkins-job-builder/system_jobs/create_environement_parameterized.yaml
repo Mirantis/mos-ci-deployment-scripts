@@ -125,11 +125,6 @@
             exit 0
             else
 
-            if [ "$CHANGE_CONF_YAML" == 'YES' ];
-            then
-            sed -i 's/cp 3_controllers_2compute_neutron_env_template.yaml ${CONFIG_NAME}/cp tempest_tests_env_template.yaml ${CONFIG_NAME}/g' deploy_env.sh
-            fi
-
             export ISO_PATH="$ISO_DIR"/"$ISO_NAME"
             export ENV_NAME="$ENV_NAME"
             export ERASE_PREV_ENV="$ERASE_PREV_ENV"
