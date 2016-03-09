@@ -1,5 +1,5 @@
 - job:
-    name: maintenance_tempest_all_ceph_6_1
+    name: maintenance_tempest_non_ceph_tun_6_1
     parameters:
       - string:
           name: MAGNET_LINK
@@ -59,9 +59,9 @@
             ERASE_PREV_ENV=$ERASE_PREV_ENV
             SKIP_INSTALL_ENV=$SKIP_INSTALL_ENV
             DISABLE_SSL=$DISABLE_SSL
-            ENV_NAME=maintenance_tempest_all_ceph_6_1
+            ENV_NAME=maintenance_tempest_non_ceph_6_1
             FILE=test_tempest_6_1.py
-            GROUP=tempest_ceph_services_centos
+            GROUP=tempest_cinder_glance_swift_tun_centos
       - trigger-builds:
         - project: 'maintenance_tempest_runner'
           same-node: true
@@ -69,17 +69,17 @@
           block-thresholds:
             build-step-failure-threshold: 'never'
           predefined-parameters: |
-            ENV_NAME=maintenance_tempest_all_ceph_6_1
-            SNAPSHOT_NAME=tempest_test_ceph
+            ENV_NAME=maintenance_tempest_non_ceph_6_1
+            SNAPSHOT_NAME=tempest_cinder_glance_swift_tun
             REPORT_PREFIX=/srv/jenkins/rally-tempest
             VENV_PATH=/home/jenkins/qa-venv-6.1
             RALLY_TEMPEST=$RALLY_TEMPEST
     project-type: freestyle
     defaults: global
     node: maintenance-10
-    description: 'VLAN+CEPH+SAHARA+MURANO_CEILOMETER_RADOS_MONGO TEMPEST tests (6.1 maintenance)'
+    description: 'GRE+NON_CEPH TEMPEST tests (6.1 maintenance)'
     disabled: false
-    display-name: 'VLAN+CEPH+SAHARA+MURANO_CEILOMETER_RADOS_MONGO TEMPEST tests (6.1 maintenance)'
+    display-name: 'GRE+NON_CEPH TEMPEST tests (6.1 maintenance)'
     concurrent: false
     retry-count: 3
     logrotate:

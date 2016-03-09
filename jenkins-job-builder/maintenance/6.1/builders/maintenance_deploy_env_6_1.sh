@@ -33,11 +33,11 @@ then
 fi
 
 # Set env name
-ENV_NAME=${ENV_NAME:-maintenance_env_7.0}
+ENV_NAME=${ENV_NAME:-maintenance_env_6_1}
 
 # Set fuel QA version
 # https://github.com/openstack/fuel-qa/branches
-FUEL_QA_VER=${FUEL_QA_VER:-master}
+FUEL_QA_VER=${FUEL_QA_VER:-stable/6.1}
 
 # Erase all previous environments by default
 ERASE_PREV_ENV=${ERASE_PREV_ENV:-true}
@@ -177,5 +177,6 @@ export SLAVE_NODE_CPU=3
 export SLAVE_NODE_MEMORY=16384
 export DISABLE_SSL=$DISABLE_SSL
 export KVM_USE=true
+export NOVA_QUOTAS_ENABLED=true
 
 ./utils/jenkins/system_tests.sh -k -K -j fuelweb_test -t test -w $(pwd) -e "$ENV_NAME" -o --group="$GROUP" -i "$ISO_PATH"
