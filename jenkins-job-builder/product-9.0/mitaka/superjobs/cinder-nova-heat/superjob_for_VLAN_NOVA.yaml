@@ -16,7 +16,7 @@
             COMPUTES_COUNT=1
             SLAVE_NODE_CPU=8
             SLAVE_NODE_MEMORY=17408
-            MOS_VERSION=mitaka
+            MOS_VERSION=all
 
       - trigger-builds:
         - project: '9.0-NOVA_tests_generated_from_template'
@@ -26,7 +26,7 @@
             build-step-failure-threshold: 'never'
           predefined-parameters: |
             SNAPSHOT_NAME=ha_deploy_VLAN
-            MOS_VERSION=mitaka
+            MOS_VERSION=all
 
 
       - trigger-builds:
@@ -39,7 +39,7 @@
             SNAPSHOT_NAME=ha_deploy_VLAN
             TEST_GROUP=NOVA
             REPORT_PREFIX=/srv/jenkins/nova
-            MOS_VERSION=mitaka
+            MOS_VERSION=all
             MILESTONE=9.0
             SUITE=[9.0][MOSQA] Automated Cloud Testing
 
