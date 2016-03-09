@@ -84,10 +84,12 @@ PUB_NET=$(dos.py net-list $ENV_NAME |grep "public" | grep -P "(\d+\.){3}(\d+)" -
 PUB_NET_PREFIX=$(dos.py net-list $ENV_NAME |grep "public" | awk '{print $2}' |cut -d "/" -f 2)
 #Get pub net last octet
 PUB_LAST_OCTET=$(expr ${PUB_NET##*.} + 2)
+
 #Get pub first IP - Gateway
 PUB_GATEWAY=$(virsh net-dumpxml ${ENV_NAME}_public | grep -P "(\d+\.){3}(\d+)" -o)
 #Get pub net second IP - Fuel
-FUEL_PUB_IP=$(virsh net-dumpxml ${ENV_NAME}_public | grep -P "(\d+\.){3}" -o | awk '{print $0}')${PUB_LAST_OCTET}
+# FUEL_PUB_IP=$(virsh net-dumpxml ${ENV_NAME}_public | grep -P "(\d+\.){3}" -o | awk '{print $0}')${PUB_LAST_OCTET}
+FUEL_PUB_IP=10.109.4.254
 
 
 dos.py start $ENV_NAME
