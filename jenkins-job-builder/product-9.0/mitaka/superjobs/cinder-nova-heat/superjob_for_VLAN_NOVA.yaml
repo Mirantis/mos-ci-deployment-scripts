@@ -8,7 +8,7 @@
           same-node: true
           block: true
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VLAN
+            SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
             TEST_TYPE=NEUTRON
             SEGMENT_TYPE=VLAN
             DISABLE_SSL=TRUE
@@ -25,7 +25,7 @@
           block-thresholds:
             build-step-failure-threshold: 'never'
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VLAN
+            SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
             MOS_VERSION=all
 
 
@@ -36,7 +36,7 @@
           block-thresholds:
             build-step-failure-threshold: 'never'
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VLAN
+            SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
             TEST_GROUP=NOVA
             REPORT_PREFIX=/srv/jenkins/nova
             MOS_VERSION=all
