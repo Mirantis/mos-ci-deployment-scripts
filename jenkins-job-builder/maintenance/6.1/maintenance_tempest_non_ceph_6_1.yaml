@@ -60,7 +60,7 @@
             SKIP_INSTALL_ENV=$SKIP_INSTALL_ENV
             DISABLE_SSL=$DISABLE_SSL
             ENV_NAME=maintenance_tempest_non_ceph_6_1
-            FILE=test_tempest_ceph_services_6_1.py
+            FILE=test_tempest_6_1.py
             GROUP=tempest_cinder_glance_swift_tun_centos
       - trigger-builds:
         - project: 'maintenance_tempest_runner'
@@ -77,9 +77,9 @@
     project-type: freestyle
     defaults: global
     node: maintenance-10
-    description: 'TUN+NON_CEPH TEMPEST tests (6.1 maintenance)'
+    description: 'GRE+NON_CEPH TEMPEST tests (6.1 maintenance)'
     disabled: false
-    display-name: 'TUN+NON_CEPH TEMPEST tests (6.1 maintenance)'
+    display-name: 'GRE+NON_CEPH TEMPEST tests (6.1 maintenance)'
     concurrent: false
     retry-count: 3
     logrotate:
