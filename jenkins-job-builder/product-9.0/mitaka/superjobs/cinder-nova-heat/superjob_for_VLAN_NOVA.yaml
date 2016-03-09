@@ -19,7 +19,7 @@
             MOS_VERSION=mitaka
 
       - trigger-builds:
-        - project: 'NOVA_tests_generated_from_template'
+        - project: '9.0-NOVA_tests_generated_from_template'
           same-node: true
           block: true
           block-thresholds:
@@ -41,7 +41,7 @@
             REPORT_PREFIX=/srv/jenkins/nova
             MOS_VERSION=mitaka
             MILESTONE=9.0
-            SUITE=[9.0][MOSQA] NOVA
+            SUITE=[9.0][MOSQA] Automated Cloud Testing
 
 
 

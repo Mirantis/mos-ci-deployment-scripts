@@ -169,6 +169,7 @@
             fi
 
             /bin/bash -x deploy_env.sh
+
             fi
 
     project-type: freestyle

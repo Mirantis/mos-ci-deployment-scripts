@@ -33,6 +33,7 @@
             REPORT_PREFIX=/srv/jenkins/neutron
             MOS_VERSION=mitaka
             MILESTONE=9.0
+            SUITE=[9.0][MOSQA] Automated Cloud Testing
 
     triggers:
         - timed: "30 21 * * *"
