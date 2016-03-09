@@ -13,7 +13,7 @@
             SEGMENT_TYPE=VLAN
             DISABLE_SSL=TRUE
             DVR_ENABLE=TRUE
-            MOS_VERSION=mitaka
+            MOS_VERSION=all
       - trigger-builds:
         - project: '9.0-NEUTRON_tests_generated_from_template'
           same-node: true
@@ -21,14 +21,14 @@
           block-thresholds:
             build-step-failure-threshold: 'never'    
           predefined-parameters: |
-            MOS_VERSION=mitaka
+            MOS_VERSION=all
             SNAPSHOT_NAME=ha_deploy_VLAN_DVR_CINDER
       - trigger-builds:
         - project: 'test_rail_reporter'
           same-node: true
           block: true
           predefined-parameters: |
-            MOS_VERSION=mitaka
+            MOS_VERSION=all
             SNAPSHOT_NAME=ha_deploy_VLAN_DVR_CINDER
             TEST_GROUP=NEUTRON
             REPORT_PREFIX=/srv/jenkins/neutron
