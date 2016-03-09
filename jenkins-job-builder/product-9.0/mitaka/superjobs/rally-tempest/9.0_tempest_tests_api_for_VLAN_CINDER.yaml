@@ -126,7 +126,7 @@
     defaults: global
     description: 'Runs Tempest tests'
     disabled: false
-    display-name: '9.0-RALLY-TEMPEST VLAN SCENARIO'
+    display-name: '9.0-RALLY-TEMPEST VLAN API'
     concurrent: true
     browser: githubweb
     retry-count: 3
