@@ -70,8 +70,8 @@
             MILESTONE=9.0
             MOS_VERSION=all
 
-    triggers:
-        - timed: "30 21 * * *"
+#    triggers:
+#        - timed: "30 21 * * *"
     project-type: freestyle
     defaults: global
     node: Slave-srv137
