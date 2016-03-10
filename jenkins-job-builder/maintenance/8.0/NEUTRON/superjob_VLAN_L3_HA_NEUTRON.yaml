@@ -1,5 +1,5 @@
 - job:
-    name: superjob_for_VLAN_L3_HA_NEUTRON
+    name: 8.0-superjob_for_VLAN_L3_HA_NEUTRON
     builders:
       - trigger-builds:
         - project: 'create_param_environment'
@@ -38,7 +38,7 @@
     node: slave-7777
     description: 'VLAN+L3_HA NEUTRON tests'
     disabled: true
-    display-name: 'VLAN+L3_HA'
+    display-name: '8.0-NEUTRON-VLAN+L3_HA'
     concurrent: false
     retry-count: 3
     logrotate:
