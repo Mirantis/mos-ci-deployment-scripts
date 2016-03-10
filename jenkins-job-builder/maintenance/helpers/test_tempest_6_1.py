@@ -46,7 +46,7 @@ class TempestCeph(TestBasic):
 
         cluster_id = self.fuel_web.create_cluster(
             name=self.__class__.__name__,
-            mode=settings.DEPLOYMENT_MODE,
+            mode=settings.DEPLOYMENT_MODE_HA,
             settings={
                 "net_provider": 'neutron',
                 "net_segment_type": "vlan",
@@ -79,7 +79,8 @@ class TempestCeph(TestBasic):
         self.fuel_web.verify_network(cluster_id)
 
         # Run ostf
-        self.fuel_web.run_ostf(cluster_id=cluster_id)
+        self.fuel_web.run_ostf(cluster_id=cluster_id,
+                               test_sets=['ha', 'smoke', 'sanity'])
 
         self.env.make_snapshot("tempest_test_ceph",
                                is_make=True)
@@ -106,7 +107,7 @@ class TempestCeph(TestBasic):
 
         cluster_id = self.fuel_web.create_cluster(
             name=self.__class__.__name__,
-            mode=settings.DEPLOYMENT_MODE,
+            mode=settings.DEPLOYMENT_MODE_HA,
             settings={
                 "net_provider": 'neutron',
                 "net_segment_type": 'gre',
@@ -139,7 +140,8 @@ class TempestCeph(TestBasic):
         self.fuel_web.verify_network(cluster_id)
 
         # Run ostf
-        self.fuel_web.run_ostf(cluster_id=cluster_id)
+        self.fuel_web.run_ostf(cluster_id=cluster_id,
+                               test_sets=['ha', 'smoke', 'sanity'])
 
         self.env.make_snapshot("tempest_cinder_glance_swift_tun",
                                is_make=True)
