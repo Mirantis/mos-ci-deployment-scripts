@@ -1,5 +1,5 @@
 - job:
-    name: 9.0_rally_tempest_tests_VLAN_DVR_SAHARA_CEILOMETER_MONGO_CINDER.yaml
+    name: 8.0-rally_tempest_tests_scenario_VLAN_DVR_IRONIC_SAHARA_CEILOMETER_MONGO_CINDER
     wrappers:
       - build-name:
           name: Build_Number:${BUILD_NUMBER}_ISO_ID:${FILE,path="build-name-setter.info"}
@@ -24,12 +24,10 @@
         - shell:
             !include-raw: add_interface.sh
         - shell: |
-            #sudo rm -rf "$ISO_DIR"
-            #sudo wget http://srv52-bud.infra.mirantis.net/fuelweb-iso/fuel-8.0-570-2016-02-15_13-42-00.iso -P "$ISO_DIR"
 
             ISO_NAME=`ls "$ISO_DIR"`
 
-            if [ "$MOS_VERSION" == 'mitaka' ] || [ "$MOS_VERSION" == 'kilo' ] ;
+            if [[ "$MOS_VERSION" == 'mitaka' ]] || [[ "$MOS_VERSION" == 'kilo' ]] ;
             then
             ISO_ID=`echo "$ISO_NAME" | cut -f4 -d-`
             else
@@ -53,8 +51,6 @@
             sed -i 's|rally verify install --source /var/lib/tempest --no-tempest-venv|rally verify install --source /var/lib/tempest|g' rally-tempest/latest/setup_tempest.sh
             sed -i 's|FROM rallyforge/rally:latest|FROM rallyforge/rally:0.3.1|g' rally-tempest/latest/Dockerfile
 
-
-
             git clone https://github.com/Mirantis/mos-integration-tests
             cd mos-integration-tests
 
@@ -69,7 +65,7 @@
             . venv/bin/activate
             sudo apt-get install docker.io sshpass -y
             sudo docker build -t rally-tempest rally-tempest/latest
-            sudo docker save -o ./dimage rally-tempest/latest
+            sudo docker save -o ./dimage rally-tempest
             echo '' > ~/.ssh/known_hosts
             sshpass -p 'r00tme' scp -o "StrictHostKeyChecking no" dimage root@"$MASTER_NODE_IP":/root/rally
 
@@ -87,7 +83,16 @@
 
             echo 'docker run -tid -v /var/lib/rally-tempest-container-home-dir:/home/rally --net host "$ID" > dock.id' >> ssh_scr.sh
             echo 'DOCK_ID=`cat dock.id`' >> ssh_scr.sh
+
+            # Add v2.0 to os auth url
             echo 'sed -i "s|:5000|:5000/v2.0|g" /var/lib/rally-tempest-container-home-dir/openrc' >> ssh_scr.sh
+
+            # this is alternate to adding v2.0 to os auth url
+            #echo 'CONTROLLER_ID="$(fuel node | grep controller| awk '\''{print$1}'\''| head -1)" ' >> ssh_scr.sh
+            #echo ' keystone_id=$(ssh node-${CONTROLLER_ID} ". openrc; openstack endpoint list |grep identity | awk '\''{print\$2}'\'' ") ' >>  ssh_scr.sh
+            #echo ' public_url=$(ssh node-${CONTROLLER_ID} ". openrc; openstack endpoint show $keystone_id |grep publicurl | awk '\''{print\$4}'\'' ") ' >> ssh_scr.sh
+            #echo 'sed -i "s|export OS_AUTH_URL=.*|export OS_AUTH_URL=$public_url/v2.0/|g" /var/lib/rally-tempest-container-home-dir/openrc' >> ssh_scr.sh
+
             #echo 'echo '\''export OS_AUTH_URL=http://10.109.1.3:5000/v2.0'\'' >> /var/lib/rally-tempest-container-home-dir/openrc' >> ssh_scr.sh
             #echo 'OAU=`fgrep OS_AUTH_URL /var/lib/rally-tempest-container-home-dir/openrc` && OAUV2="$OAU"v2.0 && echo "$OAUV2" >> /var/lib/rally-tempest-container-home-dir/openrc' >> ssh_scr.sh
             echo 'docker exec -u root "$DOCK_ID" sed -i "s|\#swift_operator_role = Member|swift_operator_role=SwiftOperator|g" /etc/rally/rally.conf' >> ssh_scr.sh
@@ -95,7 +100,7 @@
             echo 'docker exec "$DOCK_ID" setup-tempest' >> ssh_scr.sh
             echo 'file=`find / -name tempest.conf`' >> ssh_scr.sh
             echo 'echo "backup = False" >> $file' >> ssh_scr.sh
-            echo ' sed -i "95i ironic = False" $file ' >> ssh_scr.sh
+            echo ' sed -i "95i ironic = True" $file ' >> ssh_scr.sh
             echo ' sed -i "s/sahara = False/sahara = True/g" $file ' >> ssh_scr.sh
 
             #temp_fix
@@ -104,8 +109,13 @@
             #echo '$OS_AUTH_URL_V="$OS_AUTH"v2.0' >> ssh_scr.sh
             #echo 'echo "$OS_AUTH_URL_V" >> /var/lib/rally-tempest-container-home-dir/openrc' >> ssh_scr.sh
 
-            echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start --system-wide"' >> ssh_scr.sh
-            #echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start"' >> ssh_scr.sh
+            # echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start --system-wide"' >> ssh_scr.sh
+
+            # echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start --regex tempest.api"' >> ssh_scr.sh
+
+            echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start --regex  tempest.scenario"' >> ssh_scr.sh
+
+            # echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start"' >> ssh_scr.sh
 
 
 
@@ -124,7 +134,7 @@
     defaults: global
     description: 'Runs Tempest tests'
     disabled: false
-    display-name: '9.0-Rally-Tempest VLAN_DVR_SAHARA_CEILOMETER_MONGO_CINDER'
+    display-name: '8.0-Rally_Tempest_Testing SCENARIO'
     concurrent: true
     browser: githubweb
     retry-count: 3

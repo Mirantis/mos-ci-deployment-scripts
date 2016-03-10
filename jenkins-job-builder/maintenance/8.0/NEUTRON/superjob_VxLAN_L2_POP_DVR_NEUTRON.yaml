@@ -1,5 +1,5 @@
 - job:
-    name: superjob_for_VxLAN_L2_POP_DVR_NEUTRON
+    name: 8.0-superjob_for_VxLAN_L2_POP_DVR_NEUTRON
     builders:
       - trigger-builds:
         - project: 'create_param_environment'
@@ -40,7 +40,7 @@
     node: slave-7775
     description: 'VxLAN+L2_POP+DVR NEUTRON tests'
     disabled: true
-    display-name: 'VxLAN+L2_POP+DVR'
+    display-name: '8.0-NEUTRON-VxLAN+L2_POP+DVR'
     concurrent: false
     retry-count: 3
     logrotate:

@@ -1,5 +1,5 @@
 - job:
-    name: 9.0_rally_tempest_tests_for_VLAN_CINDER
+    name: 9.0_rally_tempest_tests_api_for_VLAN_CINDER
     wrappers:
       - build-name:
           name: Build_Number:${BUILD_NUMBER}_ISO_ID:${FILE,path="build-name-setter.info"}
@@ -74,7 +74,7 @@
             echo '#!/bin/bash -xe' > ssh_scr.sh
             echo 'docker load -i /root/rally' >> ssh_scr.sh
 
-            wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/product/superjobs/RallyTempest/rally_tempest_prepare_host.sh
+            wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/product-TEMPEST-only/RallyTempest/rally_tempest_prepare_host.sh
             cat rally_tempest_prepare_host.sh >> ssh_scr.sh
             echo '' >> ssh_scr.sh
 
@@ -102,9 +102,13 @@
             #echo '$OS_AUTH_URL_V="$OS_AUTH"v2.0' >> ssh_scr.sh
             #echo 'echo "$OS_AUTH_URL_V" >> /var/lib/rally-tempest-container-home-dir/openrc' >> ssh_scr.sh
 
-            echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start --system-wide"' >> ssh_scr.sh
-            #echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start"' >> ssh_scr.sh
+            # echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start --system-wide"' >> ssh_scr.sh
 
+            echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start --regex tempest.api"' >> ssh_scr.sh
+
+            # echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start --regex  tempest.scenario"' >> ssh_scr.sh
+
+            # echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start"' >> ssh_scr.sh
 
 
             echo 'docker exec "$DOCK_ID" bash -c "rally verify results --json --output-file output.json" ' >> ssh_scr.sh
@@ -122,7 +126,7 @@
     defaults: global
     description: 'Runs Tempest tests'
     disabled: false
-    display-name: '9.0-RALLY-TEMPEST VLAN'
+    display-name: '9.0-RALLY-TEMPEST VLAN API'
     concurrent: true
     browser: githubweb
     retry-count: 3

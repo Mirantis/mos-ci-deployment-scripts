@@ -1,5 +1,5 @@
 - job:
-    name: superjob_for_VxLAN_L2_POP_NEUTRON
+    name: 8.0-superjob_for_VxLAN_L2_POP_NEUTRON
     builders:
       - trigger-builds:
         - project: 'create_param_environment'
@@ -36,7 +36,7 @@
     node: master
     description: 'VxLAN+L2_POP NEUTRON tests'
     disabled: true
-    display-name: 'VxLAN+L2_POP'
+    display-name: '8.0-NEUTRON-VxLAN+L2_POP'
     concurrent: false
     retry-count: 3
     logrotate:

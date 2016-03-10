@@ -1,5 +1,5 @@
 - job:
-    name: superjob_for_VLAN_CINDER_NOVA_HEAT
+    name: 8.0-superjob_for_VLAN_CINDER_NOVA_HEAT
     builders:
       - trigger-builds:
         - project: 'create_param_environment'
@@ -79,7 +79,7 @@
     node: slave-srv62
     description: 'VLAN CINDER-NOVA-HEAT tests with reporting to TestRail in a row.'
     disabled: true
-    display-name: 'VLAN CINDER-NOVA-HEAT'
+    display-name: '8.0-VLAN CINDER-NOVA-HEAT'
     concurrent: false
     retry-count: 3
     logrotate:

@@ -1,5 +1,3 @@
-#!/bin/bash -xe
-
 CONTAINER_MOUNT_HOME_DIR="${CONTAINER_MOUNT_HOME_DIR:-/var/lib/rally-tempest-container-home-dir}"
 CONTROLLER_PROXY_PORT="8888"
 KEYSTONE_API_VERSION="v2.0"

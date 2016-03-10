@@ -1,5 +1,5 @@
 - job:
-    name: superjob_for_VxLAN_NEUTRON
+    name: 8.0-superjob_for_VxLAN_NEUTRON
     builders:
       - trigger-builds:
         - project: 'create_param_environment'
@@ -34,7 +34,7 @@
     node: slave-7774
     description: 'VxLAN NEUTRON tests'
     disabled: true
-    display-name: 'VxLAN'
+    display-name: '8.0-NEUTRON-VxLAN'
     concurrent: false
     retry-count: 3
     logrotate:
