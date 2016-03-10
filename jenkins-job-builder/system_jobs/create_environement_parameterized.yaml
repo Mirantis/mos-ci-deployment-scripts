@@ -47,7 +47,7 @@
           default: "2.9.16"
       - string:
           name: FUEL_QA_VER
-          default: "master"
+          default: "stable/8.0"
       - string:
           name: ENV_CHANGER
       - string:
