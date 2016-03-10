@@ -2,11 +2,11 @@
     name: 9.0-superjob_for_VxLAN_L2_POP_DVR_NEUTRON-kilo
     builders:
       - trigger-builds:
-        - project: 'create_param_environment'
+        - project: '9.0_create_param_environment'
           same-node: true
           block: true
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VxLAN_L2_POP_DVR
+            SNAPSHOT_NAME=ha_deploy_VxLAN_L2_POP_DVR_CINDER
             TEST_TYPE=NEUTRON
             SEGMENT_TYPE=VxLAN
             DISABLE_SSL=TRUE
@@ -14,6 +14,7 @@
             DVR_ENABLE=TRUE
             ENV_CHANGER=DVR_2flow
             COMPUTES_COUNT=3
+            MOS_VERSION=kilo
       - trigger-builds:
         - project: '9.0-NEUTRON_tests_generated_from_template'
           same-node: true
@@ -21,25 +22,26 @@
           block-thresholds:
             build-step-failure-threshold: 'never'    
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VxLAN_L2_POP_DVR
+            SNAPSHOT_NAME=ha_deploy_VxLAN_L2_POP_DVR_CINDER
             ENV_CHANGER=DVR_2flow
-#      - trigger-builds:
-#        - project: 'test_rail_reporter'
-#          same-node: true
-#          block: true
-#          predefined-parameters: |
-#            SNAPSHOT_NAME=ha_deploy_VxLAN_L2_POP_DVR
-#            TEST_GROUP=NEUTRON
-#            ENV_CHANGER=DVR_2flow
-#            REPORT_PREFIX=/srv/jenkins/neutron
+            MOS_VERSION=kilo
+      - trigger-builds:
+        - project: 'test_rail_reporter'
+          same-node: true
+          block: true
+          predefined-parameters: |
+            SNAPSHOT_NAME=ha_deploy_VxLAN_L2_POP_DVR_CINDER
+            TEST_GROUP=NEUTRON
+            REPORT_PREFIX=/srv/jenkins/neutron
+            MOS_VERSION=kilo
 
     triggers:
         - timed: "30 21 * * *"
     project-type: freestyle
     defaults: global
-    node: 9.0-NEUTRON
+    node: Slave-srv132
     description: 'VxLAN+L2_POP+DVR NEUTRON tests'
-    disabled: false
+    disabled: true
     display-name: 'kilo-9.0-NEUTRON:VxLAN+L2_POP+DVR'
     concurrent: false
     retry-count: 3

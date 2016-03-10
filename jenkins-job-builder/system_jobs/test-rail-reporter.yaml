@@ -25,10 +25,22 @@
           default: report.xml
       - string:
           name: SUITE
+      - string:
+          name: MILESTONE
+      - string:
+          name: MOS_VERSION
+
     builders:
         - shell: |
             ISO_NAME=`ls "$ISO_DIR"`
+
+            if [ "$MOS_VERSION" == 'mitaka' ] || [ "$MOS_VERSION" == 'kilo' ] ;
+            then
+            ISO_ID=`echo "$ISO_NAME" | cut -f4 -d-`
+            else
             ISO_ID=`echo "$ISO_NAME" | cut -f3 -d-`
+            fi
+
             ENV_NAME=MOS_CI_"$ISO_NAME"
 
             SNAPSHOT=`echo $SNAPSHOT_NAME | sed 's/ha_deploy_//'`
@@ -50,6 +62,12 @@
             then
             TESTRAIL_SUITE="$SUITE"
             export TESTRAIL_SUITE="$SUITE"
+            fi
+
+            if [ -n "$MILESTONE" ];
+            then
+            TESTRAIL_MILESTONE="$MILESTONE"
+            export TESTRAIL_MILESTONE="$MILESTONE"
             fi
 
             sudo python setup.py install
