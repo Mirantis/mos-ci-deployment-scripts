@@ -31,7 +31,7 @@
             build-step-failure-threshold: 'never'
           predefined-parameters: |
             SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
-            REPORT_PREFIX=/srv/jenkins/rally-tempest
+            REPORT_PREFIX=/srv/jenkins/rally-tempest/api
             MOS_VERSION=all
 
       - trigger-builds:
@@ -41,7 +41,7 @@
           predefined-parameters: |
             SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
             TEST_GROUP=TEMPEST,HA,Cinder LVM,Swift
-            REPORT_PREFIX=/srv/jenkins/rally-tempest
+            REPORT_PREFIX=/srv/jenkins/rally-tempest/api
             REPORT_FILE=verification.xml
             SUITE=[9.0][MOSQA] Tempest 9.0
             MILESTONE=9.0
@@ -56,7 +56,7 @@
             build-step-failure-threshold: 'never'
           predefined-parameters: |
             SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
-            REPORT_PREFIX=/srv/jenkins/rally-tempest
+            REPORT_PREFIX=/srv/jenkins/rally-tempest/scenario
             MOS_VERSION=all
 
       - trigger-builds:
@@ -66,7 +66,7 @@
           predefined-parameters: |
             SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
             TEST_GROUP=TEMPEST,HA,Cinder LVM,Swift
-            REPORT_PREFIX=/srv/jenkins/rally-tempest
+            REPORT_PREFIX=/srv/jenkins/rally-tempest/scenario
             REPORT_FILE=verification.xml
             SUITE=[9.0][MOSQA] Tempest 9.0
             MILESTONE=9.0
