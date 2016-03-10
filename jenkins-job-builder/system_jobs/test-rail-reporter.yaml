@@ -98,7 +98,7 @@
       artifactNumToKeep: -1
     publishers:
       - email:
-          recipients: efazliev@mirantis.com
+          recipients: efazliev@mirantis.com, sturivnyi@mirantis.com, obutenko@mirantis.com
       - workspace-cleanup:
           fail-build: false
       - description-setter:
