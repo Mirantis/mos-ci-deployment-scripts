@@ -57,9 +57,6 @@ class TempestCeph(TestBasic):
                 'sahara': True,
                 'murano': True,
                 'ceilometer': True,
-                'tenant': 'tempest',
-                'user': 'tempest',
-                'password': 'tempest',
             }
         )
         self.fuel_web.update_nodes(
@@ -87,9 +84,9 @@ class TempestCeph(TestBasic):
 
 
     @test(depends_on=[SetupEnvironment.prepare_slaves_5],
-          groups=["tempest_cinder_glance_swift_tun_centos"])
+          groups=["tempest_cinder_glance_swift_vlan_ubuntu"])
     @log_snapshot_after_test
-    def tempest_cinder_glance_swift_tun_centos(self):
+    def tempest_cinder_glance_swift_vlan_ubuntu(self):
         """Deploy env with 3 controller and 2 compute nodes.
 
         Scenario:
@@ -110,7 +107,6 @@ class TempestCeph(TestBasic):
             mode=settings.DEPLOYMENT_MODE_HA,
             settings={
                 "net_provider": 'neutron',
-                "net_segment_type": 'gre',
                 'volumes_ceph': False,
                 'images_ceph': False,
                 'objects_ceph': False,
@@ -118,9 +114,6 @@ class TempestCeph(TestBasic):
                 'sahara': False,
                 'murano': False,
                 'ceilometer': False,
-                'tenant': 'tempest',
-                'user': 'tempest',
-                'password': 'tempest',
             }
         )
         self.fuel_web.update_nodes(
@@ -130,7 +123,7 @@ class TempestCeph(TestBasic):
                 'slave-02': ['controller'],
                 'slave-03': ['controller'],
                 'slave-04': ['compute', 'cinder'],
-                'slave-05': ['compute', 'cinder']
+                'slave-05': ['compute']
             }
         )
         # Cluster deploy
@@ -143,5 +136,5 @@ class TempestCeph(TestBasic):
         self.fuel_web.run_ostf(cluster_id=cluster_id,
                                test_sets=['ha', 'smoke', 'sanity'])
 
-        self.env.make_snapshot("tempest_cinder_glance_swift_tun",
+        self.env.make_snapshot("tempest_cinder_glance_swift_vlan_ubuntu",
                                is_make=True)

@@ -46,6 +46,8 @@ ERASE_PREV_ENV=${ERASE_PREV_ENV:-true}
 GROUP=${GROUP:-tempest_ceph_services}
 DISABLE_SSL=${DISABLE_SSL:-false}
 
+OPENSTACK_RELEASE=${OPENSTACK_RELEASE:-ubuntu}
+
 # Check if fuel-qa folder exist
 if [ ! -d fuel-qa ]; then
     git clone -b "${FUEL_QA_VER}" https://github.com/openstack/fuel-qa
@@ -178,5 +180,6 @@ export SLAVE_NODE_MEMORY=16384
 export DISABLE_SSL=$DISABLE_SSL
 export NOVA_QUOTAS_ENABLED=true
 export KVM_USE=true
+export OPENSTACK_RELEASE=$OPENSTACK_RELEASE
 
 ./utils/jenkins/system_tests.sh -k -K -j fuelweb_test -t test -w $(pwd) -e "$ENV_NAME" -o --group="$GROUP" -i "$ISO_PATH"

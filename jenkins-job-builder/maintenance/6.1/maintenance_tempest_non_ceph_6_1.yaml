@@ -61,7 +61,7 @@
             DISABLE_SSL=$DISABLE_SSL
             ENV_NAME=maintenance_tempest_non_ceph_6_1
             FILE=test_tempest_6_1.py
-            GROUP=tempest_cinder_glance_swift_tun_centos
+            GROUP=tempest_cinder_glance_swift_vlan_ubuntu
       - trigger-builds:
         - project: 'maintenance_tempest_runner'
           same-node: true
@@ -70,7 +70,7 @@
             build-step-failure-threshold: 'never'
           predefined-parameters: |
             ENV_NAME=maintenance_tempest_non_ceph_6_1
-            SNAPSHOT_NAME=tempest_cinder_glance_swift_tun
+            SNAPSHOT_NAME=tempest_cinder_glance_swift_vlan_ubuntu
             REPORT_PREFIX=/srv/jenkins/rally-tempest
             VENV_PATH=/home/jenkins/qa-venv-6.1
             RALLY_TEMPEST=$RALLY_TEMPEST
