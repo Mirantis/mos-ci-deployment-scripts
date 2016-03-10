@@ -84,7 +84,27 @@
       - string:
           name: TEMPEST
           default: "FALSE"
-
+      - string:
+          name: SEPARATE_SERVICES_COUNT
+          default: "0"
+      - string:
+          name: SEPARATE_SERVICE_RABBIT_ENABLE
+          default: "FALSE"
+      - string:
+          name: SEPARATE_SERVICE_DB_ENABLE
+          default: "FALSE"
+      - string:
+          name: SEPARATE_SERVICE_KEYSTONE_ENABLE
+          default: "FALSE"
+      - string:
+          name: SEPARATE_SERVICE_RABBIT_PLUGIN_PATH
+          default: "/var/www/detach-plugins"
+      - string:
+          name: SEPARATE_SERVICE_DB_PLUGIN_PATH
+          default: "/var/www/detach-plugins"
+      - string:
+          name: SEPARATE_SERVICE_KEYSTONE_PLUGIN_PATH
+          default: "/var/www/detach-plugins"
 
     name: create_param_environment
     wrappers:
@@ -150,10 +170,20 @@
             export DEPLOYMENT_TIMEOUT="$DEPLOYMENT_TIMEOUT"
             export INTERFACE_MODEL="$INTERFACE_MODEL"
             export KVM_USE="$KVM_USE"
+            # SEPARATE SERVICES
+
+            export SEPARATE_SERVICES_COUNT="$SEPARATE_SERVICES_COUNT"
+            export SEPARATE_SERVICE_RABBIT_ENABLE="$SEPARATE_SERVICE_RABBIT_ENABLE"
+            export SEPARATE_SERVICE_DB_ENABLE="$SEPARATE_SERVICE_DB_ENABLE"
+            export SEPARATE_SERVICE_KEYSTONE_ENABLE="$SEPARATE_SERVICE_KEYSTONE_ENABLE"
+
+            export SEPARATE_SERVICE_RABBIT_PLUGIN_PATH=`ls "${SEPARATE_SERVICE_RABBIT_PLUGIN_PATH}"/detach-rabbitmq-*.rpm`
+            export SEPARATE_SERVICE_DB_PLUGIN_PATH=`ls "${SEPARATE_SERVICE_DB_PLUGIN_PATH}"/detach-database-*.rpm`
+            export SEPARATE_SERVICE_KEYSTONE_PLUGIN_PATH=`ls "${SEPARATE_SERVICE_KEYSTONE_PLUGIN_PATH}"/detach-keystone-*.rpm`
 
             if [[ "$TEMPEST" == 'TRUE' ]];
             then
-            #sed -i 's|pip install -r fuel-qa/fuelweb_test/requirements.txt --upgrade|cd fuel-qa \&\& git fetch https://review.openstack.org/openstack/fuel-qa refs/changes/81/281281/1 \&\& git checkout FETCH_HEAD \&\& cd ../ \&\& pip install -r fuel-qa/fuelweb_test/requirements.txt --upgrade|g' deploy_env.sh
+
             sed -i '181i\         - label: eth1' mos_tests_template.yaml
             sed -i '182i\           l2_network_device: public' mos_tests_template.yaml
 
