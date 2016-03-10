@@ -56,14 +56,18 @@
             virtualenv venv
             . venv/bin/activate
 
+            # standard credentials for testrail is in this file, that
+            # is copied to host by ansible playbook
             . "$TESTRAIL_FILE"
 
+            # if we need to change SUITE
             if [ -n "$SUITE" ];
             then
             TESTRAIL_SUITE="$SUITE"
             export TESTRAIL_SUITE="$SUITE"
             fi
 
+            # if we need to change MILESTONE
             if [ -n "$MILESTONE" ];
             then
             TESTRAIL_MILESTONE="$MILESTONE"
@@ -76,6 +80,11 @@
             BUILD=`cat "$REPORT_PREFIX"/"$ENV_NAME"_"$SNAPSHOT_NAME"/build_url`
             set -e
             report -v --iso-id "$ISO_ID" --env-description "$SNAPSHOT-$TEST_GROUP" --testrail-url  "${TESTRAIL_URL}" --testrail-user  "${TESTRAIL_USER}" --testrail-password "${TESTRAIL_PASSWORD}" --testrail-project "${TESTRAIL_PROJECT}" --testrail-milestone "${TESTRAIL_MILESTONE}" --testrail-suite "${TESTRAIL_SUITE}" --test-results-link "$BUILD" "$REPORT_XML"
+
+            # Create path for backuping testrail report files in case if send will fall
+            BACKUP_DIR=/srv/testrail_backups/"$REPORT_PREFIX"/"$ENV_NAME"_"$SNAPSHOT_NAME"
+            sudo mkdir -p "$BACKUP_DIR"
+            sudo mv "$REPORT_XML" "$BACKUP_DIR"
 
     scm:
       - test-rail-reporter
