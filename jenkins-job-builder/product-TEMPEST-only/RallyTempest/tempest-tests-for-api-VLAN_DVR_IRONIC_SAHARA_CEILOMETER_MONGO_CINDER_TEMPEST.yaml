@@ -16,7 +16,7 @@
           default: /srv/jenkins/rally-tempest
       - string:
           name: IRONIC
-          default: TRUE
+          default: 'TRUE'
 
     builders:
         - shell: |
