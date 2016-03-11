@@ -107,6 +107,7 @@ class TempestCeph(TestBasic):
             mode=settings.DEPLOYMENT_MODE_HA,
             settings={
                 "net_provider": 'neutron',
+                "net_segment_type": "vlan",
                 'volumes_ceph': False,
                 'images_ceph': False,
                 'objects_ceph': False,
