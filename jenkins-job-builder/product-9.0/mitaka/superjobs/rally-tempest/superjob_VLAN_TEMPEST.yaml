@@ -76,7 +76,7 @@
     defaults: global
     node: Slave-srv137
     description: 'VLAN TEMPEST tests'
-    disabled: false
+    disabled: true
     display-name: 'superjob-9.0-RALLY-TEMPEST VLAN'
     concurrent: false
     retry-count: 3

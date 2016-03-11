@@ -53,7 +53,7 @@
     defaults: global
     node: Slave-srv136
     description: 'VLAN+DVR+IRONIC+CEILOMETER+MONGO TEMPEST tests'
-    disabled: false
+    disabled: true
     display-name: 'superjob-9.0-RALLY-TEMPEST VLAN+DVR+SAHARA+IRONIC+CEILOMETER+MONGO'
     concurrent: false
     retry-count: 3

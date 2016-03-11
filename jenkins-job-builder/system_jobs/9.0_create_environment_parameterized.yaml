@@ -25,6 +25,12 @@
           name: CEPH_ENABLE
           default: "FALSE"
       - string:
+          name: CINDER_ENABLE
+          default: "TRUE"
+      - string:
+          name: LVM_ENABLE
+          default: "TRUE"
+      - string:
           name: RADOS_ENABLE
           default: "FALSE"
       - string:
@@ -133,6 +139,8 @@
             export DVR_ENABLE="$DVR_ENABLE"
             export L3_HA_ENABLE="$L3_HA_ENABLE"
             export L2_POP_ENABLE="$L2_POP_ENABLE"
+            export LVM_ENABLE="$LVM_ENABLE"
+            export CINDER_ENABLE="$CINDER_ENABLE"
             export CEPH_ENABLE="$CEPH_ENABLE"
             export RADOS_ENABLE="$RADOS_ENABLE"
             export SAHARA_ENABLE="$SAHARA_ENABLE"
