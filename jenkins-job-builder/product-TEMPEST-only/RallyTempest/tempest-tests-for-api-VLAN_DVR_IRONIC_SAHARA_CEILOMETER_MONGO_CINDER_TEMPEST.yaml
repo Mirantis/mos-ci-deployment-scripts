@@ -14,6 +14,10 @@
       - string:
           name: REPORT_PREFIX
           default: /srv/jenkins/rally-tempest
+      - string:
+          name: IRONIC
+          default: TRUE
+
     builders:
         - shell: |
             ISO_NAME=`ls "$ISO_DIR"`
@@ -103,7 +107,14 @@
             echo 'docker exec "$DOCK_ID" setup-tempest' >> ssh_scr.sh
             echo 'file=`find / -name tempest.conf`' >> ssh_scr.sh
             echo 'echo "backup = False" >> $file' >> ssh_scr.sh
+
+            # workaround for IRONIC, as it not configured as false by tempest
+            if [[ "$IRONIC" != "TRUE" ]]
+            echo ' sed -i "95i ironic = False" $file ' >> ssh_scr.sh
+            else
             echo ' sed -i "95i ironic = True" $file ' >> ssh_scr.sh
+            fi
+
             echo ' sed -i "s/sahara = False/sahara = True/g" $file ' >> ssh_scr.sh
 
             #temp_fix
