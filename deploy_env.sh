@@ -282,7 +282,7 @@ fi
 set_default FUEL_QA_VER 'stable/8.0'
 
 # Erase all previous environments by default
-set_default ERASE_PREV_ENV true
+set_default ERASE_PREV_ENV false
 
 V_ENV_DIR="`pwd`/fuel-devops-venv"
 
@@ -359,6 +359,10 @@ if [[ ${INTERFACE_MODEL} == 'virtio' ]]; then
     done
 fi
 
+if [[ ${NOVA_QUOTAS_ENABLED} == 'TRUE' ]]; then
+    patch_fuel_qa nova_quotas.patch
+fi
+
 # erase previous environments
 if [ ${ERASE_PREV_ENV} == true ]; then
     for i in `dos.py list | grep MOS`; do dos.py erase $i; done
@@ -374,4 +378,3 @@ set_default DEPLOYMENT_TIMEOUT 10000
 dos.py suspend ${ENV_NAME}
 dos.py snapshot ${ENV_NAME} ${SNAPSHOT_NAME}
 dos.py resume ${ENV_NAME}
-
