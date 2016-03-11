@@ -109,7 +109,7 @@
             echo 'echo "backup = False" >> $file' >> ssh_scr.sh
 
             # workaround for IRONIC, as it not configured as false by tempest
-            if [[ "$IRONIC" != "TRUE" ]]
+            if [[ "$IRONIC" != "TRUE" ]]; then
             echo ' sed -i "95i ironic = False" $file ' >> ssh_scr.sh
             else
             echo ' sed -i "95i ironic = True" $file ' >> ssh_scr.sh
