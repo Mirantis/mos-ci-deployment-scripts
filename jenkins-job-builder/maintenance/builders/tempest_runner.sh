@@ -1,8 +1,6 @@
 #!/bin/bash -xe
 
-REPORT_PATH="${REPORT_PREFIX}/${ENV_NAME}_${SNAPSHOT_NAME}/"
-
-echo "$BUILD_URL" > build_url
+echo "$BUILD_URL" > ./build_url
 
 INSTALL_MOS_TEMPEST_RUNNER_LOG_NAME=${INSTALL_MOS_TEMPEST_RUNNER_LOG_NAME:-"install_mos_tempest_runner_log.txt"}
 export INSTALL_MOS_TEMPEST_RUNNER_LOG="${INSTALL_MOS_TEMPEST_RUNNER_LOG_NAME}"
@@ -82,7 +80,6 @@ if [ "$RALLY_TEMPEST" == "run_tempest" ];then
 
     echo '#!/bin/bash' > net_setup.sh
     echo "iface=\$(cat \$(grep -irl \"${public_mac}\" \"/etc/sysconfig/network-scripts/\") | awk -F= '/DEVICE/{print \$2}')" >> net_setup.sh
-    echo 'echo $iface' >> net_setup.sh
     echo 'ifconfig $iface up' >> net_setup.sh
     echo "ip addr add ${public_ip}.31/${public_net} dev \${iface}" >> net_setup.sh
 
@@ -98,7 +95,7 @@ if [ "$RALLY_TEMPEST" == "run_tempest" ];then
 
     set +e
     echo "Download and install mos-tempest-runner project"
-    git clone https://github.com/Mirantis/mos-tempest-runner.git -b stable/7.0
+    git clone https://github.com/Mirantis/mos-tempest-runner.git -b stable/${MILESTONE}
     rm -rf mos-tempest-runner/.git*
     scp_to_fuel_master -r mos-tempest-runner $WORK_FLDR
     ssh_to_fuel_master "$WORK_FLDR/mos-tempest-runner/setup_env.sh" &> ${INSTALL_MOS_TEMPEST_RUNNER_LOG}
@@ -114,23 +111,15 @@ if [ "$RALLY_TEMPEST" == "run_tempest" ];then
 run_tests > $WORK_FLDR/log.log
 EOF
 
-    echo "Add tempest result"
+    echo "Store tempest result"
     scp_from_fuel_master -r /home/developer/mos-tempest-runner/tempest-reports/* .
     mv tempest-report.xml verification.xml
     echo "DONE"
-
-    #Add tempest result to testrail
-    #if [ -f tempest-report.xml ]; then
-    #    if ${USE_TESTRAIL}; then
-    #        testrail_results "deploy_successful"
-    #    fi
-    #fi
 
     set -e
     return_code=$(cat ${RUN_TEMPEST_LOG} | tail -1)
     check_return_code_after_command_execution ${return_code} "Run tempest tests is failure."
 
-    
 
 elif [ "$RALLY_TEMPEST" == "rally_run" ];then
 
