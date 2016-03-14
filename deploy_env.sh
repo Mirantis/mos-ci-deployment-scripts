@@ -122,8 +122,8 @@ fi
 
 # set up all vars which should be set to true or false
 BOOL_VARS="L2_POP_ENABLE DVR_ENABLE L3_HA_ENABLE SAHARA_ENABLE MURANO_ENABLE CEILOMETER_ENABLE IRONIC_ENABLE RADOS_ENABLE CEPH_GLANCE_ENABLE"
-SEPARATE_SERVICES="SEPARATE_SERVICE_RABBIT_ENABLE SEPARATE_SERVICE_DB_ENABLE SEPARATE_SERVICE_KEYSTONE_ENABLE"
-for var in $BOOL_VARS $SEPARATE_SERVICES
+PLUGINS="SEPARATE_SERVICE_RABBIT_ENABLE SEPARATE_SERVICE_DB_ENABLE SEPARATE_SERVICE_KEYSTONE_ENABLE FUEL_LDAP_PLUGIN_ENABLE"
+for var in $BOOL_VARS $PLUGINS
 do
     eval $var=$(boolean $var)
 done
@@ -221,6 +221,11 @@ if [ ${SEPARATE_SERVICE_KEYSTONE_ENABLE} == 'true' ]; then
     fi
 fi
 
+if [ ${FUEL_LDAP_PLUGIN_ENABLE} == 'true' ] && [ -z ${FUEL_LDAP_PLUGIN_PATH} ]; then
+    echo "Please set env variable FUEL_LDAP_PLUGIN_PATH if you want to use FUEL_LDAP_PLUGIN_ENABLE."
+    exit 1
+fi
+
 # set dependent vars
 if [ ${LVM_ENABLE} == 'true' ]; then
     CINDER_ENABLE='true'
@@ -275,6 +280,11 @@ if [ ${SEPARATE_SERVICE_KEYSTONE_ENABLE} == 'true' ]
 then
     sed -i -e "s/# - standalone-keystone/- standalone-keystone/" ${CONFIG_NAME}
     SNAPSHOT_NAME="${SNAPSHOT_NAME}_KEYSTONE"
+fi
+
+if [ ${FUEL_LDAP_PLUGIN_ENABLE} == 'true' ]
+then
+    SNAPSHOT_NAME="${SNAPSHOT_NAME}_LDAP"
 fi
 
 # Set fuel QA version
