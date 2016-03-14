@@ -1,5 +1,5 @@
 - job:
-    name: 9.0_superjob_for_VLAN_TEMPEST
+    name: 9.0_superjob_for_VLAN_CEPH_RADOS_TEMPEST_1contr_1compute
     builders:
       - shell:
           !include-raw: ../neutron/9.0_mitaka_iso_and_erase_env.sh
@@ -9,12 +9,18 @@
           block: true
           predefined-parameters: |
             # BOOL_VARS="L2_POP_ENABLE DVR_ENABLE L3_HA_ENABLE SAHARA_ENABLE MURANO_ENABLE CEILOMETER_ENABLE IRONIC_ENABLE RADOS_ENABLE"
-            SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
-            TEST_TYPE=TEMPEST, Cinder LVM, Swift
+            SNAPSHOT_NAME=ha_deploy_VLAN_RADOS_CEPH
+            TEST_TYPE=TEMPEST, Ceph, RadosGW
             SEGMENT_TYPE=VLAN
+            CINDER_ENABLE=FALSE
+            LVM_ENABLE=FALSE
+            RADOS_ENABLE=TRUE
+            CEPH_ENABLE=TRUE
             DISABLE_SSL=TRUE
             IRONIC_ENABLE=FALSE
             NOVA_QUOTAS_ENABLED=TRUE
+            COMPUTES_COUNT=1
+            CONTROLLERS_COUNT=1
             SLAVE_NODE_CPU=2
             SLAVE_NODE_MEMORY=8192
             DEPLOYMENT_TIMEOUT=15000
@@ -28,7 +34,7 @@
           block-thresholds:
             build-step-failure-threshold: 'never'
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
+            SNAPSHOT_NAME=ha_deploy_VLAN_RADOS_CEPH
             REPORT_PREFIX=/srv/jenkins/rally-tempest/api
             MOS_VERSION=all
 
@@ -37,8 +43,8 @@
           same-node: true
           block: true
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
-            TEST_GROUP=TEMPEST,HA,Cinder LVM,Swift(api)
+            SNAPSHOT_NAME=ha_deploy_VLAN_RADOS_CEPH
+            TEST_GROUP=TEMPEST, Ceph, RadosGW(api)
             REPORT_PREFIX=/srv/jenkins/rally-tempest/api
             REPORT_FILE=verification.xml
             SUITE=[9.0][MOSQA] Tempest 9.0
@@ -53,7 +59,7 @@
           block-thresholds:
             build-step-failure-threshold: 'never'
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
+            SNAPSHOT_NAME=ha_deploy_VLAN_RADOS_CEPH
             REPORT_PREFIX=/srv/jenkins/rally-tempest/scenario
             MOS_VERSION=all
 
@@ -62,22 +68,22 @@
           same-node: true
           block: true
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
-            TEST_GROUP=TEMPEST,HA,Cinder LVM,Swift(scenario)
+            SNAPSHOT_NAME=ha_deploy_VLAN_RADOS_CEPH
+            TEST_GROUP=TEMPEST, Ceph, RadosGW(scenario)
             REPORT_PREFIX=/srv/jenkins/rally-tempest/scenario
             REPORT_FILE=verification.xml
             SUITE=[9.0][MOSQA] Tempest 9.0
             MILESTONE=9.0
             MOS_VERSION=all
 
-#    triggers:
-#        - timed: "30 21 * * *"
+    triggers:
+        - timed: "30 21 * * *"
     project-type: freestyle
     defaults: global
-    node: Slave-srv137
+    node: Slave-srv139
     description: 'VLAN TEMPEST tests'
-    disabled: true
-    display-name: 'superjob-9.0-RALLY-TEMPEST VLAN'
+    disabled: false
+    display-name: 'superjob-9.0-RALLY-TEMPEST VLAN_CEPH_RADOS_1contr_1compute'
     concurrent: false
     retry-count: 3
     logrotate:

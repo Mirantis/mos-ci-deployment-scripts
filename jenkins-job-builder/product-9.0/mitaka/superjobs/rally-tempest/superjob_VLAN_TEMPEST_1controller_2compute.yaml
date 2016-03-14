@@ -1,5 +1,5 @@
 - job:
-    name: 9.0_superjob_for_VLAN_TEMPEST
+    name: 9.0_superjob_for_VLAN_TEMPEST_1contr_2compute
     builders:
       - shell:
           !include-raw: ../neutron/9.0_mitaka_iso_and_erase_env.sh
@@ -15,6 +15,8 @@
             DISABLE_SSL=TRUE
             IRONIC_ENABLE=FALSE
             NOVA_QUOTAS_ENABLED=TRUE
+            COMPUTES_COUNT=2
+            CONTROLLERS_COUNT=1
             SLAVE_NODE_CPU=2
             SLAVE_NODE_MEMORY=8192
             DEPLOYMENT_TIMEOUT=15000
@@ -70,14 +72,14 @@
             MILESTONE=9.0
             MOS_VERSION=all
 
-#    triggers:
-#        - timed: "30 21 * * *"
+    triggers:
+        - timed: "30 21 * * *"
     project-type: freestyle
     defaults: global
-    node: Slave-srv137
+    node: Slave-srv139
     description: 'VLAN TEMPEST tests'
     disabled: true
-    display-name: 'superjob-9.0-RALLY-TEMPEST VLAN'
+    display-name: 'superjob-9.0-RALLY-TEMPEST VLAN_1contr_2compute'
     concurrent: false
     retry-count: 3
     logrotate:

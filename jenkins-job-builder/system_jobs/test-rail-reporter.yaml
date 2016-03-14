@@ -96,11 +96,6 @@
             report -v --iso-id "$ISO_ID" --env-description "$SNAPSHOT-$TEST_GROUP" --testrail-url  "${TESTRAIL_URL}" --testrail-user  "${TESTRAIL_USER}" --testrail-password "${TESTRAIL_PASSWORD}" --testrail-project "${TESTRAIL_PROJECT}" --testrail-milestone "${TESTRAIL_MILESTONE}" --testrail-suite "${TESTRAIL_SUITE}" --test-results-link "$BUILD" "$REPORT_XML"
             fi
 
-            # Create path for backuping testrail report files in case if send will fall
-            BACKUP_DIR=/srv/testrail_backups/"$REPORT_PREFIX"/"$ENV_NAME"_"$SNAPSHOT_NAME"
-            sudo mkdir -p "$BACKUP_DIR"
-            sudo mv "$REPORT_XML" "$BACKUP_DIR"
-
     scm:
       - test-rail-reporter
     project-type: freestyle
@@ -118,7 +113,7 @@
       artifactNumToKeep: -1
     publishers:
       - email:
-          recipients: efazliev@mirantis.com
+          recipients: efazliev@mirantis.com, sturivnyi@mirantis.com, obutenko@mirantis.com
       - workspace-cleanup:
           fail-build: false
       - description-setter:

@@ -14,6 +14,10 @@
       - string:
           name: REPORT_PREFIX
           default: /srv/jenkins/rally-tempest
+      - string:
+          name: IRONIC
+          default: 'TRUE'
+
     builders:
         - shell: |
             ISO_NAME=`ls "$ISO_DIR"`
@@ -87,6 +91,9 @@
             # Add v2.0 to os auth url
             echo 'sed -i "s|:5000|:5000/v2.0|g" /var/lib/rally-tempest-container-home-dir/openrc' >> ssh_scr.sh
 
+            # Workaround for Alexander Gromov, works when configuration is contain detach-keystone
+            echo 'sed -i "s|/v2.0/v2.0|/v2.0|g" /var/lib/rally-tempest-container-home-dir/openrc' >> ssh_scr.sh
+
             # this is alternate to adding v2.0 to os auth url
             #echo 'CONTROLLER_ID="$(fuel node | grep controller| awk '\''{print$1}'\''| head -1)" ' >> ssh_scr.sh
             #echo ' keystone_id=$(ssh node-${CONTROLLER_ID} ". openrc; openstack endpoint list |grep identity | awk '\''{print\$2}'\'' ") ' >>  ssh_scr.sh
@@ -100,7 +107,14 @@
             echo 'docker exec "$DOCK_ID" setup-tempest' >> ssh_scr.sh
             echo 'file=`find / -name tempest.conf`' >> ssh_scr.sh
             echo 'echo "backup = False" >> $file' >> ssh_scr.sh
+
+            # workaround for IRONIC, as it not configured as false by tempest
+            if [[ "$IRONIC" != "TRUE" ]]; then
+            echo ' sed -i "95i ironic = False" $file ' >> ssh_scr.sh
+            else
             echo ' sed -i "95i ironic = True" $file ' >> ssh_scr.sh
+            fi
+
             echo ' sed -i "s/sahara = False/sahara = True/g" $file ' >> ssh_scr.sh
 
             #temp_fix

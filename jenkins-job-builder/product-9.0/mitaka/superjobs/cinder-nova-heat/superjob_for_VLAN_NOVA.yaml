@@ -12,7 +12,7 @@
             TEST_TYPE=NEUTRON
             SEGMENT_TYPE=VLAN
             DISABLE_SSL=TRUE
-            CONTROLLERS_COUNT=1
+            CONTROLLERS_COUNT=2
             COMPUTES_COUNT=1
             SLAVE_NODE_CPU=8
             SLAVE_NODE_MEMORY=17408
