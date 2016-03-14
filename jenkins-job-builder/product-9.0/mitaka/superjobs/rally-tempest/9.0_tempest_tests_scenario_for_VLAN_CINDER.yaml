@@ -94,6 +94,8 @@
             echo 'file=`find / -name tempest.conf`' >> ssh_scr.sh
             echo 'echo "backup = False" >> $file' >> ssh_scr.sh
             echo ' sed -i "95i ironic = False" $file ' >> ssh_scr.sh
+            echo 'sed -i "79i max_template_size = 524288" $file ' >> ssh_scr.sh
+            echo 'sed -i "80i max_resources_per_stack = 1000" $file ' >> ssh_scr.sh
             #echo ' sed -i "s/sahara = False/sahara = True/g" $file ' >> ssh_scr.sh
 
             #temp_fix
