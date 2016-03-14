@@ -90,6 +90,10 @@
       - string:
           name: TEMPEST
           default: "FALSE"
+      - string:
+          name: REPLICA_CEPH
+          default: "FALSE"
+
 
 
 
@@ -172,6 +176,11 @@
             fi
 
             /bin/bash -x deploy_env.sh
+            fi
+
+            if [[ "$REPLICA_CEPH" == 'TRUE' ]];
+            then
+            sed -i '16i\ replica-ceph: 1' 3_controllers_2compute_neutron_env_template.yaml
             fi
 
     project-type: freestyle
