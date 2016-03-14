@@ -1,4 +1,4 @@
-- job-template:
+- job:
     name: 9.0-sahara_tests
     wrappers:
       - build-name:
