@@ -7,13 +7,13 @@ from subprocess import Popen, PIPE
 from urllib2 import urlopen
 
 
-
 def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--link', help='Link to parse')
     parser.add_argument('-d', type=str)
+    parser.add_argument('--link-only', action="store_true")
     args = parser.parse_args()
-    return args.d, args.link
+    return args.d, args.link, args.link_only
 
 
 def get_iso_link(link):
@@ -23,11 +23,13 @@ def get_iso_link(link):
 
 
 def main():
-    target_directory, link_to_jenkins = get_args()
-    print 'Parsing {}'.format(link_to_jenkins)
+    target_directory, link_to_jenkins, link_only = get_args()
 
     link = get_iso_link(link_to_jenkins)
-    print link
+    print link.split('/')[-1]
+
+    if link_only:
+        sys.exit(0)
 
     if not os.path.exists(target_directory):
         try:
