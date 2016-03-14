@@ -16,6 +16,11 @@
           choices:
             - 'rally_run'
             - 'run_tempest'
+      - choice:
+          name: MILESTONE
+          choices:
+            - '6.1'
+            - '7.0'
     builders:
       - shell:
           !include-raw: 'builders/tempest_runner.sh'
@@ -53,6 +58,8 @@
             - shell: |
                 set -e
                 REPORT_PATH="${REPORT_PREFIX}/${ENV_NAME}_${SNAPSHOT_NAME}/"
+                sudo mkdir -p "$REPORT_PATH"
+                sudo cp build_url "$REPORT_PATH"
                 sudo cp verification.xml "$REPORT_PATH"
 #      - workspace-cleanup:
 #          fail-build: false
