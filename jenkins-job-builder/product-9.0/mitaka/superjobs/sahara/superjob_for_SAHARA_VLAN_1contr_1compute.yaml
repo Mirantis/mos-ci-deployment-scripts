@@ -79,7 +79,7 @@
     node: Slave-srv138
     description: 'VLAN TEMPEST tests'
     disabled: false
-    display-name: 'superjob-9.0-RALLY-TEMPEST VLAN_1contr_1compute'
+    display-name: 'superjob-9.0-SAHARA_1contr_1compute'
     concurrent: false
     retry-count: 3
     logrotate:

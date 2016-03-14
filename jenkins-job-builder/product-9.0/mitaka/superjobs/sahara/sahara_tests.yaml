@@ -51,9 +51,9 @@
         - sahara-tests-repository
     project-type: freestyle
     defaults: global
-    description: '{description}'
+    description: 'description'
     disabled: false
-    display-name: '{display-name}'
+    display-name: '9.0_SAHARA_TESTS'
     concurrent: true
     browser: githubweb
     retry-count: 3
@@ -64,7 +64,7 @@
       artifactNumToKeep: -1
     publishers:
       - email:
-          recipients: '{email-recipients}'
+          recipients: 'efazliev@mirantis.com'
 
       - postbuildscript:
           script-only-if-succeeded: False
