@@ -108,7 +108,8 @@ if [ "$RALLY_TEMPEST" == "run_tempest" ];then
 /$WORK_FLDR/mos-tempest-runner/rejoin.sh
 . /home/developer/mos-tempest-runner/.venv/bin/activate
 . /home/developer/openrc
-run_tests > $WORK_FLDR/log.log
+#run_tests > $WORK_FLDR/log.log
+run_tests "tempest.api.telemetry" > $WORK_FLDR/log.log
 EOF
 
     echo "Store tempest result"
