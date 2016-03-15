@@ -1,5 +1,5 @@
 - job:
-    name: maintenance_long_living_tempest_7_0
+    name: maintenance_long_living_tempest_6_1
     parameters:
       - choice:
           name: RALLY_TEMPEST
@@ -12,11 +12,11 @@
           same-node: true
           block: true
           predefined-parameters: |
-            VERSION=7.0
+            VERSION=6.1
             RALLY_TEMPEST=$RALLY_TEMPEST
     project-type: freestyle
     defaults: global
-    node: maintenance_173_11
+    node: maintenance_173_10
     description: 'Runs Tempest tests on long living env (7.0 maintenance)'
     disabled: false
     display-name: 'Runs Tempest tests on long living env (7.0 maintenance)'
