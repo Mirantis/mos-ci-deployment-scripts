@@ -88,3 +88,8 @@
       numToKeep: 20
       artifactDaysToKeep: -1
       artifactNumToKeep: -1
+    publishers:
+      - naginator:
+          progressive-delay-increment: 5
+          progressive-delay-maximum: 15
+          max-failed-builds: 4
