@@ -119,22 +119,7 @@
             SNAPSHOT=`echo $SNAPSHOT_NAME | sed 's/ha_deploy_//'`
             echo "$ISO_ID"_"$SNAPSHOT" > build-name-setter.info
 
-            if [ -n "$ENV_CHANGER" ];
-            then
-            ENV_NAME="$ENV_NAME""$ENV_CHANGER"
-            fi
-
             set +e
-            virtualenv venv
-            . venv/bin/activate
-            UT=`dos.py snapshot-list "$ENV_NAME" || true`
-            OUT=`echo "$UT" | grep "$SNAPSHOT_NAME"`
-            deactivate
-            set -e
-            if [ -n "$OUT" ];
-            then
-            exit 0
-            else
 
             export ISO_PATH="$ISO_DIR"/"$ISO_NAME"
             export ENV_NAME="$ENV_NAME"
@@ -175,13 +160,12 @@
             echo '             - public' >> mos_tests_template.yaml
             fi
 
-            /bin/bash -x deploy_env.sh
-            fi
-
             if [[ "$REPLICA_CEPH" == 'TRUE' ]];
             then
             sed -i '16i\ replica-ceph: 1' 3_controllers_2compute_neutron_env_template.yaml
             fi
+
+            /bin/bash -x deploy_env.sh
 
     project-type: freestyle
     defaults: global
@@ -207,3 +191,11 @@
           fail-build: false
       - email:
           recipients: efazliev@mirantis.com
+      - archive:
+          artifacts: 'mos_tests.yaml'
+          allow-empty: 'true'
+          fingerprint: true
+      - archive:
+          artifacts: '3_controllers_2compute_neutron_env.yaml'
+          allow-empty: 'true'
+          fingerprint: true
