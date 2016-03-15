@@ -17,9 +17,9 @@
     project-type: freestyle
     defaults: global
     node: maintenance_173_10
-    description: 'Runs Tempest tests on long living env (7.0 maintenance)'
+    description: 'Runs Tempest tests on long living env (6.1 maintenance)'
     disabled: false
-    display-name: 'Runs Tempest tests on long living env (7.0 maintenance)'
+    display-name: 'Runs Tempest tests on long living env (6.1 maintenance)'
     concurrent: false
     retry-count: 3
     logrotate:
