@@ -35,7 +35,7 @@
 
             virtualenv venv
             . venv/bin/activate
-            sudo apt-get install sshpass, git
+            sudo apt-get install sshpass git
 
             git clone https://github.com/openstack/sahara-tests.git
             cd sahara-tests
@@ -44,10 +44,10 @@
             pip install -r requirements.txt
 
 
-            for FILE in `ls -1 "$GLANCE_IMAGES"` ;
+            for FILE in `ls -1 "$GLANCE_IMAGES"`
             do
             sshpass -p 'r00tme' scp -o "UserKnownHostsFile=/dev/null StrictHostKeyChecking no" "$GLANCE_IMAGES$FILE" root@10.109.2.2:/root
-            image_name=`echo "$FILE" | sed s/.qcow2//g'
+            image_name=`echo "$FILE" | sed "s/.qcow2//g"`
             # glance image-create --name "$image_name" --file "$FILE" --disk-format qcow2 --container-format bare
             echo 'glance image-create --name "$image_name" --file "$FILE" --disk-format qcow2 --container-format bare' | sshpass -p 'r00tme' ssh -T root@10.109.2.2
             done

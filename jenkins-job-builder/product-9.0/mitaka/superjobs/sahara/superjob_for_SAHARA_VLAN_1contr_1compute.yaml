@@ -32,7 +32,7 @@
             build-step-failure-threshold: 'never'
           predefined-parameters: |
             SNAPSHOT_NAME=ha_deploy_VLAN_SAHARA_CINDER
-            REPORT_PREFIX=/srv/jenkins/rally-tempest/scenario
+            REPORT_PREFIX=/srv/jenkins/sahara
             MOS_VERSION=all
 
     triggers:
