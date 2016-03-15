@@ -43,7 +43,6 @@
 
             pip install -r requirements.txt
 
-
             #for FILE in `ls -1 "$GLANCE_IMAGES"`
             #do
             #sshpass -p 'r00tme' scp -o "UserKnownHostsFile=/dev/null StrictHostKeyChecking no" "$GLANCE_IMAGES$FILE" root@10.109.2.2:/root
@@ -53,7 +52,7 @@
             #done
 
             # Temporary for test job
-            sshpass -p 'r00tme' scp -o "UserKnownHostsFile=/dev/null StrictHostKeyChecking no" /home/jenkins/sahara-images/sahara-liberty-spark-1.3.1-ubuntu-14.04.qcow2 root@10.109.2.2:/root/
+            sshpass -p 'r00tme' scp -o UserKnownHostsFile=/dev/null /home/jenkins/sahara-images/sahara-liberty-spark-1.3.1-ubuntu-14.04.qcow2 root@10.109.2.2:/root/
             echo 'glance image-create --name sahara-liberty-spark-1.3.1-ubuntu-14.04 --file sahara-liberty-spark-1.3.1-ubuntu-14.04.qcow2 --disk-format qcow2 --container-format bare' | sshpass -p 'r00tme' ssh -T root@10.109.2.2
 
 
