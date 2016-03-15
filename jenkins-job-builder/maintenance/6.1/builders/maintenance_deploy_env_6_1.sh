@@ -174,6 +174,7 @@ fi
 # create new environment
 # more time can be required to deploy env
 export ENV_NAME=$ENV_NAME
+export ADMIN_NODE_CPU=1
 export ADMIN_NODE_MEMORY=4096
 export SLAVE_NODE_CPU=3
 export SLAVE_NODE_MEMORY=16384
