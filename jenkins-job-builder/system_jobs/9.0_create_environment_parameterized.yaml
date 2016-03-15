@@ -188,7 +188,7 @@
           script-only-if-failed: True
           builders:
               - shell: |
-                  echo 'POstBUild"
+                  echo "POstBUild"
                   echo "$TEMPEST"
 
       - workspace-cleanup:
