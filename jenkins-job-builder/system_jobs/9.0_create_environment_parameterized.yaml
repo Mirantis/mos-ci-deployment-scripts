@@ -93,6 +93,9 @@
       - string:
           name: REPLICA_CEPH
           default: "FALSE"
+      - string:
+          name: SEND_DUMB_TEMPEST_REPORT
+          default: "FALSE"
 
 
 
