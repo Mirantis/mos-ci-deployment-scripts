@@ -14,7 +14,7 @@
           default: '/srv/jenkins/sahara'
       - string:
           name: GLANCE_IMAGES
-          default: '/home/jenkins/images/'
+          default: '/home/jenkins/sahara-images/'
     builders:
         - shell: |
             set +e
@@ -37,8 +37,8 @@
             . venv/bin/activate
             sudo apt-get install sshpass git
 
-            git clone https://github.com/openstack/sahara-tests.git
-            cd sahara-tests
+            #git clone https://github.com/openstack/sahara-tests.git
+            #cd sahara-tests
             git fetch https://review.openstack.org/openstack/sahara-tests refs/changes/15/281315/6 && git checkout FETCH_HEAD
 
             pip install -r requirements.txt
@@ -74,8 +74,8 @@
             tox -e venv -- sahara-scenario -p vanilla -v 2.7.1 -V ./sahara-conf
 
             deactivate
-#    scm:
-#        - sahara-tests-repository
+    scm:
+        - sahara-tests-repository
     project-type: freestyle
     defaults: global
     description: 'description'

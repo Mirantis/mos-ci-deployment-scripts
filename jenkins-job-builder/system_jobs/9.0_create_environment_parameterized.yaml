@@ -183,6 +183,14 @@
       artifactDaysToKeep: -1
       artifactNumToKeep: -1
     publishers:
+      - postbuildscript:
+          script-only-if-succeeded: False
+          script-only-if-failed: True
+          builders:
+              - shell: |
+                  echo 'POstBUild"
+                  echo "$TEMPEST"
+
       - workspace-cleanup:
           clean-if:
               - success: true
