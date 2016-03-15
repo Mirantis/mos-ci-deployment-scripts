@@ -7,6 +7,8 @@
         - project: '9.0_create_param_environment'
           same-node: true
           block: true
+          block-thresholds:
+            build-step-failure-threshold: 'never'
           predefined-parameters: |
             SNAPSHOT_NAME=ha_deploy_VxLAN_L2_POP_DVR_CINDER
             TEST_TYPE=NEUTRON
