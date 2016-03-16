@@ -130,6 +130,5 @@
 #
 #      - junit:
 #          results: report.xml
-
       - workspace-cleanup:
           fail-build: false
