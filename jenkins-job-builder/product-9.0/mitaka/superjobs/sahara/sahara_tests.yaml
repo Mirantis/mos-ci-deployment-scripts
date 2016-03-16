@@ -35,9 +35,9 @@
 
             sudo apt-get install sshpass git
 
-            #git clone https://github.com/openstack/sahara-tests.git
-            #cd sahara-tests
-            git fetch https://review.openstack.org/openstack/sahara-tests refs/changes/15/281315/6 && git checkout FETCH_HEAD
+            # git clone https://github.com/openstack/sahara-tests.git
+            # cd sahara-tests
+            # git fetch https://review.openstack.org/openstack/sahara-tests refs/changes/15/281315/6 && git checkout FETCH_HEAD
 
             sudo dos.py revert-resume "$ENV_NAME" "$SNAPSHOT_NAME"
 
@@ -80,7 +80,7 @@
             echo 'network_public_name: public' >> sahara-conf
             echo 'vanilla_two_six_image: centos_sahara_vanilla_hadoop_2_6_latest' >> sahara-conf
             echo 'vanilla_two_seven_one_image: vanilla271' >> sahara-conf
-            echo 'spark_image: spark' >> sahara-conf
+            echo 'spark_image: sahara-liberty-spark-1.3.1-ubuntu-14.04' >> sahara-conf
             echo 'cdh_5_4_0_image: cdh540' >> sahara-conf
             echo 'cluster_name: cluster' >> sahara-conf
             echo 'ci_flavor_id: '\''2'\'' ' >> sahara-conf
