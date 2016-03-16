@@ -87,7 +87,7 @@
             echo 'medium_flavor_id: '\''3'\'' ' >> sahara-conf
             echo 'large_flavor_id: '\''5'\'' ' >> sahara-conf
 
-            tox -e venv -- sahara-scenario -p spark -v 1.3.1 -V ./sahara-conf
+            tox -e venv -- sahara-scenario -p spark -v 1.3.1 -V ./sahara-conf --verbose --report
 
     scm:
         - sahara-tests-repository
