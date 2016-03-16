@@ -29,8 +29,6 @@
           name: MILESTONE
       - string:
           name: MOS_VERSION
-      - string:
-          name: ISO_INDEX
 
     builders:
         - shell: |
@@ -39,9 +37,6 @@
             if [ "$MOS_VERSION" == 'mitaka' ] || [ "$MOS_VERSION" == 'kilo' ] ;
             then
             ISO_ID=`echo "$ISO_NAME" | cut -f4 -d-`
-            elif [ "$MOS_VERSION" == 'juno' ] ;
-            then
-            ISO_ID=$ISO_INDEX
             else
             ISO_ID=`echo "$ISO_NAME" | cut -f3 -d-`
             fi
@@ -68,8 +63,8 @@
             # if we need to change SUITE
             if [ -n "$SUITE" ];
             then
-            TESTRAIL_TEST_SUITE="$SUITE"
-            export TESTRAIL_TEST_SUITE="$SUITE"
+            TESTRAIL_SUITE="$SUITE"
+            export TESTRAIL_SUITE="$SUITE"
             fi
 
             # if we need to change MILESTONE
@@ -79,26 +74,13 @@
             export TESTRAIL_MILESTONE="$MILESTONE"
             fi
 
-            if [ "$MOS_VERSION" == 'juno' ] ;
-            then
-            if [ -d fuel-qa ]; then
-                rm -rf fuel-qa
-            fi
-            git clone https://github.com/openstack/fuel-qa.git
-            pip install launchpadlib
-            pip install simplejson
-
-            python fuel-qa/fuelweb_test/testrail/report_tempest_results.py -r "$TEST_GROUP" -i "${ISO_ID}" -p "${REPORT_XML}"
-
-            else
             sudo python setup.py install
 
             set +e
             BUILD=`cat "$REPORT_PREFIX"/"$ENV_NAME"_"$SNAPSHOT_NAME"/build_url`
             set -e
-            report -v --iso-id "$ISO_ID" --env-description "$SNAPSHOT-$TEST_GROUP" --testrail-url  "${TESTRAIL_URL}" --testrail-user  "${TESTRAIL_USER}" --testrail-password "${TESTRAIL_PASSWORD}" --testrail-project "${TESTRAIL_PROJECT}" --testrail-milestone "${TESTRAIL_MILESTONE}" --testrail-suite "${TESTRAIL_TEST_SUITE}" --test-results-link "$BUILD" "$REPORT_XML"
-            fi
-
+            report -v --iso-id "$ISO_ID" --env-description "$SNAPSHOT-$TEST_GROUP" --testrail-url  "${TESTRAIL_URL}" --testrail-user  "${TESTRAIL_USER}" --testrail-password "${TESTRAIL_PASSWORD}" --testrail-project "${TESTRAIL_PROJECT}" --testrail-milestone "${TESTRAIL_MILESTONE}" --testrail-suite "${TESTRAIL_SUITE}" --test-results-link "$BUILD" "$REPORT_XML"
+ 
     scm:
       - test-rail-reporter
     project-type: freestyle
