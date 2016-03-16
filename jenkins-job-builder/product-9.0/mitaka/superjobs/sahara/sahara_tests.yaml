@@ -39,6 +39,8 @@
             #cd sahara-tests
             git fetch https://review.openstack.org/openstack/sahara-tests refs/changes/15/281315/6 && git checkout FETCH_HEAD
 
+            sudo dos.py revert-resume "$ENV_NAME" "$SNAPSHOT_NAME"
+
             #for FILE in `ls -1 "$GLANCE_IMAGES"`
             #do
             #sshpass -p 'r00tme' scp -o "UserKnownHostsFile=/dev/null StrictHostKeyChecking no" "$GLANCE_IMAGES$FILE" root@10.109.2.2:/root
