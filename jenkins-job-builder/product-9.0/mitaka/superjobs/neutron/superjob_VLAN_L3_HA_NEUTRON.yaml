@@ -48,8 +48,7 @@
     concurrent: false
     retry-count: 3
     logrotate:
-      daysToKeep: 5
-      numToKeep: 20
+      daysToKeep: 10
+      numToKeep: 40
       artifactDaysToKeep: -1
       artifactNumToKeep: -1
-
