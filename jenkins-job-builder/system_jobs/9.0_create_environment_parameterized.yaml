@@ -166,6 +166,7 @@
             if [[ "$REPLICA_CEPH" == 'TRUE' ]];
             then
             sed -i '16i\ replica-ceph: 1' 3_controllers_2compute_neutron_env_template.yaml
+            sed -i 's/ephemeral-ceph: false/ephemeral-ceph: true/g' 3_controllers_2compute_neutron_env_template.yaml
             fi
 
             /bin/bash -x deploy_env.sh
