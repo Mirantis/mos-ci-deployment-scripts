@@ -87,12 +87,6 @@ if [ "$RALLY_TEMPEST" == "run_tempest" ];then
     scp_to_fuel_master net_setup.sh $WORK_FLDR
     ssh_to_fuel_master "$WORK_FLDR/net_setup.sh"
 
-
-    #( ssh_to_fuel_master <<EOF; echo $? ) | tee ${RUN_TEMPEST_LOG}
-#"iface=\$(cat \$(grep -irl \"${public_mac}\" \"/etc/sysconfig/network-scripts/\") | awk -F= '/DEVICE/{print \$2}')"
-#echo $iface
-#EOF
-
     set +e
     echo "Download and install mos-tempest-runner project"
     git clone https://github.com/Mirantis/mos-tempest-runner.git -b stable/${MILESTONE}
@@ -138,6 +132,5 @@ elif [ "$RALLY_TEMPEST" == "rally_run" ];then
 
     scp_from_fuel_master /var/lib/rally-tempest-container-home-dir/verification.xml ./
 fi;
-
 
 scp_from_fuel_master $WORK_FLDR/log.log ./
