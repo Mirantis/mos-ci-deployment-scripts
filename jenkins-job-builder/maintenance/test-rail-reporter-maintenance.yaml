@@ -1,0 +1,85 @@
+- job:
+    name: test_rail_reporter_maintenance
+    wrappers:
+      - build-name:
+          name: ${BUILD_NUMBER}.${FILE,path="build-name-setter.info"}
+      - ansicolor
+    parameters:
+      - string:
+          name: REPORT_XML
+      - string:
+          name: CUSTOM_VERSION
+      - string:
+          name: TEST_GROUP
+      - string:
+          name: TESTRAIL_FILE
+          default: /var/www/test_rail/user.sh
+      - string:
+          name: SUITE
+      - string:
+          name: MILESTONE
+          default: '7.0'
+    node: maintenance_173_13
+    builders:
+        - shell: |
+
+            CUSTOM_VERSION=${CUSTOM_VERSION:-MU-rc}
+            echo "$CUSTOM_VERSION"_"$TEST_GROUP" > build-name-setter.info
+
+            if [ ! -f $REPORT_XML ];
+            then
+            echo "Can't find $REPORT_XML file"
+            exit 1
+            fi
+
+            virtualenv venv
+            . venv/bin/activate
+
+            . "$TESTRAIL_FILE"
+
+            if [ -n "$SUITE" ];
+            then
+            TESTRAIL_TEST_SUITE="$SUITE"
+            export TESTRAIL_TEST_SUITE="$SUITE"
+            fi
+
+            if [ -n "$MILESTONE" ];
+            then
+            TESTRAIL_MILESTONE="$MILESTONE"
+            export TESTRAIL_MILESTONE="$MILESTONE"
+            fi
+
+            if [ -d fuel-qa ]; then
+                rm -rf fuel-qa
+            fi
+            git clone https://github.com/openstack/fuel-qa.git
+            pip install launchpadlib
+            pip install simplejson
+
+            python fuel-qa/fuelweb_test/testrail/report_tempest_results.py -r "$TEST_GROUP" -i "${CUSTOM_VERSION}" -p "${REPORT_XML}"
+
+    scm:
+      - test-rail-reporter
+    project-type: freestyle
+    defaults: global
+    description: 'Send XUnit reports to TestRail'
+    disabled: false
+    display-name: 'Report To TestRail Maintenance'
+    concurrent: true
+    browser: githubweb
+    retry-count: 3
+    logrotate:
+      daysToKeep: 20
+      numToKeep: 50
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+    publishers:
+      - email:
+          recipients: vrovachev@mirantis.com
+      - workspace-cleanup:
+          fail-build: false
+      - description-setter:
+          regexp: ^.*\[TestRun URL\]\s*(.*)
+          regexp-for-failed: ^.*\[TestRun URL\]\s*(.*)
+          description: <a href="\1">TestRail Report URL</a>
+          description-for-failed: <a href="\1">TestRail Report URL</a>
