@@ -88,7 +88,7 @@
             REPORT_PREFIX=/srv/jenkins/rally-tempest
             ENV_NAME=maintenance_tempest_all_ceph_7_0
             SNAPSHOT_NAME=tempest_test_ceph
-            REPORT_XML="$REPORT_PREFIX"/"$ENV_NAME"_"$SNAPSHOT_NAME"/verification.xml
+            REPORT_XML=${REPORT_PREFIX}/${ENV_NAME}_${SNAPSHOT_NAME}/verification.xml
             CUSTOM_VERSION=$CUSTOM_VERSION
             TEST_GROUP='VLAN+CEPH+SAHARA+MURANO_CEILOMETER_RADOS_MONGO TEMPEST tests (7.0 maintenance)'
             MILESTONE=7.0
@@ -99,6 +99,7 @@
     disabled: false
     display-name: 'VLAN+CEPH+SAHARA+MURANO_CEILOMETER_RADOS_MONGO TEMPEST tests (7.0 maintenance)'
     concurrent: false
+    weight: '6'
     retry-count: 3
     logrotate:
       daysToKeep: 5
