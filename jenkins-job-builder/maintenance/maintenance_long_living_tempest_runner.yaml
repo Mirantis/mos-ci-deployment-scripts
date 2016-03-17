@@ -23,6 +23,7 @@
     display-name: 'Rally Tempest Testing for 2FLOW on long living env'
     concurrent: true
     browser: githubweb
+    weight: '1'
     retry-count: 3
     logrotate:
       daysToKeep: 5

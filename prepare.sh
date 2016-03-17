@@ -2,7 +2,7 @@
 # This script install all necessary dependencies to deploy OpenStack environment
 
 # Set default locale if it's empty
-if [ -z "$LC_ALL" ]; then echo "export LC_ALL=C" >> ~/.bashrc; source ~/.bashrc; fi
+if [ -z "$LC_ALL" ]; then echo "export LC_ALL=C" | tee -a /etc/profile ; source /etc/profile; fi
 
 sudo apt-get update && sudo apt-get upgrade -y
 
@@ -34,7 +34,7 @@ tshark
 wget -O /tmp/python-seed-client.deb http://mirror.fuel-infra.org/devops/ubuntu/all/python-seed-client_0.17-ubuntu55_all.deb
 sudo apt-get -y -f install
 sudo dpkg -i /tmp/python-seed-client.deb
-sudo apt-get -y -f install
+sudo apt-get -y -f --force-yes install
 
 sudo virsh pool-define-as --type=dir --name=default --target=/var/lib/libvirt/images
 sudo virsh pool-autostart default

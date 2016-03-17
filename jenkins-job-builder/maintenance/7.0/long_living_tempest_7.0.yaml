@@ -21,6 +21,7 @@
     disabled: false
     display-name: 'Runs Tempest tests on long living env (7.0 maintenance)'
     concurrent: false
+    weight: '1'
     retry-count: 3
     logrotate:
       daysToKeep: 5

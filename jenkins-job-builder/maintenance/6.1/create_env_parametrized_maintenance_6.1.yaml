@@ -46,6 +46,9 @@
       - bool:
           name: SKIP_INSTALL_ENV
           default: false
+      - bool:
+          name: BONDING
+          default: false
       - string:
           name: VENV_PATH
           default: "/home/jenkins/qa-venv-6.1"
