@@ -94,6 +94,9 @@
           name: REPLICA_CEPH
           default: "FALSE"
       - string:
+          name: CEPH_GLANCE_ENABLE
+          default: "FALSE"
+      - string:
           name: SEND_DUMB_TEMPEST_REPORT
           default: "FALSE"
 
@@ -134,6 +137,7 @@
             export LVM_ENABLE="$LVM_ENABLE"
             export CINDER_ENABLE="$CINDER_ENABLE"
             export CEPH_ENABLE="$CEPH_ENABLE"
+            export CEPH_GLANCE_ENABLE="$CEPH_GLANCE_ENABLE"
             export RADOS_ENABLE="$RADOS_ENABLE"
             export SAHARA_ENABLE="$SAHARA_ENABLE"
             export MURANO_ENABLE="$MURANO_ENABLE"

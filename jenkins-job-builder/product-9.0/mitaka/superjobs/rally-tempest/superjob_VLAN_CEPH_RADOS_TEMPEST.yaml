@@ -27,6 +27,7 @@
             MOS_VERSION=all
             TEMPEST=TRUE
             REPLICA_CEPH=TRUE
+            CEPH_GLANCE_ENABLE=TRUE
 
       - trigger-builds:
         - project: '9.0_rally_tempest_tests_api_for_VLAN_CINDER'
