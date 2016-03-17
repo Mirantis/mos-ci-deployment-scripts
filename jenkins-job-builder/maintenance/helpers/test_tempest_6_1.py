@@ -205,7 +205,7 @@ class TempestTest_6_1(TestBasic):
             'bond0': [
                 'public',
                 'management',
-                'fixed',
+                'private',
                 'storage'
             ]
         }
