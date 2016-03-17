@@ -27,7 +27,7 @@
     defaults: global
     node: Slave-srv128
     description: '9.0-VLAN GLANCE tests'
-    disabled: true
+    disabled: false
     display-name: '9.0-superjob_for_VLAN_GLANCE'
     concurrent: false
     retry-count: 3
