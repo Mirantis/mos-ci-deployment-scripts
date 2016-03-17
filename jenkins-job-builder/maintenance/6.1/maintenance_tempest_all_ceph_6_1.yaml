@@ -19,6 +19,9 @@
       - string:
           name: UBUNTU_MIRROR_ID
           default: 'latest'
+      - string:
+          name: CUSTOM_VERSION
+          default: 'MU-rc'
       - bool:
           name: ENABLE_PROPOSED
           default: false
@@ -74,6 +77,20 @@
             REPORT_PREFIX=/srv/jenkins/rally-tempest
             VENV_PATH=/home/jenkins/qa-venv-6.1
             RALLY_TEMPEST=$RALLY_TEMPEST
+      - trigger-builds:
+        - project: 'test_rail_reporter_maintenance'
+          same-node: true
+          block: true
+          block-thresholds:
+            build-step-failure-threshold: 'never'
+          predefined-parameters: |
+            REPORT_PREFIX=/srv/jenkins/rally-tempest
+            ENV_NAME=maintenance_tempest_all_ceph_6_1
+            SNAPSHOT_NAME=tempest_test_ceph
+            REPORT_XML=${REPORT_PREFIX}/${ENV_NAME}_${SNAPSHOT_NAME}/verification.xml
+            CUSTOM_VERSION=$CUSTOM_VERSION
+            TEST_GROUP='VLAN+CEPH+SAHARA+MURANO_CEILOMETER_RADOS_MONGO TEMPEST tests (6.1 maintenance)'
+            MILESTONE=6.1
     project-type: freestyle
     defaults: global
     node: maintenance-10
@@ -81,6 +98,7 @@
     disabled: false
     display-name: 'VLAN+CEPH+SAHARA+MURANO_CEILOMETER_RADOS_MONGO TEMPEST tests (6.1 maintenance)'
     concurrent: false
+    weight: '6'
     retry-count: 3
     logrotate:
       daysToKeep: 5
