@@ -39,13 +39,13 @@
             SUITE=[9.0][MOSQA] Automated Cloud Testing
 
     triggers:
-        - timed: "30 21 * * *"
+        - timed: "50 20 * * *"
     project-type: freestyle
     defaults: global
     node: Slave-srv134
     description: 'VxLAN+L2_POP NEUTRON tests'
     disabled: false
-    display-name: 'mitaka-9.0-NEUTRON:VxLAN+L2_POP'
+    display-name: '9.0-NEUTRON:VxLAN+L2_POP'
     concurrent: false
     retry-count: 3
     logrotate:
