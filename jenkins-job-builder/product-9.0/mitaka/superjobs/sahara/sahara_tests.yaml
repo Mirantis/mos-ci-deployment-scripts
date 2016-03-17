@@ -2,7 +2,7 @@
     name: 9.0-sahara_tests
     wrappers:
       - build-name:
-          name: ${{BUILD_NUMBER}}.${{FILE,path="build-name-setter.info"}}
+          name: ${BUILD_NUMBER}.${FILE,path="build-name-setter.info"}
     parameters:
       - string:
           name: ISO_DIR
