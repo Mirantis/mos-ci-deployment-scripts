@@ -188,7 +188,7 @@ class TempestTest_6_1(TestBasic):
         raw_data = {
             'mac': None,
             'mode': 'active-backup',
-            'name': 'bond0',
+            'name': 'lnx-bond0',
             'slaves': [
                 {'name': 'eth4'},
                 {'name': 'eth3'},
@@ -202,7 +202,7 @@ class TempestTest_6_1(TestBasic):
 
         interfaces = {
             'eth0': ['fuelweb_admin'],
-            'bond0': [
+            'lnx-bond0': [
                 'public',
                 'management',
                 'private',
