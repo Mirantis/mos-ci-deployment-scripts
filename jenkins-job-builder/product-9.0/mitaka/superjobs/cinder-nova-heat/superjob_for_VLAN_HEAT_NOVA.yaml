@@ -19,7 +19,7 @@
             MOS_VERSION=all
 
       - trigger-builds:
-        - project: '9.0-NOVA_tests_generated_from_template'
+        - project: '9.0-HEAT_tests_generated_from_template'
           same-node: true
           block: true
           block-thresholds:
@@ -35,8 +35,8 @@
             build-step-failure-threshold: 'never'
           predefined-parameters: |
             SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
-            TEST_GROUP=NOVA
-            REPORT_PREFIX=/srv/jenkins/nova
+            TEST_GROUP=HEAT
+            REPORT_PREFIX=/srv/jenkins/heat
             MOS_VERSION=all
             MILESTONE=9.0
             SUITE=[9.0][MOSQA] Automated Cloud Testing
@@ -71,7 +71,7 @@
     node: master
     description: 'VLAN NOVA tests with reporting to TestRail in a row.'
     disabled: false
-    display-name: '9.0-mitaka VLAN NOVA'
+    display-name: '9.0-mitaka VLAN HEAT NOVA'
     concurrent: false
     retry-count: 3
     logrotate:
