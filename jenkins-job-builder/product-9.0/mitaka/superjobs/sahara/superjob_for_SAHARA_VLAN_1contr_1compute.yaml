@@ -41,7 +41,7 @@
         - timed: "30 21 * * *"
     project-type: freestyle
     defaults: global
-    node: Slave-7777
+    node: master
     description: 'VLAN TEMPEST tests'
     disabled: false
     display-name: 'superjob-9.0-SAHARA_1contr_1compute'
