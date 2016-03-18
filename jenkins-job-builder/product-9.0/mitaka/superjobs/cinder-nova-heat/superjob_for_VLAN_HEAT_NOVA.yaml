@@ -68,7 +68,7 @@
         - timed: "50 23 * * *"
     project-type: freestyle
     defaults: global
-    node: master
+    node: Slave-7777
     description: 'VLAN NOVA tests with reporting to TestRail in a row.'
     disabled: false
     display-name: '9.0-mitaka VLAN HEAT NOVA'
