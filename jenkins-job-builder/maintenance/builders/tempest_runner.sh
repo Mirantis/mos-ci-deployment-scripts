@@ -110,11 +110,6 @@ EOF
     mv tempest-report.xml verification.xml
     echo "DONE"
 
-    set -e
-    return_code=$(cat ${RUN_TEMPEST_LOG} | tail -1)
-    check_return_code_after_command_execution ${return_code} "Run tempest tests is failure."
-
-
 elif [ "$RALLY_TEMPEST" == "rally_run" ];then
 
     virtualenv venv

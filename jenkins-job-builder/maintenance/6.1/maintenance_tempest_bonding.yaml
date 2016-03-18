@@ -1,5 +1,5 @@
 - job:
-    name: maintenance_tempest_bonding_gre_6_1
+    name: tempest_bonding_nova_net_6_1
     parameters:
       - string:
           name: MAGNET_LINK
@@ -63,9 +63,9 @@
             SKIP_INSTALL_ENV=$SKIP_INSTALL_ENV
             DISABLE_SSL=$DISABLE_SSL
             BONDING=true
-            ENV_NAME=maintenance_tempest_bonding_gre_6_1
+            ENV_NAME=tempest_bonding_nova_net_6_1
             FILE=test_tempest_6_1.py
-            GROUP=tempest_bonding_gre_cinder_services
+            GROUP=tempest_bonding_nova_net
       - trigger-builds:
         - project: 'maintenance_tempest_runner'
           same-node: true
@@ -73,8 +73,8 @@
           block-thresholds:
             build-step-failure-threshold: 'never'
           predefined-parameters: |
-            ENV_NAME=maintenance_tempest_all_ceph_6_1
-            SNAPSHOT_NAME=tempest_bonding_gre_cinder_services
+            ENV_NAME=tempest_bonding_nova_net_6_1
+            SNAPSHOT_NAME=tempest_bonding_nova_net
             REPORT_PREFIX=/srv/jenkins/rally-tempest
             VENV_PATH=/home/jenkins/qa-venv-6.1
             RALLY_TEMPEST=$RALLY_TEMPEST
@@ -86,18 +86,18 @@
             build-step-failure-threshold: 'never'
           predefined-parameters: |
             REPORT_PREFIX=/srv/jenkins/rally-tempest
-            ENV_NAME=maintenance_tempest_bonding_gre_6_1
-            SNAPSHOT_NAME=tempest_bonding_gre_cinder_services
+            ENV_NAME=tempest_bonding_nova_net_6_1
+            SNAPSHOT_NAME=tempest_bonding_nova_net
             REPORT_XML=${REPORT_PREFIX}/${ENV_NAME}_${SNAPSHOT_NAME}/verification.xml
             CUSTOM_VERSION=$CUSTOM_VERSION
-            TEST_GROUP='GRE+CINDER+BONDING+SERVICES TEMPEST tests (6.1 maintenance)'
+            TEST_GROUP='BONDING+NOVA-NET+MULTINODE+SAHARA TEMPEST tests (6.1 maintenance)'
             MILESTONE=6.1
     project-type: freestyle
     defaults: global
     node: maintenance-12
-    description: 'GRE+CINDER+BONDING+SERVICES TEMPEST tests (6.1 maintenance)'
+    description: 'BONDING+NOVA-NET+MULTINODE+SAHARA TEMPEST tests (6.1 maintenance)'
     disabled: false
-    display-name: 'GRE+CINDER+BONDING+SERVICES TEMPEST tests (6.1 maintenance)'
+    display-name: 'BONDING+NOVA-NET+MULTINODE+SAHARA TEMPEST tests (6.1 maintenance)'
     concurrent: false
     weight: '6'
     retry-count: 3
