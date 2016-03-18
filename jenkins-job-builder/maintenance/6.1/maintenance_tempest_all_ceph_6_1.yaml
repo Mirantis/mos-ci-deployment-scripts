@@ -93,7 +93,7 @@
             MILESTONE=6.1
     project-type: freestyle
     defaults: global
-    node: maintenance-10
+    node: maintenance-11
     description: 'VLAN+CEPH+SAHARA+MURANO_CEILOMETER_RADOS_MONGO TEMPEST tests (6.1 maintenance)'
     disabled: false
     display-name: 'VLAN+CEPH+SAHARA+MURANO_CEILOMETER_RADOS_MONGO TEMPEST tests (6.1 maintenance)'
