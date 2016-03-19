@@ -65,7 +65,7 @@
             SUITE=[9.0][MOSQA] Automated Cloud Testing
 
     triggers:
-        - timed: "50 23 * * *"
+        - timed: "50 20 * * *"
     project-type: freestyle
     defaults: global
     node: Slave-7777
