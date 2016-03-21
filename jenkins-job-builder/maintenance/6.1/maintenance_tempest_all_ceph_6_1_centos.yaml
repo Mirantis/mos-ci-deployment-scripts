@@ -73,7 +73,7 @@
           block-thresholds:
             build-step-failure-threshold: 'never'
           predefined-parameters: |
-            ENV_NAME=maintenance_tempest_all_ceph_6_1
+            ENV_NAME=maintenance_tempest_all_ceph_6_1_centos
             SNAPSHOT_NAME=tempest_test_ceph
             REPORT_PREFIX=/srv/jenkins/rally-tempest
             VENV_PATH=/home/jenkins/qa-venv-6.1
@@ -99,7 +99,6 @@
     disabled: false
     display-name: 'VLAN+CEPH+SAHARA+MURANO_CEILOMETER_RADOS_MONGO CENTOS TEMPEST tests (6.1 maintenance)'
     concurrent: false
-    weight: '6'
     retry-count: 3
     logrotate:
       daysToKeep: 5
