@@ -9,6 +9,7 @@ echo "$BUILD_URL" > ./build_url
 VM_IP=${get_master_ip:-"10.20.1.2"}
 VM_USERNAME=${vm_master_username:-"root"}
 VM_PASSWORD=${vm_master_password:-"r00tme"}
+ENABLE_UPDATES=${ENABLE_UPDATES:-true}
 
 
 SSH_OPTIONS="-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
@@ -54,10 +55,11 @@ check_return_code_after_command_execution() {
 }
 
 # Install updates
-
-wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/maintenance/helpers/long_living_install_updates.sh
-scp_to_fuel_master long_living_install_updates.sh /root/
-ssh_to_fuel_master 'chmod +x /root/long_living_install_updates.sh && /bin/bash -xe /root/long_living_install_updates.sh > /root/log.log'
+if ${ENABLE_UPDATES}; then
+    wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/maintenance/helpers/long_living_install_updates.sh
+    scp_to_fuel_master long_living_install_updates.sh /root/
+    ssh_to_fuel_master 'chmod +x /root/long_living_install_updates.sh && /bin/bash -xe /root/long_living_install_updates.sh > /root/log.log'
+fi
 
 # Run tempest
 
@@ -67,18 +69,17 @@ if [ "$RALLY_TEMPEST" == "run_tempest" ];then
     export RUN_TEMPEST_LOG="${RUN_TEMPEST_LOG_NAME}"
 
     installed_tempest=$(ssh_to_fuel_master "find /root/ -maxdepth 1 -name mos-tempest-runner")
-    if [ -n "${installed_tempest}" ]; then
-        set +e
+    if [ -z "${installed_tempest}" ]; then
         echo "Download and install mos-tempest-runner project"
-        git clone https://github.com/Mirantis/mos-tempest-runner.git -b stable/${MILESTONE}
+        git clone https://github.com/Mirantis/mos-tempest-runner.git -b stable/${VERSION}
         rm -rf mos-tempest-runner/.git*
         scp_to_fuel_master -r mos-tempest-runner /root/
-        ssh_to_fuel_master "/root/mos-tempest-runner/setup_env.sh" & > install_mos_tempest_runner_log.txt
-        set -e
-        check_return_code_after_command_execution $? "Install mos-tempest-runner is failure. $(cat install_mos_tempest_runner_log.txt)"
+        ssh_to_fuel_master "/root/mos-tempest-runner/setup_env.sh"
     else
-        # Delete old tempest xml result
+        # Delete old tempest logs
+        set +e
         ssh_to_fuel_master "rm /home/developer/mos-tempest-runner/tempest-reports/tempest-report.xml"
+        set -e
     fi
 
     echo "Run tempest tests"
@@ -87,11 +88,12 @@ if [ "$RALLY_TEMPEST" == "run_tempest" ];then
 /root/mos-tempest-runner/rejoin.sh
 . /home/developer/mos-tempest-runner/.venv/bin/activate
 . /home/developer/openrc
-run_tests > /root/log.log
+run_tests > /tmp/log.log
 EOF
 
     echo "Store tempest result"
     scp_from_fuel_master /home/developer/mos-tempest-runner/tempest-reports/tempest-report.xml verification.xml
+    ssh_to_fuel_master "cp /tmp/log.log ."
     echo "DONE"
 
     set -e

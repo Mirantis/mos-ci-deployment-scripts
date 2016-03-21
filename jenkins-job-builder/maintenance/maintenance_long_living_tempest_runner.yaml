@@ -1,6 +1,9 @@
 - job:
     name: maintenance_long_living_tempest_runner
     parameters:
+      - bool:
+          name: ENABLE_UPDATES
+          default: true
       - string:
           name: VERSION
       - string:
