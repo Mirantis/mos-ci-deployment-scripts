@@ -1,5 +1,5 @@
 - job:
-    name: 9.0_superjob_for_VLAN_CEPH_RADOS_TEMPEST_1contr_1compute
+    name: 9.0_superjob_for_VLAN_TEMPEST_1contr_1compute
     builders:
       - shell:
           !include-raw: ../neutron/9.0_mitaka_iso_and_erase_env.sh
@@ -9,13 +9,12 @@
           block: true
           predefined-parameters: |
             # BOOL_VARS="L2_POP_ENABLE DVR_ENABLE L3_HA_ENABLE SAHARA_ENABLE MURANO_ENABLE CEILOMETER_ENABLE IRONIC_ENABLE RADOS_ENABLE"
-            SNAPSHOT_NAME=ha_deploy_VLAN_RADOS_CEPH_GLANCE_CEPH
-            TEST_TYPE=TEMPEST, Ceph, RadosGW
+            SNAPSHOT_NAME=ha_deploy_VLAN_SAHARA_CEILOMETER_MONGO_CINDER
+            TEST_TYPE=TEMPEST, Cinder LVM, Swift
             SEGMENT_TYPE=VLAN
-            CINDER_ENABLE=FALSE
-            LVM_ENABLE=FALSE
-            RADOS_ENABLE=TRUE
-            CEPH_ENABLE=TRUE
+            SAHARA_ENABLE=TRUE
+            CEILOMETER_ENABLE=TRUE
+            MONGO_ENABLE=TRUE
             DISABLE_SSL=TRUE
             IRONIC_ENABLE=FALSE
             NOVA_QUOTAS_ENABLED=TRUE
@@ -26,8 +25,7 @@
             DEPLOYMENT_TIMEOUT=15000
             MOS_VERSION=all
             TEMPEST=TRUE
-            REPLICA_CEPH=TRUE
-            CEPH_GLANCE_ENABLE=TRUE
+            SEND_DUMB_TEMPEST_REPORT=TRUE
 
       - trigger-builds:
         - project: '9.0_rally_tempest_tests_api_for_VLAN_CINDER'
@@ -36,7 +34,7 @@
           block-thresholds:
             build-step-failure-threshold: 'never'
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VLAN_RADOS_CEPH_GLANCE_CEPH
+            SNAPSHOT_NAME=ha_deploy_VLAN_SAHARA_CEILOMETER_MONGO_CINDER
             REPORT_PREFIX=/srv/jenkins/rally-tempest/api
             MOS_VERSION=all
 
@@ -45,8 +43,8 @@
           same-node: true
           block: true
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VLAN_RADOS_CEPH_GLANCE_CEPH
-            TEST_GROUP=TEMPEST, Ceph, RadosGW(api)
+            SNAPSHOT_NAME=ha_deploy_VLAN_SAHARA_CEILOMETER_MONGO_CINDER
+            TEST_GROUP=TEMPEST, Cinder LVM, Swift, Sahara, Ceilometer(api)
             REPORT_PREFIX=/srv/jenkins/rally-tempest/api
             REPORT_FILE=verification.xml
             SUITE=[9.0][MOSQA] Tempest 9.0
@@ -61,7 +59,7 @@
           block-thresholds:
             build-step-failure-threshold: 'never'
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VLAN_RADOS_CEPH_GLANCE_CEPH
+            SNAPSHOT_NAME=ha_deploy_VLAN_SAHARA_CEILOMETER_MONGO_CINDER
             REPORT_PREFIX=/srv/jenkins/rally-tempest/scenario
             MOS_VERSION=all
 
@@ -70,8 +68,8 @@
           same-node: true
           block: true
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VLAN_RADOS_CEPH_GLANCE_CEPH
-            TEST_GROUP=TEMPEST, Ceph, RadosGW(scenario)
+            SNAPSHOT_NAME=ha_deploy_VLAN_SAHARA_CEILOMETER_MONGO_CINDER
+            TEST_GROUP=TEMPEST, Cinder LVM, Swift, Sahara, Ceilometer(scenario)
             REPORT_PREFIX=/srv/jenkins/rally-tempest/scenario
             REPORT_FILE=verification.xml
             SUITE=[9.0][MOSQA] Tempest 9.0
@@ -82,14 +80,19 @@
         - timed: "30 21 * * *"
     project-type: freestyle
     defaults: global
-    node: Slave-srv139
-    description: 'VLAN TEMPEST tests'
+    node: Slave-srv137
+    description: 'TEMPEST tests'
     disabled: false
-    display-name: 'superjob-9.0-RALLY-TEMPEST VLAN_CEPH_RADOS_1contr_1compute'
+    display-name: 'superjob-9.0-RALLY-TEMPEST VLAN_SAHARA_CEILOMETER_MONGO_1contr_1compute'
     concurrent: false
     retry-count: 3
     logrotate:
-      daysToKeep: 5
-      numToKeep: 20
+      daysToKeep: 10
+      numToKeep: 40
       artifactDaysToKeep: -1
       artifactNumToKeep: -1
+    publishers:
+      - naginator:
+          progressive-delay-increment: 5
+          progressive-delay-maximum: 15
+          max-failed-builds: 4
