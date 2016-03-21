@@ -29,6 +29,8 @@
           name: MILESTONE
       - string:
           name: MOS_VERSION
+      - string:
+          name: ISO_INDEX
 
     builders:
         - shell: |
@@ -37,6 +39,9 @@
             if [ "$MOS_VERSION" == 'mitaka' ] || [ "$MOS_VERSION" == 'kilo' ] ;
             then
             ISO_ID=`echo "$ISO_NAME" | cut -f4 -d-`
+            elif [ "$MOS_VERSION" == 'juno' ] ;
+            then
+            ISO_ID=$ISO_INDEX
             else
             ISO_ID=`echo "$ISO_NAME" | cut -f3 -d-`
             fi
@@ -74,13 +79,24 @@
             export TESTRAIL_MILESTONE="$MILESTONE"
             fi
 
+            if [ "$MOS_VERSION" == 'juno' ] ;
+            then
+            if [ -d fuel-qa ]; then
+                rm -rf fuel-qa
+            fi
+            git clone https://github.com/openstack/fuel-qa.git
+
+
+            else
             sudo python setup.py install
 
             set +e
             BUILD=`cat "$REPORT_PREFIX"/"$ENV_NAME"_"$SNAPSHOT_NAME"/build_url`
             set -e
             report -v --iso-id "$ISO_ID" --env-description "$SNAPSHOT-$TEST_GROUP" --testrail-url  "${TESTRAIL_URL}" --testrail-user  "${TESTRAIL_USER}" --testrail-password "${TESTRAIL_PASSWORD}" --testrail-project "${TESTRAIL_PROJECT}" --testrail-milestone "${TESTRAIL_MILESTONE}" --testrail-suite "${TESTRAIL_SUITE}" --test-results-link "$BUILD" "$REPORT_XML"
- 
+
+            fi
+
     scm:
       - test-rail-reporter
     project-type: freestyle
