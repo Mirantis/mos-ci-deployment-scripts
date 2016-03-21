@@ -93,7 +93,7 @@
         - sahara-tests-repository
     project-type: freestyle
     defaults: global
-    node: master
+    node: Slave-7775
     description: 'description'
     disabled: false
     display-name: '9.0_SAHARA_TESTS'

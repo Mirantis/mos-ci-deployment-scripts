@@ -5,6 +5,7 @@
             virtualenv venv
             . venv/bin/activate
             pip install -r tools/bugs_autochecker_requirements.txt
+            pip install keyrings.alt
             python tools/bugs_autochecker.py
             deactivate
     project-type: freestyle
