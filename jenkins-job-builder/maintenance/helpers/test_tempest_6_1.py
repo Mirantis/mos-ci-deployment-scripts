@@ -124,7 +124,7 @@ class TempestTest_6_1(TestBasic):
                 'slave-02': ['controller'],
                 'slave-03': ['controller'],
                 'slave-04': ['compute', 'cinder'],
-                'slave-05': ['compute']
+                'slave-05': ['compute', 'cinder']
             }
         )
         # Cluster deploy
