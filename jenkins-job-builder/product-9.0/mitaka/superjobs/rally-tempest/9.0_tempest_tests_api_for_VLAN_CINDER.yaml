@@ -2,7 +2,7 @@
     name: 9.0_rally_tempest_tests_api_for_VLAN_CINDER
     wrappers:
       - build-name:
-          name: Build_Number:${BUILD_NUMBER}_ISO_ID:${FILE,path="build-name-setter.info"}
+          name: ${BUILD_NUMBER}:${FILE,path="build-name-setter.info"}
     parameters:
       - string:
           name: ISO_DIR
@@ -94,6 +94,9 @@
             echo 'file=`find / -name tempest.conf`' >> ssh_scr.sh
             echo 'echo "backup = False" >> $file' >> ssh_scr.sh
             echo ' sed -i "95i ironic = False" $file ' >> ssh_scr.sh
+            echo 'sed -i "79i max_template_size = 5440000" $file ' >> ssh_scr.sh
+            echo 'sed -i "80i max_resources_per_stack = 20000" $file ' >> ssh_scr.sh
+            echo 'sed -i "81i max_json_body_size = 10880000" $file ' >> ssh_scr.sh
             #echo ' sed -i "s/sahara = False/sahara = True/g" $file ' >> ssh_scr.sh
 
             #temp_fix

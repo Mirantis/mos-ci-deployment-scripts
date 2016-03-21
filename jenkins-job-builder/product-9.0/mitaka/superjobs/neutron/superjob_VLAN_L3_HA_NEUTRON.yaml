@@ -7,6 +7,8 @@
         - project: '9.0_create_param_environment'
           same-node: true
           block: true
+          block-thresholds:
+            build-step-failure-threshold: 'never'
           predefined-parameters: |
             SNAPSHOT_NAME=ha_deploy_VLAN_L3_HA_CINDER
             TEST_TYPE=NEUTRON
@@ -36,18 +38,17 @@
             SUITE=[9.0][MOSQA] Automated Cloud Testing
 
     triggers:
-        - timed: "30 21 * * *"
+        - timed: "50 20 * * *"
     project-type: freestyle
     defaults: global
     node: Slave-srv130
     description: 'VLAN+L3_HA NEUTRON tests'
     disabled: false
-    display-name: 'mitaka-9.0-NEUTRON:VLAN+L3_HA'
+    display-name: '9.0-NEUTRON:VLAN+L3_HA'
     concurrent: false
     retry-count: 3
     logrotate:
-      daysToKeep: 5
-      numToKeep: 20
+      daysToKeep: 10
+      numToKeep: 40
       artifactDaysToKeep: -1
       artifactNumToKeep: -1
-

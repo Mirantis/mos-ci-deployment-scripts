@@ -9,7 +9,7 @@
           block: true
           predefined-parameters: |
             # BOOL_VARS="L2_POP_ENABLE DVR_ENABLE L3_HA_ENABLE SAHARA_ENABLE MURANO_ENABLE CEILOMETER_ENABLE IRONIC_ENABLE RADOS_ENABLE"
-            SNAPSHOT_NAME=ha_deploy_VLAN_RADOS_CEPH
+            SNAPSHOT_NAME=ha_deploy_VLAN_RADOS_CEPH_GLANCE_CEPH
             TEST_TYPE=TEMPEST, Ceph, RadosGW
             SEGMENT_TYPE=VLAN
             CINDER_ENABLE=FALSE
@@ -26,6 +26,8 @@
             DEPLOYMENT_TIMEOUT=15000
             MOS_VERSION=all
             TEMPEST=TRUE
+            REPLICA_CEPH=TRUE
+            CEPH_GLANCE_ENABLE=TRUE
 
       - trigger-builds:
         - project: '9.0_rally_tempest_tests_api_for_VLAN_CINDER'
@@ -34,7 +36,7 @@
           block-thresholds:
             build-step-failure-threshold: 'never'
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VLAN_RADOS_CEPH
+            SNAPSHOT_NAME=ha_deploy_VLAN_RADOS_CEPH_GLANCE_CEPH
             REPORT_PREFIX=/srv/jenkins/rally-tempest/api
             MOS_VERSION=all
 
@@ -43,7 +45,7 @@
           same-node: true
           block: true
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VLAN_RADOS_CEPH
+            SNAPSHOT_NAME=ha_deploy_VLAN_RADOS_CEPH_GLANCE_CEPH
             TEST_GROUP=TEMPEST, Ceph, RadosGW(api)
             REPORT_PREFIX=/srv/jenkins/rally-tempest/api
             REPORT_FILE=verification.xml
@@ -59,7 +61,7 @@
           block-thresholds:
             build-step-failure-threshold: 'never'
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VLAN_RADOS_CEPH
+            SNAPSHOT_NAME=ha_deploy_VLAN_RADOS_CEPH_GLANCE_CEPH
             REPORT_PREFIX=/srv/jenkins/rally-tempest/scenario
             MOS_VERSION=all
 
@@ -68,7 +70,7 @@
           same-node: true
           block: true
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VLAN_RADOS_CEPH
+            SNAPSHOT_NAME=ha_deploy_VLAN_RADOS_CEPH_GLANCE_CEPH
             TEST_GROUP=TEMPEST, Ceph, RadosGW(scenario)
             REPORT_PREFIX=/srv/jenkins/rally-tempest/scenario
             REPORT_FILE=verification.xml

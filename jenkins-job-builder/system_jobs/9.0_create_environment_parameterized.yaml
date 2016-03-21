@@ -50,7 +50,7 @@
           default: "TRUE"
       - string:
           name: FUEL_DEV_VER
-          default: "2.9.16"
+          default: "2.9.19"
       - string:
           name: FUEL_QA_VER
           default: "master"
@@ -90,6 +90,16 @@
       - string:
           name: TEMPEST
           default: "FALSE"
+      - string:
+          name: REPLICA_CEPH
+          default: "FALSE"
+      - string:
+          name: CEPH_GLANCE_ENABLE
+          default: "FALSE"
+      - string:
+          name: SEND_DUMB_TEMPEST_REPORT
+          default: "FALSE"
+
 
 
 
@@ -115,22 +125,7 @@
             SNAPSHOT=`echo $SNAPSHOT_NAME | sed 's/ha_deploy_//'`
             echo "$ISO_ID"_"$SNAPSHOT" > build-name-setter.info
 
-            if [ -n "$ENV_CHANGER" ];
-            then
-            ENV_NAME="$ENV_NAME""$ENV_CHANGER"
-            fi
-
             set +e
-            virtualenv venv
-            . venv/bin/activate
-            UT=`dos.py snapshot-list "$ENV_NAME" || true`
-            OUT=`echo "$UT" | grep "$SNAPSHOT_NAME"`
-            deactivate
-            set -e
-            if [ -n "$OUT" ];
-            then
-            exit 0
-            else
 
             export ISO_PATH="$ISO_DIR"/"$ISO_NAME"
             export ENV_NAME="$ENV_NAME"
@@ -142,6 +137,7 @@
             export LVM_ENABLE="$LVM_ENABLE"
             export CINDER_ENABLE="$CINDER_ENABLE"
             export CEPH_ENABLE="$CEPH_ENABLE"
+            export CEPH_GLANCE_ENABLE="$CEPH_GLANCE_ENABLE"
             export RADOS_ENABLE="$RADOS_ENABLE"
             export SAHARA_ENABLE="$SAHARA_ENABLE"
             export MURANO_ENABLE="$MURANO_ENABLE"
@@ -171,8 +167,13 @@
             echo '             - public' >> mos_tests_template.yaml
             fi
 
-            /bin/bash -x deploy_env.sh
+            if [[ "$REPLICA_CEPH" == 'TRUE' ]];
+            then
+            sed -i '16i\ replica-ceph: 1' 3_controllers_2compute_neutron_env_template.yaml
+            sed -i 's/ephemeral-ceph: false/ephemeral-ceph: true/g' 3_controllers_2compute_neutron_env_template.yaml
             fi
+
+            /bin/bash -x deploy_env.sh
 
     project-type: freestyle
     defaults: global
@@ -190,6 +191,14 @@
       artifactDaysToKeep: -1
       artifactNumToKeep: -1
     publishers:
+      - postbuildscript:
+          script-only-if-succeeded: False
+          script-only-if-failed: True
+          builders:
+              - shell: |
+                  echo "POstBUild"
+                  echo "$TEMPEST"
+
       - workspace-cleanup:
           clean-if:
               - success: true
@@ -198,3 +207,11 @@
           fail-build: false
       - email:
           recipients: efazliev@mirantis.com
+      - archive:
+          artifacts: 'mos_tests.yaml'
+          allow-empty: 'true'
+          fingerprint: true
+      - archive:
+          artifacts: '3_controllers_2compute_neutron_env.yaml'
+          allow-empty: 'true'
+          fingerprint: true

@@ -1,0 +1,30 @@
+- job:
+    name: bugs_autochecker
+    builders:
+        - shell: |
+            virtualenv venv
+            . venv/bin/activate
+            pip install -r tools/bugs_autochecker_requirements.txt
+            pip install keyrings.alt
+            python tools/bugs_autochecker.py
+            deactivate
+    project-type: freestyle
+    defaults: global
+    scm:
+       - mos-integration-tests-repository
+    description: 'Bugs autocheck'
+    disabled: false
+    display-name: 'Bugs Autochecker'
+    concurrent: false
+    browser: githubweb
+    retry-count: 3
+    logrotate:
+      daysToKeep: 1
+      numToKeep: 50
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+    publishers:
+      - workspace-cleanup:
+          fail-build: false
+      - email:
+          recipients: efazliev@mirantis.com

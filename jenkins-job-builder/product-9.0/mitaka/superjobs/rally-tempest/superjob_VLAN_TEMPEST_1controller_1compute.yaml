@@ -22,6 +22,7 @@
             DEPLOYMENT_TIMEOUT=15000
             MOS_VERSION=all
             TEMPEST=TRUE
+            SEND_DUMB_TEMPEST_REPORT=TRUE
 
       - trigger-builds:
         - project: '9.0_rally_tempest_tests_api_for_VLAN_CINDER'
@@ -83,7 +84,12 @@
     concurrent: false
     retry-count: 3
     logrotate:
-      daysToKeep: 5
-      numToKeep: 20
+      daysToKeep: 10
+      numToKeep: 40
       artifactDaysToKeep: -1
       artifactNumToKeep: -1
+    publishers:
+      - naginator:
+          progressive-delay-increment: 5
+          progressive-delay-maximum: 15
+          max-failed-builds: 4

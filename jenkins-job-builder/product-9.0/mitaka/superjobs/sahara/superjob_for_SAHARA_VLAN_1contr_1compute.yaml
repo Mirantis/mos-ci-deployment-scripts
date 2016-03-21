@@ -1,0 +1,54 @@
+- job:
+    name: 9.0_superjob_for_SAHARA_VLAN_1contr_1compute
+    builders:
+      - shell:
+          !include-raw: ../neutron/9.0_mitaka_iso_and_erase_env.sh
+          # sudo rm -rf /var/www/fuelweb-iso
+          # sudo wget http://srv65-bud.infra.mirantis.net/fuelweb-iso/fuel-9.0-mitaka-48-2016-02-29_06-16-00.iso -P /var/www/fuelweb-iso
+      - trigger-builds:
+        - project: '9.0_create_param_environment'
+          same-node: true
+          block: true
+          predefined-parameters: |
+            # BOOL_VARS="L2_POP_ENABLE DVR_ENABLE L3_HA_ENABLE SAHARA_ENABLE MURANO_ENABLE CEILOMETER_ENABLE IRONIC_ENABLE RADOS_ENABLE"
+            SNAPSHOT_NAME=ha_deploy_VLAN_SAHARA_CINDER
+            TEST_TYPE=SAHARA
+            SEGMENT_TYPE=VLAN
+            DISABLE_SSL=TRUE
+            SAHARA_ENABLE=TRUE
+            IRONIC_ENABLE=FALSE
+            NOVA_QUOTAS_ENABLED=FALSE
+            COMPUTES_COUNT=1
+            CONTROLLERS_COUNT=1
+            SLAVE_NODE_CPU=2
+            SLAVE_NODE_MEMORY=8192
+            DEPLOYMENT_TIMEOUT=15000
+            MOS_VERSION=all
+            TEMPEST=FALSE
+
+      - trigger-builds:
+        - project: '9.0-sahara_tests'
+          same-node: true
+          block: true
+          block-thresholds:
+            build-step-failure-threshold: 'never'
+          predefined-parameters: |
+            SNAPSHOT_NAME=ha_deploy_VLAN_SAHARA_CINDER
+            REPORT_PREFIX=/srv/jenkins/sahara
+            MOS_VERSION=all
+
+    triggers:
+        - timed: "50 20 * * *"
+    project-type: freestyle
+    defaults: global
+    node: Slave-7775
+    description: 'VLAN TEMPEST tests'
+    disabled: false
+    display-name: 'superjob-9.0-SAHARA_1contr_1compute'
+    concurrent: false
+    retry-count: 3
+    logrotate:
+      daysToKeep: 5
+      numToKeep: 20
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
