@@ -99,7 +99,6 @@
     disabled: false
     display-name: 'GRE+NON_CEPH TEMPEST CENTOS tests (6.1 maintenance)'
     concurrent: false
-    weight: '6'
     retry-count: 3
     logrotate:
       daysToKeep: 5
