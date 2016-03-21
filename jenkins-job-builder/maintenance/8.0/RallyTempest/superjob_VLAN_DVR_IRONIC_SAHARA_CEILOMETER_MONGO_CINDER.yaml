@@ -71,11 +71,11 @@
             REPORT_FILE=verification.xml
             SUITE=[8.0][MOSQA] Tempest 8.0
 
-    triggers:
-        - timed: "30 21 * * *"
+#    triggers:
+#        - timed: "30 21 * * *"
     project-type: freestyle
     defaults: global
-    node: Slave-7777
+    node: master
     description: 'VLAN+DVR+IRONIC+CEILOMETER+MONGO TEMPEST tests'
     disabled: false
     display-name: 'superjob-8.0-RALLY-TEMPEST VLAN+DVR+IRONIC+CEILOMETER+MONGO'
