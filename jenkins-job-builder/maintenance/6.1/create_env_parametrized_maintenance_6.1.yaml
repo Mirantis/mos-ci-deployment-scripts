@@ -52,6 +52,8 @@
       - string:
           name: VENV_PATH
           default: "/home/jenkins/qa-venv-6.1"
+      - string:
+          name: OPENSTACK_RELEASE
     name: maintenance_create_param_environment_6_1
     builders:
       - shell:

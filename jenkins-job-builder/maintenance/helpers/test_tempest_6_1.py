@@ -24,9 +24,9 @@ class TempestTest_6_1(TestBasic):
     """TempestCeph."""
 
     @test(depends_on=[SetupEnvironment.prepare_slaves_5],
-          groups=["tempest_ceph_services_centos"])
+          groups=["tempest_ceph_services"])
     @log_snapshot_after_test
-    def tempest_ceph_services_centos(self):
+    def tempest_ceph_services(self):
         """Deploy env with 3 controller+mongo and 2
            compute +ceph nodes.
 
@@ -84,9 +84,9 @@ class TempestTest_6_1(TestBasic):
 
 
     @test(depends_on=[SetupEnvironment.prepare_slaves_5],
-          groups=["tempest_cinder_glance_swift_vlan_ubuntu"])
+          groups=["tempest_cinder_glance_swift_vlan"])
     @log_snapshot_after_test
-    def tempest_cinder_glance_swift_vlan_ubuntu(self):
+    def tempest_cinder_glance_swift_vlan(self):
         """Deploy env with 3 controller and 2 compute nodes.
 
         Scenario:
@@ -97,7 +97,7 @@ class TempestTest_6_1(TestBasic):
             5. Run OSTF
 
         Duration 40m
-        Snapshot tempest_cinder_glance_swift_vlan_ubuntu
+        Snapshot tempest_cinder_glance_swift_vlan
         """
 
         self.env.revert_snapshot("ready_with_5_slaves")
@@ -137,83 +137,83 @@ class TempestTest_6_1(TestBasic):
         self.fuel_web.run_ostf(cluster_id=cluster_id,
                                test_sets=['ha', 'smoke', 'sanity'])
 
-        self.env.make_snapshot("tempest_cinder_glance_swift_vlan_ubuntu",
+        self.env.make_snapshot("tempest_cinder_glance_swift_vlan",
                                is_make=True)
 
-    @test(depends_on=[SetupEnvironment.prepare_slaves_3],
-          groups=["tempest_bonding_nova_net"])
-    @log_snapshot_after_test
-    def tempest_bonding_nova_net(self):
-        """Deploy env with 1 controller and 2 compute nodes.
-
-        Scenario:
-            1. Create cluster
-            2. Add 1 node with controller role
-            3. Add 2 nodes with compute+cinder roles
-            4. Deploy the cluster
-            5. Run OSTF
-            6. Network verify
-
-        Duration 40m
-        Snapshot tempest_bonding_nova_net
-        """
-
-        self.env.revert_snapshot("ready_with_3_slaves")
-
-        cluster_id = self.fuel_web.create_cluster(
-            name=self.__class__.__name__,
-            mode=settings.DEPLOYMENT_MODE,
-            settings={'sahara': True}
-        )
-
-        self.fuel_web.update_nodes(
-            cluster_id, {
-                'slave-01': ['controller'],
-                'slave-02': ['compute', 'cinder'],
-                'slave-03': ['compute', 'cinder'],
-            }
-        )
-
-        raw_data = {
-            'mac': None,
-            'mode': 'active-backup',
-            'name': 'lnx-bond0',
-            'slaves': [
-                {'name': 'eth4'},
-                {'name': 'eth3'},
-                {'name': 'eth2'},
-                {'name': 'eth1'}
-            ],
-            'state': None,
-            'type': 'bond',
-            'assigned_networks': []
-        }
-
-        interfaces = {
-            'eth0': ['fuelweb_admin'],
-            'lnx-bond0': [
-                'public',
-                'management',
-                'private',
-                'storage'
-            ]
-        }
-
-        nailgun_nodes = self.fuel_web.client.list_cluster_nodes(cluster_id)
-
-        for node in nailgun_nodes:
-            self.fuel_web.update_node_networks(
-                node['id'], interfaces_dict=interfaces,
-                raw_data=raw_data)
-
-        # Cluster deploy
-        self.fuel_web.deploy_cluster_wait(cluster_id, timeout=60 * 60 * 3)
-
-        # Check network
-        self.fuel_web.verify_network(cluster_id)
-
-        # Run ostf
-        self.fuel_web.run_ostf(cluster_id=cluster_id,
-                               test_sets=['ha', 'smoke', 'sanity'])
-
-        self.env.make_snapshot("tempest_bonding_nova_net")
+    # @test(depends_on=[SetupEnvironment.prepare_slaves_3],
+    #       groups=["tempest_bonding_nova_net"])
+    # @log_snapshot_after_test
+    # def tempest_bonding_nova_net(self):
+    #     """Deploy env with 1 controller and 2 compute nodes.
+    #
+    #     Scenario:
+    #         1. Create cluster
+    #         2. Add 1 node with controller role
+    #         3. Add 2 nodes with compute+cinder roles
+    #         4. Deploy the cluster
+    #         5. Run OSTF
+    #         6. Network verify
+    #
+    #     Duration 40m
+    #     Snapshot tempest_bonding_nova_net
+    #     """
+    #
+    #     self.env.revert_snapshot("ready_with_3_slaves")
+    #
+    #     cluster_id = self.fuel_web.create_cluster(
+    #         name=self.__class__.__name__,
+    #         mode=settings.DEPLOYMENT_MODE,
+    #         settings={'sahara': True}
+    #     )
+    #
+    #     self.fuel_web.update_nodes(
+    #         cluster_id, {
+    #             'slave-01': ['controller'],
+    #             'slave-02': ['compute', 'cinder'],
+    #             'slave-03': ['compute', 'cinder'],
+    #         }
+    #     )
+    #
+    #     raw_data = {
+    #         'mac': None,
+    #         'mode': 'active-backup',
+    #         'name': 'lnx-bond0',
+    #         'slaves': [
+    #             {'name': 'eth4'},
+    #             {'name': 'eth3'},
+    #             {'name': 'eth2'},
+    #             {'name': 'eth1'}
+    #         ],
+    #         'state': None,
+    #         'type': 'bond',
+    #         'assigned_networks': []
+    #     }
+    #
+    #     interfaces = {
+    #         'eth0': ['fuelweb_admin'],
+    #         'lnx-bond0': [
+    #             'public',
+    #             'management',
+    #             'private',
+    #             'storage'
+    #         ]
+    #     }
+    #
+    #     nailgun_nodes = self.fuel_web.client.list_cluster_nodes(cluster_id)
+    #
+    #     for node in nailgun_nodes:
+    #         self.fuel_web.update_node_networks(
+    #             node['id'], interfaces_dict=interfaces,
+    #             raw_data=raw_data)
+    #
+    #     # Cluster deploy
+    #     self.fuel_web.deploy_cluster_wait(cluster_id, timeout=60 * 60 * 3)
+    #
+    #     # Check network
+    #     self.fuel_web.verify_network(cluster_id)
+    #
+    #     # Run ostf
+    #     self.fuel_web.run_ostf(cluster_id=cluster_id,
+    #                            test_sets=['ha', 'smoke', 'sanity'])
+    #
+    #     self.env.make_snapshot("tempest_bonding_nova_net")
