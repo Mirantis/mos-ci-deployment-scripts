@@ -50,7 +50,7 @@
           default: "TRUE"
       - string:
           name: FUEL_DEV_VER
-          default: "2.9.16"
+          default: "2.9.19"
       - string:
           name: FUEL_QA_VER
           default: "master"
