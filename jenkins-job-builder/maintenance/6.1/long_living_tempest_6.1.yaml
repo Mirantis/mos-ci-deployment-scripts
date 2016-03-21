@@ -1,6 +1,9 @@
 - job:
     name: maintenance_long_living_tempest_6_1
     parameters:
+      - bool:
+          name: ENABLE_UPDATES
+          default: true
       - choice:
           name: RALLY_TEMPEST
           choices:
@@ -14,6 +17,7 @@
           predefined-parameters: |
             VERSION=6.1
             RALLY_TEMPEST=$RALLY_TEMPEST
+            ENABLE_UPDATES=$ENABLE_UPDATES
     project-type: freestyle
     defaults: global
     node: maintenance_173_10
