@@ -66,7 +66,7 @@ if [ "$RALLY_TEMPEST" == "run_tempest" ];then
     RUN_TEMPEST_LOG_NAME=${RUN_TEMPEST_LOG_NAME:-"run_tempest_log.txt"}
     export RUN_TEMPEST_LOG="${RUN_TEMPEST_LOG_NAME}"
 
-    installed_tempest=$(ssh_to_fuel_master "ls /root/ | grep mos-tempest-runner")
+    installed_tempest=$(ssh_to_fuel_master "find /root/ -maxdepth 1 -name mos-tempest-runner")
     if [ -n "${installed_tempest}" ]; then
         set +e
         echo "Download and install mos-tempest-runner project"
