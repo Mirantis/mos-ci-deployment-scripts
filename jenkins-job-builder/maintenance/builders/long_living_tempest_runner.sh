@@ -56,8 +56,8 @@ check_return_code_after_command_execution() {
 # Install updates
 
 wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/maintenance/helpers/long_living_install_updates.sh
-scp_to_fuel_master long_living_rally_run.sh /root/
-ssh_to_fuel_master 'chmod +x /root/long_living_rally_run.sh && /bin/bash -xe /root/long_living_rally_run.sh > /root/log.log'
+scp_to_fuel_master long_living_install_updates.sh /root/
+ssh_to_fuel_master 'chmod +x /root/long_living_install_updates.sh && /bin/bash -xe /root/long_living_install_updates.sh > /root/log.log'
 
 # Run tempest
 
