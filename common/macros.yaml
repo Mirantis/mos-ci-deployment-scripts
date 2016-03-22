@@ -12,6 +12,15 @@
           skip-tag: true
 
 - scm:
+    name: test-rail-reporter-master
+    scm:
+      - git:
+          url: https://github.com/gdyuldin/testrail_reporter.git
+          branches:
+            - origin/master
+          skip-tag: true
+
+- scm:
     name: mos-integration-tests-repository
     scm:
       - git:

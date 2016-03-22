@@ -33,7 +33,7 @@
             MOS_VERSION=all
 
       - trigger-builds:
-        - project: 'test_rail_reporter'
+        - project: 'tempest_test_rail_reporter'
           same-node: true
           block: true
           predefined-parameters: |
@@ -58,7 +58,7 @@
             MOS_VERSION=all
 
       - trigger-builds:
-        - project: 'test_rail_reporter'
+        - project: 'tempest_test_rail_reporter'
           same-node: true
           block: true
           predefined-parameters: |
