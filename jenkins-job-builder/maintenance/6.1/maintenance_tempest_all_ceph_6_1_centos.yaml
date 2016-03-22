@@ -92,6 +92,7 @@
             CUSTOM_VERSION=$CUSTOM_VERSION
             TEST_GROUP='VLAN+CEPH+SAHARA+MURANO_CEILOMETER_RADOS_MONGO CENTOS TEMPEST tests (6.1 maintenance)'
             MILESTONE=6.1
+            CONFIG_NAME="Centos 6.5"
     project-type: freestyle
     defaults: global
     node: maintenance

@@ -17,7 +17,8 @@ get_master_ip(){
 
 source ${VENV_PATH}/bin/activate
 dos.py revert-resume $ENV_NAME --snapshot-name $SNAPSHOT_NAME
-VM_IP=${get_master_ip:-"10.109.0.2"}
+VM_IP=$(get_master_ip)
+VM_IP=${VM_IP:-"10.109.0.2"}
 deactivate
 
 VM_USERNAME=${vm_master_username:-"root"}
