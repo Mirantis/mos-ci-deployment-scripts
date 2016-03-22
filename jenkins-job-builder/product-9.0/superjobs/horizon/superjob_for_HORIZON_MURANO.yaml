@@ -2,24 +2,24 @@
     name: 9.0-superjob_for_HORIZON_MURANO
     builders:
       - trigger-builds:
-        - project: 'create_param_environment'
+        - project: '9.0_create_param_environment'
           same-node: true
           block: true
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VLAN_SAHARA_MURANO
+            SNAPSHOT_NAME=ha_deploy_VLAN_SAHARA_MURANO_CINDER
             TEST_TYPE=MURANO
             SEGMENT_TYPE=VLAN
             DISABLE_SSL=TRUE
-            # SAHARA_ENABLE=TRUE
+            SAHARA_ENABLE=TRUE
             MURANO_ENABLE=TRUE
       - trigger-builds:
-        - project: 'murano_tests'
+        - project: '9.0-murano_tests'
           same-node: true
           block: true
           block-thresholds:
             build-step-failure-threshold: 'never'
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VLAN_SAHARA_MURANO
+            SNAPSHOT_NAME=ha_deploy_VLAN_SAHARA_MURANO_CINDER
 
 #    triggers:
 #        - timed: "38 21 * * *"
@@ -36,4 +36,3 @@
       numToKeep: 20
       artifactDaysToKeep: -1
       artifactNumToKeep: -1
-
