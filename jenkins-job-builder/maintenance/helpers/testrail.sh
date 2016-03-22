@@ -24,9 +24,11 @@ if [ -d fuel-qa ]; then
     rm -rf fuel-qa
 fi
 
+config_name=${CONFIG_NAME:-Ubuntu 14.04}
+
 git clone https://github.com/openstack/fuel-qa.git
 pip install launchpadlib
 pip install simplejson
 cd fuel-qa
 export PYTHONPATH="$(pwd):$PYTHONPATH"
-python fuelweb_test/testrail/report_tempest_results.py -r "$TEST_GROUP" -i "${CUSTOM_VERSION}" -p "${REPORT_XML}"
+python fuelweb_test/testrail/report_tempest_results.py -r "$TEST_GROUP" -c "${config_name}" -i "${CUSTOM_VERSION}" -p "${REPORT_XML}"

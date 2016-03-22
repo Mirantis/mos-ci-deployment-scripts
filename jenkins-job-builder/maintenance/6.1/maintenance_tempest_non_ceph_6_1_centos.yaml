@@ -1,5 +1,5 @@
 - job:
-    name: maintenance_tempest_non_ceph_tun_6_1_centos
+    name: maintenance_tempest_non_ceph_6_1_centos
     parameters:
       - string:
           name: MAGNET_LINK
@@ -92,6 +92,7 @@
             CUSTOM_VERSION=$CUSTOM_VERSION
             TEST_GROUP='GRE+NON_CEPH CENTOS TEMPEST tests (6.1 maintenance)'
             MILESTONE=6.1
+            CONFIG_NAME="Centos 6.5"
     project-type: freestyle
     defaults: global
     node: maintenance
