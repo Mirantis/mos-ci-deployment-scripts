@@ -19,6 +19,9 @@
       - string:
           name: MILESTONE
           default: '7.0'
+      - string:
+          name: CONFIG_NAME
+          default: "Ubuntu 14.04"
     node: maintenance_173_13
     builders:
       - shell:
