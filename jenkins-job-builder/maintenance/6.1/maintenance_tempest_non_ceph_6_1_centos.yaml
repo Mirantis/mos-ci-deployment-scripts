@@ -86,7 +86,7 @@
             build-step-failure-threshold: 'never'
           predefined-parameters: |
             REPORT_PREFIX=/srv/jenkins/rally-tempest
-            ENV_NAME=maintenance_tempest_non_ceph_6_1
+            ENV_NAME=maintenance_tempest_non_ceph_6_1_centos
             SNAPSHOT_NAME=tempest_cinder_glance_swift_vlan
             REPORT_XML=${REPORT_PREFIX}/${ENV_NAME}_${SNAPSHOT_NAME}/verification.xml
             CUSTOM_VERSION=$CUSTOM_VERSION

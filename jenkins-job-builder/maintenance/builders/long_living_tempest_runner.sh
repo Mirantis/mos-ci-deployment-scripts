@@ -95,10 +95,7 @@ EOF
     scp_from_fuel_master /home/developer/mos-tempest-runner/tempest-reports/tempest-report.xml verification.xml
     ssh_to_fuel_master "cp /tmp/log.log ."
     echo "DONE"
-
     set -e
-    return_code=$(cat ${RUN_TEMPEST_LOG} | tail -1)
-    check_return_code_after_command_execution ${return_code} "Run tempest tests is failure."
 
 elif [ "$RALLY_TEMPEST" == "rally_run" ];then
     rally_id=$(ssh_to_fuel_master "docker images | awk '/rally/{print $3}'")
