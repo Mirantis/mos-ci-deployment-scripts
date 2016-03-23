@@ -10,6 +10,9 @@
             deactivate
     project-type: freestyle
     defaults: global
+    node: master
+    triggers:
+        - timed: "*/15 * * * *"
     scm:
        - mos-integration-tests-repository
     description: 'Bugs autocheck'
