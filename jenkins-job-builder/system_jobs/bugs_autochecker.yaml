@@ -14,7 +14,7 @@
     triggers:
         - timed: "*/15 * * * *"
     scm:
-       - mos-integration-tests-repository
+       - mos-integration-tests-repository-esikachev
     description: 'Bugs autocheck'
     disabled: false
     display-name: 'Bugs Autochecker'
