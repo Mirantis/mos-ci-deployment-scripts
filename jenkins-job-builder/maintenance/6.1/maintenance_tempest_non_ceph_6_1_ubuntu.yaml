@@ -90,7 +90,7 @@
             SNAPSHOT_NAME=tempest_cinder_glance_swift_vlan
             REPORT_XML=${REPORT_PREFIX}/${ENV_NAME}_${SNAPSHOT_NAME}/verification.xml
             CUSTOM_VERSION=$CUSTOM_VERSION
-            TEST_GROUP='GRE+NON_CEPH UBUNTU TEMPEST tests (6.1 maintenance)'
+            TEST_GROUP='GRE+NON_CEPH TEMPEST tests (6.1 maintenance)'
             MILESTONE=6.1
             CONFIG_NAME="Ubuntu 14.04"
     project-type: freestyle
