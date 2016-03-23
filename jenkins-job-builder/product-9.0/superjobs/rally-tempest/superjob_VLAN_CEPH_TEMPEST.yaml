@@ -9,12 +9,11 @@
           block: true
           predefined-parameters: |
             # BOOL_VARS="L2_POP_ENABLE DVR_ENABLE L3_HA_ENABLE SAHARA_ENABLE MURANO_ENABLE CEILOMETER_ENABLE IRONIC_ENABLE RADOS_ENABLE"
-            SNAPSHOT_NAME=ha_deploy_VLAN_RADOS_CEPH_GLANCE_CEPH
+            SNAPSHOT_NAME=ha_deploy_VLAN_CEPH_GLANCE_CEPH
             TEST_TYPE=TEMPEST, Ceph, RadosGW
             SEGMENT_TYPE=VLAN
             CINDER_ENABLE=FALSE
             LVM_ENABLE=FALSE
-            RADOS_ENABLE=TRUE
             CEPH_ENABLE=TRUE
             DISABLE_SSL=TRUE
             IRONIC_ENABLE=FALSE
@@ -37,7 +36,7 @@
           block-thresholds:
             build-step-failure-threshold: 'never'
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VLAN_RADOS_CEPH_GLANCE_CEPH
+            SNAPSHOT_NAME=ha_deploy_VLAN_CEPH_GLANCE_CEPH
             REPORT_PREFIX=/srv/jenkins/rally-tempest/api
             MOS_VERSION=all
             CEPH_RADOS=TRUE
@@ -47,8 +46,8 @@
           same-node: true
           block: true
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VLAN_RADOS_CEPH_GLANCE_CEPH
-            TEST_GROUP=TEMPEST, Ceph, RadosGW(api)
+            SNAPSHOT_NAME=ha_deploy_VLAN_CEPH_GLANCE_CEPH
+            TEST_GROUP=TEMPEST, Ceph
             REPORT_PREFIX=/srv/jenkins/rally-tempest/api
             REPORT_FILE=verification.xml
             SUITE=[9.0][MOSQA] Tempest 9.0
@@ -63,7 +62,7 @@
           block-thresholds:
             build-step-failure-threshold: 'never'
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VLAN_RADOS_CEPH_GLANCE_CEPH
+            SNAPSHOT_NAME=ha_deploy_VLAN_CEPH_GLANCE_CEPH
             REPORT_PREFIX=/srv/jenkins/rally-tempest/scenario
             MOS_VERSION=all
             CEPH_RADOS=TRUE
@@ -73,8 +72,8 @@
           same-node: true
           block: true
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VLAN_RADOS_CEPH_GLANCE_CEPH
-            TEST_GROUP=TEMPEST, Ceph, RadosGW(scenario)
+            SNAPSHOT_NAME=ha_deploy_VLAN_CEPH_GLANCE_CEPH
+            TEST_GROUP=TEMPEST, Ceph
             REPORT_PREFIX=/srv/jenkins/rally-tempest/scenario
             REPORT_FILE=verification.xml
             SUITE=[9.0][MOSQA] Tempest 9.0
