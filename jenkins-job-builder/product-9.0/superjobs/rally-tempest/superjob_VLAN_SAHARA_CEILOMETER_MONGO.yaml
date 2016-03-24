@@ -77,7 +77,7 @@
             MOS_VERSION=all
 
     triggers:
-        - timed: "30 21 * * *"
+        - timed: "50 20 * * *"
     project-type: freestyle
     defaults: global
     node: Slave-srv137
