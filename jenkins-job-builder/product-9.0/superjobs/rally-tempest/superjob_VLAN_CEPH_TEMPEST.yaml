@@ -47,7 +47,7 @@
           block: true
           predefined-parameters: |
             SNAPSHOT_NAME=ha_deploy_VLAN_CEPH_GLANCE_CEPH
-            TEST_GROUP=TEMPEST, Ceph
+            TEST_GROUP=TEMPEST, Ceph(api)
             REPORT_PREFIX=/srv/jenkins/rally-tempest/api
             REPORT_FILE=verification.xml
             SUITE=[9.0][MOSQA] Tempest 9.0
@@ -73,7 +73,7 @@
           block: true
           predefined-parameters: |
             SNAPSHOT_NAME=ha_deploy_VLAN_CEPH_GLANCE_CEPH
-            TEST_GROUP=TEMPEST, Ceph
+            TEST_GROUP=TEMPEST, Ceph(scenario)
             REPORT_PREFIX=/srv/jenkins/rally-tempest/scenario
             REPORT_FILE=verification.xml
             SUITE=[9.0][MOSQA] Tempest 9.0
