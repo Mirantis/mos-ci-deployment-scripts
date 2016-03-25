@@ -68,6 +68,7 @@
             SKIP_INSTALL_ENV=$SKIP_INSTALL_ENV
             DISABLE_SSL=$DISABLE_SSL
             RALLY_TEMPEST=$RALLY_TEMPEST
+            CUSTOM_VERSION=$CUSTOM_VERSION
     project-type: freestyle
     defaults: global
     description: 'VLAN+CEPH+SAHARA+MURANO_CEILOMETER_RADOS_MONGO CENTOS TEMPEST tests (6.1 maintenance) on node'

@@ -19,7 +19,7 @@ from fuelweb_test import settings
 from fuelweb_test.tests.base_test_case import SetupEnvironment
 from fuelweb_test.tests.base_test_case import TestBasic
 
-@test(groups=["tempest", "tempest.ceph"])
+@test(groups=["tempest", "tempest.6_1"])
 class TempestTest_6_1(TestBasic):
     """TempestCeph."""
 

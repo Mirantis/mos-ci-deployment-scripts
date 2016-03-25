@@ -46,9 +46,14 @@
       - bool:
           name: SKIP_INSTALL_ENV
           default: false
+      - bool:
+          name: BONDING
+          default: false
       - string:
           name: VENV_PATH
           default: "/home/jenkins/qa-venv-7.0"
+      - string:
+          name: OPENSTACK_RELEASE
     name: maintenance_create_param_environment_7_0
     builders:
       - shell:
