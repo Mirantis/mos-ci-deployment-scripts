@@ -17,6 +17,9 @@
       - string:
           name: CEPH_RADOS
           default: FALSE
+      - string:
+          name: LVM_CINDER_FIX
+          default: FALSE
     builders:
         - shell: |
             ISO_NAME=`ls "$ISO_DIR"`
@@ -106,6 +109,13 @@
             echo 'echo "[volume]" >> $file' >> ssh_scr.sh
             echo 'echo "build_timeout = 300" >> $file' >> ssh_scr.sh
             echo 'echo "storage_protocol = ceph" >> $file' >> ssh_scr.sh
+            fi
+
+            if [[ "$LVM_CINDER_FIX" == 'TRUE' ]];
+            then
+            echo 'echo "[volume]" >> $file' >> ssh_scr.sh
+            echo 'echo "build_timeout = 300" >> $file' >> ssh_scr.sh
+            echo 'echo "storage_protocol = iSCSI" >> $file' >> ssh_scr.sh
             fi
 
             #temp_fix
