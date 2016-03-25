@@ -32,12 +32,15 @@ then
     exit 1
 fi
 
+# Bonding
+BONDING=${BONDING:-false}
+
 # Set env name
 ENV_NAME=${ENV_NAME:-maintenance_env_7.0}
 
 # Set fuel QA version
 # https://github.com/openstack/fuel-qa/branches
-FUEL_QA_VER=${FUEL_QA_VER:-master}
+FUEL_QA_VER=${FUEL_QA_VER:-stable/7.0}
 
 # Erase all previous environments by default
 ERASE_PREV_ENV=${ERASE_PREV_ENV:-true}
@@ -65,7 +68,9 @@ if ${ERASE_PREV_ENV} ; then
     dos.py list | tail -n+3 | xargs -I {} dos.py erase {}
 fi
 
-cat jenkins-job-builder/maintenance/helpers/$FILE >  fuel-qa/fuelweb_test/tests/test_services.py
+if [ -n ${FILE} ]; then
+    cat jenkins-job-builder/maintenance/helpers/${FILE} > fuel-qa/fuelweb_test/tests/test_services.py
+fi
 
 cd fuel-qa
 
@@ -181,6 +186,7 @@ export SLAVE_NODE_MEMORY=16384
 export DISABLE_SSL=$DISABLE_SSL
 export NOVA_QUOTAS_ENABLED=true
 export KVM_USE=true
+export BONDING=$BONDING
 export OPENSTACK_RELEASE=$OPENSTACK_RELEASE
 
 ./utils/jenkins/system_tests.sh -k -K -j fuelweb_test -t test -w $(pwd) -e "$ENV_NAME" -o --group="$GROUP" -i "$ISO_PATH"

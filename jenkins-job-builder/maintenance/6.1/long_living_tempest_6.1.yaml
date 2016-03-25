@@ -32,9 +32,10 @@
             ENV_NAME=long_living_tempest_6.1
             REPORT_XML=${REPORT_PREFIX}/${ENV_NAME}/verification.xml
             CUSTOM_VERSION=$CUSTOM_VERSION
-            TEST_GROUP='long living env UBUNTU TEMPEST tests 6.1 maintenance'
+            TEST_GROUP=long living env UBUNTU TEMPEST tests 6.1 maintenance
             MILESTONE=6.1
-            CONFIG_NAME="Ubuntu 14.04"
+            CONFIG_NAME=Ubuntu 14.04
+            USE_CENTOS=false
     project-type: freestyle
     defaults: global
     node: maintenance_173_10
