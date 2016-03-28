@@ -1,0 +1,95 @@
+- job:
+    name: 9.0_superjob_for_VLAN_TEMPEST_1contr_1compute_with_ssl
+    builders:
+      - shell:
+          !include-raw: ../neutron/9.0_mitaka_iso_and_erase_env.sh
+      - trigger-builds:
+        - project: '9.0_create_param_environment'
+          same-node: true
+          block: true
+          predefined-parameters: |
+            # BOOL_VARS="L2_POP_ENABLE DVR_ENABLE L3_HA_ENABLE SAHARA_ENABLE MURANO_ENABLE CEILOMETER_ENABLE IRONIC_ENABLE RADOS_ENABLE"
+            SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
+            TEST_TYPE=TEMPEST, Cinder LVM, Swift
+            SEGMENT_TYPE=VLAN
+            DISABLE_SSL=FALSE
+            IRONIC_ENABLE=FALSE
+            NOVA_QUOTAS_ENABLED=TRUE
+            COMPUTES_COUNT=1
+            CONTROLLERS_COUNT=1
+            SLAVE_NODE_CPU=2
+            SLAVE_NODE_MEMORY=8192
+            DEPLOYMENT_TIMEOUT=15000
+            MOS_VERSION=all
+            TEMPEST=TRUE
+            SEND_DUMB_TEMPEST_REPORT=TRUE
+
+      - trigger-builds:
+        - project: '9.0_rally_tempest_tests_api_for_VLAN_CINDER'
+          same-node: true
+          block: true
+          block-thresholds:
+            build-step-failure-threshold: 'never'
+          predefined-parameters: |
+            SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
+            REPORT_PREFIX=/srv/jenkins/rally-tempest/api
+            MOS_VERSION=all
+
+      - trigger-builds:
+        - project: 'tempest_test_rail_reporter'
+          same-node: true
+          block: true
+          predefined-parameters: |
+            SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
+            TEST_GROUP=TEMPEST,HA,Cinder LVM,Swift,SSL(api)
+            REPORT_PREFIX=/srv/jenkins/rally-tempest/api
+            REPORT_FILE=verification.xml
+            SUITE=[9.0][MOSQA] Tempest 9.0
+            MILESTONE=9.0
+            MOS_VERSION=all
+
+
+      - trigger-builds:
+        - project: '9.0_rally_tempest_tests_scenario_for_VLAN_CINDER'
+          same-node: true
+          block: true
+          block-thresholds:
+            build-step-failure-threshold: 'never'
+          predefined-parameters: |
+            SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
+            REPORT_PREFIX=/srv/jenkins/rally-tempest/scenario
+            MOS_VERSION=all
+
+      - trigger-builds:
+        - project: 'tempest_test_rail_reporter'
+          same-node: true
+          block: true
+          predefined-parameters: |
+            SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
+            TEST_GROUP=TEMPEST,HA,Cinder LVM,Swift,SSL(scenario)
+            REPORT_PREFIX=/srv/jenkins/rally-tempest/scenario
+            REPORT_FILE=verification.xml
+            SUITE=[9.0][MOSQA] Tempest 9.0
+            MILESTONE=9.0
+            MOS_VERSION=all
+
+    triggers:
+        - timed: "50 20 * * *"
+    project-type: freestyle
+    defaults: global
+    node: Slave-srv96
+    description: 'VLAN TEMPEST tests'
+    disabled: false
+    display-name: 'superjob-9.0-RALLY-TEMPEST VLAN_1contr_1compute_with_ssl'
+    concurrent: false
+    retry-count: 3
+    logrotate:
+      daysToKeep: 10
+      numToKeep: 40
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+    publishers:
+      - naginator:
+          progressive-delay-increment: 5
+          progressive-delay-maximum: 15
+          max-failed-builds: 4
