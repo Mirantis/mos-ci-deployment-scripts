@@ -24,6 +24,8 @@
             TEMPEST=TRUE
             SEND_DUMB_TEMPEST_REPORT=TRUE
 
+
+
       - trigger-builds:
         - project: '9.0_rally_tempest_tests_api_for_VLAN_CINDER'
           same-node: true
@@ -34,6 +36,7 @@
             SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
             REPORT_PREFIX=/srv/jenkins/rally-tempest/api
             MOS_VERSION=all
+            LVM_CINDER_FIX=TRUE
 
       - trigger-builds:
         - project: 'tempest_test_rail_reporter'
@@ -59,6 +62,7 @@
             SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
             REPORT_PREFIX=/srv/jenkins/rally-tempest/scenario
             MOS_VERSION=all
+            LVM_CINDER_FIX=TRUE
 
       - trigger-builds:
         - project: 'tempest_test_rail_reporter'
