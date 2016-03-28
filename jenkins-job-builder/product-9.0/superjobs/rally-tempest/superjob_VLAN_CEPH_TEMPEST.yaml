@@ -9,9 +9,11 @@
           block: true
           predefined-parameters: |
             # BOOL_VARS="L2_POP_ENABLE DVR_ENABLE L3_HA_ENABLE SAHARA_ENABLE MURANO_ENABLE CEILOMETER_ENABLE IRONIC_ENABLE RADOS_ENABLE"
-            SNAPSHOT_NAME=ha_deploy_VLAN_CEPH_GLANCE_CEPH
+            SNAPSHOT_NAME=ha_deploy_VLAN_CEILOMETER_CEPH_GLANCE_CEPH_MONGO
             TEST_TYPE=TEMPEST, Ceph, RadosGW
             SEGMENT_TYPE=VLAN
+            CEILOMETER_ENABLE=TRUE
+            MONGO_ENABLE=TRUE
             CINDER_ENABLE=FALSE
             LVM_ENABLE=FALSE
             CEPH_ENABLE=TRUE
@@ -36,7 +38,7 @@
           block-thresholds:
             build-step-failure-threshold: 'never'
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VLAN_CEPH_GLANCE_CEPH
+            SNAPSHOT_NAME=ha_deploy_VLAN_CEILOMETER_CEPH_GLANCE_CEPH_MONGO
             REPORT_PREFIX=/srv/jenkins/rally-tempest/api
             MOS_VERSION=all
             CEPH_RADOS=TRUE
@@ -46,7 +48,7 @@
           same-node: true
           block: true
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VLAN_CEPH_GLANCE_CEPH
+            SNAPSHOT_NAME=ha_deploy_VLAN_CEILOMETER_CEPH_GLANCE_CEPH_MONGO
             TEST_GROUP=TEMPEST, Ceph(api)
             REPORT_PREFIX=/srv/jenkins/rally-tempest/api
             REPORT_FILE=verification.xml
@@ -62,7 +64,7 @@
           block-thresholds:
             build-step-failure-threshold: 'never'
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VLAN_CEPH_GLANCE_CEPH
+            SNAPSHOT_NAME=ha_deploy_VLAN_CEILOMETER_CEPH_GLANCE_CEPH_MONGO
             REPORT_PREFIX=/srv/jenkins/rally-tempest/scenario
             MOS_VERSION=all
             CEPH_RADOS=TRUE
@@ -72,7 +74,7 @@
           same-node: true
           block: true
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VLAN_CEPH_GLANCE_CEPH
+            SNAPSHOT_NAME=ha_deploy_VLAN_CEILOMETER_CEPH_GLANCE_CEPH_MONGO
             TEST_GROUP=TEMPEST, Ceph(scenario)
             REPORT_PREFIX=/srv/jenkins/rally-tempest/scenario
             REPORT_FILE=verification.xml
