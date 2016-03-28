@@ -9,11 +9,9 @@
           block: true
           predefined-parameters: |
             # BOOL_VARS="L2_POP_ENABLE DVR_ENABLE L3_HA_ENABLE SAHARA_ENABLE MURANO_ENABLE CEILOMETER_ENABLE IRONIC_ENABLE RADOS_ENABLE"
-            SNAPSHOT_NAME=ha_deploy_VLAN_CEILOMETER_MONGO_CINDER
+            SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
             TEST_TYPE=TEMPEST, Cinder LVM, Swift
             SEGMENT_TYPE=VLAN
-            CEILOMETER_ENABLE=TRUE
-            MONGO_ENABLE=TRUE
             DISABLE_SSL=TRUE
             IRONIC_ENABLE=FALSE
             NOVA_QUOTAS_ENABLED=TRUE
@@ -35,7 +33,7 @@
           block-thresholds:
             build-step-failure-threshold: 'never'
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VLAN_CEILOMETER_MONGO_CINDER
+            SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
             REPORT_PREFIX=/srv/jenkins/rally-tempest/api
             MOS_VERSION=all
             LVM_CINDER_FIX=TRUE
@@ -45,7 +43,7 @@
           same-node: true
           block: true
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VLAN_CEILOMETER_MONGO_CINDER
+            SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
             TEST_GROUP=TEMPEST,HA,Cinder LVM,Swift(api)
             REPORT_PREFIX=/srv/jenkins/rally-tempest/api
             REPORT_FILE=verification.xml
@@ -61,7 +59,7 @@
           block-thresholds:
             build-step-failure-threshold: 'never'
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VLAN_CEILOMETER_MONGO_CINDER
+            SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
             REPORT_PREFIX=/srv/jenkins/rally-tempest/scenario
             MOS_VERSION=all
             LVM_CINDER_FIX=TRUE
@@ -71,7 +69,7 @@
           same-node: true
           block: true
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VLAN_CEILOMETER_MONGO_CINDER
+            SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
             TEST_GROUP=TEMPEST,HA,Cinder LVM,Swift(scenario)
             REPORT_PREFIX=/srv/jenkins/rally-tempest/scenario
             REPORT_FILE=verification.xml
