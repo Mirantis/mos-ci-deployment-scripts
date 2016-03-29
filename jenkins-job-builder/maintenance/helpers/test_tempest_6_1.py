@@ -76,10 +76,6 @@ class TempestTest_6_1(TestBasic):
         # Check network
         self.fuel_web.verify_network(cluster_id)
 
-        # Run ostf
-        self.fuel_web.run_ostf(cluster_id=cluster_id,
-                               test_sets=['ha', 'smoke', 'sanity'])
-
         self.env.make_snapshot("tempest_test_ceph",
                                is_make=True)
 
@@ -133,10 +129,6 @@ class TempestTest_6_1(TestBasic):
 
         # Check network
         self.fuel_web.verify_network(cluster_id)
-
-        # Run ostf
-        self.fuel_web.run_ostf(cluster_id=cluster_id,
-                               test_sets=['ha', 'smoke', 'sanity'])
 
         self.env.make_snapshot("tempest_cinder_glance_swift_vlan",
                                is_make=True)
