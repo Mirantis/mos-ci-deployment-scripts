@@ -1,27 +1,27 @@
 - job:
-    name: maintenance_tempest_non_ceph_6_1_centos
+    name: maintenance_tempest_all_ceph_tun_7_0_ubuntu
     parameters:
       - string:
           name: MAGNET_LINK
-          default: 'magnet:?xt=urn:btih:9d59953417e0c2608f8fa0ffe43ceac00967708f&dn=MirantisOpenStack-6.1.iso&tr=http%3A%2F%2Ftracker01-bud.infra.mirantis.net%3A8080%2Fannounce&tr=http%3A%2F%2Ftracker01-scc.infra.mirantis.net%3A8080%2Fannounce&tr=http%3A%2F%2Ftracker01-msk.infra.mirantis.net%3A8080%2Fannounce&ws=http%3A%2F%2Fvault.infra.mirantis.net%2FMirantisOpenStack-6.1.iso'
+          default: 'magnet:?xt=urn:btih:21b4d46c9f1cec02e336b1f9771d4f7c27ec724b&dn=MirantisOpenStack-7.0.iso&tr=http%3A%2F%2Ftracker01-bud.infra.mirantis.net%3A8080%2Fannounce&tr=http%3A%2F%2Ftracker01-scc.infra.mirantis.net%3A8080%2Fannounce&tr=http%3A%2F%2Ftracker01-msk.infra.mirantis.net%3A8080%2Fannounce&ws=http%3A%2F%2Fvault.infra.mirantis.net%2FMirantisOpenStack-7.0.iso'
           description: 'ISO magnet link'
       - string:
           name: UPGRADE_TARBALL_MAGNET_LINK
-          default: 'magnet:?xt=urn:btih:9d59953417e0c2608f8fa0ffe43ceac00967708f&dn=MirantisOpenStack-6.1.iso&tr=http%3A%2F%2Ftracker01-bud.infra.mirantis.net%3A8080%2Fannounce&tr=http%3A%2F%2Ftracker01-mnv.infra.mirantis.net%3A8080%2Fannounce&tr=http%3A%2F%2Ftracker01-msk.infra.mirantis.net%3A8080%2Fannounce&ws=http%3A%2F%2Fvault.infra.mirantis.net%2FMirantisOpenStack-6.1.iso'
+          default: 'magnet:?xt=urn:btih:e4521941a159cbbf345884c7c7ec6a484a139d3b&dn=MirantisOpenStack-7.0-upgrade.tar.lrz&tr=http%3A%2F%2Ftracker01-bud.infra.mirantis.net%3A8080%2Fannounce&tr=http%3A%2F%2Ftracker01-scc.infra.mirantis.net%3A8080%2Fannounce&tr=http%3A%2F%2Ftracker01-msk.infra.mirantis.net%3A8080%2Fannounce&ws=http%3A%2F%2Fvault.infra.mirantis.net%2FMirantisOpenStack-7.0-upgrade.tar.lrz'
           description: 'Upgrade tarball magnet link'
       - string:
           name: DEB_LATEST
-          default: 'snapshots/ubuntu-latest'
+          default: 'latest'
           description: "Snapshot timestamp without version id. E.g.: '2015-09-27-173001' or 'latest'"
       - string:
           name: RPM_LATEST
-          default: 'snapshots/centos-6-latest'
+          default: 'latest'
       - string:
           name: UBUNTU_MIRROR_ID
           default: 'latest'
       - string:
           name: CUSTOM_VERSION
-          default: 'MU-rc'
+          default: 'MU'
       - bool:
           name: ENABLE_PROPOSED
           default: false
@@ -39,7 +39,7 @@
           default: false
       - bool:
           name: DISABLE_SSL
-          default: false
+          default: true
       - choice:
           name: RALLY_TEMPEST
           choices:
@@ -47,11 +47,11 @@
             - 'run_tempest'
     builders:
       - trigger-builds:
-        - project: 'maintenance_create_param_environment_6_1'
+        - project: 'maintenance_create_param_environment_7_0'
           same-node: true
           block: true
           predefined-parameters: |
-            OPENSTACK_RELEASE=centos
+            OPENSTACK_RELEASE=ubuntu
             MAGNET_LINK=$MAGNET_LINK
             UPGRADE_TARBALL_MAGNET_LINK=$UPGRADE_TARBALL_MAGNET_LINK
             DEB_LATEST=$DEB_LATEST
@@ -63,9 +63,9 @@
             ERASE_PREV_ENV=$ERASE_PREV_ENV
             SKIP_INSTALL_ENV=$SKIP_INSTALL_ENV
             DISABLE_SSL=$DISABLE_SSL
-            ENV_NAME=maintenance_tempest_non_ceph_6_1_centos
-            FILE=test_tempest_6_1.py
-            GROUP=tempest_cinder_glance_swift_vlan
+            ENV_NAME=maintenance_tempest_all_ceph_tun_7_0
+            FILE=test_tempest_7_0.py
+            GROUP=tempest_ceph_services_tun
       - trigger-builds:
         - project: 'maintenance_tempest_runner'
           same-node: true
@@ -73,11 +73,12 @@
           block-thresholds:
             build-step-failure-threshold: 'never'
           predefined-parameters: |
-            ENV_NAME=maintenance_tempest_non_ceph_6_1_centos
-            SNAPSHOT_NAME=tempest_cinder_glance_swift_vlan
+            ENV_NAME=maintenance_tempest_all_ceph_tun_7_0
+            SNAPSHOT_NAME=tempest_ceph_services_tun
             REPORT_PREFIX=/srv/jenkins/rally-tempest
-            VENV_PATH=/home/jenkins/qa-venv-6.1
+            VENV_PATH=/home/jenkins/qa-venv-7.0
             RALLY_TEMPEST=$RALLY_TEMPEST
+            MILESTONE=7.0
       - trigger-builds:
         - project: 'test_rail_reporter_maintenance'
           same-node: true
@@ -86,20 +87,18 @@
             build-step-failure-threshold: 'never'
           predefined-parameters: |
             REPORT_PREFIX=/srv/jenkins/rally-tempest
-            ENV_NAME=maintenance_tempest_non_ceph_6_1_centos
-            SNAPSHOT_NAME=tempest_cinder_glance_swift_vlan
+            ENV_NAME=maintenance_tempest_all_ceph_tun_7_0
+            SNAPSHOT_NAME=tempest_ceph_services_tun
             REPORT_XML=${REPORT_PREFIX}/${ENV_NAME}_${SNAPSHOT_NAME}/verification.xml
             CUSTOM_VERSION=$CUSTOM_VERSION
-            TEST_GROUP=GRE+NON_CEPH TEMPEST tests 6.1 maintenance
-            MILESTONE=6.1
-            CONFIG_NAME=Centos 6.5
-            USE_CENTOS=true
+            TEST_GROUP=TUN+CEPH+SERVICES_RADOS_MONGO TEMPEST tests (7.0 maintenance)
+            MILESTONE=7.0
     project-type: freestyle
     defaults: global
     node: maintenance
-    description: 'GRE+NON_CEPH TEMPEST CENTOS tests (6.1 maintenance)'
+    description: 'TUN+CEPH+SERVICES_RADOS_MONGO UBUNTU TEMPEST tests (7.0 maintenance)'
     disabled: false
-    display-name: 'GRE+NON_CEPH TEMPEST CENTOS tests (6.1 maintenance)'
+    display-name: 'TUN+CEPH+SERVICES_RADOS_MONGO UBUNTU TEMPEST tests (7.0 maintenance)'
     concurrent: false
     retry-count: 3
     logrotate:
