@@ -74,7 +74,7 @@
             build-step-failure-threshold: 'never'
           predefined-parameters: |
             ENV_NAME=maintenance_tempest_all_ceph_tun_7_0
-            SNAPSHOT_NAME=tempest_ceph_services_tun
+            SNAPSHOT_NAME=tempest_test_ceph_tun
             REPORT_PREFIX=/srv/jenkins/rally-tempest
             VENV_PATH=/home/jenkins/qa-venv-7.0
             RALLY_TEMPEST=$RALLY_TEMPEST
@@ -88,7 +88,7 @@
           predefined-parameters: |
             REPORT_PREFIX=/srv/jenkins/rally-tempest
             ENV_NAME=maintenance_tempest_all_ceph_tun_7_0
-            SNAPSHOT_NAME=tempest_ceph_services_tun
+            SNAPSHOT_NAME=tempest_test_ceph_tun
             REPORT_XML=${REPORT_PREFIX}/${ENV_NAME}_${SNAPSHOT_NAME}/verification.xml
             CUSTOM_VERSION=$CUSTOM_VERSION
             TEST_GROUP=TUN+CEPH+SERVICES_RADOS_MONGO TEMPEST tests (7.0 maintenance)
