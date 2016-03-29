@@ -62,24 +62,11 @@ class TempestTest70(TestBasic):
                                is_make=True)
 
     def helper_cinder_glance_swift_tun(self, seg_type):
-        """Deploy env with 3 controller and 2 compute nodes.
-
-        Scenario:
-            1. Create cluster
-            2. Add 3 nodes with controller role
-            3. Add 2 nodes with compute role
-            4. Deploy the cluster
-            5. Run OSTF
-
-        Duration 40m
-        Snapshot tempest_cinder_glance_swift_tun
-        """
-
         self.env.revert_snapshot("ready_with_5_slaves")
 
         cluster_id = self.fuel_web.create_cluster(
             name=self.__class__.__name__,
-            mode=settings.DEPLOYMENT_MODE,
+            mode=settings.DEPLOYMENT_MODE_HA,
             settings={
                 "net_provider": 'neutron',
                 "net_segment_type": seg_type,
