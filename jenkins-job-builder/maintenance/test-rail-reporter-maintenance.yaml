@@ -22,10 +22,17 @@
       - string:
           name: CONFIG_NAME
           default: "Ubuntu 14.04"
-    node: maintenance_173_13
+      - bool:
+          name: USE_CENTOS
+          default: false
+      - node:
+          name: NODE_LABELS
+          description: |
+            Specify where this job and tested job should be ran on.
+          default: maintenance
     builders:
       - shell:
-          !include-raw 'helpers/testrail.sh'
+          !include-raw: 'helpers/testrail.sh'
     scm:
       - test-rail-reporter
     project-type: freestyle
