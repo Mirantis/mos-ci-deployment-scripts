@@ -75,9 +75,8 @@
 #        - timed: "30 21 * * *"
     project-type: freestyle
     defaults: global
-    node: master
     description: 'VLAN+DVR+IRONIC+CEILOMETER+MONGO TEMPEST tests'
-    disabled: false
+    disabled: true
     display-name: 'superjob-8.0-RALLY-TEMPEST VLAN+DVR+IRONIC+CEILOMETER+MONGO'
     concurrent: false
     retry-count: 3

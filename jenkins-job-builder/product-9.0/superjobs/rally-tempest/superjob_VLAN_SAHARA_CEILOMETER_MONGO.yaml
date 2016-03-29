@@ -50,6 +50,7 @@
             SUITE=[9.0][MOSQA] Tempest 9.0
             MILESTONE=9.0
             MOS_VERSION=all
+            LVM_CINDER_FIX=TRUE
 
 
       - trigger-builds:
@@ -62,6 +63,7 @@
             SNAPSHOT_NAME=ha_deploy_VLAN_SAHARA_CEILOMETER_MONGO_CINDER
             REPORT_PREFIX=/srv/jenkins/rally-tempest/scenario
             MOS_VERSION=all
+            LVM_CINDER_FIX=TRUE
 
       - trigger-builds:
         - project: 'tempest_test_rail_reporter'
@@ -77,7 +79,7 @@
             MOS_VERSION=all
 
     triggers:
-        - timed: "30 21 * * *"
+        - timed: "50 20 * * *"
     project-type: freestyle
     defaults: global
     node: Slave-srv137
