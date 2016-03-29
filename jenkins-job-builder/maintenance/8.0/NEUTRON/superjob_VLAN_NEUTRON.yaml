@@ -32,7 +32,6 @@
         - timed: "35 21 * * *"
     project-type: freestyle
     defaults: global
-    node: slave-7777
     description: 'VLAN NEUTRON tests'
     disabled: true
     display-name: '8.0-NEUTRON-VLAN'

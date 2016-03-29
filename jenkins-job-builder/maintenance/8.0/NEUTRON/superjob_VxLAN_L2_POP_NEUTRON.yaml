@@ -33,7 +33,6 @@
         - timed: "32 21 * * *"
     project-type: freestyle
     defaults: global
-    node: master
     description: 'VxLAN+L2_POP NEUTRON tests'
     disabled: true
     display-name: '8.0-NEUTRON-VxLAN+L2_POP'
