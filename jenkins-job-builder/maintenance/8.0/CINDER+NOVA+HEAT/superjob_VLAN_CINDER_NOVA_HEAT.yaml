@@ -76,7 +76,6 @@
         - timed: "31 21 * * *"
     project-type: freestyle
     defaults: global
-    node: slave-srv62
     description: 'VLAN CINDER-NOVA-HEAT tests with reporting to TestRail in a row.'
     disabled: true
     display-name: '8.0-VLAN CINDER-NOVA-HEAT'

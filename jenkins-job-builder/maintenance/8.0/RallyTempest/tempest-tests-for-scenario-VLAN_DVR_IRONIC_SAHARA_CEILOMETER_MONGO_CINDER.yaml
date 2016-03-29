@@ -136,7 +136,7 @@
     project-type: freestyle
     defaults: global
     description: 'Runs Tempest tests'
-    disabled: false
+    disabled: true
     display-name: '8.0-Rally_Tempest_Testing SCENARIO'
     concurrent: true
     browser: githubweb

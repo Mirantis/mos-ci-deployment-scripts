@@ -33,7 +33,6 @@
         - timed: "35 21 * * *"
     project-type: freestyle
     defaults: global
-    node: slave-srv98
     description: 'VLAN SAHARA-SCENARIO tests'
     disabled: true
     display-name: 'VLAN_SAHARA-SCENARIO'

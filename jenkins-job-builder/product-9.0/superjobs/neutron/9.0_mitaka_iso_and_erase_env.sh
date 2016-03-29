@@ -16,16 +16,6 @@ sudo chmod +x init_env.py
 iso_link=`python init_env.py`
 sudo rm -rf /var/www/fuelweb-iso/*
 sudo wget "$iso_link" -P /var/www/fuelweb-iso/
-iso_name=`ls /var/www/fuelweb-iso/`
-
-set +e
-env_presents=`sudo dos.py list | grep "$iso_name"`
-
-if [[ "$env_presents" != '' ]];
-then
-echo 'There is env with name of downloaded iso, aborting...'
-exit 0
-fi
 
 # sudo rm -rf /var/www/fuelweb-iso
 # sudo wget http://srv65-bud.infra.mirantis.net/fuelweb-iso/fuel-9.0-mitaka-48-2016-02-29_06-16-00.iso -P /var/www/fuelweb-iso

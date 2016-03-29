@@ -31,7 +31,6 @@
         - timed: "20 21 * * *"
     project-type: freestyle
     defaults: global
-    node: slave-7774
     description: 'VxLAN NEUTRON tests'
     disabled: true
     display-name: '8.0-NEUTRON-VxLAN'
