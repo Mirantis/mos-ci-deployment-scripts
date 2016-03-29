@@ -64,6 +64,7 @@
             SKIP_INSTALL_ENV=$SKIP_INSTALL_ENV
             DISABLE_SSL=$DISABLE_SSL
             ENV_NAME=maintenance_tempest_non_ceph_vlan_7_0
+            FILE=test_tempest_7_0.py
             GROUP=tempest_cinder_glance_swift_vlan
       - trigger-builds:
         - project: 'maintenance_tempest_runner'
