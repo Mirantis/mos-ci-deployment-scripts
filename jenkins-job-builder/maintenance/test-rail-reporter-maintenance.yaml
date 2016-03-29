@@ -24,7 +24,7 @@
           default: "Ubuntu 14.04"
       - bool:
           name: USE_CENTOS
-          default: true
+          default: false
       - node:
           name: NODE_LABELS
           description: |

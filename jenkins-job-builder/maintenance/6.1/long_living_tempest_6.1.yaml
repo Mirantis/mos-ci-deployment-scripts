@@ -11,7 +11,7 @@
             - 'run_tempest'
       - string:
           name: CUSTOM_VERSION
-          default: 'MU-rc'
+          default: 'MU'
     builders:
       - trigger-builds:
         - project: 'maintenance_long_living_tempest_runner'
@@ -35,10 +35,9 @@
             TEST_GROUP=long living env UBUNTU TEMPEST tests 6.1 maintenance
             MILESTONE=6.1
             CONFIG_NAME=Ubuntu 14.04
-            USE_CENTOS=false
     project-type: freestyle
     defaults: global
-    node: maintenance_173_10
+    node: maintenance-10
     description: 'Runs Tempest tests on long living env (6.1 maintenance)'
     disabled: false
     display-name: 'Runs Tempest tests on long living env (6.1 maintenance)'

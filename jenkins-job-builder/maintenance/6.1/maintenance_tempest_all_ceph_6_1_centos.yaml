@@ -93,6 +93,7 @@
             TEST_GROUP=VLAN+CEPH+SAHARA+MURANO_CEILOMETER_RADOS_MONGO TEMPEST tests 6.1 maintenance
             MILESTONE=6.1
             CONFIG_NAME=Centos 6.5
+            USE_CENTOS=true
     project-type: freestyle
     defaults: global
     node: maintenance
