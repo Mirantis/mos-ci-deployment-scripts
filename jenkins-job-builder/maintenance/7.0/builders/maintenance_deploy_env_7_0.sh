@@ -68,7 +68,7 @@ if ${ERASE_PREV_ENV} ; then
     dos.py list | tail -n+3 | xargs -I {} dos.py erase {}
 fi
 
-if [ -n ${FILE} ]; then
+if [ -n "${FILE}" ]; then
     cat jenkins-job-builder/maintenance/helpers/${FILE} > fuel-qa/fuelweb_test/tests/test_services.py
 fi
 

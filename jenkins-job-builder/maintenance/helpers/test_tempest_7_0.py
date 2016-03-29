@@ -82,7 +82,7 @@ class TempestTest70(TestBasic):
             mode=settings.DEPLOYMENT_MODE,
             settings={
                 "net_provider": 'neutron',
-                "net_segment_type": 'tun',
+                "net_segment_type": seg_type,
                 'volumes_ceph': False,
                 'images_ceph': False,
                 'objects_ceph': False,
