@@ -61,7 +61,7 @@ class TempestTest70(TestBasic):
         self.env.make_snapshot("tempest_test_ceph_{}".format(seg_type),
                                is_make=True)
 
-    def helper_cinder_glance_swift_tun(self, seg_type):
+    def helper_cinder_glance_swift(self, seg_type):
         self.env.revert_snapshot("ready_with_5_slaves")
 
         cluster_id = self.fuel_web.create_cluster(
@@ -136,12 +136,12 @@ class TempestTest70(TestBasic):
         Duration 40m
         Snapshot tempest_cinder_glance_swift_tun
         """
-        self.helper_cinder_glance_swift_tun('tun')
+        self.helper_cinder_glance_swift('tun')
 
     @test(depends_on=[SetupEnvironment.prepare_slaves_5],
           groups=["tempest_cinder_glance_swift_vlan"])
     @log_snapshot_after_test
-    def tempest_cinder_glance_swift_tun(self):
+    def tempest_cinder_glance_swift_vlan(self):
         """Deploy env with 3 controller and 2 compute nodes.
 
         Scenario:
@@ -154,4 +154,4 @@ class TempestTest70(TestBasic):
         Duration 40m
         Snapshot tempest_cinder_glance_swift_tun
         """
-        self.helper_cinder_glance_swift_tun('lvan')
+        self.helper_cinder_glance_swift('vlan')
