@@ -58,9 +58,9 @@
     project-type: freestyle
     defaults: global
     node: Slave-srv139
-    description: 'VLAN TEMPEST tests(scenario only)'
+    description: 'VLAN TEMPEST tests'
     disabled: false
-    display-name: 'superjob-9.0-RALLY-TEMPEST VLAN_CEPH_RADOS_1contr_1compute'
+    display-name: 'superjob-9.0-RALLY-TEMPEST VLAN_CEPH_RADOS_1contr_1compute(scenario only)'
     concurrent: false
     retry-count: 3
     logrotate:

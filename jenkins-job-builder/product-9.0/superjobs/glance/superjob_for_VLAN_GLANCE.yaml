@@ -1,29 +1,43 @@
 - job:
     name: 9.0-superjob_for_VLAN_GLANCE
+    project-type: multijob
+
+    parameters:
+        - string:
+            name: SNAPSHOT_NAME
+            default: "ha_deploy_VLAN_CINDER"
+        - string:
+            name: TEST_TYPE
+            default: "GLANCE"
+        - string:
+            name: SEGMENT_TYPE
+            default: "VLAN"
+        - string:
+            name: DISABLE_SSL
+            default: "TRUE"
+#        - string:
+#            name:
+#            default:
+
     builders:
       - shell:
           !include-raw: ../neutron/9.0_mitaka_iso_and_erase_env.sh
-      - trigger-builds:
-        - project: '9.0_create_param_environment'
-          same-node: true
-          block: true
-          predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
-            TEST_TYPE=GLANCE
-            SEGMENT_TYPE=VLAN
-            DISABLE_SSL=TRUE
-      - trigger-builds:
-        - project: '9.0-glance_tests'
-          same-node: true
-          block: true
-          block-thresholds:
-            build-step-failure-threshold: 'never'
-          predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
+      - multijob:
+          name: Deploy_Env
+          condition: SUCCESSFUL
+          projects:
+              - name: 9.0_create_param_environment
+                current-parameters: true
+                abort-all-job: true
+      - multijob:
+          name: Run_Glance_Tests
+          condition: SUCCESSFUL
+          projects:
+              - name: 9.0-glance_tests
+                current-parameters: true
+                abort-all-job: true
 
-    triggers:
-        - timed: "50 20 * * *"
-    project-type: freestyle
+
     defaults: global
     node: Slave-srv128
     description: '9.0-VLAN GLANCE tests'
@@ -36,4 +50,3 @@
       numToKeep: 20
       artifactDaysToKeep: -1
       artifactNumToKeep: -1
-
