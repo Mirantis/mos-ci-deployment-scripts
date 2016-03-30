@@ -1,5 +1,5 @@
 - job:
-    name: 9.0-superjob_for_VLAN_GLANCE
+    name: 9.0-superjob_for_VLAN_GLANCE_multijob
     project-type: multijob
 
     parameters:
