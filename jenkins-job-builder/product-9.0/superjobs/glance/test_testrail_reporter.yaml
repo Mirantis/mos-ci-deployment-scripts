@@ -31,16 +31,12 @@
           name: MOS_VERSION
 
     builders:
+        - inject:
+            properties-file: "$ENV_INJECT_PATH"
+
         - shell: |
             ISO_NAME=`ls "$ISO_DIR"`
-
-            if [ "$MOS_VERSION" == 'mitaka' ] || [ "$MOS_VERSION" == 'kilo' ] ;
-            then
-            ISO_ID=`echo "$ISO_NAME" | cut -f4 -d-`
-            else
             ISO_ID=`echo "$ISO_NAME" | cut -f3 -d-`
-            fi
-
             ENV_NAME=${ENV_NAME:-MOS_CI_"$ISO_NAME"}
 
             SNAPSHOT=`echo $SNAPSHOT_NAME | sed 's/ha_deploy_//'`
@@ -76,10 +72,7 @@
 
             sudo python setup.py install
 
-            set +e
-            BUILD=`cat "$REPORT_PREFIX"/"$ENV_NAME"_"$SNAPSHOT_NAME"/build_url`
-            set -e
-            report -v --iso-id "$ISO_ID" --env-description "$SNAPSHOT-$TEST_GROUP" --testrail-url  "${TESTRAIL_URL}" --testrail-user  "${TESTRAIL_USER}" --testrail-password "${TESTRAIL_PASSWORD}" --testrail-project "${TESTRAIL_PROJECT}" --testrail-milestone "${TESTRAIL_MILESTONE}" --testrail-suite "${TESTRAIL_SUITE}" --test-results-link "$BUILD" "$REPORT_XML"
+            report -v --iso-id "$ISO_ID" --env-description "$SNAPSHOT-$TEST_GROUP" --testrail-url  "${TESTRAIL_URL}" --testrail-user  "${TESTRAIL_USER}" --testrail-password "${TESTRAIL_PASSWORD}" --testrail-project "${TESTRAIL_PROJECT}" --testrail-milestone "${TESTRAIL_MILESTONE}" --testrail-suite "${TESTRAIL_SUITE}" --test-results-link "$BUILD_URL" "$REPORT_XML"
 
     scm:
       - test-rail-reporter-master
@@ -87,7 +80,7 @@
     defaults: global
     description: 'Send XUnit reports to TestRail'
     disabled: false
-    display-name: 'Report To TestRail'
+    display-name: 'TEST Report To TestRail'
     concurrent: true
     browser: githubweb
     retry-count: 3

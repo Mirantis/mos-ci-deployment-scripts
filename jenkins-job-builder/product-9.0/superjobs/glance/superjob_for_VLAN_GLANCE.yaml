@@ -36,6 +36,9 @@
         - string:
             name: MILESTONE
             default: "9.0"
+        - string:
+            name: ENV_INJECT_PATH
+            default: "/home/jenkins/env_inject.properties"
 
     builders:
       - shell:
