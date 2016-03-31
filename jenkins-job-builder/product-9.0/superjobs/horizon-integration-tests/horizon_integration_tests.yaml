@@ -1,0 +1,80 @@
+- job:
+    name: horizon_integraion_tests
+    project-type: freestyle
+
+    builders:
+      shell: |
+        sudo apt-get install sshpass
+        # Get IP of master node
+        git clone https://github.com/Mirantis/mos-integration-tests
+        cd mos-integration-tests
+        echo 'from mos_tests.environment.devops_client import DevopsClient' > temp.py
+        echo "print DevopsClient.get_admin_node_ip('$ENV_NAME')" >> temp.py
+        MASTER_NODE_IP=`python temp.py`
+        cd ..
+
+        MASTER_NODE_USER='root'
+        MASTER_NODE_PASS='r00tme'
+
+        echo 'awk '\''/ \* / {print $2;exit}'\'' <(zcat /usr/share/doc/openstack-dashboard/changelog.Debian.gz) > target_commit' > ssh_script_for_contr.sh
+
+        echo 'NODE_NUM=`fuel node | grep controller | awk '\''{print $1}'\'' | head -n 1`' > ssh_script_for_master.sh
+        echo 'cat ssh_script_for_contr.sh  | ssh -T node-"$NODE_NUM"' >> ssh_script_for_master.sh
+        echo 'scp node-"$NODE_NUM":/root/target_commit /root/' >> ssh_script_for_master.sh
+        # echo ' echo "chmod +x /root/ssh_script_for_contr.sh && /bin/bash -x /root/ssh_script_for_contr.sh" | ssh -T node-"$NODE_NUM" ' >> ssh_script_for_master.sh
+
+        sshpass -p "$MASTER_NODE_PASS" scp ssh_script_for_master.sh "$MASTER_NODE_USER"@"$MASTER_NODE_IP":/root/
+        sshpass -p "$MASTER_NODE_PASS" scp ssh_script_for_contr.sh "$MASTER_NODE_USER"@"$MASTER_NODE_IP":/root/
+
+        echo 'chmod +x /root/ssh_script_for_master.sh && /bin/bash -x /root/ssh_script_for_master.sh' | sshpass -P "$MASTER_NODE_PASS" ssh -T "$MASTER_NODE_USER"@"$MASTER_NODE_IP"
+
+        sshpass -p "$MASTER_NODE_PASS" scp "$MASTER_NODE_USER"@"$MASTER_NODE_IP":/root/target_commit ./target_commit
+
+    defaults: global
+    node: Slave-srv98
+    description: 'Runs Horizon Inegration Tests'
+    disabled: false
+    display-name: 'Horizon Inegration Tests'
+    concurrent: true
+    retry-count: 3
+    logrotate:
+      daysToKeep: 5
+      numToKeep: 20
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+    publishers:
+      - archive:
+          artifacts: 'target_commit'
+          allow-empty: 'true'
+          fingerprint: true
+#      - archive:
+#          artifacts: 'verification.xml'
+#          allow-empty: 'true'
+#          fingerprint: true
+#      - junit:
+#          results: verification.xml
+      - email:
+          recipients: efazliev@mirantis.com
+#      - postbuildscript:
+#          script-only-if-succeeded: True
+#          builders:
+#            - shell: |
+#                set +e
+#                REPORT_PATH=`cat ./param.pm`
+#                sudo mkdir -p "$REPORT_PATH"
+#                sudo cp verification.xml "$REPORT_PATH"
+#                sudo cp build_url "$REPORT_PATH"
+      - workspace-cleanup:
+          fail-build: false
+#
+#      - postbuildscript:
+#          script-only-if-succeeded: False
+#          script-only-if-failed: True
+#          builders:
+#            - shell: |
+#                set +e
+#                REPORT_PATH=`cat ./param.pm`
+#                sudo mkdir -p "$REPORT_PATH"
+#                wget -O verification.xml https://raw.githubusercontent.com/EduardFazliev/mos-ci-deployment-scripts/feature/jjb/jenkins-job-builder/product-9.0/superjobs/rally-tempest/verification.xml.template
+#                sudo cp verification.xml "$REPORT_PATH"
+#                sudo cp build_url "$REPORT_PATH"

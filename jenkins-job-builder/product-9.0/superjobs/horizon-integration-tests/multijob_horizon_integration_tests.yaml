@@ -54,6 +54,13 @@
             - name: 9.0_create_param_environment
               current-parameters: true
               abort-all-job: true
+      - multijob:
+          name: Horizon Tests
+          condition: SUCCESSFUL
+          projects:
+            - name: horizon_integraion_tests
+              current-parameters: true
+              abort-all-job: true
 
     defaults: global
     node: Slave-srv128
