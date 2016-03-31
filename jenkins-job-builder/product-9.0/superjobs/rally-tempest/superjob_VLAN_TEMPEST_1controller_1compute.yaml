@@ -7,6 +7,8 @@
         - project: '9.0_create_param_environment'
           same-node: true
           block: true
+          block-thresholds:
+            build-step-failure-threshold: 'never'
           predefined-parameters: |
             # BOOL_VARS="L2_POP_ENABLE DVR_ENABLE L3_HA_ENABLE SAHARA_ENABLE MURANO_ENABLE CEILOMETER_ENABLE IRONIC_ENABLE RADOS_ENABLE"
             SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
@@ -42,6 +44,8 @@
         - project: 'tempest_test_rail_reporter'
           same-node: true
           block: true
+          block-thresholds:
+            build-step-failure-threshold: 'never'
           predefined-parameters: |
             SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
             TEST_GROUP=TEMPEST,HA,Cinder LVM,Swift(api)
@@ -68,6 +72,8 @@
         - project: 'tempest_test_rail_reporter'
           same-node: true
           block: true
+          block-thresholds:
+            build-step-failure-threshold: 'never'
           predefined-parameters: |
             SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
             TEST_GROUP=TEMPEST,HA,Cinder LVM,Swift(scenario)
@@ -92,8 +98,3 @@
       numToKeep: 40
       artifactDaysToKeep: -1
       artifactNumToKeep: -1
-    publishers:
-      - naginator:
-          progressive-delay-increment: 5
-          progressive-delay-maximum: 15
-          max-failed-builds: 4

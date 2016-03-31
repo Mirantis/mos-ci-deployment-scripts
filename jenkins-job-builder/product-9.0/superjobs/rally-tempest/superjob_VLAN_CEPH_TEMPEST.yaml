@@ -7,6 +7,8 @@
         - project: '9.0_create_param_environment'
           same-node: true
           block: true
+          block-thresholds:
+            build-step-failure-threshold: 'never'
           predefined-parameters: |
             # BOOL_VARS="L2_POP_ENABLE DVR_ENABLE L3_HA_ENABLE SAHARA_ENABLE MURANO_ENABLE CEILOMETER_ENABLE IRONIC_ENABLE RADOS_ENABLE"
             SNAPSHOT_NAME=ha_deploy_VLAN_CEPH_GLANCE_CEPH
@@ -45,6 +47,8 @@
         - project: 'tempest_test_rail_reporter'
           same-node: true
           block: true
+          block-thresholds:
+            build-step-failure-threshold: 'never'
           predefined-parameters: |
             SNAPSHOT_NAME=ha_deploy_VLAN_CEPH_GLANCE_CEPH
             TEST_GROUP=TEMPEST, Ceph(api)
@@ -71,6 +75,8 @@
         - project: 'tempest_test_rail_reporter'
           same-node: true
           block: true
+          block-thresholds:
+            build-step-failure-threshold: 'never'
           predefined-parameters: |
             SNAPSHOT_NAME=ha_deploy_VLAN_CEPH_GLANCE_CEPH
             TEST_GROUP=TEMPEST, Ceph(scenario)

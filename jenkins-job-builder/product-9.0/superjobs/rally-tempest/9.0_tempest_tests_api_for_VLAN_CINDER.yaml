@@ -171,7 +171,7 @@
       - email:
           recipients: efazliev@mirantis.com
       - postbuildscript:
-          script-only-if-succeeded: False
+          script-only-if-succeeded: True
           builders:
             - shell: |
                 set -e
@@ -181,3 +181,15 @@
                 sudo cp build_url "$REPORT_PATH"
       - workspace-cleanup:
           fail-build: false
+
+      - postbuildscript:
+          script-only-if-succeeded: False
+          script-only-if-failed: True
+          builders:
+            - shell: |
+                set -e
+                REPORT_PATH=`cat ./param.pm`
+                sudo mkdir -p "$REPORT_PATH"
+                wget -O verification.xml https://raw.githubusercontent.com/EduardFazliev/mos-ci-deployment-scripts/feature/jjb/jenkins-job-builder/product-9.0/superjobs/rally-tempest/verification.xml.template
+                sudo cp verification.xml "$REPORT_PATH"
+                sudo cp build_url "$REPORT_PATH"
