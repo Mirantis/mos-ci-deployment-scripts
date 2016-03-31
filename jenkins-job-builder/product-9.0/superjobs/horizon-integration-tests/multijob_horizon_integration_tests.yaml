@@ -46,16 +46,15 @@ job:
 
   builders:
     - shell:
-        !include-raw: ../../shell_scripts/snapshot_name_generator.sh
+        !include-raw: ../../../shell_scripts/snapshot_name_generator.sh
     - multijob:
       name: Deploy_Env
       condition: SUCCESSFUL
-      project:
+      projects:
         - name: 9.0_create_param_environment
           current-parameters: true
           abort-all-job: true
 
-    scm: 9.0-mos-ci-deployment-scripts-efazliev
     defaults: global
     node: Slave-srv128
     description: '(9.0)Horizon-Integration-Tests'
