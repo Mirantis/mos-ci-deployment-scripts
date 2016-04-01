@@ -49,7 +49,7 @@
           projects:
               - name: 9.0_create_param_environment
                 current-parameters: true
-                node-label: Slave-srv128
+                node-label: Slave-srv96
                 abort-all-job: true
       - multijob:
           name: Run_Glance_Tests
@@ -57,12 +57,12 @@
           projects:
               - name: 9.0-glance_tests
                 current-parameters: true
-                node-label: Slave-srv128
+                node-label: Slave-srv96
                 abort-all-job: true
 
 
     defaults: global
-    node: Slave-srv128
+    node: Slave-srv96
     description: '9.0-VLAN GLANCE tests'
     disabled: false
     display-name: '(9.0)(multi)Glance Tests'
