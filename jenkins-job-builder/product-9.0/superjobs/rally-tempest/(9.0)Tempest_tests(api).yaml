@@ -1,5 +1,5 @@
 - job:
-    name: (9.0)Tempest_tests[api]
+    name: (9.0)Tempest_tests(api)
     wrappers:
       - build-name:
           name: ${BUILD_NUMBER}:${FILE,path="build-name-setter.info"}

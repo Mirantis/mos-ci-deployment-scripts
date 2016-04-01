@@ -1,5 +1,5 @@
 - job:
-    name: '(9.0)(multi)Tempest[Ceph]'
+    name: '(9.0)(multi)Tempest(Ceph)'
     builders:
       - shell:
           !include-raw: ../neutron/9.0_mitaka_iso_and_erase_env.sh
@@ -32,7 +32,7 @@
 
 
       - trigger-builds:
-        - project: '(9.0)Tempest_tests[api]'
+        - project: '(9.0)Tempest_tests(api)'
           same-node: true
           block: true
           block-thresholds:
@@ -60,7 +60,7 @@
 
 
       - trigger-builds:
-        - project: '(9.0)Tempest_tests[scenario]'
+        - project: '(9.0)Tempest_tests(scenario)'
           same-node: true
           block: true
           block-thresholds:
