@@ -37,13 +37,11 @@
             REPORT_PREFIX=/srv/jenkins/sahara
             MOS_VERSION=all
 
-    triggers:
-        - timed: "50 20 * * *"
     project-type: freestyle
     defaults: global
     node: Slave-7775
     description: 'VLAN TEMPEST tests'
-    disabled: false
+    disabled: true
     display-name: 'superjob-9.0-SAHARA_1contr_1compute'
     concurrent: false
     retry-count: 3
