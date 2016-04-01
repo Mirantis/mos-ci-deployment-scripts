@@ -1,35 +1,6 @@
 - job:
     name: 9.0_superjob_for_VLAN_CEPH_RADOS_TEMPEST_scenarion_only
     builders:
-      - shell:
-          !include-raw: ../neutron/9.0_mitaka_iso_and_erase_env.sh
-      - trigger-builds:
-        - project: '9.0_create_param_environment'
-          same-node: true
-          block: true
-          block-thresholds:
-            build-step-failure-threshold: 'never'
-          predefined-parameters: |
-            # BOOL_VARS="L2_POP_ENABLE DVR_ENABLE L3_HA_ENABLE SAHARA_ENABLE MURANO_ENABLE CEILOMETER_ENABLE IRONIC_ENABLE RADOS_ENABLE"
-            SNAPSHOT_NAME=ha_deploy_VLAN_CEPH_GLANCE_CEPH
-            TEST_TYPE=TEMPEST, Ceph, RadosGW
-            SEGMENT_TYPE=VLAN
-            CINDER_ENABLE=FALSE
-            LVM_ENABLE=FALSE
-            CEPH_ENABLE=TRUE
-            DISABLE_SSL=TRUE
-            IRONIC_ENABLE=FALSE
-            NOVA_QUOTAS_ENABLED=TRUE
-            COMPUTES_COUNT=1
-            CONTROLLERS_COUNT=1
-            SLAVE_NODE_CPU=2
-            SLAVE_NODE_MEMORY=8192
-            DEPLOYMENT_TIMEOUT=15000
-            MOS_VERSION=all
-            TEMPEST=TRUE
-            REPLICA_CEPH=TRUE
-            CEPH_GLANCE_ENABLE=TRUE
-
       - trigger-builds:
         - project: '9.0_rally_tempest_tests_scenario_for_VLAN_CINDER'
           same-node: true
@@ -57,7 +28,7 @@
 
     project-type: freestyle
     defaults: global
-    node: Slave-srv137
+    node: Slave-srv139
     description: 'VLAN TEMPEST tests'
     disabled: false
     display-name: 'superjob-9.0-RALLY-TEMPEST VLAN_CEPH_RADOS_1contr_1compute(scenario only)'
