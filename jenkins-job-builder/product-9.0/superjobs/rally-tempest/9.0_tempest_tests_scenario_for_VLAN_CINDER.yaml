@@ -102,7 +102,7 @@
             #echo 'OAU=`fgrep OS_AUTH_URL /var/lib/rally-tempest-container-home-dir/openrc` && OAUV2="$OAU"v2.0 && echo "$OAUV2" >> /var/lib/rally-tempest-container-home-dir/openrc' >> ssh_scr.sh
             echo 'docker exec -u root "$DOCK_ID" sed -i "s|\#swift_operator_role = Member|swift_operator_role=SwiftOperator|g" /etc/rally/rally.conf' >> ssh_scr.sh
 
-            echo 'find / -name test_server_personality.py -exec sed -i "22i from tempest.lib import decorators" {} \; -exec sed  -i "54i\    @decorators.skip_because(bug="1467860")" {} \; -exec sed  -i "109i\    @decorators.skip_because(bug="1467860")" {} \;' >> ssh_scr.sh
+            echo эfind / -name test_server_personality.py -exec sed -i "22i from tempest.lib import decorators" {} \; -exec sed  -i "54i\    @decorators.skip_because(bug="1467860")" {} \; -exec sed  -i "109i\    @decorators.skip_because(bug="1467860")" {} \;э >> ssh_scr.sh
 
             echo 'docker exec "$DOCK_ID" setup-tempest' >> ssh_scr.sh
             echo 'file=`find / -name tempest.conf`' >> ssh_scr.sh
@@ -127,9 +127,9 @@
             fi
 
 
-#            echo 'docker exec -u root "$DOCK_ID" sed  -i "22i from tempest.lib import decorators"  /var/lib/tempest/tempest/api/compute/servers/test_server_personality.py' >> ssh_scr.sh
-#            echo 'docker exec -u root "$DOCK_ID" sed  -i '\''54i\    @decorators.skip_because(bug="1467860")'\''  /var/lib/tempest/tempest/api/compute/servers/test_server_personality.py' >> ssh_scr.sh
-#            echo 'docker exec -u root "$DOCK_ID" sed  -i '\''109i\    @decorators.skip_because(bug="1467860")'\''  /var/lib/tempest/tempest/api/compute/servers/test_server_personality.py' >> ssh_scr.sh
+            # echo 'docker exec -u root "$DOCK_ID" sed  -i "22i from tempest.lib import decorators"  /var/lib/tempest/tempest/api/compute/servers/test_server_personality.py' >> ssh_scr.sh
+            # echo 'docker exec -u root "$DOCK_ID" sed  -i '\''54i\    @decorators.skip_because(bug="1467860")'\''  /var/lib/tempest/tempest/api/compute/servers/test_server_personality.py' >> ssh_scr.sh
+            # echo 'docker exec -u root "$DOCK_ID" sed  -i '\''109i\    @decorators.skip_because(bug="1467860")'\''  /var/lib/tempest/tempest/api/compute/servers/test_server_personality.py' >> ssh_scr.sh
             #temp_fix
 
             #echo 'OS_AUTH=`fgrep OS_AUTH_URL /var/lib/rally-tempest-container-home-dir/openrc`' >> ssh_scr.sh
