@@ -1,5 +1,5 @@
 - job:
-    name: (9.0)(multi)Tempest[Ceph]
+    name: '(9.0)(multi)Tempest[Ceph]'
     builders:
       - shell:
           !include-raw: ../neutron/9.0_mitaka_iso_and_erase_env.sh
