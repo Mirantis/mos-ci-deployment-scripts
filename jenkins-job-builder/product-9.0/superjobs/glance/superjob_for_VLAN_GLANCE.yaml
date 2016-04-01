@@ -51,6 +51,7 @@
                 current-parameters: true
                 same-node: true
                 node-label: slave-srv96
+                node-label-name: slave-srv96
                 abort-all-job: true
       - multijob:
           name: Run_Glance_Tests
@@ -60,6 +61,7 @@
                 current-parameters: true
                 same-node: true
                 node-label: slave-srv96
+                node-label-name: slave-srv96
                 abort-all-job: true
 
 
