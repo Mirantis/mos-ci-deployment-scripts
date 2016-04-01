@@ -8,10 +8,10 @@
             name: ENV_INJECT_PATH
             default: "/home/jenkins/env_inject.properties"
 
-        # Deply environment parameters
+        # Deploy environment parameters
         - string:
-            name: TEST_TYPE
-            default: "GLANCE"
+            name: ISO_DIR
+            default: "/var/www/fuelweb-iso"
         - string:
             name: SEGMENT_TYPE
             default: "VLAN"
@@ -19,8 +19,13 @@
             name: DISABLE_SSL
             default: "TRUE"
         - string:
-            name: ISO_DIR
-            default: "/var/www/fuelweb-iso"
+            name: LVM_ENABLE
+            default: "TRUE"
+        - string:
+            name: CINDER_ENABLE
+            default: "TRUE"
+
+
 
         # TestRail Reporter parameters
         - string:
