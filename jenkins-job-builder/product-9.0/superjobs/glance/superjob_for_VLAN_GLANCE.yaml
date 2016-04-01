@@ -49,7 +49,8 @@
           projects:
               - name: 9.0_create_param_environment
                 current-parameters: true
-                node-label: Slave-srv96
+                same-node: true
+                node-label: slave-srv96
                 abort-all-job: true
       - multijob:
           name: Run_Glance_Tests
@@ -57,7 +58,8 @@
           projects:
               - name: 9.0-glance_tests
                 current-parameters: true
-                node-label: Slave-srv96
+                same-node: true
+                node-label: slave-srv96
                 abort-all-job: true
 
 
