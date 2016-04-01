@@ -3,6 +3,12 @@
     project-type: multijob
 
     parameters:
+        #EnvInject file
+        - string:
+            name: ENV_INJECT_PATH
+            default: "/home/jenkins/env_inject.properties"
+
+        # Deply environment parameters
         - string:
             name: SNAPSHOT_NAME
             default: "ha_deploy_VLAN_CINDER"
@@ -18,6 +24,8 @@
         - string:
             name: ISO_DIR
             default: "/var/www/fuelweb-iso"
+
+        # TestRail Reporter parameters
         - string:
             name: TEST_GROUP
             default: "Glance"
@@ -36,11 +44,10 @@
         - string:
             name: MILESTONE
             default: "9.0"
-        - string:
-            name: ENV_INJECT_PATH
-            default: "/home/jenkins/env_inject.properties"
 
     builders:
+      - shell:
+          !include-raw: ../../../shell_scripts/snapshot_name_generator.sh
       - shell:
           !include-raw: ../neutron/9.0_mitaka_iso_and_erase_env.sh
       - multijob:
@@ -63,7 +70,16 @@
                 node-label: slave-srv96
                 node-label-name: slave-srv96
                 abort-all-job: true
-
+      - multijob:
+          name: Report To TestRail
+          condition: SUCCESSFUL
+          projects:
+              - name: test_testrail_reporter
+                current-parameters: true
+                same-node: true
+                node-label: slave-srv96
+                node-label-name: slave-srv96
+                abort-all-job: true
 
     defaults: global
     node: Slave-srv96

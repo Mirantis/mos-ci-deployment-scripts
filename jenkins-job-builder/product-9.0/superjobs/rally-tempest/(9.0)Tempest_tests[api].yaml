@@ -1,5 +1,5 @@
 - job:
-    name: 9.0_rally_tempest_tests_api_for_VLAN_CINDER
+    name: (9.0)Tempest_tests[api]
     wrappers:
       - build-name:
           name: ${BUILD_NUMBER}:${FILE,path="build-name-setter.info"}
@@ -154,7 +154,7 @@
     defaults: global
     description: 'Runs Tempest tests'
     disabled: false
-    display-name: '9.0-RALLY-TEMPEST VLAN API'
+    display-name: '(9.0)Tempest_tests[api]'
     concurrent: true
     browser: githubweb
     retry-count: 3
