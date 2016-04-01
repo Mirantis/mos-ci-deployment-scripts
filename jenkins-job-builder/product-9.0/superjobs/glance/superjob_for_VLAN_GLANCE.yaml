@@ -65,7 +65,7 @@
     node: Slave-srv128
     description: '9.0-VLAN GLANCE tests'
     disabled: false
-    display-name: '9.0-superjob_for_VLAN_GLANCE'
+    display-name: '(9.0)(multi)Glance Tests'
     concurrent: false
     retry-count: 3
     logrotate:
