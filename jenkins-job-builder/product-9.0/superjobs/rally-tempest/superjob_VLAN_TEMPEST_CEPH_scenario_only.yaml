@@ -12,6 +12,7 @@
             REPORT_PREFIX=/srv/jenkins/rally-tempest/scenario
             MOS_VERSION=all
             CEPH_RADOS=TRUE
+            CEPH_SKIP_TESTS=TRUE
 #
 #      - trigger-builds:
 #        - project: 'tempest_test_rail_reporter'
