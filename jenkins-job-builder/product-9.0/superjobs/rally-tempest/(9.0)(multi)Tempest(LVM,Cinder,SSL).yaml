@@ -85,7 +85,7 @@
     defaults: global
     node: slave-7774
     description: 'VLAN TEMPEST tests'
-    disabled: false
+    disabled: true
     display-name: '(9.0)(multi)Tempest[LVM, Cinder, SSL]'
     concurrent: false
     retry-count: 3

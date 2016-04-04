@@ -84,7 +84,7 @@
                 abort-all-job: true
 
     defaults: global
-    node: Slave-srv96
+    node: slave-7775
     description: '9.0-VLAN GLANCE tests'
     disabled: false
     display-name: '(9.0)(multi)Glance Tests'

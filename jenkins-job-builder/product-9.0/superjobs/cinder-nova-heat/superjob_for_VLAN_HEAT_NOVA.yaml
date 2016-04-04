@@ -18,6 +18,7 @@
             SLAVE_NODE_MEMORY=17408
             NODE_VOLUME_SIZE=250
             MOS_VERSION=all
+            KVM_USE=TRUE
 
       - trigger-builds:
         - project: '9.0-HEAT_tests_generated_from_template'

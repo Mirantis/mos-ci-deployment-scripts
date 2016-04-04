@@ -21,12 +21,15 @@
             REPORT_PATH="$REPORT_PREFIX"/"$ENV_NAME"_"$SNAPSHOT_NAME"
             echo "BUILD_URL=$BUILD_URL" >> "$ENV_INJECT_PATH"
             echo "REPORT_PATH=$REPORT_PATH" >> "$ENV_INJECT_PATH"
+            echo "$REPORT_PATH" > ./param.pm
 
             virtualenv venv
             . venv/bin/activate
             pip install tox
             tox -e glance -- -v -E "$ENV_NAME" -S "$SNAPSHOT_NAME"
             deactivate
+
+
 
     scm:
         - mos-integration-tests-repository
@@ -35,7 +38,7 @@
     node: Slave-srv128
     description: 'VLAN Glance tests'
     disabled: false
-    display-name: '9.0-Glance Tests'
+    display-name: '(9.0)Glance_tests'
     concurrent: true
     browser: githubweb
     retry-count: 3
@@ -59,3 +62,12 @@
           results: report.xml
       - workspace-cleanup:
           fail-build: false
+      - postbuildscript:
+          script-only-if-succeeded: False
+          builders:
+            - shell: |
+                set +e
+                REPORT_PATH=`cat ./param.pm`
+                sudo mkdir -p "$REPORT_PATH"
+                sudo cp "$REPORT_FILE" "$REPORT_PATH"
+                sudo cp build_url "$REPORT_PATH"
