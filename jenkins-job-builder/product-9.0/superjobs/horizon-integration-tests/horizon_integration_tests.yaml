@@ -4,14 +4,9 @@
 
     builders:
       shell: |
-        # sudo apt-get install sshpass
-        # Get IP of master node
-        # git clone https://github.com/Mirantis/mos-integration-tests
-        # cd mos-integration-tests
-        # echo 'from mos_tests.environment.devops_client import DevopsClient' > temp.py
-        # echo "print DevopsClient.get_admin_node_ip('$ENV_NAME')" >> temp.py
-        # MASTER_NODE_IP=`python temp.py`
-        #./run_tests -N --integration
+        apt-get install firefox xvfb
+        export DASHBOARD_URL='http://10.109.4.3/horizon'
+        ./run_tests -N --integration
 
     defaults: global
     node: Slave-srv98

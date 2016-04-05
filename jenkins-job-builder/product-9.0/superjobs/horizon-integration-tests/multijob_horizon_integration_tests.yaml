@@ -19,6 +19,9 @@
           name: LVM_ENABLE
           default: "TRUE"
       - string:
+          name: CINDER_ENABLE
+          default: "TRUE"
+      - string:
           name: SEGMENT_TYPE
           defatul: "VLAN"
 
@@ -56,7 +59,8 @@
             - name: 9.0_create_param_environment
               current-parameters: true
               abort-all-job: true
-              node-label: Slave-srv98
+              node-label: Slave-srv130
+              node-label-name: Slave-srv130
       - multijob:
           name: Horizon Tests
           condition: SUCCESSFUL
@@ -64,10 +68,11 @@
             - name: horizon_integraion_tests
               current-parameters: true
               abort-all-job: true
-              node-label: Slave-srv98
+              node-label: Slave-srv130
+              node-label-name: Slave-srv130
 
     defaults: global
-    node: Slave-7775
+    node: Slave-srv130
     description: '(9.0)Horizon-Integration-Tests'
     disabled: false
     display-name: '(9.0)(multi)Horizon integration tests'
