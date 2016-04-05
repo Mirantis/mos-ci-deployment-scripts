@@ -6,7 +6,7 @@
         #EnvInject file
         - string:
             name: ENV_INJECT_PATH
-            default: "/home/jenkins/env_inject.properties"
+            default: "/home/efazliev/env_inject.properties"
 
         # Deploy environment parameters
         - string:
@@ -69,8 +69,8 @@
               - name: 9.0-glance_tests
                 current-parameters: true
                 same-node: true
-                node-label: slave-srv96
-                node-label-name: slave-srv96
+                node-label: slave-7775
+                node-label-name: slave-7775
                 abort-all-job: true
       - multijob:
           name: Report To TestRail
@@ -79,8 +79,8 @@
               - name: test_testrail_reporter
                 current-parameters: true
                 same-node: true
-                node-label: slave-srv96
-                node-label-name: slave-srv96
+                node-label: slave-7775
+                node-label-name: slave-7775
                 abort-all-job: true
 
     defaults: global

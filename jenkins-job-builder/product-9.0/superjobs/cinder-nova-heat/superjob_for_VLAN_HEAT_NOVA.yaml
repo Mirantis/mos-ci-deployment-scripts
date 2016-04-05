@@ -13,10 +13,10 @@
             SEGMENT_TYPE=VLAN
             DISABLE_SSL=TRUE
             CONTROLLERS_COUNT=1
-            COMPUTES_COUNT=1
+            COMPUTES_COUNT=2
             SLAVE_NODE_CPU=8
             SLAVE_NODE_MEMORY=17408
-            NODE_VOLUME_SIZE=250
+            NODE_VOLUME_SIZE=200
             MOS_VERSION=all
             KVM_USE=TRUE
 
