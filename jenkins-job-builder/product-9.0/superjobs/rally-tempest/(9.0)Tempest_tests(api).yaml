@@ -132,7 +132,7 @@
 
             # echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start --system-wide"' >> ssh_scr.sh
 
-            echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start --regex tempest.api"' >> ssh_scr.sh
+            echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start --regex tempest.api --concurrency 1"' >> ssh_scr.sh
 
             # echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start --regex  tempest.scenario"' >> ssh_scr.sh
 
