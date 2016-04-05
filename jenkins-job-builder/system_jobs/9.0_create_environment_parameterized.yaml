@@ -77,6 +77,8 @@
           name: SLAVE_NODE_MEMORY
           default: "4096"
       - string:
+          name: NODE_VOLUME_SIZE
+      - string:
           name: DEPLOYMENT_TIMEOUT
           default: "10000"
       - string:
@@ -156,6 +158,7 @@
             export DEPLOYMENT_TIMEOUT="$DEPLOYMENT_TIMEOUT"
             export INTERFACE_MODEL="$INTERFACE_MODEL"
             export KVM_USE="$KVM_USE"
+            export NODE_VOLUME_SIZE="$NODE_VOLUME_SIZE"
 
             if [[ "$TEMPEST" == 'TRUE' ]];
             then
