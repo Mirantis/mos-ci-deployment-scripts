@@ -78,6 +78,7 @@
           default: "4096"
       - string:
           name: NODE_VOLUME_SIZE
+          default: "55"
       - string:
           name: DEPLOYMENT_TIMEOUT
           default: "10000"
