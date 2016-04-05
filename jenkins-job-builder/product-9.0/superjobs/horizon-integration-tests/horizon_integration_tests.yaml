@@ -4,9 +4,9 @@
 
     builders:
       shell: |
-        apt-get install firefox xvfb
+        sudo apt-get install firefox xvfb
         export DASHBOARD_URL='http://10.109.4.3/horizon'
-        ./run_tests -N --integration
+        sudo ./run_tests -N --integration
 
     defaults: global
     node: Slave-srv98
