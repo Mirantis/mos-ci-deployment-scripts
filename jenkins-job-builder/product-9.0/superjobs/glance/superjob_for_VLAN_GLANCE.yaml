@@ -24,6 +24,12 @@
         - string:
             name: CINDER_ENABLE
             default: "TRUE"
+        - string:
+            name: CONTROLLERS_COUNT
+            default: "1"
+        - string:
+            name: COMPUTES_COUNT
+            default: "1"
 
 
 
@@ -59,8 +65,8 @@
               - name: 9.0_create_param_environment
                 current-parameters: true
                 same-node: true
-                node-label: slave-srv96
-                node-label-name: slave-srv96
+                node-label: slave-7775
+                node-label-name: slave-7775
                 abort-all-job: true
       - multijob:
           name: Run_Glance_Tests
