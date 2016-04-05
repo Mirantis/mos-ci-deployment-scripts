@@ -102,8 +102,9 @@
       - string:
           name: SEND_DUMB_TEMPEST_REPORT
           default: "FALSE"
-
-
+      - string:
+          name: USER_OWNED_CERT
+          default: "FALSE"
 
 
     name: 9.0_create_param_environment
@@ -160,6 +161,7 @@
             export INTERFACE_MODEL="$INTERFACE_MODEL"
             export KVM_USE="$KVM_USE"
             export NODE_VOLUME_SIZE="$NODE_VOLUME_SIZE"
+            export USER_OWNED_CERT="$USER_OWNED_CERT"
 
             if [[ "$TEMPEST" == 'TRUE' ]];
             then

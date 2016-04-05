@@ -67,10 +67,10 @@
               node-label: Slave-srv98
 
     defaults: global
-    node: Slave-srv98
+    node: Slave-7775
     description: '(9.0)Horizon-Integration-Tests'
     disabled: false
-    display-name: '(9.0)[multijob]Horizon-Integration-Tests'
+    display-name: '(9.0)(multi)Horizon integration tests'
     concurrent: false
     retry-count: 1
     logrotate:

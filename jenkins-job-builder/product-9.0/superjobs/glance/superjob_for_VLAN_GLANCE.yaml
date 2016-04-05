@@ -65,8 +65,8 @@
               - name: 9.0_create_param_environment
                 current-parameters: true
                 same-node: true
-                node-label: slave-7775
-                node-label-name: slave-7775
+                node-label: Slave-srv96
+                node-label-name: Slave-srv96
                 abort-all-job: true
       - multijob:
           name: Run_Glance_Tests
@@ -75,8 +75,8 @@
               - name: 9.0-glance_tests
                 current-parameters: true
                 same-node: true
-                node-label: slave-7775
-                node-label-name: slave-7775
+                node-label: Slave-srv96
+                node-label-name: Slave-srv96
                 abort-all-job: true
       - multijob:
           name: Report To TestRail
@@ -85,12 +85,15 @@
               - name: test_testrail_reporter
                 current-parameters: true
                 same-node: true
-                node-label: slave-7775
-                node-label-name: slave-7775
+                node-label: Slave-srv96
+                node-label-name: Slave-srv96
                 abort-all-job: true
 
+    triggers:
+        - timed: "50 20 * * *"
+
     defaults: global
-    node: slave-7775
+    node: Slave-srv96
     description: '9.0-VLAN GLANCE tests'
     disabled: false
     display-name: '(9.0)(multi)Glance Tests'

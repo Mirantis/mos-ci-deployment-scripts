@@ -29,6 +29,7 @@
             TEMPEST=TRUE
             REPLICA_CEPH=TRUE
             CEPH_GLANCE_ENABLE=TRUE
+            USER_OWNED_CERT=FALSE
 
 
       - trigger-builds:
@@ -93,7 +94,7 @@
     defaults: global
     node: slave-7775
     description: 'VLAN TEMPEST tests'
-    disabled: true
+    disabled: false
     display-name: '(9.0)(multi)Tempest[Ceph,SSL]'
     concurrent: false
     retry-count: 3

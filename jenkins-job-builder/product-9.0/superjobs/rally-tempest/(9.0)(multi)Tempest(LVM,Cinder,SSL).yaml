@@ -25,6 +25,7 @@
             MOS_VERSION=all
             TEMPEST=TRUE
             SEND_DUMB_TEMPEST_REPORT=TRUE
+            USER_OWNED_CERT=FALSE
 
       - trigger-builds:
         - project: '(9.0)Tempest_tests(api)'

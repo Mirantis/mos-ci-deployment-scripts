@@ -35,7 +35,6 @@
         - mos-integration-tests-repository
     project-type: freestyle
     defaults: global
-    node: Slave-srv128
     description: 'VLAN Glance tests'
     disabled: false
     display-name: '(9.0)Glance_tests'
@@ -70,4 +69,3 @@
                 REPORT_PATH=`cat ./param.pm`
                 sudo mkdir -p "$REPORT_PATH"
                 sudo cp "$REPORT_FILE" "$REPORT_PATH"
-                sudo cp build_url "$REPORT_PATH"
