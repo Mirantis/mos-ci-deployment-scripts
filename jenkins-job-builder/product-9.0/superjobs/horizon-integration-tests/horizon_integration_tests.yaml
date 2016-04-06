@@ -1,12 +1,12 @@
 - job:
-    name: horizon_integraion_tests
+    name: horizon_integration_tests
     project-type: freestyle
 
     builders:
-      shell: |
-        sudo apt-get install firefox xvfb
-        export DASHBOARD_URL='http://10.109.4.3/horizon'
-        sudo ./run_tests -N --integration
+      - shell: |
+          sudo apt-get install firefox xvfb
+          export DASHBOARD_URL='http://10.109.4.3/horizon'
+          sudo ./run_tests -N --integration
 
     defaults: global
     description: 'Runs Horizon Inegration Tests'
