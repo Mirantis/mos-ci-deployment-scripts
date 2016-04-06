@@ -1,0 +1,91 @@
+- job:
+    name: maintenance_tempest_all_ceph_tun_8_0_ubuntu
+    parameters:
+      - string:
+          name: CUSTOM_VERSION
+          default: 'MU'
+      - bool:
+          name: ENABLE_PROPOSED
+          default: false
+      - bool:
+          name: ENABLE_SECURITY
+          default: true
+      - bool:
+          name: ENABLE_UPDATES
+          default: true
+      - bool:
+          name: ERASE_PREV_ENV
+          default: true
+      - bool:
+          name: SKIP_INSTALL_ENV
+          default: false
+      - bool:
+          name: DISABLE_SSL
+          default: true
+      - choice:
+          name: RALLY_TEMPEST
+          choices:
+            - 'rally_run'
+            - 'run_tempest'
+    builders:
+      - trigger-builds:
+        - project: 'maintenance_create_param_environment_8_0'
+          same-node: true
+          block: true
+          predefined-parameters: |
+            OPENSTACK_RELEASE=ubuntu
+            ENABLE_PROPOSED=$ENABLE_PROPOSED
+            ENABLE_SECURITY=$ENABLE_SECURITY
+            ENABLE_UPDATES=$ENABLE_UPDATES
+            ERASE_PREV_ENV=$ERASE_PREV_ENV
+            SKIP_INSTALL_ENV=$SKIP_INSTALL_ENV
+            DISABLE_SSL=$DISABLE_SSL
+            ENV_NAME=maintenance_tempest_all_ceph_tun_8_0
+            FILE=test_tempest_8_0.py
+            GROUP=tempest_ceph_services_tun
+      - trigger-builds:
+        - project: 'maintenance_tempest_runner'
+          same-node: true
+          block: true
+          block-thresholds:
+            build-step-failure-threshold: 'never'
+          predefined-parameters: |
+            ENV_NAME=maintenance_tempest_all_ceph_tun_8_0
+            SNAPSHOT_NAME=tempest_test_ceph_tun
+            REPORT_PREFIX=/srv/jenkins/rally-tempest
+            VENV_PATH=/home/jenkins/qa-venv-8.0
+            RALLY_TEMPEST=$RALLY_TEMPEST
+            MILESTONE=8.0
+      - trigger-builds:
+        - project: 'test_rail_reporter_maintenance'
+          same-node: true
+          block: true
+          block-thresholds:
+            build-step-failure-threshold: 'never'
+          predefined-parameters: |
+            REPORT_PREFIX=/srv/jenkins/rally-tempest
+            ENV_NAME=maintenance_tempest_all_ceph_tun_8_0
+            SNAPSHOT_NAME=tempest_test_ceph_tun
+            REPORT_XML=${REPORT_PREFIX}/${ENV_NAME}_${SNAPSHOT_NAME}/verification.xml
+            CUSTOM_VERSION=$CUSTOM_VERSION
+            TEST_GROUP=TUN+CEPH+SERVICES_RADOS_MONGO TEMPEST tests (8.0 maintenance)
+            MILESTONE=8.0
+            SUITE=[8.0][MOSQA] Tempest 8.0
+    project-type: freestyle
+    defaults: global
+    node: maintenance
+    description: 'TUN+CEPH+SERVICES_RADOS_MONGO UBUNTU TEMPEST tests (8.0 maintenance)'
+    disabled: false
+    display-name: 'TUN+CEPH+SERVICES_RADOS_MONGO UBUNTU TEMPEST tests (8.0 maintenance)'
+    concurrent: false
+    retry-count: 3
+    logrotate:
+      daysToKeep: 5
+      numToKeep: 20
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+    publishers:
+      - email:
+          recipients: vrovachev@mirantis.com
+      - workspace-cleanup:
+          fail-build: false
