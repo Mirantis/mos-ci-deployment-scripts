@@ -23,6 +23,9 @@
       - string:
           name: CEPH_SKIP_TESTS
           default: FALSE
+      - string:
+          name: IRONIC_ENABLE
+          default: FALSE
     builders:
         - shell: |
             ISO_NAME=`ls "$ISO_DIR"`
@@ -115,7 +118,14 @@
 
             echo 'file=`find / -name tempest.conf`' >> ssh_scr.sh
             echo 'echo "backup = False" >> $file' >> ssh_scr.sh
+
+            if [[ "$IRONIC_ENABLE" == 'TRUE' ]] ;
+            then
+            echo ' sed -i "95i ironic = True" $file ' >> ssh_scr.sh
+            else
             echo ' sed -i "95i ironic = False" $file ' >> ssh_scr.sh
+            fi
+
             echo 'sed -i "79i max_template_size = 5440000" $file ' >> ssh_scr.sh
             echo 'sed -i "80i max_resources_per_stack = 20000" $file ' >> ssh_scr.sh
             echo 'sed -i "81i max_json_body_size = 10880000" $file ' >> ssh_scr.sh
