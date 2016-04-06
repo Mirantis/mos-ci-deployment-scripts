@@ -23,7 +23,7 @@ if [ ! "$(echo ${ALLOW_CONNECT} | grep -o 35357)" ]; then
     ssh ${CONTROLLER_IP} "sed -i 's/9696/9696 35357/' ${APACHE_API_PROXY_CONF_PATH} && service apache2 restart"
 fi
 
-IS_TLS="$(ssh ${CONTROLLER_IP} ". openrc; keystone catalog --service identity 2>/dev/null | awk '/https/'")"
+ IS_TLS="$(ssh ${CONTROLLER_IP} ". openrc; openstack endpoint show identity 2>/dev/null | awk '/https/'")"
 if [ "${IS_TLS}" ]; then
     scp ${CONTROLLER_IP}:${CA_CERT_PATH} ${CONTAINER_MOUNT_HOME_DIR}/
     chown 65500 ${CONTAINER_MOUNT_HOME_DIR}/$(basename ${CA_CERT_PATH})
