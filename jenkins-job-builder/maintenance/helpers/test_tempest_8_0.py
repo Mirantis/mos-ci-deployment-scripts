@@ -32,6 +32,7 @@ class TempestTest70(TestBasic):
             settings={
                 "net_provider": 'neutron',
                 "net_segment_type": seg_type,
+                "osd_pool_size": '2',
                 'volumes_ceph': True,
                 'images_ceph': True,
                 'ephemeral_ceph': True,
