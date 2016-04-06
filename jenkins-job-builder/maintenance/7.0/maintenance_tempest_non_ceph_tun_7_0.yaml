@@ -51,7 +51,7 @@
           same-node: true
           block: true
           predefined-parameters: |
-            OPENSTACK_RELEASE=centos
+            OPENSTACK_RELEASE=ubuntu
             MAGNET_LINK=$MAGNET_LINK
             UPGRADE_TARBALL_MAGNET_LINK=$UPGRADE_TARBALL_MAGNET_LINK
             DEB_LATEST=$DEB_LATEST
@@ -96,9 +96,9 @@
     project-type: freestyle
     defaults: global
     node: maintenance
-    description: 'VLAN+VOLUME+IMAGE+SWIFT UBUNTU TEMPEST tests (7.0 maintenance)'
+    description: 'TUN+VOLUME+IMAGE+SWIFT UBUNTU TEMPEST tests (7.0 maintenance)'
     disabled: false
-    display-name: 'VLAN+VOLUME+IMAGE+SWIFT UBUNTU TEMPEST tests (7.0 maintenance)'
+    display-name: 'TUN+VOLUME+IMAGE+SWIFT UBUNTU TEMPEST tests (7.0 maintenance)'
     concurrent: false
     retry-count: 3
     logrotate:
