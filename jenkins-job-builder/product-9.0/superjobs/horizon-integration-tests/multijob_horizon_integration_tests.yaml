@@ -59,8 +59,8 @@
             - name: 9.0_create_param_environment
               current-parameters: true
               abort-all-job: true
-              node-label: Slave-srv130
-              node-label-name: Slave-srv130
+              node-label: Slave-srv131
+              node-label-name: Slave-srv131
       - multijob:
           name: Horizon Tests
           condition: SUCCESSFUL
@@ -68,11 +68,11 @@
             - name: horizon_integration_tests
               current-parameters: true
               abort-all-job: true
-              node-label: Slave-srv130
-              node-label-name: Slave-srv130
+              node-label: Slave-srv131
+              node-label-name: Slave-srv131
 
     defaults: global
-    node: Slave-srv130
+    node: Slave-srv131
     description: '(9.0)Horizon-Integration-Tests'
     disabled: false
     display-name: '(9.0)(multi)Horizon integration tests'

@@ -5,9 +5,17 @@
     builders:
       - shell: |
           sudo apt-get update
-          sudo apt-get -y install firefox xvfb
+          sudo apt-get -y install firefox xvfb python-virtualenv
+
+          virtualenv venv
+          . venv/bin/activate
+
+          pip install -r requirements.txt -r test-requirements.txt
+
           export DASHBOARD_URL='http://10.109.4.3/horizon'
-          sudo ./run_tests -N --integration
+          ./run_tests.sh -N --integration --selenium-headless
+
+          deactivate
 
     defaults: global
     scm:
