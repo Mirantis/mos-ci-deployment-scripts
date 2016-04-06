@@ -112,6 +112,8 @@ EOF
     echo "DONE"
 
 elif [ "$RALLY_TEMPEST" == "rally_run" ];then
+    sed -i 's|rally verify install --source /var/lib/tempest --no-tempest-venv|rally verify install --source /var/lib/tempest|g' rally-tempest/latest/setup_tempest.sh
+    sed -i 's|FROM rallyforge/rally:latest|FROM rallyforge/rally:0.3.1|g' rally-tempest/latest/Dockerfile
 
     virtualenv venv
     source venv/bin/activate
