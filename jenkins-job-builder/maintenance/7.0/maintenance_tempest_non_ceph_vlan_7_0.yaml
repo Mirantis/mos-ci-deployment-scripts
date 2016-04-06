@@ -96,9 +96,9 @@
     project-type: freestyle
     defaults: global
     node: maintenance
-    description: 'TUN+VOLUME+IMAGE+SWIFT UBUNTU TEMPEST tests (7.0 maintenance)'
+    description: 'VLAN+VOLUME+IMAGE+SWIFT UBUNTU TEMPEST tests (7.0 maintenance)'
     disabled: false
-    display-name: 'TUN+VOLUME+IMAGE+SWIFT UBUNTU TEMPEST tests (7.0 maintenance)'
+    display-name: 'VLAN+VOLUME+IMAGE+SWIFT UBUNTU TEMPEST tests (7.0 maintenance)'
     concurrent: false
     retry-count: 3
     logrotate:
