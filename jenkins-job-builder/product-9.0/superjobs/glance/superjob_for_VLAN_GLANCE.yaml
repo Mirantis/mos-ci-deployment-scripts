@@ -26,10 +26,10 @@
             default: "TRUE"
         - string:
             name: CONTROLLERS_COUNT
-            default: "1"
+            default: "3"
         - string:
             name: COMPUTES_COUNT
-            default: "1"
+            default: "2"
 
 
 
