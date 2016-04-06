@@ -9,7 +9,6 @@
         sudo ./run_tests -N --integration
 
     defaults: global
-    node: Slave-srv98
     description: 'Runs Horizon Inegration Tests'
     disabled: false
     display-name: 'Horizon Inegration Tests'
@@ -21,10 +20,10 @@
       artifactDaysToKeep: -1
       artifactNumToKeep: -1
     publishers:
-      - archive:
-          artifacts: 'target_commit'
-          allow-empty: 'true'
-          fingerprint: true
+#      - archive:
+#          artifacts: 'target_commit'
+#          allow-empty: 'true'
+#          fingerprint: true
 #      - archive:
 #          artifacts: 'verification.xml'
 #          allow-empty: 'true'

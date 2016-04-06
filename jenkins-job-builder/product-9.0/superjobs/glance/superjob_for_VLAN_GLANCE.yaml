@@ -6,7 +6,7 @@
         #EnvInject file
         - string:
             name: ENV_INJECT_PATH
-            default: "/home/efazliev/env_inject.properties"
+            default: "/home/jenkins/env_inject.properties"
 
         # Deploy environment parameters
         - string:
