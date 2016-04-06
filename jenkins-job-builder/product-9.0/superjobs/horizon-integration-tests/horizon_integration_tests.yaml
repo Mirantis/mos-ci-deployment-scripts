@@ -4,11 +4,14 @@
 
     builders:
       - shell: |
-          sudo apt-get install firefox xvfb
+          sudo apt-get update
+          sudo apt-get -y install firefox xvfb
           export DASHBOARD_URL='http://10.109.4.3/horizon'
           sudo ./run_tests -N --integration
 
     defaults: global
+    scm:
+      - horizon-integration-tests-repository
     description: 'Runs Horizon Inegration Tests'
     disabled: false
     display-name: 'Horizon Inegration Tests'

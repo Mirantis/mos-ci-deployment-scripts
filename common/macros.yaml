@@ -101,3 +101,12 @@
          branches:
           - origin/master
          skip-tag: true
+
+- scm:
+    name: horizon-integration-tests-repository
+    scm:
+      - git:
+         url: https://github.com/Mirantis/mos-horizon.git
+         branches:
+          - origin/master
+         skip-tag: true
