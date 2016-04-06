@@ -65,7 +65,7 @@
           name: Horizon Tests
           condition: SUCCESSFUL
           projects:
-            - name: horizon_integraion_tests
+            - name: horizon_integration_tests
               current-parameters: true
               abort-all-job: true
               node-label: Slave-srv130
