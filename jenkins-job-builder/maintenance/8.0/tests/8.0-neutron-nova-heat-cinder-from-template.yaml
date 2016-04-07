@@ -5,8 +5,7 @@
           name: ${{BUILD_NUMBER}}.${{FILE,path="build-name-setter.info"}}
     parameters:
       - string:
-          name: ISO_DIR
-          default: '{iso_dir}'
+          name: ENV_NAME
       - string:
           name: SNAPSHOT_NAME
       - string:
@@ -19,20 +18,12 @@
     builders:
         - shell: |
             set +e
-            ISO_NAME=`ls "$ISO_DIR"`
-
-            ISO_ID=`echo "$ISO_NAME" | cut -f3 -d-`
 
             # Generate file for build-name plugin
             SNAPSHOT=`echo $SNAPSHOT_NAME | sed 's/ha_deploy_//'`
-            echo "$ISO_ID"_"$SNAPSHOT" > build-name-setter.info
+            echo "8.0_$SNAPSHOT" > build-name-setter.info
 
-            ENV_NAME=MOS_CI_"$ISO_NAME"
-            # Change ENV_NAME if there is more than one environments on host
-            if [ -n "$ENV_CHANGER" ];
-            then
-            export ENV_NAME="$ENV_NAME""$ENV_CHANGER"
-            fi
+            ENV_NAME=$ENV_NAME
 
             # Storing path for xml reports, that will be used in
             # report_to_testrail job
@@ -96,7 +87,7 @@
     test_path: mos_tests/neutron
     description: NEUTRON tests
     display-name: 8.0 NEUTRON test /from template/
-    email-recipients: efazliev@mirantis.com
+    email-recipients: agromov@mirantis.com
     jobs:
       - '8.0-{name}_tests_generated_from_template'
 
@@ -107,7 +98,7 @@
     test_path: mos_tests/heat
     description: HEAT test runner
     display-name: 8.0 HEAT tests /from template/
-    email-recipients: efazliev@mirantis.com
+    email-recipients: agromov@mirantis.com
     jobs:
       - '8.0-{name}_tests_generated_from_template'
 
@@ -118,7 +109,7 @@
     test_path: mos_tests/cinder
     description: CINDER tests runner
     display-name: 8.0 CINDER tests /from template/
-    email-recipients: efazliev@mirantis.com
+    email-recipients: agromov@mirantis.com
     jobs:
       - '8.0-{name}_tests_generated_from_template'
 
@@ -131,6 +122,6 @@
     test_path: mos_tests/nova
     description: NOVA tests runner
     display-name: 8.0 NOVA tests /from template/
-    email-recipients: efazliev@mirantis.com
+    email-recipients: agromov@mirantis.com
     jobs:
       - '8.0-{name}_tests_generated_from_template'
