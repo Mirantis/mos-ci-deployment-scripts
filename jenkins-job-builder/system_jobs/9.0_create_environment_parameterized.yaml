@@ -68,6 +68,9 @@
           name: IRONICS_COUNT
           default: "0"
       - string:
+          name: IRONIC_ENABLE
+          default: "FALSE"
+      - string:
           name: NOVA_QUOTAS_ENABLED
           default: "FALSE"
       - string:

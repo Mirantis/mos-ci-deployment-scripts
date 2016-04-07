@@ -1,5 +1,5 @@
 - job:
-    name: (9.0)(multi)Tempest(LVM,Cinder,Ironic)
+    name: (9.0)(multi)Tempest(LVM,Cinder,Ironic,SSL)
     project-type: multijob
 
     parameters:
@@ -62,7 +62,10 @@
         # SSL parameters
         - string:
             name: DISABLE_SSL
-            default: "TRUE"
+            default: "FALSE"
+        - string:
+            name: USER_OWNED_CERT
+            default: "FALSE"
 
         # TestRail Reporter parameters
         - string:
@@ -102,8 +105,8 @@
               - name: 9.0_create_param_environment
                 current-parameters: true
                 same-node: true
-                node-label: Slave-srv138
-                node-label-name: Slave-srv138
+                node-label: Slave-srv137
+                node-label-name: Slave-srv137
                 abort-all-job: true
 
 
@@ -118,8 +121,8 @@
                   REPORT_PREFIX=/srv/jenkins/rally-tempest/api
                   CEPH_SKIP_TESTS=FALSE
                 same-node: true
-                node-label: Slave-srv138
-                node-label-name: Slave-srv138
+                node-label: Slave-srv137
+                node-label-name: Slave-srv137
                 abort-all-job: true
       - multijob:
           name: Report To TestRail
@@ -128,11 +131,11 @@
               - name: (for_multi)testrail_reporter
                 current-parameters: true
                 predefined-parameters: |
-                  TEST_GROUP=Tempest,HA,Cinder,LVM,Swift,Ironic(api)
+                  TEST_GROUP=Tempest,HA,Cinder LVM,Swift,SSL(api)
                   REPORT_PREFIX=/srv/jenkins/rally-tempest/api
                 same-node: true
-                node-label: Slave-srv138
-                node-label-name: Slave-srv138
+                node-label: Slave-srv137
+                node-label-name: Slave-srv137
                 abort-all-job: true
 
 
@@ -145,8 +148,8 @@
                 predefined-parameters: |
                   REPORT_PREFIX=/srv/jenkins/rally-tempest/scenario
                 same-node: true
-                node-label: Slave-srv138
-                node-label-name: Slave-srv138
+                node-label: Slave-srv137
+                node-label-name: Slave-srv137
                 abort-all-job: true
       - multijob:
           name: Report To TestRail
@@ -155,11 +158,11 @@
               - name: (for_multi)testrail_reporter
                 current-parameters: true
                 predefined-parameters: |
-                  TEST_GROUP=Tempest,HA,Cinder,LVM,Swift,Ironic(scenario)
+                  TEST_GROUP=Tempest,HA,Cinder LVM,Swift,SSL(scenario)
                   REPORT_PREFIX=/srv/jenkins/rally-tempest/scenario
                 same-node: true
-                node-label: Slave-srv138
-                node-label-name: Slave-srv138
+                node-label: Slave-srv137
+                node-label-name: Slave-srv137
                 abort-all-job: true
 
 
@@ -167,10 +170,10 @@
         - timed: "50 20 * * *"
 
     defaults: global
-    node: Slave-srv138
+    node: Slave-srv137
     description: 'Tempest LVM SSL'
     disabled: false
-    display-name: '(9.0)(multi)Tempest(LVM,Cinder,Ironic)'
+    display-name: '(9.0)(multi)Tempest(LVM,Cinder,Ironic,SSL)'
     concurrent: false
     retry-count: 3
     logrotate:

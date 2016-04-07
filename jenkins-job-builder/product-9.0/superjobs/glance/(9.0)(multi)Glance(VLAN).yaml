@@ -48,10 +48,13 @@
             default: "report.xml"
         - string:
             name: SUITE
-            default: "[9.0][MOSQA] Tempest 9.0"
+            default: "[9.0][MOSQA] Automated Cloud Testing"
         - string:
             name: MILESTONE
             default: "9.0"
+        - string:
+            name: TEMPEST
+            default: "FALSE"
 
     builders:
       - shell:
@@ -82,7 +85,7 @@
           name: Report To TestRail
           condition: COMPLETED
           projects:
-              - name: test_testrail_reporter
+              - name: (for_multi)testrail_reporter
                 current-parameters: true
                 same-node: true
                 node-label: Slave-srv96
@@ -96,7 +99,7 @@
     node: Slave-srv96
     description: '9.0-VLAN GLANCE tests'
     disabled: false
-    display-name: '(9.0)(multi)Glance Tests'
+    display-name: '(9.0)(multi)Glance Tests(VLAN)'
     concurrent: false
     retry-count: 3
     logrotate:

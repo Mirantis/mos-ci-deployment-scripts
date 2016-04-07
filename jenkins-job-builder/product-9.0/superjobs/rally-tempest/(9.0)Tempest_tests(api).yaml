@@ -3,30 +3,10 @@
     wrappers:
       - build-name:
           name: ${BUILD_NUMBER}:${FILE,path="build-name-setter.info"}
-    parameters:
-      - string:
-          name: ISO_DIR
-          default: /var/www/fuelweb-iso
-      - string:
-          name: SNAPSHOT_NAME
-      - string:
-          name: ENV_CHANGER
-      - string:
-          name: REPORT_PREFIX
-          default: /srv/jenkins/rally-tempest
-      - string:
-          name: CEPH_RADOS
-          default: FALSE
-      - string:
-          name: LVM_CINDER_FIX
-          default: FALSE
-      - string:
-          name: CEPH_SKIP_TESTS
-          default: FALSE
-      - string:
-          name: IRONIC_ENABLE
-          default: FALSE
+
     builders:
+        - inject:
+            properties-file: "$ENV_INJECT_PATH"
         - shell: |
             ISO_NAME=`ls "$ISO_DIR"`
             ENV_NAME=MOS_CI_"$ISO_NAME"
@@ -35,38 +15,25 @@
             ISO_ID=`echo "$ISO_NAME" | cut -f3 -d-`
 
             REPORT_PATH="$REPORT_PREFIX"/"$ENV_NAME"_"$SNAPSHOT_NAME"
+            echo "BUILD_URL=$BUILD_URL" >> "$ENV_INJECT_PATH"
+            echo "REPORT_PATH=$REPORT_PATH" >> "$ENV_INJECT_PATH"
             echo "$REPORT_PATH" > ./param.pm
-            echo "$BUILD_URL" > ./build_url
 
             dos.py revert-resume "$ENV_NAME" "$SNAPSHOT_NAME"
         - shell:
             !include-raw: add_interface.sh
         - shell: |
-            #sudo rm -rf "$ISO_DIR"
-            #sudo wget http://srv52-bud.infra.mirantis.net/fuelweb-iso/fuel-8.0-570-2016-02-15_13-42-00.iso -P "$ISO_DIR"
-
             ISO_NAME=`ls "$ISO_DIR"`
-
-            if [ "$MOS_VERSION" == 'mitaka' ] || [ "$MOS_VERSION" == 'kilo' ] ;
-            then
-            ISO_ID=`echo "$ISO_NAME" | cut -f4 -d-`
-            else
             ISO_ID=`echo "$ISO_NAME" | cut -f3 -d-`
-            fi
-
             ENV_NAME=MOS_CI_"$ISO_NAME"
-
             SNAPSHOT=`echo $SNAPSHOT_NAME | sed 's/ha_deploy_//'`
+
             echo "$ISO_ID"_CONF:"$SNAPSHOT" > build-name-setter.info
 
-            if [ -n "$ENV_CHANGER" ];
-            then
-            export ENV_NAME="$ENV_NAME""$ENV_CHANGER"
-            fi
-
             REPORT_PATH="$REPORT_PREFIX"/"$ENV_NAME"_"$SNAPSHOT_NAME"
+            echo "BUILD_URL=$BUILD_URL" >> "$ENV_INJECT_PATH"
+            echo "REPORT_PATH=$REPORT_PATH" >> "$ENV_INJECT_PATH"
             echo "$REPORT_PATH" > ./param.pm
-            echo "$BUILD_URL" > ./build_url
 
             sed -i 's|rally verify install --source /var/lib/tempest --no-tempest-venv|rally verify install --source /var/lib/tempest|g' rally-tempest/latest/setup_tempest.sh
             sed -i 's|FROM rallyforge/rally:latest|FROM rallyforge/rally:0.3.1|g' rally-tempest/latest/Dockerfile
@@ -203,8 +170,7 @@
                 set +e
                 REPORT_PATH=`cat ./param.pm`
                 sudo mkdir -p "$REPORT_PATH"
-                sudo cp verification.xml "$REPORT_PATH"
-                sudo cp build_url "$REPORT_PATH"
+                sudo cp "$REPORT_FILE" "$REPORT_PATH"
       - workspace-cleanup:
           fail-build: false
 
@@ -218,4 +184,3 @@
                 sudo mkdir -p "$REPORT_PATH"
                 wget -O verification.xml https://raw.githubusercontent.com/EduardFazliev/mos-ci-deployment-scripts/feature/jjb/jenkins-job-builder/product-9.0/superjobs/rally-tempest/verification.xml.template
                 sudo cp verification.xml "$REPORT_PATH"
-                sudo cp build_url "$REPORT_PATH"
