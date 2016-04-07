@@ -16,7 +16,7 @@ aliases:
    - label: eth4
      l2_network_device: private
    - label: eth5
-     l2_network_device: baremetal
+     l2_network_device: ironic
 
   rack-01-slave-network_config: &rack-01-slave-network_config
     eth0:
@@ -153,7 +153,7 @@ groups:
        address_pool: private-pool01
        dhcp: false
 
-     baremetal:
+     ironic:
        address_pool: baremetal-pool01
        dhcp: false
 
