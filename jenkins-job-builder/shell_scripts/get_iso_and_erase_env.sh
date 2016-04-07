@@ -2,12 +2,11 @@ virtualenv init
 . ./init/bin/activate
 pip install python-jenkins
 
-#sudo rm -rf init_env.py
-#sudo wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/python_scripts/9.0_init_env_for_job/init_env.py
-#sudo chmod +x init_env.py
+sudo rm -rf init_env.py
+sudo wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/python_scripts/9.0_init_env_for_job/init_env.py
+sudo chmod +x init_env.py
 
-PY_SCRIPT_PATH='jenkins-job-builder/python_scripts/9.0_init_env_for_job/init_env.py'
-iso_link=`python "$PY_SCRIPT_PATH"`
+iso_link=`python init_env.py`
 
 ######workaround for product-ci bug#################
 #iso_link=`python init_env.py | sed 's/iso"/iso/g'`#
