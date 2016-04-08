@@ -14,7 +14,7 @@ chown 65500 ${CONTAINER_MOUNT_HOME_DIR}/openrc
 echo "export HTTP_PROXY='$CONTROLLER_PROXY_URL'" >> ${CONTAINER_MOUNT_HOME_DIR}/openrc
 echo "export HTTPS_PROXY='$CONTROLLER_PROXY_URL'" >> ${CONTAINER_MOUNT_HOME_DIR}/openrc
 
-IS_TLS="$(ssh ${CONTROLLER_IP} ". openrc; openstack endpoint show identity 2>/dev/null | awk '/https/'")"
+IS_TLS=`. openrc; openstack endpoint show identity 2>/dev/null | awk '/https/'`
 
 if [ "${IS_TLS}" ]; then
     cp ${CA_CERT_PATH} ${CONTAINER_MOUNT_HOME_DIR}/
