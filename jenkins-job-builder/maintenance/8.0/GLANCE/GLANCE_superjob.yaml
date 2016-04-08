@@ -1,31 +1,43 @@
 - job:
-    name: superjob_for_VLAN_GLANCE
+    name: 8.0-superjob_for_VLAN_GLANCE
     builders:
       - trigger-builds:
-        - project: 'create_param_environment'
+        - project: '8.0_create_param_environment_common_maintenance'
           same-node: true
           block: true
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VLAN
+            ENV_NAME=maintenance_VLAN_DVR_NEUTRON_8_0
+            SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
             TEST_TYPE=GLANCE
             SEGMENT_TYPE=VLAN
             DISABLE_SSL=TRUE
       - trigger-builds:
-        - project: 'glance_tests'
+        - project: '8.0-glance_tests'
           same-node: true
           block: true
           block-thresholds:
             build-step-failure-threshold: 'never'
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VLAN
+            ENV_NAME=maintenance_VLAN_DVR_NEUTRON_8_0
+            SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
+      - trigger-builds:
+        - project: '8.0_test_rail_reporter_common_maintenance'
+          same-node: true
+          block: true
+          predefined-parameters: |
+            ENV_NAME=maintenance_VLAN_DVR_NEUTRON_8_0
+            SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
+            TESTRAIL_PLAN_NAME=8.0 Acceptance testing
+            TEST_GROUP=GLANCE
+            REPORT_PREFIX=/srv/jenkins/glance
+            MILESTONE=8.0
+            SUITE=[8.0][MOSQA] Automated Cloud Testing
 
-    triggers:
-        - timed: "0 */1 * * *"
     project-type: freestyle
     defaults: global
-    description: 'VLAN GLANCE tests'
-    disabled: true
-    display-name: 'superjob_for_VLAN_GLANCE'
+    description: '8.0 VLAN GLANCE tests'
+    disabled: false
+    display-name: '8.0-superjob_for_VLAN_GLANCE'
     concurrent: false
     retry-count: 3
     logrotate:
@@ -33,4 +45,3 @@
       numToKeep: 20
       artifactDaysToKeep: -1
       artifactNumToKeep: -1
-
