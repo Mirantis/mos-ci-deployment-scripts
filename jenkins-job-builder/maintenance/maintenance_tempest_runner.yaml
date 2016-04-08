@@ -10,17 +10,15 @@
           default: /srv/jenkins/rally-tempest
       - string:
           name: VENV_PATH
-          default: "/home/jenkins/qa-venv-7.0"
+          default: /home/jenkins/qa-venv-7.0
       - choice:
           name: RALLY_TEMPEST
           choices:
             - 'rally_run'
             - 'run_tempest'
-      - choice:
+      - string:
           name: MILESTONE
-          choices:
-            - '6.1'
-            - '7.0'
+          default: '8.0'
     builders:
       - shell:
           !include-raw: 'builders/tempest_runner.sh'
