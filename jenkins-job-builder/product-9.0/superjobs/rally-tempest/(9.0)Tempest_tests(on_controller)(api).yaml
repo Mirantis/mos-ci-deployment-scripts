@@ -1,17 +1,13 @@
 - job:
-    name: (9.0)Tempest_tests(full)
+    name: (9.0)Tempest_tests(on_controller)(api)
     wrappers:
       - build-name:
           name: ${BUILD_NUMBER}:${FILE,path="build-name-setter.info"}
 
     builders:
-#        - inject:
-#            properties-file: "$ENV_INJECT_PATH"
+        - inject:
+            properties-file: "$ENV_INJECT_PATH"
         - shell: |
-            ##### FOR TEST JOB ONLY ###################
-            ISO_DIR='/var/www/fuelweb-iso'
-            SNAPSHOT_NAME=ha_deploy_VLAN_IRONIC_CINDER
-
             ISO_NAME=`ls "$ISO_DIR"`
             ENV_NAME=MOS_CI_"$ISO_NAME"
             SNAPSHOT=`echo $SNAPSHOT_NAME | sed 's/ha_deploy_//'`
@@ -20,17 +16,6 @@
 
             dos.py revert-resume "$ENV_NAME" "$SNAPSHOT_NAME"
         - shell: |
-            ##### FOR TEST JOB ONLY ###################
-            ISO_DIR='/var/www/fuelweb-iso'
-            SNAPSHOT_NAME=ha_deploy_VLAN_IRONIC_CINDER
-            IRONIC_ENABLE='TRUE'
-            CEPH_RADOS='FALSE'
-            LVM_CINDER_FIX='TRUE'
-            CEPH_SKIP_TESTS='FALSE'
-            ENV_INJECT_PATH='/home/jenkins/env_inject'
-            ###########################################
-
-
             ##### Define SSH Opts #####
             SSH_OPTS='-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
             ##### Definig common job parameters #####
@@ -130,7 +115,7 @@
 
             # echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start --system-wide"' >> ssh_scr.sh
 
-            echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start --regex tempest.api --concurrency 1"' >> ssh_scr.sh
+            echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start --regex  tempest.api.compute.test_versions.TestVersions.test_list_api_versions --concurrency 1"' >> ssh_scr.sh
 
             echo 'docker exec "$DOCK_ID" bash -c "rally verify results --json --output-file output.json" ' >> ssh_scr.sh
             echo 'docker exec "$DOCK_ID" bash -c "rm -rf rally_json2junit && git clone https://github.com/EduardFazliev/rally_json2junit.git && python rally_json2junit/rally_json2junit/results_parser.py output.json" ' >> ssh_scr.sh
@@ -140,14 +125,21 @@
             sshpass -p 'r00tme' scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ssh_scr.sh root@"$MASTER_NODE_IP":/root/ssh_scr.sh
             echo "scp /root/ssh_scr.sh node-$CONTROLLER_ID:/root/ssh_scr.sh" | sshpass -p 'r00tme' ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -T root@"$MASTER_NODE_IP"
 
-            ##### Command for executing script from admin node on controller node: #####
+            ##### Executing script from admin node on controller node: #####
             EXEC_CMD="echo 'chmod +x /root/ssh_scr.sh && /bin/bash -xe /root/ssh_scr.sh > /root/log.log' | ssh -T node-$CONTROLLER_ID"
-            #EXEC_CMD="echo $cmd"
             echo "$EXEC_CMD" | sshpass -p 'r00tme' ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -T root@"$MASTER_NODE_IP"
 
-            GET_RES_CMD=" echo 'scp node-$CONTROLLER_ID:/var/lib/rally-tempest-container-home-dir/verification.xml /root/verification.xml' "
+            ##########################################################
+            ##### Copying results from controller to admin node: #####
+            ##### and then to host in workspace foler            #####
+            ##########################################################
+            GET_RES_CMD="scp node-$CONTROLLER_ID:/var/lib/rally-tempest-container-home-dir/verification.xml /root/verification.xml"
             echo "$GET_RES_CMD" |  sshpass -p 'r00tme' ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -T root@"$MASTER_NODE_IP"
             sshpass -p 'r00tme' scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@"$MASTER_NODE_IP":/root/verification.xml ./
+
+            GET_LOG_CMD="scp node-$CONTROLLER_ID:/root/log.log /root/log.log"
+            echo "$GET_LOG_CMD" |  sshpass -p 'r00tme' ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -T root@"$MASTER_NODE_IP"
+            sshpass -p 'r00tme' scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@"$MASTER_NODE_IP":/root/log.log ./
 
 
     scm:
@@ -157,7 +149,7 @@
     defaults: global
     description: 'Runs Tempest tests'
     disabled: false
-    display-name: '(9.0)Tempest_tests[TEST]'
+    display-name: '(9.0)Tempest_tests(on_controller)(api)'
     concurrent: true
     browser: githubweb
     retry-count: 3
