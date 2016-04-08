@@ -11,6 +11,18 @@
             ##### FOR TEST JOB ONLY ###################
             ISO_DIR='/var/www/fuelweb-iso'
             SNAPSHOT_NAME=ha_deploy_VLAN_IRONIC_CINDER
+
+            ISO_NAME=`ls "$ISO_DIR"`
+            ENV_NAME=MOS_CI_"$ISO_NAME"
+            SNAPSHOT=`echo $SNAPSHOT_NAME | sed 's/ha_deploy_//'`
+            ISO_NAME=`ls "$ISO_DIR"`
+            ISO_ID=`echo "$ISO_NAME" | cut -f3 -d-`
+
+            dos.py revert-resume "$ENV_NAME" "$SNAPSHOT_NAME"
+        - shell: |
+            ##### FOR TEST JOB ONLY ###################
+            ISO_DIR='/var/www/fuelweb-iso'
+            SNAPSHOT_NAME=ha_deploy_VLAN_IRONIC_CINDER
             IRONIC_ENABLE='TRUE'
             CEPH_RADOS='FALSE'
             LVM_CINDER_FIX='TRUE'
