@@ -26,6 +26,7 @@
             CEPH_RADOS='FALSE'
             LVM_CINDER_FIX='TRUE'
             CEPH_SKIP_TESTS='FALSE'
+            ENV_INJECT_PATH='/home/jenkins/env_inject'
             ###########################################
 
 
@@ -60,14 +61,14 @@
             cd ..
 
             ##### Get ID of controller via SSH to admin node #####
-            CONTROLLER_ID=`echo 'fuel node | grep controller | awk '\''{print $1}'\'' | head -1' | sshpass -p 'r00tme' ssh "$SSH_OPTS" -T root@"$MASTER_NODE_IP"`
+            CONTROLLER_ID=`echo 'fuel node | grep controller | awk '\''{print $1}'\'' | head -1' | sshpass -p 'r00tme' ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -T root@"$MASTER_NODE_IP"`
 
             ##### Generating docker file and copying it to admin node,#####
             ##### and then to controller node                         #####
             sudo docker build -t rally-tempest rally-tempest/latest
             sudo docker save -o ./dimage rally-tempest
-            sshpass -p 'r00tme' scp "$SSH_OPTS" dimage root@"$MASTER_NODE_IP":/root/rally
-            echo "scp /root/rally node-$CONTROLLER_ID:/root/rally" | sshpass -p 'r00tme' ssh "$SSH_OPTS" -T root@"$MASTER_NODE_IP"
+            sshpass -p 'r00tme' scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no dimage root@"$MASTER_NODE_IP":/root/rally
+            echo "scp /root/rally node-$CONTROLLER_ID:/root/rally" | sshpass -p 'r00tme' ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -T root@"$MASTER_NODE_IP"
 
             ###################################################################
             ##### Generate ssh file, which will be executed on controller #####
@@ -133,16 +134,16 @@
             chmod +x ssh_scr.sh
 
             ##### Copying script to master node, then to controller #####
-            sshpass -p 'r00tme' scp "$SSH_OPTS" ssh_scr.sh root@"$MASTER_NODE_IP":/root/ssh_scr.sh
-            echo "scp /root/ssh_scr.sh node-$CONTROLLER_ID:/root/ssh_scr.sh" | sshpass -p 'r00tme' ssh "$SSH_OPTS" -T root@"$MASTER_NODE_IP"
+            sshpass -p 'r00tme' scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ssh_scr.sh root@"$MASTER_NODE_IP":/root/ssh_scr.sh
+            echo "scp /root/ssh_scr.sh node-$CONTROLLER_ID:/root/ssh_scr.sh" | sshpass -p 'r00tme' ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -T root@"$MASTER_NODE_IP"
 
             ##### Command for executing script from admin node on controller node: #####
             EXEC_CMD="echo '\''chmod +x /root/ssh_scr.sh && /bin/bash -xe /root/ssh_scr.sh > /root/log.log'\'' | ssh -T node-$CONTROLLER_ID"
-            echo "$EXEC_CMD" | sshpass -p 'r00tme' ssh "$SSH_OPTS" -T root@"$MASTER_NODE_IP"
+            echo "$EXEC_CMD" | sshpass -p 'r00tme' ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -T root@"$MASTER_NODE_IP"
 
             GET_RES_CMD=" echo '\'' scp node-$CONTROLLER_ID:/var/lib/rally-tempest-container-home-dir/verification.xml /root/verification.xml '\'' "
-            echo "$GET_RES_CMD" |  sshpass -p 'r00tme' ssh "$SSH_OPTS" -T root@"$MASTER_NODE_IP"
-            sshpass -p 'r00tme' scp "$SSH_OPTS" root@"$MASTER_NODE_IP":/root/verification.xml ./
+            echo "$GET_RES_CMD" |  sshpass -p 'r00tme' ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -T root@"$MASTER_NODE_IP"
+            sshpass -p 'r00tme' scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@"$MASTER_NODE_IP":/root/verification.xml ./
 
     scm:
         - dockerfiles
