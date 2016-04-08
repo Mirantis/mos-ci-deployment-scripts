@@ -86,7 +86,7 @@ if [ "$RALLY_TEMPEST" == "run_tempest" ];then
     deactivate
 
     echo '#!/bin/bash' > net_setup.sh
-    echo "iface=\$(cat \$(grep -irl \"${public_mac}\" \"/etc/sysconfig/network-scripts/\") | awk -F= '/DEVICE/{print \$2}')" >> net_setup.sh
+    echo "iface=\$(ifconfig | grep -B 1 ${public_mac} | head -n 1 | awk -F: '{print \$1}')" >> net_setup.sh
     echo 'ifconfig $iface up' >> net_setup.sh
     echo "ip addr add ${public_ip}.31/${public_net} dev \${iface}" >> net_setup.sh
 
