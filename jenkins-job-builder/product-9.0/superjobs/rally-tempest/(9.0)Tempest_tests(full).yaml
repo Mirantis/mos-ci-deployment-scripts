@@ -9,17 +9,6 @@
 #            properties-file: "$ENV_INJECT_PATH"
         - shell: |
             ##### FOR TEST JOB ONLY ###################
-            SNAPSHOT_NAME=ha_deploy_VLAN_IRONIC_CINDER
-            ISO_DIR='/var/www/fuelweb-iso'
-            ###########################################
-
-            ISO_NAME=`ls "$ISO_DIR"`
-            ENV_NAME=MOS_CI_"$ISO_NAME"
-            SNAPSHOT=`echo $SNAPSHOT_NAME | sed 's/ha_deploy_//'`
-
-            dos.py revert-resume "$ENV_NAME" "$SNAPSHOT_NAME"
-        - shell: |
-            ##### FOR TEST JOB ONLY ###################
             ISO_DIR='/var/www/fuelweb-iso'
             SNAPSHOT_NAME=ha_deploy_VLAN_IRONIC_CINDER
             IRONIC_ENABLE='TRUE'
@@ -73,12 +62,14 @@
             ###################################################################
             ##### Generate ssh file, which will be executed on controller #####
             ###################################################################
-            echo '#!/bin/bash -xe' > ssh_scr.sh
-            echo 'docker load -i /root/rally' >> ssh_scr.sh
+            echo 'wget -qO- https://get.docker.com/ | sh' > ssh_scr.sh
 
             wget https://raw.githubusercontent.com/EduardFazliev/mos-ci-deployment-scripts/feature/jjb/jenkins-job-builder/product-9.0/superjobs/rally-tempest/prepare_controller.sh
             cat prepare_controller.sh >> ssh_scr.sh
             echo '' >> ssh_scr.sh
+
+            echo 'docker load -i /root/rally' >> ssh_scr.sh
+
 
             echo 'docker images | grep rally > temp.txt' >> ssh_scr.sh
             echo 'awk '\''{print $3}'\'' temp.txt > ans' >> ssh_scr.sh
@@ -138,12 +129,14 @@
             echo "scp /root/ssh_scr.sh node-$CONTROLLER_ID:/root/ssh_scr.sh" | sshpass -p 'r00tme' ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -T root@"$MASTER_NODE_IP"
 
             ##### Command for executing script from admin node on controller node: #####
-            EXEC_CMD="echo '\''chmod +x /root/ssh_scr.sh && /bin/bash -xe /root/ssh_scr.sh > /root/log.log'\'' | ssh -T node-$CONTROLLER_ID"
+            EXEC_CMD="echo 'chmod +x /root/ssh_scr.sh && /bin/bash -xe /root/ssh_scr.sh > /root/log.log' | ssh -T node-$CONTROLLER_ID"
+            #EXEC_CMD="echo $cmd"
             echo "$EXEC_CMD" | sshpass -p 'r00tme' ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -T root@"$MASTER_NODE_IP"
 
-            GET_RES_CMD=" echo '\'' scp node-$CONTROLLER_ID:/var/lib/rally-tempest-container-home-dir/verification.xml /root/verification.xml '\'' "
+            GET_RES_CMD=" echo 'scp node-$CONTROLLER_ID:/var/lib/rally-tempest-container-home-dir/verification.xml /root/verification.xml' "
             echo "$GET_RES_CMD" |  sshpass -p 'r00tme' ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -T root@"$MASTER_NODE_IP"
             sshpass -p 'r00tme' scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@"$MASTER_NODE_IP":/root/verification.xml ./
+
 
     scm:
         - dockerfiles
