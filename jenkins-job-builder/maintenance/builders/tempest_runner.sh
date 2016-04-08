@@ -73,12 +73,7 @@ check_return_code_after_command_execution() {
     fi
 }
 
-WORK_FLDR=$(ssh_to_fuel_master "mktemp -d")
-ssh_to_fuel_master "chmod 777 $WORK_FLDR"
-
-
-if [ "$RALLY_TEMPEST" == "run_tempest" ];then
-
+enable_public_ip() {
     source ${VENV_PATH}/bin/activate
     public_mac=$(virsh dumpxml ${ENV_NAME}_admin | grep -B 1 "${ENV_NAME}_public" | awk -F"'" '{print $2}' | head -1)
     public_ip=$(dos.py net-list ${ENV_NAME} | awk '/public/{print $2}' | egrep -o "[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}")
@@ -89,10 +84,16 @@ if [ "$RALLY_TEMPEST" == "run_tempest" ];then
     echo "iface=\$(ifconfig | grep -B 1 ${public_mac} | head -n 1 | awk -F: '{print \$1}')" >> net_setup.sh
     echo 'ifconfig $iface up' >> net_setup.sh
     echo "ip addr add ${public_ip}.31/${public_net} dev \${iface}" >> net_setup.sh
-
     chmod +x net_setup.sh
     scp_to_fuel_master net_setup.sh $WORK_FLDR
     ssh_to_fuel_master "$WORK_FLDR/net_setup.sh"
+}
+
+WORK_FLDR=$(ssh_to_fuel_master "mktemp -d")
+ssh_to_fuel_master "chmod 777 $WORK_FLDR"
+enable_public_ip
+
+if [ "$RALLY_TEMPEST" == "run_tempest" ];then
 
     set +e
     echo "Download and install mos-tempest-runner project"
