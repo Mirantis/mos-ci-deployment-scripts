@@ -16,7 +16,13 @@ get_master_ip(){
 }
 
 source ${VENV_PATH}/bin/activate
-dos.py revert-resume $ENV_NAME --snapshot-name $SNAPSHOT_NAME
+
+if [ "$(echo $MILESTONE | cut -c 1)" -ge "8" ]; then
+    dos.py revert-resume $ENV_NAME $SNAPSHOT_NAME
+else
+    dos.py revert-resume $ENV_NAME --snapshot-name $SNAPSHOT_NAME
+fi
+
 VM_IP=$(get_master_ip)
 VM_IP=${VM_IP:-"10.109.0.2"}
 deactivate
