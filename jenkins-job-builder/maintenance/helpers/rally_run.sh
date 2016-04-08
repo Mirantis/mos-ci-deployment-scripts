@@ -55,7 +55,9 @@ DOCK_ID=$(docker run -tid -v /var/lib/rally-tempest-container-home-dir:/home/ral
 echo "DOCK ID: ${DOCK_ID}"
 # Workaround for 8.0 Release
 
-if [[ "$(fuel --version)" == "8.0.0" ]]; then
+fuel_version=$(fuel --version)
+
+if [[ "${fuel_version}" == "8.0.0" ]]; then
     sed -i "s|:5000|:5000/v2.0|g" /var/lib/rally-tempest-container-home-dir/openrc
 fi
 # Magic for encrease tempest results
