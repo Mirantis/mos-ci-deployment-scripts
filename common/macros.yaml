@@ -108,5 +108,5 @@
       - git:
          url: https://github.com/Mirantis/mos-horizon.git
          branches:
-          - origin/master
+          - origin/stable/mitaka
          skip-tag: true
