@@ -119,7 +119,7 @@
           name: CEPH_GLANCE_ENABLE
           default: "FALSE"
 
-    name: maintenance_create_param_environment_8_0_common
+    name: 8.0_create_param_environment_common_maintenance
     builders:
         - shell:
             !include-raw: 'builders/maintenance_deploy_env_8_0_common.sh'
@@ -129,7 +129,7 @@
     defaults: global
     description: 'Create environment with parameters, specified by PARAM string.'
     disabled: false
-    display-name: 'Create Parameterized Environment common (8.0 maintenance)'
+    display-name: '8.0 Create Parameterized Environment common (maintenance)'
     concurrent: true
     browser: githubweb
     retry-count: 3

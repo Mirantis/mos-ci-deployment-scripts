@@ -12,8 +12,6 @@
           name: REPORT_PREFIX
           default: '{report_prefix}'
       - string:
-          name: ENV_CHANGER
-      - string:
           name: MOS_VERSION
     builders:
         - shell: |
@@ -37,7 +35,7 @@
             py.test '{test_path}' -E "$ENV_NAME" -S "$SNAPSHOT_NAME" -v
             deactivate
     scm:
-        - mos-integration-tests-repository
+        - mos-integration-tests-repository-8.0
     project-type: freestyle
     defaults: global
     description: '{description}'
@@ -82,7 +80,6 @@
 
 - project:
     name: NEUTRON
-    iso_dir: /var/www/fuelweb-iso
     report_prefix: /srv/jenkins/neutron
     test_path: mos_tests/neutron
     description: NEUTRON tests
@@ -93,7 +90,6 @@
 
 - project:
     name: HEAT
-    iso_dir: /var/www/fuelweb-iso
     report_prefix: /srv/jenkins/heat
     test_path: mos_tests/heat
     description: HEAT test runner
@@ -104,7 +100,6 @@
 
 - project:
     name: CINDER
-    iso_dir: /var/www/fuelweb-iso
     report_prefix: /srv/jenkins/cinder
     test_path: mos_tests/cinder
     description: CINDER tests runner
@@ -113,11 +108,8 @@
     jobs:
       - '8.0-{name}_tests_generated_from_template'
 
-
-
 - project:
     name: NOVA
-    iso_dir: /var/www/fuelweb-iso
     report_prefix: /srv/jenkins/nova
     test_path: mos_tests/nova
     description: NOVA tests runner
