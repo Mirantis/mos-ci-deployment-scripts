@@ -91,7 +91,10 @@
             default: "9.0"
         - string:
             name: TEMPEST
-            default: "TRUE"
+            default: "FALSE"
+            #####For tempest running on master#####
+            #####default: "TRUE"                  #
+            #######################################
 
         # Test parameters
         - string:
@@ -124,7 +127,7 @@
           name: Run_Tempest_API_tests
           condition: COMPLETED
           projects:
-              - name: (9.0)Tempest_tests(api)
+              - name: (9.0)Tempest_tests(on_controller)(api)
                 current-parameters: true
                 predefined-parameters: |
                   REPORT_PREFIX=/srv/jenkins/rally-tempest/api
@@ -152,7 +155,7 @@
           name: Run_Tempest_Scenario_tests
           condition: COMPLETED
           projects:
-              - name: (9.0)Tempest_tests(scenario)
+              - name: (9.0)Tempest_tests(on_controller)(scenario)
                 current-parameters: true
                 predefined-parameters: |
                   REPORT_PREFIX=/srv/jenkins/rally-tempest/scenario
