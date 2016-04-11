@@ -74,7 +74,7 @@
             export TESTRAIL_MILESTONE="$MILESTONE"
             fi
 
-            sudo python setup.py install
+            python setup.py install
 
             set +e
             BUILD=`cat "$REPORT_PREFIX"/"$ENV_NAME"_"$SNAPSHOT_NAME"/build_url`

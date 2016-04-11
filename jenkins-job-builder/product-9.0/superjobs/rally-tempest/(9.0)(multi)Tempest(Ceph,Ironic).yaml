@@ -179,7 +179,7 @@
     node: Slave-srv139
     description: 'Tempest Ceph'
     disabled: false
-    display-name: '(9.0)(multi)Tempest(Ceph)'
+    display-name: '(9.0)(multi)Tempest(Ceph,Ironic)'
     concurrent: false
     retry-count: 3
     logrotate:

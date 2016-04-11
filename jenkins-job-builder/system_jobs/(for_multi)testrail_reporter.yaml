@@ -38,7 +38,7 @@
             export TESTRAIL_MILESTONE="$MILESTONE"
             fi
 
-            sudo python setup.py install
+            python setup.py install
 
             if [[ "$TEMPEST" == 'TRUE' ]] ;
             then

@@ -182,7 +182,7 @@
     node: Slave-7775
     description: 'Tempest Ceph SSL'
     disabled: false
-    display-name: '(9.0)(multi)Tempest(Ceph,SSL)'
+    display-name: '(9.0)(multi)Tempest(Ceph,Ironic,SSL)'
     concurrent: false
     retry-count: 3
     logrotate:
