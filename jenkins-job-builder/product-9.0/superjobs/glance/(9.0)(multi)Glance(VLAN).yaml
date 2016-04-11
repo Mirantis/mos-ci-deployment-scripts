@@ -75,7 +75,7 @@
           name: Run_Glance_Tests
           condition: COMPLETED
           projects:
-              - name: 9.0-glance_tests
+              - name: (9.0)Glance_tests
                 current-parameters: true
                 same-node: true
                 node-label: Slave-srv96

@@ -18,6 +18,7 @@
           deactivate
 
     defaults: global
+    node: Slave-srv131
     scm:
       - horizon-integration-tests-repository
     description: 'Runs Horizon Inegration Tests'
