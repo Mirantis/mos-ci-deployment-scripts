@@ -83,6 +83,9 @@
             #####For tempest running on master#####
             #####default: "TRUE"                  #
             #######################################
+        - string:
+            name: TESTRAIL_TEMPEST
+            default: "TRUE"
 
         # Test parameters
         - string:
