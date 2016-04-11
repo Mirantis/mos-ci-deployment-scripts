@@ -64,6 +64,8 @@ sed -i "s/GATEWAY=.*/GATEWAY=$PUB_GATEWAY/" /etc/sysconfig/network; grep -q "GAT
 
 ${SSH_CMD} "/etc/init.d/network restart;"
 
+${SSH_CMD} "sed -i \"3i nameserver 10.109.2.2\" /etc/resolv.conf"
+
 # SSH Listen on all interfaces
 ${SSH_CMD} "sed -i 's/ListenAddress.*/ListenAddress 0.0.0.0/' /etc/ssh/sshd_config;
 service sshd restart;
