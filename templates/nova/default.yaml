@@ -100,7 +100,7 @@ template:
       rack-01-big-compute-node-params: &big-compute-node-params
         boot: [network, hd]
         interfaces: *rack-01-slave-interfaces
-        memory: 8192
+        memory: 16384
         network_config: *rack-01-slave-network_config
         vcpu: 8
         volumes:
