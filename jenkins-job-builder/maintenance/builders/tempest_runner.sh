@@ -16,7 +16,13 @@ get_master_ip(){
 }
 
 source ${VENV_PATH}/bin/activate
-dos.py revert-resume $ENV_NAME --snapshot-name $SNAPSHOT_NAME
+
+if [ "$(echo $MILESTONE | cut -c 1)" -ge "8" ]; then
+    dos.py revert-resume $ENV_NAME $SNAPSHOT_NAME
+else
+    dos.py revert-resume $ENV_NAME --snapshot-name $SNAPSHOT_NAME
+fi
+
 VM_IP=$(get_master_ip)
 VM_IP=${VM_IP:-"10.109.0.2"}
 deactivate
@@ -67,12 +73,7 @@ check_return_code_after_command_execution() {
     fi
 }
 
-WORK_FLDR=$(ssh_to_fuel_master "mktemp -d")
-ssh_to_fuel_master "chmod 777 $WORK_FLDR"
-
-
-if [ "$RALLY_TEMPEST" == "run_tempest" ];then
-
+enable_public_ip() {
     source ${VENV_PATH}/bin/activate
     public_mac=$(virsh dumpxml ${ENV_NAME}_admin | grep -B 1 "${ENV_NAME}_public" | awk -F"'" '{print $2}' | head -1)
     public_ip=$(dos.py net-list ${ENV_NAME} | awk '/public/{print $2}' | egrep -o "[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}")
@@ -80,13 +81,19 @@ if [ "$RALLY_TEMPEST" == "run_tempest" ];then
     deactivate
 
     echo '#!/bin/bash' > net_setup.sh
-    echo "iface=\$(cat \$(grep -irl \"${public_mac}\" \"/etc/sysconfig/network-scripts/\") | awk -F= '/DEVICE/{print \$2}')" >> net_setup.sh
+    echo "iface=\$(ifconfig | grep -B 1 ${public_mac} | head -n 1 | awk -F: '{print \$1}')" >> net_setup.sh
     echo 'ifconfig $iface up' >> net_setup.sh
     echo "ip addr add ${public_ip}.31/${public_net} dev \${iface}" >> net_setup.sh
-
     chmod +x net_setup.sh
     scp_to_fuel_master net_setup.sh $WORK_FLDR
     ssh_to_fuel_master "$WORK_FLDR/net_setup.sh"
+}
+
+WORK_FLDR=$(ssh_to_fuel_master "mktemp -d")
+ssh_to_fuel_master "chmod 777 $WORK_FLDR"
+enable_public_ip
+
+if [ "$RALLY_TEMPEST" == "run_tempest" ];then
 
     set +e
     echo "Download and install mos-tempest-runner project"

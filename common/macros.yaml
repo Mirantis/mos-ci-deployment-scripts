@@ -84,6 +84,16 @@
          skip-tag: true
 
 - scm:
+    name: 9.0-mos-ci-deployment-scripts-efazliev
+    scm:
+      - git:
+         url: https://github.com/EduardFazliev/mos-ci-deployment-scripts.git
+         branches:
+          - origin/master
+         skip-tag: true
+
+
+- scm:
     name: dockerfiles
     scm:
       - git:
@@ -99,4 +109,13 @@
          url: https://review.openstack.org/openstack/murano-dashboard
          branches:
           - origin/master
+         skip-tag: true
+
+- scm:
+    name: horizon-integration-tests-repository
+    scm:
+      - git:
+         url: https://github.com/Mirantis/mos-horizon.git
+         branches:
+          - origin/stable/mitaka
          skip-tag: true
