@@ -3,36 +3,22 @@
     wrappers:
       - build-name:
           name: ${{BUILD_NUMBER}}.${{FILE,path="build-name-setter.info"}}
+      - ansicolor
     parameters:
       - string:
-          name: ISO_DIR
-          default: '{iso_dir}'
+          name: ENV_NAME
       - string:
           name: SNAPSHOT_NAME
       - string:
           name: REPORT_PREFIX
           default: '{report_prefix}'
-      - string:
-          name: ENV_CHANGER
-      - string:
-          name: MOS_VERSION
     builders:
         - shell: |
             set +e
-            ISO_NAME=`ls "$ISO_DIR"`
-
-            ISO_ID=`echo "$ISO_NAME" | cut -f3 -d-`
 
             # Generate file for build-name plugin
-            SNAPSHOT=`echo $SNAPSHOT_NAME | sed 's/ha_deploy_//'`
-            echo "$ISO_ID"_"$SNAPSHOT" > build-name-setter.info
-
-            ENV_NAME=MOS_CI_"$ISO_NAME"
-            # Change ENV_NAME if there is more than one environments on host
-            if [ -n "$ENV_CHANGER" ];
-            then
-            export ENV_NAME="$ENV_NAME""$ENV_CHANGER"
-            fi
+            SNAPSHOT=$(echo $SNAPSHOT_NAME | sed 's/ha_deploy_//')
+            echo 8.0_"$ENV_NAME"__"$SNAPSHOT" > build-name-setter.info
 
             # Storing path for xml reports, that will be used in
             # report_to_testrail job
@@ -40,15 +26,16 @@
             echo "$REPORT_PATH" > ./param.pm
             echo "$BUILD_URL" > ./build_url
 
-            virtualenv venv
-            . venv/bin/activate
-            pip install -r requirements.txt
+            source ~/qa-venv-8.0/bin/activate
+            pip install pip --upgrade
+            pip install -r requirements.txt --upgrade
             py.test '{test_path}' -E "$ENV_NAME" -S "$SNAPSHOT_NAME" -v
             deactivate
     scm:
-        - mos-integration-tests-repository
+        - mos-integration-tests-repository-8.0
     project-type: freestyle
     defaults: global
+    node: maintenance
     description: '{description}'
     disabled: false
     display-name: '{display-name}'
@@ -69,10 +56,14 @@
           builders:
             - shell: |
                 set -e
-                REPORT_PATH=`cat ./param.pm`
+                REPORT_PATH=$(cat ./param.pm)
                 sudo mkdir -p "$REPORT_PATH"
                 sudo cp report.xml "$REPORT_PATH"
                 sudo cp build_url "$REPORT_PATH"
+
+                source ~/qa-venv-8.0/bin/activate
+                dos.py destroy "$ENV_NAME"
+                deactivate
       - archive:
           artifacts: 'report.xml'
           allow-empty: 'true'
@@ -91,46 +82,40 @@
 
 - project:
     name: NEUTRON
-    iso_dir: /var/www/fuelweb-iso
     report_prefix: /srv/jenkins/neutron
     test_path: mos_tests/neutron
     description: NEUTRON tests
     display-name: 8.0 NEUTRON test /from template/
-    email-recipients: efazliev@mirantis.com
+    email-recipients: agromov@mirantis.com
     jobs:
       - '8.0-{name}_tests_generated_from_template'
 
 - project:
     name: HEAT
-    iso_dir: /var/www/fuelweb-iso
     report_prefix: /srv/jenkins/heat
     test_path: mos_tests/heat
     description: HEAT test runner
     display-name: 8.0 HEAT tests /from template/
-    email-recipients: efazliev@mirantis.com
+    email-recipients: agromov@mirantis.com
     jobs:
       - '8.0-{name}_tests_generated_from_template'
 
 - project:
     name: CINDER
-    iso_dir: /var/www/fuelweb-iso
     report_prefix: /srv/jenkins/cinder
     test_path: mos_tests/cinder
     description: CINDER tests runner
     display-name: 8.0 CINDER tests /from template/
-    email-recipients: efazliev@mirantis.com
+    email-recipients: agromov@mirantis.com
     jobs:
       - '8.0-{name}_tests_generated_from_template'
 
-
-
 - project:
     name: NOVA
-    iso_dir: /var/www/fuelweb-iso
     report_prefix: /srv/jenkins/nova
     test_path: mos_tests/nova
     description: NOVA tests runner
     display-name: 8.0 NOVA tests /from template/
-    email-recipients: efazliev@mirantis.com
+    email-recipients: agromov@mirantis.com
     jobs:
       - '8.0-{name}_tests_generated_from_template'

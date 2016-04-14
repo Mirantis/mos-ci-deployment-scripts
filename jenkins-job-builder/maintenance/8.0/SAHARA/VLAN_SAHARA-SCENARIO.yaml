@@ -1,95 +1,29 @@
 - job:
     name: sahara-scenario_tests
+    wrappers:
+      - build-name:
+          name: ${BUILD_NUMBER}.${FILE,path="build-name-setter.info"}
+      - ansicolor
     parameters:
       - string:
-          name: ISO_DIR
-          default: /var/www/fuelweb-iso
+          name: ENV_NAME
       - string:
           name: SNAPSHOT_NAME
       - string:
           name: REPORT_PREFIX
           default: /srv/jenkins/sahara-scenario
-      - string:
-          name: ENV_CHANGER
     builders:
-        - shell: |
-            set +e
-            ISO_NAME=`ls "$ISO_DIR"`
-            ISO_ID=`echo "$ISO_NAME" | cut -f3 -d-`
-            ENV_NAME=MOS_CI_"$ISO_NAME"
-
-            echo "" > /home/efazliev/.ssh/known_hosts
-
-            if [ -n "$ENV_CHANGER" ];
-            then
-            export ENV_NAME="$ENV_NAME""$ENV_CHANGER"
-            fi
-
-            REPORT_PATH="$REPORT_PREFIX"/"$ENV_NAME"_"$SNAPSHOT_NAME"
-            echo "$REPORT_PATH" > ./param.pm
-            echo "$BUILD_URL" > ./build_url
-
-            virtualenv venv
-            . venv/bin/activate
-
-            pip install -r requirements.txt
-            echo 'from mos_tests.environment.devops_client import DevopsClient' > temp.py
-            echo "print DevopsClient.get_admin_node_ip('$ENV_NAME')" >> temp.py
-            MASTER_NODE_IP=`python temp.py`
-            echo "$MASTER_NODE_IP"
-
-            echo '#!/bin/bash -x' > test.sh
-            echo 'yum -y install git' >> test.sh
-            echo 'rm -rf mos-integration-tests' >> test.sh
-            echo 'git clone https://github.com/Mirantis/mos-integration-tests.git' >> test.sh
-            echo 'cd mos-integration-tests' >> test.sh
-            echo ' CONTR_ID=` fuel node | grep controller | head -1 | awk '\''{print$1}'\'' ` ' >> test.sh
-            echo 'scp -rp mos_tests/ node-$CONTR_ID:/root/' >> test.sh
-            echo 'scp requirements.txt node-$CONTR_ID:/root/' >> test.sh
-            echo 'ssh node-$CONTR_ID "apt-get install git python-nose python-pip -y && \
-            pip install pytest && \
-            export PYTHONPATH=.:$PYTHONPATH && source /root/openrc && \
-            apt-get install git \
-            postgresql \
-            postgresql-server-dev-all \
-            libyaml-dev \
-            libffi-dev \
-            python-dev \
-            python-libvirt \
-            python-pip \
-            qemu-kvm \
-            qemu-utils \
-            libvirt-bin \
-            libvirt-dev \
-            ubuntu-vm-builder \
-            bridge-utils -y && \
-
-            sudo apt-get update -y && sudo apt-get upgrade -y && \
-
-            pip install -r requirements.txt && \
-
-
-            nosetests mos_tests/sahara/sahara_tests.py --with-xunit --xunit-file=sahara_tests_report.xml"' >> test.sh
-            echo 'scp node-$CONTR_ID:/root/sahara_tests_report.xml /root/' >> test.sh
-            #echo 'ssh node-$CONTR_ID "\rm -rf ~/mos_tests"' >> test.sh
-
-            sshpass -p 'r00tme' scp -o "StrictHostKeyChecking no" ./test.sh root@"$MASTER_NODE_IP":/root/
-
-            echo 'chmod +x /root/test.sh && /bin/bash -x /root/test.sh > /root/sahara-scenario.log' | sshpass -p 'r00tme' ssh -T root@"$MASTER_NODE_IP"
-
-            sshpass -p 'r00tme' scp -o "StrictHostKeyChecking no" root@"$MASTER_NODE_IP":/root/sahara_tests_report.xml ./report.xml
-            sshpass -p 'r00tme' scp -o "StrictHostKeyChecking no" root@"$MASTER_NODE_IP":/root/sahara-scenario.log ./test.log
-
-            deactivate
+        - shell:
+            !include-raw: 'builders/8.0_sahara_scenario.sh'
 
     scm:
-        - mos-integration-tests-repository
+        - mos-integration-tests-repository-8.0
     project-type: freestyle
-    node: slave-srv96
     defaults: global
-    description: 'Runs mos_tests/sahara-scenario tests'
+    node: maintenance
+    description: 'Runs 8.0 mos_tests/sahara-scenario tests'
     disabled: true
-    display-name: 'SAHARA-SCENARIO tests'
+    display-name: '8.0-SAHARA-SCENARIO tests'
     concurrent: true
     browser: githubweb
     retry-count: 3
@@ -100,17 +34,21 @@
       artifactNumToKeep: -1
     publishers:
       - email:
-          recipients: efazliev@mirantis.com
+          recipients: agromov@mirantis.com
 
       - postbuildscript:
           script-only-if-succeeded: False
           builders:
             - shell: |
                 set -e
-                REPORT_PATH=`cat ./param.pm`
+                REPORT_PATH=$(cat ./param.pm)
                 sudo mkdir -p "$REPORT_PATH"
                 sudo cp report.xml "$REPORT_PATH"
                 sudo cp build_url "$REPORT_PATH"
+
+                source ~/qa-venv-8.0/bin/activate
+                dos.py destroy "$ENV_NAME"
+                deactivate
       - archive:
           artifacts: 'report.xml'
           allow-empty: 'true'

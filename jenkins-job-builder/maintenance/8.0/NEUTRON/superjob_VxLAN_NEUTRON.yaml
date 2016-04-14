@@ -2,37 +2,42 @@
     name: 8.0-superjob_for_VxLAN_NEUTRON
     builders:
       - trigger-builds:
-        - project: 'create_param_environment'
+        - project: '8.0_create_param_environment_common_maintenance'
           same-node: true
           block: true
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VxLAN
+            ENV_NAME=maintenance_VxLAN_NEUTRON_8_0
+            SNAPSHOT_NAME=ha_deploy_VxLAN_CINDER
             TEST_TYPE=NEUTRON
             SEGMENT_TYPE=VxLAN
             DISABLE_SSL=TRUE
       - trigger-builds:
-        - project: 'NEUTRON_tests_generated_from_template'
+        - project: '8.0-NEUTRON_tests_generated_from_template'
           same-node: true
           block: true
           block-thresholds:
             build-step-failure-threshold: 'never'    
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VxLAN
+            ENV_NAME=maintenance_VxLAN_NEUTRON_8_0
+            SNAPSHOT_NAME=ha_deploy_VxLAN_CINDER
       - trigger-builds:
-        - project: 'test_rail_reporter'
+        - project: '8.0_test_rail_reporter_common_maintenance'
           same-node: true
           block: true
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VxLAN
+            ENV_NAME=maintenance_VxLAN_NEUTRON_8_0
+            SNAPSHOT_NAME=ha_deploy_VxLAN_CINDER
+            TESTRAIL_PLAN_NAME="8.0 Acceptance testing #$(date +%Y/%m/%d)"
             TEST_GROUP=NEUTRON
             REPORT_PREFIX=/srv/jenkins/neutron
+            MILESTONE=8.0
+            SUITE='[8.0][MOSQA] Automated Cloud Testing'
 
-    triggers:
-        - timed: "20 21 * * *"
     project-type: freestyle
     defaults: global
-    description: 'VxLAN NEUTRON tests'
-    disabled: true
+    node: maintenance
+    description: '8.0 VxLAN NEUTRON tests'
+    disabled: false
     display-name: '8.0-NEUTRON-VxLAN'
     concurrent: false
     retry-count: 3
