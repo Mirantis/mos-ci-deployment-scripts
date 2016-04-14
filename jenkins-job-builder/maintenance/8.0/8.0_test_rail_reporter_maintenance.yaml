@@ -33,15 +33,16 @@
     scm:
       - test-rail-reporter
     project-type: freestyle
+    node: maintenance
     defaults: global
-    description: 'Send XUnit reports to TestRail'
+    description: '8.0 Send XUnit reports to TestRail'
     disabled: false
-    display-name: 'Report To TestRail. Maintenance. Common.'
+    display-name: '8.0 Report To TestRail. Maintenance. Common.'
     concurrent: true
     browser: githubweb
     retry-count: 3
     logrotate:
-      daysToKeep: 20
+      daysToKeep: 14
       numToKeep: 50
       artifactDaysToKeep: -1
       artifactNumToKeep: -1

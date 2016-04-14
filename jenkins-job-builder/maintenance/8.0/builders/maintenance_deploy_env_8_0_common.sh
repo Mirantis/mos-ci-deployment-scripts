@@ -1,14 +1,15 @@
-echo `hostname`
+echo $(hostname)
 
-SNAPSHOT=`echo $SNAPSHOT_NAME | sed 's/ha_deploy_//'`
+SNAPSHOT=$(echo $SNAPSHOT_NAME | sed 's/ha_deploy_//')
+
+echo 8.0_"$ENV_NAME"__"$SNAPSHOT" > build-name-setter.info
 
 set +e
-virtualenv venv
-. venv/bin/activate
-pip install git+git://github.com/openstack/fuel-devops.git@2.9.15
-UT=`dos.py snapshot-list "$ENV_NAME" || true`
-OUT=`echo "$UT" | grep "$SNAPSHOT_NAME"`
+source ~/qa-venv-8.0/bin/activate
+UT=$(dos.py snapshot-list "$ENV_NAME" || true)
+OUT=$(echo "$UT" | grep "$SNAPSHOT_NAME")
 deactivate
+set -e
 
 if [ -n "$OUT" ]; then
     exit 0
@@ -16,6 +17,7 @@ fi
 
 # Download and link ISO
 export ISO_PATH=$(seedclient-wrapper -d -m "${MAGNET_LINK}" -v --force-set-symlink -o "${WORKSPACE}")
+
 export ENV_NAME="$ENV_NAME"
 export ERASE_PREV_ENV="$ERASE_PREV_ENV"
 export SEGMENT_TYPE="$SEGMENT_TYPE"
@@ -44,8 +46,10 @@ export DEPLOYMENT_TIMEOUT="$DEPLOYMENT_TIMEOUT"
 export INTERFACE_MODEL="$INTERFACE_MODEL"
 export KVM_USE="$KVM_USE"
 
-if [[ "$TEMPEST" == 'TRUE' ]];
-then
+export TEMPEST="${TEMPEST,,}"
+export REPLICA_CEPH="${REPLICA_CEPH,,}"
+
+if ${TEMPEST}; then
     sed -i '181i\         - label: eth1' mos_tests_template.yaml
     sed -i '182i\           l2_network_device: public' mos_tests_template.yaml
 
@@ -54,8 +58,7 @@ then
     echo '             - public' >> mos_tests_template.yaml
 fi
 
-if [[ "$REPLICA_CEPH" == 'TRUE' ]];
-then
+if ${REPLICA_CEPH}; then
     sed -i '16i\ replica-ceph: 1' 3_controllers_2compute_neutron_env_template.yaml
     sed -i 's/ephemeral-ceph: false/ephemeral-ceph: true/g' 3_controllers_2compute_neutron_env_template.yaml
 fi

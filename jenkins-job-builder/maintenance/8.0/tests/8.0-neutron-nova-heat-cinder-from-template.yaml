@@ -3,6 +3,7 @@
     wrappers:
       - build-name:
           name: ${{BUILD_NUMBER}}.${{FILE,path="build-name-setter.info"}}
+      - ansicolor
     parameters:
       - string:
           name: ENV_NAME
@@ -11,17 +12,13 @@
       - string:
           name: REPORT_PREFIX
           default: '{report_prefix}'
-      - string:
-          name: MOS_VERSION
     builders:
         - shell: |
             set +e
 
             # Generate file for build-name plugin
-            SNAPSHOT=`echo $SNAPSHOT_NAME | sed 's/ha_deploy_//'`
-            echo "8.0_$SNAPSHOT" > build-name-setter.info
-
-            ENV_NAME=$ENV_NAME
+            SNAPSHOT=$(echo $SNAPSHOT_NAME | sed 's/ha_deploy_//')
+            echo 8.0_"$ENV_NAME"__"$SNAPSHOT" > build-name-setter.info
 
             # Storing path for xml reports, that will be used in
             # report_to_testrail job
@@ -29,8 +26,7 @@
             echo "$REPORT_PATH" > ./param.pm
             echo "$BUILD_URL" > ./build_url
 
-            virtualenv venv
-            . venv/bin/activate
+            source ~/qa-venv-8.0/bin/activate
             pip install pip --upgrade
             pip install -r requirements.txt --upgrade
             py.test '{test_path}' -E "$ENV_NAME" -S "$SNAPSHOT_NAME" -v
@@ -39,6 +35,7 @@
         - mos-integration-tests-repository-8.0
     project-type: freestyle
     defaults: global
+    node: maintenance
     description: '{description}'
     disabled: false
     display-name: '{display-name}'
@@ -59,10 +56,14 @@
           builders:
             - shell: |
                 set -e
-                REPORT_PATH=`cat ./param.pm`
+                REPORT_PATH=$(cat ./param.pm)
                 sudo mkdir -p "$REPORT_PATH"
                 sudo cp report.xml "$REPORT_PATH"
                 sudo cp build_url "$REPORT_PATH"
+
+                source ~/qa-venv-8.0/bin/activate
+                dos.py destroy "$ENV_NAME"
+                deactivate
       - archive:
           artifacts: 'report.xml'
           allow-empty: 'true'

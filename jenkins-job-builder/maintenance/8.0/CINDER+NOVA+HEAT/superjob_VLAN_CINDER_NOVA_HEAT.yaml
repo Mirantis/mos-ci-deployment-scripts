@@ -28,11 +28,11 @@
           predefined-parameters: |
             ENV_NAME=maintenance_VLAN_CINDER_NEUTRON_8_0
             SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
-            TESTRAIL_PLAN_NAME=8.0 Acceptance testing
+            TESTRAIL_PLAN_NAME="8.0 Acceptance testing #$(date +%Y/%m/%d)"
             TEST_GROUP=CINDER
             REPORT_PREFIX=/srv/jenkins/cinder
             MILESTONE=8.0
-            SUITE=[8.0][MOSQA] Automated Cloud Testing
+            SUITE='[8.0][MOSQA] Automated Cloud Testing'
 
       - trigger-builds:
         - project: '8.0-NOVA_tests_generated_from_template'
@@ -50,11 +50,11 @@
           predefined-parameters: |
             ENV_NAME=maintenance_VLAN_CINDER_NEUTRON_8_0
             SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
-            TESTRAIL_PLAN_NAME=8.0 Acceptance testing
+            TESTRAIL_PLAN_NAME="8.0 Acceptance testing #$(date +%Y/%m/%d)"
             TEST_GROUP=NOVA
             REPORT_PREFIX=/srv/jenkins/nova
             MILESTONE=8.0
-            SUITE=[8.0][MOSQA] Automated Cloud Testing
+            SUITE='[8.0][MOSQA] Automated Cloud Testing'
 
       - trigger-builds:
         - project: '8.0-HEAT_tests_generated_from_template'
@@ -72,14 +72,15 @@
           predefined-parameters: |
             ENV_NAME=maintenance_VLAN_CINDER_NEUTRON_8_0
             SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
-            TESTRAIL_PLAN_NAME=8.0 Acceptance testing
+            TESTRAIL_PLAN_NAME="8.0 Acceptance testing #$(date +%Y/%m/%d)"
             TEST_GROUP=HEAT
             REPORT_PREFIX=/srv/jenkins/heat
             MILESTONE=8.0
-            SUITE=[8.0][MOSQA] Automated Cloud Testing
+            SUITE='[8.0][MOSQA] Automated Cloud Testing'
 
     project-type: freestyle
     defaults: global
+    node: maintenance
     description: '8.0 VLAN CINDER-NOVA-HEAT tests with reporting to TestRail in a row.'
     disabled: false
     display-name: '8.0-VLAN CINDER-NOVA-HEAT'

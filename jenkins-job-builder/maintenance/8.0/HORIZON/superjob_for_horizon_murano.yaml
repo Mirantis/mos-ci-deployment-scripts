@@ -1,33 +1,46 @@
 - job:
-    name: superjob_for_HORIZON_MURANO
+    name: 8.0-superjob_for_HORIZON_MURANO
     builders:
       - trigger-builds:
-        - project: 'create_param_environment'
+        - project: '8.0_create_param_environment_common_maintenance'
           same-node: true
           block: true
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VLAN_SAHARA_MURANO
+            ENV_NAME=maintenance_VLAN_SAHARA_MURANO_8_0
+            SNAPSHOT_NAME=ha_deploy_VLAN_SAHARA_MURANO_CINDER
             TEST_TYPE=MURANO
             SEGMENT_TYPE=VLAN
             DISABLE_SSL=TRUE
             SAHARA_ENABLE=TRUE
             MURANO_ENABLE=TRUE
       - trigger-builds:
-        - project: 'murano_tests'
+        - project: '8.0-murano_tests'
           same-node: true
           block: true
           block-thresholds:
             build-step-failure-threshold: 'never'
           predefined-parameters: |
-            SNAPSHOT_NAME=ha_deploy_VLAN_SAHARA_MURANO
+            ENV_NAME=maintenance_VLAN_SAHARA_MURANO_8_0
+            SNAPSHOT_NAME=ha_deploy_VLAN_SAHARA_MURANO_CINDER
+      - trigger-builds:
+        - project: '8.0_test_rail_reporter_common_maintenance'
+          same-node: true
+          block: true
+          predefined-parameters: |
+            ENV_NAME=maintenance_VLAN_SAHARA_MURANO_8_0
+            SNAPSHOT_NAME=ha_deploy_VLAN_SAHARA_MURANO_CINDER
+            TESTRAIL_PLAN_NAME="8.0 Acceptance testing #$(date +%Y/%m/%d)"
+            TEST_GROUP=MURANO_HORIZON
+            REPORT_PREFIX=/srv/jenkins/murano
+            MILESTONE=8.0
+            SUITE='[8.0][MOSQA] Automated Cloud Testing'
 
-#    triggers:
-#        - timed: "38 21 * * *"
     project-type: freestyle
     defaults: global
-    description: 'VLAN_SAHARA_MURANO HORIZON superjob'
+    node: maintenance
+    description: '8.0-VLAN_MURANO HORIZON superjob'
     disabled: false
-    display-name: 'VLAN_SAHARA_MURANO HORIZON'
+    display-name: '8.0-VLAN_MURANO HORIZON'
     concurrent: false
     retry-count: 3
     logrotate:
@@ -35,4 +48,3 @@
       numToKeep: 20
       artifactDaysToKeep: -1
       artifactNumToKeep: -1
-

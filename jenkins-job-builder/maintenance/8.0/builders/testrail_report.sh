@@ -1,25 +1,23 @@
-SNAPSHOT=`echo $SNAPSHOT_NAME | sed 's/ha_deploy_//'`
-echo "$ENV_NAME"_"$SNAPSHOT" > build-name-setter.info
+SNAPSHOT=$(echo $SNAPSHOT_NAME | sed 's/ha_deploy_//')
+
+echo 8.0_"$ENV_NAME"__"$SNAPSHOT" > build-name-setter.info
 
 REPORT_XML="$REPORT_PREFIX"/"$ENV_NAME"_"$SNAPSHOT_NAME"/"$REPORT_FILE"
 
-virtualenv venv
-. venv/bin/activate
+source ~/qa-venv-8.0/bin/activate
 
 # standard credentials for testrail is in this file, that
 # is copied to host by ansible playbook
 . "$TESTRAIL_FILE"
 
 # if we need to change SUITE
-if [ -n "$SUITE" ];
-then
+if [ -n "$SUITE" ]; then
     TESTRAIL_SUITE="$SUITE"
     export TESTRAIL_SUITE="$SUITE"
 fi
 
 # if we need to change MILESTONE
-if [ -n "$MILESTONE" ];
-then
+if [ -n "$MILESTONE" ]; then
     TESTRAIL_MILESTONE="$MILESTONE"
     export TESTRAIL_MILESTONE="$MILESTONE"
 fi
