@@ -115,9 +115,9 @@ template:
         network_config: *rack-01-slave-network_config
         vcpu: 1
         volumes:
-        - {capacity: 100, format: qcow2, name: system}
-        - {capacity: 100, format: qcow2, name: cinder}
-        - {capacity: 100, format: qcow2, name: swift}
+        - {capacity: 150, format: qcow2, name: system}
+        - {capacity: 150, format: qcow2, name: cinder}
+        - {capacity: 150, format: qcow2, name: swift}
 
     env_name: !os_env ENV_NAME
     groups:

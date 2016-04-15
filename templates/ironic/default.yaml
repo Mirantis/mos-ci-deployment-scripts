@@ -13,7 +13,7 @@ template:
         roles: [controller]
       - count: 1
         roles: [compute, cinder]
-      - count: 1
+      - count: 2
         roles: [ironic]
     release: ubuntu
     settings:
@@ -144,5 +144,8 @@ template:
       - name: slave-03
         params: *node-params
         role: fuel_slave
+      - name: slave-04
+        params: *node-params
+        role: fuel_slave
   name: 1 Controller, 1 Compute+Cinder, 1 Ironic, Neutron, VLAN
-  slaves: 3
+  slaves: 4
