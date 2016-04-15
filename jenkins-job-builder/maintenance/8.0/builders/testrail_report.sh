@@ -22,5 +22,10 @@ if [ -n "$MILESTONE" ]; then
     export TESTRAIL_MILESTONE="$MILESTONE"
 fi
 
+ADD_TIMESTAMP="${ADD_TIMESTAMP,,}"
+if ${ADD_TIMESTAMP}; then
+    TESTRAIL_PLAN_NAME="${TESTRAIL_PLAN_NAME} #$(date +%Y/%m/%d)"
+fi
+
 python setup.py install
 report -v --testrail-plan-name "$TESTRAIL_PLAN_NAME" --env-description "$SNAPSHOT-$TEST_GROUP" --testrail-user  "${TESTRAIL_USER}" --testrail-password "${TESTRAIL_PASSWORD}" --testrail-project "${TESTRAIL_PROJECT}" --testrail-milestone "${TESTRAIL_MILESTONE}" --testrail-suite "${TESTRAIL_SUITE}" --test-results-link "$BUILD" "$REPORT_XML"

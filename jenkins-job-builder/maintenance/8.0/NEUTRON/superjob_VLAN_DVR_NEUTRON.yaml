@@ -28,11 +28,11 @@
           predefined-parameters: |
             ENV_NAME=maintenance_VLAN_DVR_NEUTRON_8_0
             SNAPSHOT_NAME=ha_deploy_VLAN_DVR_CINDER
-            TESTRAIL_PLAN_NAME="8.0 Acceptance testing #$(date +%Y/%m/%d)"
+            TESTRAIL_PLAN_NAME=8.0 Acceptance testing
             TEST_GROUP=NEUTRON
             REPORT_PREFIX=/srv/jenkins/neutron
             MILESTONE=8.0
-            SUITE='[8.0][MOSQA] Automated Cloud Testing'
+            SUITE=[8.0][MOSQA] Automated Cloud Testing
 
     project-type: freestyle
     defaults: global
