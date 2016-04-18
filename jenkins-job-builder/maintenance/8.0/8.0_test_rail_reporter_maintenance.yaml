@@ -26,6 +26,9 @@
           name: SUITE
       - string:
           name: MILESTONE
+      - string:
+          name: ADD_TIMESTAMP
+          default: 'TRUE'
 
     builders:
         - shell:

@@ -13,7 +13,7 @@
             SAHARA_ENABLE=TRUE
             DISABLE_SSL=TRUE
       - trigger-builds:
-        - project: 'sahara-scenario_tests'
+        - project: '8.0-sahara-scenario_tests'
           same-node: true
           block: true
           block-thresholds:
@@ -28,11 +28,11 @@
           predefined-parameters: |
             ENV_NAME=maintenance_VLAN_SAHARA_8_0
             SNAPSHOT_NAME=ha_deploy_VLAN_SAHARA_CINDER
-            TESTRAIL_PLAN_NAME="8.0 Acceptance testing #$(date +%Y/%m/%d)"
+            TESTRAIL_PLAN_NAME=8.0 Acceptance testing
             TEST_GROUP=SAHARA-SCENARIO_VLAN
             REPORT_PREFIX=/srv/jenkins/sahara-scenario
             MILESTONE=8.0
-            SUITE='[8.0][MOSQA] Automated Cloud Testing'
+            SUITE=[8.0][MOSQA] Automated Cloud Testing
 
     project-type: freestyle
     defaults: global

@@ -1,5 +1,5 @@
 - job:
-    name: sahara-scenario_tests
+    name: 8.0-sahara-scenario_tests
     wrappers:
       - build-name:
           name: ${BUILD_NUMBER}.${FILE,path="build-name-setter.info"}
