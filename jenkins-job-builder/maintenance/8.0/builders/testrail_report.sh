@@ -4,8 +4,6 @@ echo 8.0_"$ENV_NAME"__"$SNAPSHOT" > build-name-setter.info
 
 REPORT_XML="$REPORT_PREFIX"/"$ENV_NAME"_"$SNAPSHOT_NAME"/"$REPORT_FILE"
 
-source ~/qa-venv-8.0/bin/activate
-
 # standard credentials for testrail is in this file, that
 # is copied to host by ansible playbook
 . "$TESTRAIL_FILE"
@@ -27,5 +25,7 @@ if ${ADD_TIMESTAMP}; then
     TESTRAIL_PLAN_NAME="${TESTRAIL_PLAN_NAME} #$(date +%Y/%m/%d)"
 fi
 
+virtualenv venv
+source venv/bin/activate
 python setup.py install
 report -v --testrail-plan-name "$TESTRAIL_PLAN_NAME" --env-description "$SNAPSHOT-$TEST_GROUP" --testrail-user  "${TESTRAIL_USER}" --testrail-password "${TESTRAIL_PASSWORD}" --testrail-project "${TESTRAIL_PROJECT}" --testrail-milestone "${TESTRAIL_MILESTONE}" --testrail-suite "${TESTRAIL_SUITE}" --test-results-link "$BUILD" "$REPORT_XML"

@@ -11,6 +11,11 @@ function update_devops () {
   VIRTUAL_ENV=/home/jenkins/qa-venv-${1}
   BRANCH=${2}
 
+  if [[ -d "${VIRTUAL_ENV}" ]] && [[ "${FORCE_DELETE_DEVOPS}" == "true" ]]; then
+    echo "Delete venv from ${VIRTUAL_ENV}"
+    rm -rf ${VIRTUAL_ENV}
+  fi
+
   if [ -f ${VIRTUAL_ENV}/bin/activate ]; then
     source ${VIRTUAL_ENV}/bin/activate
     echo "Python virtual env exist"
@@ -81,6 +86,11 @@ fi
 # Release 8.0
 if [[ ${update_release_8_0} == "true" ]]; then
   update_devops "8.0" "stable/8.0"
+fi
+
+# Release 9.0
+if [[ ${update_release_9_0} == "true" ]]; then
+  update_devops "9.0" "stable/9.0"
 fi
 
 # Master branch

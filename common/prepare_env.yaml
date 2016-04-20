@@ -18,8 +18,15 @@
           name: 'update_release_8_0'
           default: false
       - bool:
+          name: 'update_release_9_0'
+          default: false
+      - bool:
           name: 'update_release_master'
           default: true
+      - bool:
+          name: FORCE_DELETE_DEVOPS
+          default: false
+          description: 'Force to delete devops venv before update'
       - bool:
           name: 'download_images'
           default: false
