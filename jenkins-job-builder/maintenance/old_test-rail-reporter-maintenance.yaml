@@ -1,0 +1,60 @@
+- job:
+    name: old_test_rail_reporter_maintenance
+    wrappers:
+      - build-name:
+          name: ${BUILD_NUMBER}.${FILE,path="build-name-setter.info"}
+      - ansicolor
+    parameters:
+      - string:
+          name: REPORT_XML
+      - string:
+          name: CUSTOM_VERSION
+      - string:
+          name: TEST_GROUP
+      - string:
+          name: TESTRAIL_FILE
+          default: /var/www/test_rail/user.sh
+      - string:
+          name: SUITE
+      - string:
+          name: MILESTONE
+          default: '7.0'
+      - string:
+          name: CONFIG_NAME
+          default: "Ubuntu 14.04"
+      - bool:
+          name: USE_CENTOS
+          default: false
+      - node:
+          name: NODE_LABELS
+          description: |
+            Specify where this job and tested job should be ran on.
+          default: maintenance
+    builders:
+      - shell:
+          !include-raw: 'helpers/old_testrail.sh'
+    scm:
+      - fuel-qa
+    project-type: freestyle
+    defaults: global
+    description: 'Send XUnit reports to TestRail'
+    disabled: false
+    display-name: 'Old Report To TestRail. Maintenance'
+    concurrent: true
+    browser: githubweb
+    retry-count: 3
+    logrotate:
+      daysToKeep: 20
+      numToKeep: 50
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+    publishers:
+      - email:
+          recipients: vrovachev@mirantis.com
+      - workspace-cleanup:
+          fail-build: false
+      - description-setter:
+          regexp: ^.*\[TestRun URL\]\s*(.*)
+          regexp-for-failed: ^.*\[TestRun URL\]\s*(.*)
+          description: <a href="\1">TestRail Report URL</a>
+          description-for-failed: <a href="\1">TestRail Report URL</a>

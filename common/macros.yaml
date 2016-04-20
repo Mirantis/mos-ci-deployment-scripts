@@ -12,6 +12,15 @@
           skip-tag: true
 
 - scm:
+    name: fuel-qa
+    scm:
+      - git:
+          url: https://github.com/openstack/fuel-qa.git
+          branches:
+            - origin/master
+          skip-tag: true
+
+- scm:
     name: test-rail-reporter-master
     scm:
       - git:
