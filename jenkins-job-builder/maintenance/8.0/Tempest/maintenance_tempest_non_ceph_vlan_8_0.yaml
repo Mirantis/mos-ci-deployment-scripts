@@ -2,8 +2,8 @@
     name: maintenance_tempest_non_ceph_vlan_8_0_ubuntu
     parameters:
       - string:
-          name: CUSTOM_VERSION
-          default: 'MU'
+          name: TESTRAIL_PLAN_NAME
+          default: 'TEMPEST-TEST-MU'
       - bool:
           name: ENABLE_PROPOSED
           default: false
@@ -21,6 +21,9 @@
           default: false
       - bool:
           name: DISABLE_SSL
+          default: true
+      - bool:
+          name: ADD_TIMESTAMP
           default: true
       - choice:
           name: RALLY_TEMPEST
@@ -66,11 +69,12 @@
             REPORT_PREFIX=/srv/jenkins/rally-tempest
             ENV_NAME=maintenance_tempest_non_ceph_vlan_8_0
             SNAPSHOT_NAME=tempest_cinder_glance_swift_vlan
-            REPORT_XML=${REPORT_PREFIX}/${ENV_NAME}_${SNAPSHOT_NAME}/verification.xml
-            CUSTOM_VERSION=$CUSTOM_VERSION
+            REPORT_FILE=verification.xml
+            TESTRAIL_PLAN_NAME=${TESTRAIL_PLAN_NAME}
             TEST_GROUP=VLAN+VOLUME+IMAGE+SWIFT TEMPEST tests (8.0 maintenance)
             MILESTONE=8.0
             SUITE=[8.0][MOSQA] Tempest 8.0
+            ADD_TIMESTAMP=${ADD_TIMESTAMP}
     project-type: freestyle
     defaults: global
     node: maintenance

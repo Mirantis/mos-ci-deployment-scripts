@@ -10,8 +10,11 @@
             - 'rally_run'
             - 'run_tempest'
       - string:
-          name: CUSTOM_VERSION
-          default: 'MU'
+          name: TESTRAIL_PLAN_NAME
+          default: 'TEMPEST-TEST-MU'
+      - bool:
+          name: ADD_TIMESTAMP
+          default: true
     builders:
       - trigger-builds:
         - project: 'maintenance_long_living_tempest_runner'
@@ -30,12 +33,13 @@
           predefined-parameters: |
             REPORT_PREFIX=/srv/jenkins/rally-tempest
             ENV_NAME=long_living_tempest_8.0
-            REPORT_XML=${REPORT_PREFIX}/${ENV_NAME}/verification.xml
-            CUSTOM_VERSION=$CUSTOM_VERSION
+            REPORT_FILE=verification.xml
+            TESTRAIL_PLAN_NAME=${TESTRAIL_PLAN_NAME}
             TEST_GROUP=long living env UBUNTU TEMPEST tests 8.0 maintenance
             MILESTONE=8.0
             CONFIG_NAME=Ubuntu 14.04
             SUITE=[8.0][MOSQA] Tempest 8.0
+            ADD_TIMESTAMP=${ADD_TIMESTAMP}
     project-type: freestyle
     defaults: global
     node: maintenance-10

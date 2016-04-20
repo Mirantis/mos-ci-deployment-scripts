@@ -6,45 +6,49 @@
       - ansicolor
     parameters:
       - string:
-          name: REPORT_XML
+          name: ENV_NAME
       - string:
-          name: CUSTOM_VERSION
+          name: SNAPSHOT_NAME
+      - string:
+          name: TESTRAIL_PLAN_NAME
       - string:
           name: TEST_GROUP
       - string:
           name: TESTRAIL_FILE
           default: /var/www/test_rail/user.sh
       - string:
+          name: REPORT_PREFIX
+          default: /srv/jenkins/neutron
+      - string:
+          name: REPORT_FILE
+          default: report.xml
+      - string:
           name: SUITE
       - string:
           name: MILESTONE
-          default: '7.0'
-      - string:
-          name: CONFIG_NAME
-          default: "Ubuntu 14.04"
       - bool:
-          name: USE_CENTOS
-          default: false
+          name: ADD_TIMESTAMP
+          default: true
       - node:
           name: NODE_LABELS
           description: |
             Specify where this job and tested job should be ran on.
           default: maintenance
     builders:
-      - shell:
-          !include-raw: 'helpers/testrail.sh'
+        - shell:
+            !include-raw: 'helpers/testrail.sh'
     scm:
       - test-rail-reporter
     project-type: freestyle
     defaults: global
     description: 'Send XUnit reports to TestRail'
     disabled: false
-    display-name: 'Report To TestRail Maintenance'
+    display-name: 'Report To TestRail. Maintenance.'
     concurrent: true
     browser: githubweb
     retry-count: 3
     logrotate:
-      daysToKeep: 20
+      daysToKeep: 14
       numToKeep: 50
       artifactDaysToKeep: -1
       artifactNumToKeep: -1

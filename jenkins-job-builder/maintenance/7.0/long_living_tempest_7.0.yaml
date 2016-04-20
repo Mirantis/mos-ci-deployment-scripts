@@ -22,7 +22,7 @@
             RALLY_TEMPEST=$RALLY_TEMPEST
             ENABLE_UPDATES=$ENABLE_UPDATES
       - trigger-builds:
-        - project: 'test_rail_reporter_maintenance'
+        - project: 'old_test_rail_reporter_maintenance'
           same-node: true
           block: true
           block-thresholds:
