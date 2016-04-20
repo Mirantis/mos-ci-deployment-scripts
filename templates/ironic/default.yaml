@@ -12,9 +12,9 @@ template:
       - count: 1
         roles: [controller]
       - count: 1
-        roles: [compute, cinder]
+        roles: [compute]
       - count: 2
-        roles: [ironic]
+        roles: [ironic, ceph-osd]
     release: ubuntu
     settings:
       components:
@@ -23,11 +23,11 @@ template:
         murano: false
         sahara: false
       storages:
-        ephemeral-ceph: false
-        image-ceph: false
-        rados-ceph: false
-        volume-ceph: false
-        volume-lvm: true
+        ephemeral-ceph: true
+        image-ceph: true
+        rados-ceph: true
+        volume-ceph: true
+        volume-lvm: false
   devops_settings:
     address_pools:
       baremetal-pool01:
