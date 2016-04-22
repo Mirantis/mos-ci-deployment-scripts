@@ -6,7 +6,7 @@
           same-node: true
           block: true
           predefined-parameters: |
-            ENV_NAME=maintenance_VLAN_CINDER_NEUTRON_8_0
+            ENV_NAME=maintenance_VLAN_NEUTRON_8_0
             SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
             TEST_TYPE=NEUTRON
             SEGMENT_TYPE=VLAN
