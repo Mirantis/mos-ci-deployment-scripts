@@ -4,7 +4,7 @@ SNAPSHOT=$(echo $SNAPSHOT_NAME | sed 's/ha_deploy_//')
 
 echo 8.0_"$ENV_NAME"__"$SNAPSHOT" > build-name-setter.info
 
-REPORT_XML="${REPORT_PREFIX}/${ENV_NAME}_${SNAPSHOT_NAME}/{$REPORT_FILE}"
+REPORT_XML="${REPORT_PREFIX}/${ENV_NAME}_${SNAPSHOT_NAME}/${REPORT_FILE}"
 
 if [ ! -f $REPORT_XML ]; then
     echo "Can't find $REPORT_XML file"
