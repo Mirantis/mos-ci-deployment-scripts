@@ -81,7 +81,7 @@ enable_public_ip() {
     deactivate
 
     echo '#!/bin/bash' > net_setup.sh
-    echo "iface=\$(ifconfig -a | grep -iB 1 ${public_mac} | grep -v "^$" | head -n 1 | awk -F':| ' '{print \$1}')" >> net_setup.sh
+    echo "iface=\$(ifconfig -a | grep -iB 1 ${public_mac} | grep -v \"^\$\" | head -n 1 | awk -F':| ' '{print \$1}')" >> net_setup.sh
     echo 'ifconfig $iface up' >> net_setup.sh
     echo "ip addr add ${public_ip}.31/${public_net} dev \${iface}" >> net_setup.sh
     chmod +x net_setup.sh
