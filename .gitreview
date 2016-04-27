@@ -1,0 +1,5 @@
++[gerrit]
++host=review.gerrithub.io
++port=29418
++project=Mirantis/mos-ci-deployment-scripts.git
++defaultbranch=stable/9.0
