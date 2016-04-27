@@ -13,7 +13,7 @@
           pip install -r requirements.txt -r test-requirements.txt
 
           export DASHBOARD_URL='http://10.109.4.3/horizon'
-          ./run_tests.sh -N --integration --selenium-headless
+          ./run_tests.sh -N --integration --selenium-headless --with-xunit --xunit-file=report.xml
 
           deactivate
 
@@ -36,12 +36,12 @@
           artifacts: 'openstack_dashboard/test/integration_tests/integration_tests_screenshots/**'
           allow-empty: 'true'
           fingerprint: true
-#      - archive:
-#          artifacts: 'verification.xml'
-#          allow-empty: 'true'
-#          fingerprint: true
-#      - junit:
-#          results: verification.xml
+     - archive:
+         artifacts: 'report.xml'
+         allow-empty: 'true'
+         fingerprint: true
+     - junit:
+         results: report.xml
       - email:
           recipients: schipiga@mirantis.com
 #      - postbuildscript:
