@@ -13,8 +13,8 @@ template:
         roles: [controller]
       - count: 2
         roles: [compute]
-      - count: 1
-        roles: [cinder]
+      - count: 2
+        roles: [ceph-osd]
     release: ubuntu
     settings:
       components:
@@ -23,11 +23,11 @@ template:
         murano: false
         sahara: false
       storages:
-        ephemeral-ceph: false
-        image-ceph: false
-        rados-ceph: false
-        volume-ceph: false
-        volume-lvm: true
+        ephemeral-ceph: true
+        image-ceph: true
+        rados-ceph: true
+        volume-ceph: true
+        volume-lvm: false
   devops_settings:
     address_pools:
       baremetal-pool01:
@@ -169,5 +169,8 @@ template:
       - name: slave-04
         params: *big-storage-node-params
         role: fuel_slave
-  name: 1 Controller, 2 Compute, 1 Storage, Neutron
-  slaves: 4
+      - name: slave-05
+        params: *big-storage-node-params
+        role: fuel_slave
+  name: 1 Controller, 2 Compute, 2 Storage, Neutron, Ceph
+  slaves: 5
