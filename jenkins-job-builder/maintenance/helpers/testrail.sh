@@ -32,4 +32,13 @@ fi
 virtualenv venv
 source venv/bin/activate
 python setup.py install
-report -v --testrail-plan-name "$TESTRAIL_PLAN_NAME" --env-description "$SNAPSHOT-$TEST_GROUP" --testrail-user  "${TESTRAIL_USER}" --testrail-password "${TESTRAIL_PASSWORD}" --testrail-project "${TESTRAIL_PROJECT}" --testrail-milestone "${TESTRAIL_MILESTONE}" --testrail-suite "${TESTRAIL_SUITE}" --test-results-link "$BUILD" "$REPORT_XML"
+report -v --testrail-plan-name "$TESTRAIL_PLAN_NAME" \
+          --env-description "$SNAPSHOT-$TEST_GROUP" \
+          --testrail-user  "${TESTRAIL_USER}" \
+          --testrail-password "${TESTRAIL_PASSWORD}" \
+          --testrail-project "${TESTRAIL_PROJECT}" \
+          --testrail-milestone "${TESTRAIL_MILESTONE}" \
+          --testrail-suite "${TESTRAIL_SUITE}" \
+          --test-results-link "$BUILD" "$REPORT_XML"
+          --testrail-name-template '{custom_test_group}.{title}' \
+          --xunit-name-template '{classname}.{methodname}'

@@ -45,6 +45,11 @@
           choices:
             - 'rally_run'
             - 'run_tempest'
+      - node:
+          name: NODE_LABELS
+          description: |
+            Specify where this job and tested job should be ran on.
+          default: maintenance
     builders:
       - trigger-builds:
         - project: 'maintenance_tempest_non_ceph_tun_7_0_ubuntu'

@@ -57,12 +57,19 @@
     name: maintenance_create_param_environment_6_1
     builders:
       - shell:
-          !include-raw 'builders/maintenance_deploy_env_6_1.sh'
+          !include-raw: 'builders/maintenance_deploy_env_6_1.sh'
     project-type: freestyle
-    node: maintenance_173_10
+    node: maintenance
     defaults: global
-    scm: 
-       - mos-ci-deployment-scripts
+    scm:
+      - openstack-git:
+          reponame: 'fuel-qa'
+          repobranch: 'origin/stable/6.1'
+          basedir: ''
+      - mirantis-git:
+          reponame: 'mos-ci-deployment-scripts'
+          repobranch: 'origin/master'
+          basedir: 'mos-ci-deployment-scripts'
     description: 'Create environment with parameters, specified by PARAM string.'
     disabled: false
     display-name: 'Create Parameterized Environment (6.1 maintenance)'

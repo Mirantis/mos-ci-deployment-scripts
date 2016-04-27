@@ -21,10 +21,6 @@ ISO_PATH=$(seedclient-wrapper -d -m "${MAGNET_LINK}" -v --force-set-symlink -o "
 
 # Source python virtualenv and run db migration
 source ${VENV_PATH}/bin/activate
-pip install -U pip
-
-django-admin.py syncdb --settings=devops.settings
-django-admin.py migrate devops --settings=devops.settings
 
 if [ -z "$ISO_PATH" ]
 then
@@ -51,50 +47,13 @@ DISABLE_SSL=${DISABLE_SSL:-false}
 
 OPENSTACK_RELEASE=${OPENSTACK_RELEASE:-ubuntu}
 
-# Check if fuel-qa folder exist
-if [ ! -d fuel-qa ]; then
-    git clone -b "${FUEL_QA_VER}" https://github.com/openstack/fuel-qa
-else
-    pushd fuel-qa
-    git clean -f -d -x
-    git checkout "${FUEL_QA_VER}"
-    git reset --hard
-    git pull
-    popd
-fi
-
 # erase previous environments
 if ${ERASE_PREV_ENV} ; then
     dos.py list | tail -n+3 | xargs -I {} dos.py erase {}
 fi
 
 if [ -n "${FILE}" ]; then
-    cat jenkins-job-builder/maintenance/helpers/${FILE} > fuel-qa/fuelweb_test/tests/test_services.py
-fi
-
-cd fuel-qa
-
-# Apply fuel-qa patches
-if [[ ${IRONIC_ENABLE} == 'true' ]]; then
-    file_name=ironic.patch
-    patch_file=../fuel_qa_patches/$file_name
-    echo "Check for patch $file_name"
-    git apply --check $patch_file 2> /dev/null
-    if [ $? -eq 0 ]; then
-        echo "Applying patch $file_name"
-        git apply $patch_file
-    fi
-fi
-
-if [[ ${DVR_ENABLE} == 'true' ]] || [[ ${L3_HA_ENABLE} == 'true' ]] || [[ ${L2_POP_ENABLE} == 'true' ]]; then
-    file_name=DVR_L2_pop_HA.patch
-    patch_file=../fuel_qa_patches/$file_name
-    echo "Check for patch $file_name"
-    git apply --check $patch_file 2> /dev/null
-    if [ $? -eq 0 ]; then
-        echo "Applying patch $file_name"
-        git apply $patch_file
-    fi
+    cat mos-ci-deployment-scripts/jenkins-job-builder/maintenance/helpers/${FILE} > fuel-qa/fuelweb_test/tests/test_services.py
 fi
 
 ###################### Get MIRROR_UBUNTU ###############

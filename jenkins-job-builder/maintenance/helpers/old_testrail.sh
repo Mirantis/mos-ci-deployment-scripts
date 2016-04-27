@@ -11,8 +11,7 @@ if [ ! -f $REPORT_XML ]; then
     exit 1
 fi
 
-virtualenv venv
-source venv/bin/activate
+source /home/jenkins/qa-venv-8.0/bin/activate
 source "$TESTRAIL_FILE"
 
 if [ -n "$SUITE" ]; then
@@ -23,12 +22,7 @@ if [ -n "$MILESTONE" ]; then
     export TESTRAIL_MILESTONE=${MILESTONE}
 fi
 
-if [ -d fuel-qa ]; then
-    rm -rf fuel-qa
-fi
-
-pip install simplejson
-pip install -r fuelweb_test/requirements.txt --upgrade
 export PYTHONPATH="$(pwd):$PYTHONPATH"
+pip install simplejson
 export USE_CENTOS=$USE_CENTOS
 python fuelweb_test/testrail/report_tempest_results.py -r "${TEST_GROUP}" -c "${config_name}" -i ${CUSTOM_VERSION} -p ${REPORT_XML}

@@ -34,7 +34,10 @@
       - shell:
           !include-raw: 'helpers/old_testrail.sh'
     scm:
-      - fuel-qa
+      - openstack-git:
+          reponame: 'fuel-qa'
+          repobranch: 'origin/stable/8.0'
+          basedir: ''
     project-type: freestyle
     defaults: global
     description: 'Send XUnit reports to TestRail'

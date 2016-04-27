@@ -61,8 +61,15 @@
     project-type: freestyle
     node: maintenance
     defaults: global
-    scm: 
-       - mos-ci-deployment-scripts
+    scm:
+      - openstack-git:
+          reponame: 'fuel-qa'
+          repobranch: 'origin/stable/7.0'
+          basedir: ''
+      - mirantis-git:
+          reponame: 'mos-ci-deployment-scripts'
+          repobranch: 'origin/master'
+          basedir: 'mos-ci-deployment-scripts'
     description: 'Create environment with parameters, specified by PARAM string.'
     disabled: false
     display-name: 'Create Parameterized Environment (7.0 maintenance)'

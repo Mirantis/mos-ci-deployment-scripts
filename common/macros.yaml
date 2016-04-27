@@ -12,13 +12,22 @@
           skip-tag: true
 
 - scm:
-    name: fuel-qa
+    name: openstack-git
     scm:
       - git:
-          url: https://github.com/openstack/fuel-qa.git
+          url: 'https://git.openstack.org/openstack/{reponame}.git'
           branches:
-            - origin/master
-          skip-tag: true
+            - '{repobranch}'
+          basedir: '{basedir}'
+
+- scm:
+    name: mirantis-git
+    scm:
+      - git:
+          url: 'https://github.com/Mirantis/{reponame}.git'
+          branches:
+            - '{repobranch}'
+          basedir: '{basedir}'
 
 - scm:
     name: test-rail-reporter-master
