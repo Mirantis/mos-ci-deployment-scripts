@@ -33,7 +33,7 @@
       artifactNumToKeep: -1
     publishers:
       - archive:
-          artifacts: 'openstack_dashboard/test/integration_tests/integration_tests_screenshots/**'
+          artifacts: 'openstack_dashboard/test/integration_tests/test_reports/**'
           allow-empty: 'true'
           fingerprint: true
      - archive:
