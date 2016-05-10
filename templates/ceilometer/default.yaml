@@ -1,6 +1,6 @@
 template:
   cluster_template:
-    name: ironic
+    name: ceilometer
     network:
       neutron-dvr: false
       neutron-l2-pop: false
@@ -12,22 +12,22 @@ template:
       - count: 1
         roles: [controller]
       - count: 1
-        roles: [compute]
-      - count: 2
-        roles: [ironic, ceph-osd]
+        roles: [compute, cinder]
+      - count: 1
+        roles: [mongo]
     release: ubuntu
     settings:
       components:
-        ceilometer: false
-        ironic: true
+        ceilometer: true
+        ironic: false
         murano: false
         sahara: false
       storages:
-        ephemeral-ceph: true
-        image-ceph: true
-        rados-ceph: true
-        volume-ceph: true
-        volume-lvm: false
+        ephemeral-ceph: false
+        image-ceph: false
+        rados-ceph: false
+        volume-ceph: false
+        volume-lvm: true
   devops_settings:
     address_pools:
       baremetal-pool01:
@@ -86,7 +86,7 @@ template:
           networks:
            - baremetal
 
-      rack-01-controller-node-params: &node-params
+      rack-01-controller-node-params: &controller-node-params
         boot: [network, hd]
         interfaces: *rack-01-slave-interfaces
         memory: 4096
@@ -136,16 +136,13 @@ template:
           - {bus: ide, device: cdrom, format: raw, name: iso, source_image: !os_env ISO_PATH}
         role: fuel_master
       - name: slave-01
-        params: *node-params
+        params: *controller-node-params
         role: fuel_slave
       - name: slave-02
-        params: *node-params
+        params: *controller-node-params
         role: fuel_slave
       - name: slave-03
-        params: *node-params
+        params: *controller-node-params
         role: fuel_slave
-      - name: slave-04
-        params: *node-params
-        role: fuel_slave
-  name: 1 Controller, 1 Compute+Cinder, 1 Ironic, Neutron, VLAN
-  slaves: 4
+  name: 1 Controller, 1 Compute + Cinder, 1 Mongo, Neutron, VLAN, Ceilometer
+  slaves: 3
