@@ -131,7 +131,7 @@ elif [ "$RALLY_TEMPEST" == "rally_run" ];then
 
     scp_to_fuel_master dimage $WORK_FLDR/rally
     ssh_to_fuel_master "ln -sf $WORK_FLDR/rally /root/rally"
-    ssh_to_fuel_master "wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/maintenance/helpers/rally_run.sh -P $WORK_FLDR"
+    scp_to_fuel_master mos-ci-deployment-scripts/jenkins-job-builder/maintenance/helpers/rally_run.sh "$WORK_FLDR"
     ssh_to_fuel_master "chmod +x $WORK_FLDR/rally_run.sh"
     ssh_to_fuel_master "/bin/bash -xe $WORK_FLDR/rally_run.sh > $WORK_FLDR/log.log"
 

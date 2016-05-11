@@ -1,0 +1,70 @@
+- job:
+    name: maintenance_tempest_non_ceph_tun_8_0_ubuntu_on_node
+    parameters:
+    parameters:
+      - string:
+          name: TESTRAIL_PLAN_NAME
+          default: 'TEMPEST-TEST-MU'
+      - bool:
+          name: ENABLE_PROPOSED
+          default: false
+      - bool:
+          name: ENABLE_SECURITY
+          default: true
+      - bool:
+          name: ENABLE_UPDATES
+          default: true
+      - bool:
+          name: ERASE_PREV_ENV
+          default: true
+      - bool:
+          name: SKIP_INSTALL_ENV
+          default: false
+      - bool:
+          name: DISABLE_SSL
+          default: true
+      - bool:
+          name: ADD_TIMESTAMP
+          default: true
+      - choice:
+          name: RALLY_TEMPEST
+          choices:
+            - 'rally_run'
+            - 'run_tempest'
+      - node:
+          name: NODE_LABELS
+          description: |
+            Specify where this job and tested job should be ran on.
+          default: maintenance
+    builders:
+      - trigger-builds:
+        - project: 'maintenance_tempest_non_ceph_tun_8_0_ubuntu'
+          same-node: true
+          block: true
+          predefined-parameters: |
+            TESTRAIL_PLAN_NAME=$TESTRAIL_PLAN_NAME
+            ENABLE_PROPOSED=$ENABLE_PROPOSED
+            ENABLE_SECURITY=$ENABLE_SECURITY
+            ENABLE_UPDATES=$ENABLE_UPDATES
+            ERASE_PREV_ENV=$ERASE_PREV_ENV
+            SKIP_INSTALL_ENV=$SKIP_INSTALL_ENV
+            DISABLE_SSL=$DISABLE_SSL
+            ADD_TIMESTAMP=$ADD_TIMESTAMP
+            RALLY_TEMPEST=$RALLY_TEMPEST
+    project-type: freestyle
+    defaults: global
+    description: 'TUN+VOLUME+IMAGE+SWIFT UBUNTU TEMPEST tests (8.0 maintenance) on node'
+    disabled: false
+    display-name: 'TUN+VOLUME+IMAGE+SWIFT UBUNTU TEMPEST tests (8.0 maintenance) on node'
+    concurrent: false
+    retry-count: 3
+    logrotate:
+      daysToKeep: 5
+      numToKeep: 20
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+    publishers:
+      - email:
+          recipients: vrovachev@mirantis.com
+      - workspace-cleanup:
+          fail-build: false

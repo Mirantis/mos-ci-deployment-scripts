@@ -23,7 +23,11 @@
       - shell:
           !include-raw: 'builders/tempest_runner.sh'
     scm:
-        - dockerfiles
+      - dockerfiles
+      - mirantis-git:
+          reponame: 'mos-ci-deployment-scripts'
+          repobranch: 'origin/master'
+          basedir: 'mos-ci-deployment-scripts'
     project-type: freestyle
     defaults: global
     description: 'Runs Tempest tests'
