@@ -88,8 +88,11 @@ if ${volumes_lvm}; then
     echo "storage_protocol = iSCSI" >> $file
 fi
 
+# Workaround for run on master node. Checkout to tempest commit b39bbce80c69a57c708ed1b672319f111c79bdd5
+deployment=$(docker exec "$DOCK_ID" bash -c "rally deployment list" | awk '/tempest/{print $2}')
+docker exec "$DOCK_ID" bash -c "cd .rally/tempest/for-deployment-${deployment} && git checkout b39bbce80c69a57c708ed1b672319f111c79bdd5"
+
 # Run!
-#docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify reinstall --system-wide --source /var/lib/tempest --version b39bbce80c69a57c708ed1b672319f111c79bdd5"
 docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start --system-wide"
 docker exec "$DOCK_ID" bash -c "rally verify results --json --output-file output.json"
 docker exec "$DOCK_ID" bash -c "rm -rf rally_json2junit && git clone https://github.com/EduardFazliev/rally_json2junit.git && python rally_json2junit/rally_json2junit/results_parser.py output.json"

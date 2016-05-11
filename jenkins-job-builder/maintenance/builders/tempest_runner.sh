@@ -121,7 +121,8 @@ EOF
 elif [ "$RALLY_TEMPEST" == "rally_run" ];then
     sed -i 's|rally verify install --source /var/lib/tempest --no-tempest-venv|rally verify install --source /var/lib/tempest|g' rally-tempest/latest/setup_tempest.sh
     sed -i 's|FROM rallyforge/rally:latest|FROM rallyforge/rally:0.3.1|g' rally-tempest/latest/Dockerfile
-    sed -i 's|RUN git clone https://git.openstack.org/openstack/tempest && \|RUN git clone https://git.openstack.org/openstack/tempest && pushd tempest && git checkout b39bbce80c69a57c708ed1b672319f111c79bdd5 && popd && \|g' rally-tempest/latest/Dockerfile
+    # Workaround for run on master node. install dependencies for tempest commit b39bbce80c69a57c708ed1b672319f111c79bdd5
+    sed -i 's|RUN git clone https://git.openstack.org/openstack/tempest |RUN git clone https://git.openstack.org/openstack/tempest; pushd tempest; git checkout b39bbce80c69a57c708ed1b672319f111c79bdd5; popd |g' rally-tempest/latest/Dockerfile
 
     virtualenv venv
     source venv/bin/activate
