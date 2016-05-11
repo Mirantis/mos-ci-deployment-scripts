@@ -36,11 +36,11 @@
           artifacts: 'openstack_dashboard/test/integration_tests/test_reports/**'
           allow-empty: 'true'
           fingerprint: true
-     - archive:
+      - archive:
          artifacts: 'report.xml'
          allow-empty: 'true'
          fingerprint: true
-     - junit:
+      - junit:
          results: report.xml
       - email:
           recipients: schipiga@mirantis.com
