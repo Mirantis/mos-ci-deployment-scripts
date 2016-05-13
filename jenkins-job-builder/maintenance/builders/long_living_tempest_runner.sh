@@ -56,8 +56,7 @@ check_return_code_after_command_execution() {
 
 # Install updates
 if ${ENABLE_UPDATES}; then
-    wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/maintenance/helpers/long_living_install_updates.sh
-    scp_to_fuel_master long_living_install_updates.sh /root/
+    scp_to_fuel_master mos-ci-deployment-scripts/jenkins-job-builder/maintenance/helpers/long_living_install_updates.sh /root/
     ssh_to_fuel_master 'chmod +x /root/long_living_install_updates.sh && /bin/bash -xe /root/long_living_install_updates.sh > /root/log.log'
 fi
 
@@ -101,6 +100,11 @@ elif [ "$RALLY_TEMPEST" == "rally_run" ];then
     rally_id=$(ssh_to_fuel_master "docker images | awk '/rally/{print $3}'")
     if [ -z "${rally_id}" ]; then
         # Install rally docker
+        sed -i 's|rally verify install --source /var/lib/tempest --no-tempest-venv|rally verify install --source /var/lib/tempest|g' rally-tempest/latest/setup_tempest.sh
+        sed -i 's|FROM rallyforge/rally:latest|FROM rallyforge/rally:0.3.1|g' rally-tempest/latest/Dockerfile
+        # Workaround for run on master node. install dependencies for tempest commit b39bbce80c69a57c708ed1b672319f111c79bdd5
+        sed -i 's|RUN git clone https://git.openstack.org/openstack/tempest |RUN git clone https://git.openstack.org/openstack/tempest; cd tempest; git checkout b39bbce80c69a57c708ed1b672319f111c79bdd5; cd - |g' rally-tempest/latest/Dockerfile
+
         virtualenv venv
         source venv/bin/activate
 
@@ -108,14 +112,13 @@ elif [ "$RALLY_TEMPEST" == "rally_run" ];then
         sudo docker save -o ./dimage rally-tempest
         deactivate
         scp_to_fuel_master dimage /root/rally
-        ssh_to_fuel_master "wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/maintenance/helpers/rally_run.sh"
+        scp_to_fuel_master mos-ci-deployment-scripts/master/jenkins-job-builder/maintenance/helpers/rally_run.sh /root/
         ssh_to_fuel_master "chmod +x rally_run.sh"
         ssh_to_fuel_master "/bin/bash -xe rally_run.sh > /root/log.log"
     else
         rally_run_script=$(ssh_to_fuel_master "ls /root/ | grep long_living_rally_run.sh")
         if [ -z "${rally_run_script}" ]; then
-            wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/maintenance/helpers/long_living_rally_run.sh
-            scp_to_fuel_master long_living_rally_run.sh /root/
+            scp_to_fuel_master mos-ci-deployment-scripts/jenkins-job-builder/maintenance/helpers/long_living_rally_run.sh /root/
             ssh_to_fuel_master 'chmod +x /root/long_living_rally_run.sh'
         fi
         ssh_to_fuel_master "/bin/bash -xe /root/long_living_rally_run.sh > /root/log.log"
