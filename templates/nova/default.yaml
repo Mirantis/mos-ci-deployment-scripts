@@ -104,9 +104,9 @@ template:
         network_config: *rack-01-slave-network_config
         vcpu: 8
         volumes:
-        - {capacity: 55, format: qcow2, name: system}
-        - {capacity: 55, format: qcow2, name: cinder}
-        - {capacity: 55, format: qcow2, name: swift}
+        - {capacity: 100, format: qcow2, name: system}
+        - {capacity: 100, format: qcow2, name: cinder}
+        - {capacity: 100, format: qcow2, name: swift}
 
       rack-01-big-storage-node-params: &big-storage-node-params
         boot: [network, hd]
@@ -115,9 +115,9 @@ template:
         network_config: *rack-01-slave-network_config
         vcpu: 1
         volumes:
-        - {capacity: 150, format: qcow2, name: system}
-        - {capacity: 150, format: qcow2, name: cinder}
-        - {capacity: 150, format: qcow2, name: swift}
+        - {capacity: 100, format: qcow2, name: system}
+        - {capacity: 100, format: qcow2, name: cinder}
+        - {capacity: 100, format: qcow2, name: swift}
 
     env_name: !os_env ENV_NAME
     groups:
