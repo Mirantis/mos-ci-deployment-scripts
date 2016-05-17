@@ -2,18 +2,28 @@
 
 docker load -i /root/rally
 
+fuel_version=$(fuel --version 2>&1)
+
 CONTAINER_MOUNT_HOME_DIR="${CONTAINER_MOUNT_HOME_DIR:-/var/lib/rally-tempest-container-home-dir}"
 CONTROLLER_PROXY_PORT="8888"
 KEYSTONE_API_VERSION="v2.0"
 CA_CERT_PATH="/var/lib/astute/haproxy/public_haproxy.pem"
+ALLOW_REGEXP="9696"
+CONTROLLER_IP="$(fuel node "$@" | awk '/controller/{print $9}' | head -1)"
+if [[ "${fuel_version}" == "6.1.0" ]]; then
+    ALLOW_REGEXP="563"
+fi
+
 APACHE_API_PROXY_CONF_PATH="/etc/apache2/sites-enabled/25-apache_api_proxy.conf"
+if [ -z "$(ssh node-1 "cat /etc/*-release" | grep -i ubuntu)" ]; then
+    APACHE_API_PROXY_CONF_PATH="/etc/httpd/conf.d/25-apache_api_proxy.conf"
+fi
 
 if [ ! -d ${CONTAINER_MOUNT_HOME_DIR} ]; then
     mkdir ${CONTAINER_MOUNT_HOME_DIR}
 fi
 chown 65500 ${CONTAINER_MOUNT_HOME_DIR}
 
-CONTROLLER_IP="$(fuel node "$@" | awk '/controller/{print $9}' | head -1)"
 CONTROLLER_PROXY_URL="http://${CONTROLLER_IP}:${CONTROLLER_PROXY_PORT}"
 scp ${CONTROLLER_IP}:/root/openrc ${CONTAINER_MOUNT_HOME_DIR}/
 chown 65500 ${CONTAINER_MOUNT_HOME_DIR}/openrc
@@ -22,7 +32,7 @@ echo "export HTTPS_PROXY='$CONTROLLER_PROXY_URL'" >> ${CONTAINER_MOUNT_HOME_DIR}
 
 ALLOW_CONNECT="$(ssh ${CONTROLLER_IP} "cat ${APACHE_API_PROXY_CONF_PATH} | grep AllowCONNECT")"
 if [ ! "$(echo ${ALLOW_CONNECT} | grep -o 35357)" ]; then
-    ssh ${CONTROLLER_IP} "sed -i 's/9696/9696 35357/' ${APACHE_API_PROXY_CONF_PATH} && service apache2 restart"
+    ssh ${CONTROLLER_IP} "sed -i 's/${ALLOW_REGEXP}/${ALLOW_REGEXP} 35357/' ${APACHE_API_PROXY_CONF_PATH} && service apache2 restart"
 fi
 
 IS_TLS="$(ssh ${CONTROLLER_IP} ". openrc; keystone catalog --service identity 2>/dev/null | awk '/https/'")"
@@ -53,13 +63,12 @@ ID=$(docker images | awk '/rally/{print $3}')
 echo "ID: ${ID}"
 DOCK_ID=$(docker run -tid -v /var/lib/rally-tempest-container-home-dir:/home/rally --net host "$ID")
 echo "DOCK ID: ${DOCK_ID}"
+
 # Workaround for 8.0 Release
-
-fuel_version=$(fuel --version 2>&1)
-
 if [[ "${fuel_version}" == "8.0.0" ]]; then
     sed -i "s|:5000|:5000/v2.0|g" /var/lib/rally-tempest-container-home-dir/openrc
 fi
+
 # Magic for encrease tempest results
 
 docker exec -u root "$DOCK_ID" sed -i "s|\#swift_operator_role = Member|swift_operator_role=SwiftOperator|g" /etc/rally/rally.conf

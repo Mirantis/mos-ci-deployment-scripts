@@ -89,20 +89,43 @@ enable_public_ip() {
     ssh_to_fuel_master "$WORK_FLDR/net_setup.sh"
 }
 
+wait_up_env() {
+env_id=$(ssh_to_fuel_master "fuel env" | tail -1 | awk '{print $1}')
+ssh_to_fuel_master <<EOF
+for i in {1..60}; do
+    fuel health --env ${env_id} --check ha
+    if [[ $? == "0" ]]; then
+        echo "HA tests are passed"
+        break
+    fi
+    sleep 60
+done
+
+for i in {1..60}; do
+    fuel health --env ${env_id} --check sanity
+    if [[ $? == "0" ]]; then
+        echo "Sanity tests are passed"
+        break
+    fi
+    sleep 60
+done
+EOF
+}
+
 WORK_FLDR=$(ssh_to_fuel_master "mktemp -d")
 ssh_to_fuel_master "chmod 777 $WORK_FLDR"
 enable_public_ip
+wait_up_env
 
 if [ "$RALLY_TEMPEST" == "run_tempest" ];then
 
-    set +e
     echo "Download and install mos-tempest-runner project"
     git clone https://github.com/Mirantis/mos-tempest-runner.git -b stable/${MILESTONE}
     rm -rf mos-tempest-runner/.git*
     scp_to_fuel_master -r mos-tempest-runner $WORK_FLDR
-    ssh_to_fuel_master "$WORK_FLDR/mos-tempest-runner/setup_env.sh" &> ${INSTALL_MOS_TEMPEST_RUNNER_LOG}
-    set -e
-    check_return_code_after_command_execution $? "Install mos-tempest-runner is failure. Please see ${INSTALL_MOS_TEMPEST_RUNNER_LOG}"
+    #ssh_to_fuel_master "ssh $(fuel nodes | grep controller | awk -F'|' '{print $5}' | head -1) \". openrc && keystone service-list 2>/dev/null | grep identity | awk '{print \$2}'\""
+    ssh_to_fuel_master "/bin/bash -x $WORK_FLDR/mos-tempest-runner/setup_env.sh"
+    check_return_code_after_command_execution $? "Install mos-tempest-runner is failure."
 
     echo "Run tempest tests"
     set +e

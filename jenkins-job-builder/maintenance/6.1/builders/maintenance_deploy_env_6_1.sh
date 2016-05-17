@@ -53,7 +53,7 @@ if ${ERASE_PREV_ENV} ; then
 fi
 
 if [ -n "${FILE}" ]; then
-    cat mos-ci-deployment-scripts/jenkins-job-builder/maintenance/helpers/${FILE} > fuel-qa/fuelweb_test/tests/test_services.py
+    cat mos-ci-deployment-scripts/jenkins-job-builder/maintenance/helpers/${FILE} > fuelweb_test/tests/test_services.py
 fi
 
 ###################### Get MIRROR_UBUNTU ###############
