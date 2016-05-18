@@ -11,6 +11,9 @@
             TEST_TYPE=GLANCE
             SEGMENT_TYPE=VLAN
             DISABLE_SSL=TRUE
+            SLAVE_NODE_CPU=2
+            SLAVE_NODE_MEMORY=8192
+            ENABLE_PROPOSED=true
       - trigger-builds:
         - project: '8.0-glance_tests'
           same-node: true
