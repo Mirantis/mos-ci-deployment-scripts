@@ -13,12 +13,15 @@
             DISABLE_SSL=TRUE
             L2_POP_ENABLE=TRUE
             COMPUTES_COUNT=3
+            SLAVE_NODE_CPU=2
+            SLAVE_NODE_MEMORY=8192
+            ENABLE_PROPOSED=true
       - trigger-builds:
         - project: '8.0-NEUTRON_tests_generated_from_template'
           same-node: true
           block: true
           block-thresholds:
-            build-step-failure-threshold: 'never'    
+            build-step-failure-threshold: 'never'
           predefined-parameters: |
             ENV_NAME=maintenance_VxLAN_L2_POP_NEUTRON_8_0
             SNAPSHOT_NAME=ha_deploy_VxLAN_L2_POP_CINDER
