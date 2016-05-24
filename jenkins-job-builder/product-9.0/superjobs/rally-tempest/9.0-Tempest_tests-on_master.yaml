@@ -1,0 +1,64 @@
+ - job:
+     name: 9.0-Tempest_tests-on_master
+     wrappers:
+       - build-name:
+           name: ${BUILD_NUMBER}:${FILE,path="build-name-setter.info"}
+
+     builders:
+         - inject:
+             properties-file: "$ENV_INJECT_PATH"
+         - shell:
+             ##### add_interface.sh script configures new net interface #####
+             ##### for master node in public net                        #####
+             !include-raw: ../../../shell_scripts/add_interface.sh
+         - shell:
+             !include-raw: ../../../shell_scripts/tempest_tests_on_master.sh
+     scm:
+         - dockerfiles
+     project-type: freestyle
+     defaults: global
+     description: 'Runs Tempest tests'
+     disabled: false
+     display-name: '9.0-Tempest_tests-on_master'
+     concurrent: true
+     browser: githubweb
+     retry-count: 3
+     logrotate:
+       daysToKeep: 30
+       artifactDaysToKeep: -1
+       artifactNumToKeep: -1
+
+     publishers:
+       - archive:
+           artifacts: 'log.log'
+           allow-empty: 'true'
+           fingerprint: true
+       - archive:
+           artifacts: 'verification.xml'
+           allow-empty: 'true'
+           fingerprint: true
+       - junit:
+           results: verification.xml
+       - email:
+           recipients: efazliev@mirantis.com
+       - postbuildscript:
+           script-only-if-succeeded: False
+           builders:
+             - shell: |
+                 set +e
+                 REPORT_PATH=`cat ./param.pm`
+                 sudo mkdir -p "$REPORT_PATH"
+                 sudo cp "$REPORT_FILE" "$REPORT_PATH"
+       - workspace-cleanup:
+           fail-build: false
+
+       - postbuildscript:
+           script-only-if-succeeded: False
+           script-only-if-failed: True
+           builders:
+             - shell: |
+                 set +e
+                 REPORT_PATH=`cat ./param.pm`
+                 sudo mkdir -p "$REPORT_PATH"
+                 wget -O verification.xml https://raw.githubusercontent.com/EduardFazliev/mos-ci-deployment-scripts/feature/jjb/jenkins-job-builder/product-9.0/superjobs/rally-tempest/verification.xml.template
+                 sudo cp verification.xml "$REPORT_PATH"

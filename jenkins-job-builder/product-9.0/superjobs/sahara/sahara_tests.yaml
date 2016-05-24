@@ -14,7 +14,7 @@
           default: '/srv/jenkins/sahara'
       - string:
           name: GLANCE_IMAGES
-          default: '/home/jenkins/sahara-images/'
+          default: '/home/jenkins/sahara-images'
     builders:
         - shell: |
             set +e
@@ -50,16 +50,16 @@
             #done
 
             # Temporary for test job
-            sshpass -p 'r00tme' scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no /home/efazliev/sahara-images/sahara-liberty-spark-1.3.1-ubuntu-14.04.qcow2 root@10.109.2.2:/root/
+            sshpass -p 'r00tme' scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ${GLANCE_IMAGES}/sahara-liberty-spark-1.6.0-ubuntu-14.04.qcow2 root@10.109.2.2:/root/
 
             echo 'sed -i "s|:5000/|:5000/v2.0|g" openrc' > controller_script.sh
             echo '. ./openrc' >> controller_script.sh
-            echo 'glance image-create --name sahara-liberty-spark-1.3.1-ubuntu-14.04 --file sahara-liberty-spark-1.3.1-ubuntu-14.04.qcow2 --disk-format qcow2 --container-format bare    --property _sahara_tag_spark=True --property _sahara_tag_1.3.1=True --property _sahara_username=ubuntu' >> controller_script.sh
+            echo 'glance image-create --name sahara-liberty-spark-1.6.0-ubuntu-14.04 --file sahara-liberty-spark-1.6.0-ubuntu-14.04.qcow2 --disk-format qcow2 --container-format bare    --property _sahara_tag_spark=True --property _sahara_tag_1.6.0=True --property _sahara_username=ubuntu' >> controller_script.sh
             sshpass -p 'r00tme' scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ./controller_script.sh root@10.109.2.2:/root/
 
             echo '#!/bin/bash' > remote_script.sh
             echo 'node_num=`fuel node | grep controller | awk '\''{print $1}'\'' | head -n 1`' >> remote_script.sh
-            echo 'scp /root/sahara-liberty-spark-1.3.1-ubuntu-14.04.qcow2 node-"$node_num":/root/' >> remote_script.sh
+            echo 'scp /root/sahara-liberty-spark-1.6.0-ubuntu-14.04.qcow2 node-"$node_num":/root/' >> remote_script.sh
             echo 'scp /root/controller_script.sh node-"$node_num":/root/' >> remote_script.sh
             echo ' echo chmod +x /root/controller_script.sh | ssh -T node-"$node_num" ' >> remote_script.sh
             echo ' echo /bin/bash -x /root/controller_script.sh | ssh -T node-"$node_num" ' >> remote_script.sh
@@ -80,20 +80,21 @@
             echo 'network_public_name: admin_floating_net' >> sahara-conf
             echo 'vanilla_two_six_image: centos_sahara_vanilla_hadoop_2_6_latest' >> sahara-conf
             echo 'vanilla_two_seven_one_image: vanilla271' >> sahara-conf
-            echo 'spark_1_3_image: sahara-liberty-spark-1.3.1-ubuntu-14.04' >> sahara-conf
+            echo 'spark_1_6_image: sahara-liberty-spark-1.6.0-ubuntu-14.04' >> sahara-conf
             echo 'cdh_5_4_0_image: cdh540' >> sahara-conf
             echo 'cluster_name: cluster' >> sahara-conf
             echo 'ci_flavor_id: '\''2'\'' ' >> sahara-conf
             echo 'medium_flavor_id: '\''3'\'' ' >> sahara-conf
             echo 'large_flavor_id: '\''5'\'' ' >> sahara-conf
 
-            tox -e venv -- sahara-scenario -p spark -v 1.3.1 -V ./sahara-conf --verbose --report
+            tox -e venv -- sahara-scenario -p spark -v 1.6.0 -V ./sahara-conf --verbose --report
 
     scm:
         - sahara-tests-repository
     project-type: freestyle
     defaults: global
-    node: Slave-7775
+    #node: Slave-srv98
+    node: Slave-srv150
     description: 'description'
     disabled: false
     display-name: '9.0_SAHARA_TESTS'
@@ -122,13 +123,13 @@
           artifacts: 'sahara-conf'
           allow-empty: 'true'
           fingerprint: true
-#
-#      - archive:
-#          artifacts: 'test.log'
-#          allow-empty: 'true'
-#          fingerprint: true
+
+      - archive:
+          artifacts: 'spark*'
+          allow-empty: 'true'
+          fingerprint: true
 #
 #      - junit:
 #          results: report.xml
-      - workspace-cleanup:
-          fail-build: false
+#      - workspace-cleanup:
+#          fail-build: false

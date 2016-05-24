@@ -1,0 +1,72 @@
+#- job:
+#    name: 9.0-Ceilometer_tests
+#    wrappers:
+#      - build-name:
+#          name: ${BUILD_NUMBER}.${FILE,path="build-name-setter.info"}
+#
+#    builders:
+#        - inject:
+#            properties-file: "$ENV_INJECT_PATH"
+#        - shell: |
+#            set +e
+#            ISO_NAME=`ls "$ISO_DIR"`
+#            ISO_ID=`echo "$ISO_NAME" | cut -f3 -d-`
+#
+#            # Generate file for build-name plugin
+#            SNAPSHOT=`echo $SNAPSHOT_NAME | sed 's/ha_deploy_//'`
+#            echo "$ISO_ID"_"$SNAPSHOT" > build-name-setter.info
+#
+#            ENV_NAME=MOS_CI_"$ISO_NAME"
+#
+#            REPORT_PATH="$REPORT_PREFIX"/"$ENV_NAME"_"$SNAPSHOT_NAME"
+#            echo "BUILD=$BUILD_URL" >> "$ENV_INJECT_PATH"
+#            echo "REPORT_PATH=$REPORT_PATH" >> "$ENV_INJECT_PATH"
+#            echo "$REPORT_PATH" > ./param.pm
+#
+#            virtualenv venv
+#            . venv/bin/activate
+#            pip install -U pip
+#            pip install tox
+#            tox -e ceilometer -- -v -E "$ENV_NAME" -S "$SNAPSHOT_NAME"
+#            deactivate
+#
+#
+#
+#    scm:
+#        - mos-integration-tests-repository
+#    project-type: freestyle
+#    defaults: global
+#    description: 'Ceilometer tests'
+#    disabled: false
+#    display-name: '9.0-Ceilometer_tests'
+#    concurrent: true
+#    browser: githubweb
+#    retry-count: 3
+#    logrotate:
+#      daysToKeep: 30
+#      artifactDaysToKeep: -1
+#      artifactNumToKeep: -1
+#
+#    publishers:
+#      - email:
+#          recipients: efazliev@mirantis.com
+#      - archive:
+#          artifacts: 'report.xml'
+#          allow-empty: 'true'
+#          fingerprint: true
+#      - archive:
+#          artifacts: 'test.log'
+#          allow-empty: 'true'
+#          fingerprint: true
+#      - junit:
+#          results: report.xml
+#      - workspace-cleanup:
+#          fail-build: false
+#      - postbuildscript:
+#          script-only-if-succeeded: False
+#          builders:
+#            - shell: |
+#                set +e
+#                REPORT_PATH=`cat ./param.pm`
+#                sudo mkdir -p "$REPORT_PATH"
+#                sudo cp "$REPORT_FILE" "$REPORT_PATH"

@@ -1,219 +1,36 @@
 - job:
-    parameters:
-      - string:
-          name: ISO_DIR
-          default: "/var/www/fuelweb-iso"
-      - string:
-          name: SNAPSHOT_NAME
-      - string:
-          name: TEST_TYPE
-      - string:
-          name: ERASE_PREV_ENV
-          default: "FALSE"
-      - string:
-          name: SEGMENT_TYPE
-      - string:
-          name: DVR_ENABLE
-          default: "FALSE"
-      - string:
-          name: L3_HA_ENABLE
-          default: "FALSE"
-      - string:
-          name: L2_POP_ENABLE
-          default: "FALSE"
-      - string:
-          name: CEPH_ENABLE
-          default: "FALSE"
-      - string:
-          name: RADOS_ENABLE
-          default: "FALSE"
-      - string:
-          name: SAHARA_ENABLE
-          default: "FALSE"
-      - string:
-          name: MURANO_ENABLE
-          default: "FALSE"
-      - string:
-          name: MONGO_ENABLE
-          default: "FALSE"
-      - string:
-          name: CEILOMETER_ENABLE
-          default: "FALSE"
-      - string:
-          name: DISABLE_SSL
-          default: "TRUE"
-      - string:
-          name: FUEL_DEV_VER
-          default: "2.9.16"
-      - string:
-          name: FUEL_QA_VER
-          default: "stable/8.0"
-      - string:
-          name: ENV_CHANGER
-      - string:
-          name: SLAVE_COMPUTE_NODE_MEMORY
-      - string:
-          name: COMPUTES_COUNT
-          default: "2"
-      - string:
-          name: IRONICS_COUNT
-          default: "0"
-      - string:
-          name: NOVA_QUOTAS_ENABLED
-          default: "FALSE"
-      - string:
-          name: SLAVE_NODE_CPU
-          default: "1"
-      - string:
-          name: SLAVE_NODE_MEMORY
-          default: "4096"
-      - string:
-          name: CHANGE_CONF_YAML
-          default: "NO"
-      - string:
-          name: DEPLOYMENT_TIMEOUT
-          default: "10000"
-      - string:
-          name: MOS_VERSION
-      - string:
-          name: INTERFACE_MODEL
-          default: "virtio"
-      - string:
-          name: KVM_USE
-          default: "TRUE"
-      - string:
-          name: TEMPEST
-          default: "FALSE"
-      - string:
-          name: SEPARATE_SERVICES_COUNT
-          default: "0"
-      - string:
-          name: SEPARATE_SERVICE_RABBIT_ENABLE
-          default: "FALSE"
-      - string:
-          name: SEPARATE_SERVICE_DB_ENABLE
-          default: "FALSE"
-      - string:
-          name: SEPARATE_SERVICE_KEYSTONE_ENABLE
-          default: "FALSE"
-      - string:
-          name: SEPARATE_SERVICE_RABBIT_PLUGIN_PATH
-          default: "/var/www/detach-plugins"
-      - string:
-          name: SEPARATE_SERVICE_DB_PLUGIN_PATH
-          default: "/var/www/detach-plugins"
-      - string:
-          name: SEPARATE_SERVICE_KEYSTONE_PLUGIN_PATH
-          default: "/var/www/detach-plugins"
+    name: (9.0)create_param_environment_from_template
 
-    name: create_param_environment
+
     wrappers:
       - build-name:
           name: ${BUILD_NUMBER}.${FILE,path="build-name-setter.info"}
       - ansicolor
+
     builders:
         - shell: |
-            echo `hostname`
             ISO_NAME=`ls "$ISO_DIR"`
             ENV_NAME=MOS_CI_"$ISO_NAME"
-
-            if [ "$MOS_VERSION" == 'mitaka' ] || [ "$MOS_VERSION" == 'kilo' ] ;
-            then
-            ISO_ID=`echo "$ISO_NAME" | cut -f4 -d-`
-            else
             ISO_ID=`echo "$ISO_NAME" | cut -f3 -d-`
-            fi
+            ISO_PATH="${ISO_DIR}/${ISO_NAME}"
 
+            echo "ENV_NAME=$ENV_NAME" > "$ENV_INJECT_PATH"
+            echo "ISO_ID=$ISO_ID" >> "$ENV_INJECT_PATH"
+            echo "ISO_PATH=$ISO_PATH" >> "$ENV_INJECT_PATH"
 
-            SNAPSHOT=`echo $SNAPSHOT_NAME | sed 's/ha_deploy_//'`
-            echo "$ISO_ID"_"$SNAPSHOT" > build-name-setter.info
+        - inject:
+            properties-file: "$ENV_INJECT_PATH"
 
-            if [ -n "$ENV_CHANGER" ];
-            then
-            ENV_NAME="$ENV_NAME""$ENV_CHANGER"
-            fi
-
-            set +e
-            virtualenv venv
-            . venv/bin/activate
-            UT=`dos.py snapshot-list "$ENV_NAME" || true`
-            OUT=`echo "$UT" | grep "$SNAPSHOT_NAME"`
-            deactivate
-            set -e
-            if [ -n "$OUT" ];
-            then
-            exit 0
-            else
-
-            export ISO_PATH="$ISO_DIR"/"$ISO_NAME"
-            export ENV_NAME="$ENV_NAME"
-            export ERASE_PREV_ENV="$ERASE_PREV_ENV"
-            export SEGMENT_TYPE="$SEGMENT_TYPE"
-            export DVR_ENABLE="$DVR_ENABLE"
-            export L3_HA_ENABLE="$L3_HA_ENABLE"
-            export L2_POP_ENABLE="$L2_POP_ENABLE"
-            export CEPH_ENABLE="$CEPH_ENABLE"
-            export RADOS_ENABLE="$RADOS_ENABLE"
-            export SAHARA_ENABLE="$SAHARA_ENABLE"
-            export MURANO_ENABLE="$MURANO_ENABLE"
-            export MONGO_ENABLE="$MONGO_ENABLE"
-            export CEILOMETER_ENABLE="$CEILOMETER_ENABLE"
-            export IRONIC_ENABLE="$IRONIC_ENABLE"
-            export DISABLE_SSL="$DISABLE_SSL"
-            export FUEL_DEV_VER="$FUEL_DEV_VER"
-            export COMPUTES_COUNT="$COMPUTES_COUNT"
-            export IRONICS_COUNT="$IRONICS_COUNT"
-            export FUEL_QA_VER="$FUEL_QA_VER"
-            export NOVA_QUOTAS_ENABLED="$NOVA_QUOTAS_ENABLED"
-            export SLAVE_NODE_CPU="$SLAVE_NODE_CPU"
-            export SLAVE_NODE_MEMORY="$SLAVE_NODE_MEMORY"
-            export DEPLOYMENT_TIMEOUT="$DEPLOYMENT_TIMEOUT"
-            export INTERFACE_MODEL="$INTERFACE_MODEL"
-            export KVM_USE="$KVM_USE"
-            # SEPARATE SERVICES
-
-            export SEPARATE_SERVICES_COUNT="$SEPARATE_SERVICES_COUNT"
-            export SEPARATE_SERVICE_RABBIT_ENABLE="$SEPARATE_SERVICE_RABBIT_ENABLE"
-            export SEPARATE_SERVICE_DB_ENABLE="$SEPARATE_SERVICE_DB_ENABLE"
-            export SEPARATE_SERVICE_KEYSTONE_ENABLE="$SEPARATE_SERVICE_KEYSTONE_ENABLE"
-
-
-            if [[ "$SEPARATE_SERVICE_RABBIT_ENABLE" == 'TRUE' ]]; then
-            export SEPARATE_SERVICE_RABBIT_PLUGIN_PATH=`ls "${SEPARATE_SERVICE_RABBIT_PLUGIN_PATH}"/detach-rabbitmq-*.rpm`
-            fi
-
-            if [[ "$SEPARATE_SERVICE_DB_ENABLE" == 'TRUE' ]]; then
-            export SEPARATE_SERVICE_DB_PLUGIN_PATH=`ls "${SEPARATE_SERVICE_DB_PLUGIN_PATH}"/detach-database-*.rpm`
-            fi
-
-            if [[ "$SEPARATE_SERVICE_KEYSTONE_ENABLE" == 'TRUE' ]]; then
-            export SEPARATE_SERVICE_KEYSTONE_PLUGIN_PATH=`ls "${SEPARATE_SERVICE_KEYSTONE_PLUGIN_PATH}"/detach-keystone-*.rpm`
-            fi
-
-
-            if [[ "$TEMPEST" == 'TRUE' ]];
-            then
-
-            sed -i '181i\         - label: eth1' mos_tests_template.yaml
-            sed -i '182i\           l2_network_device: public' mos_tests_template.yaml
-
-            echo '          eth1:' >> mos_tests_template.yaml
-            echo '            networks:' >> mos_tests_template.yaml
-            echo '             - public' >> mos_tests_template.yaml
-
-            fi
-
-            /bin/bash -x deploy_env.sh
-
-            fi
+        - shell:
+            !include-raw: ../shell_scripts/deploy_env_from_template.sh
 
     project-type: freestyle
     defaults: global
     scm:
-       - mos-ci-deployment-scripts
+       - 9.0-mos-ci-deployment-scripts
     description: 'Create environment with parameters, specified by PARAM string.'
     disabled: false
-    display-name: 'Create Parameterized Environment'
+    display-name: '(9.0)Create Parameterized Environment From Template'
     concurrent: true
     browser: githubweb
     retry-count: 3

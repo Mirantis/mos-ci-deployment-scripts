@@ -1,0 +1,109 @@
+#- job:
+#    name: 9.0-superjob_for_VLAN_NOVA-mitaka
+#    builders:
+#      - shell:
+#          !include-raw: ../../../shell_scripts/get_iso_and_erase_env.sh
+#      - trigger-builds:
+#        - project: '9.0_create_param_environment'
+#          same-node: true
+#          block: true
+#          predefined-parameters: |
+#            SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
+#            TEST_TYPE=NEUTRON
+#            SEGMENT_TYPE=VLAN
+#            # Until bug with Murano is resolved
+#            # MURANO_ENABLE=TRUE
+#            DISABLE_SSL=TRUE
+#            CONTROLLERS_COUNT=1
+#            COMPUTES_COUNT=2
+#            SLAVE_NODE_CPU=8
+#            SLAVE_NODE_MEMORY=17408
+#            NODE_VOLUME_SIZE=200
+#            MOS_VERSION=all
+#            KVM_USE=TRUE
+#
+#      - trigger-builds:
+#        - project: '9.0-HEAT_tests_generated_from_template'
+#          same-node: true
+#          block: true
+#          block-thresholds:
+#            build-step-failure-threshold: 'never'
+#          predefined-parameters: |
+#            SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
+#            MOS_VERSION=all
+#      - trigger-builds:
+#        - project: 'test_rail_reporter'
+#          same-node: true
+#          block: true
+#          block-thresholds:
+#            build-step-failure-threshold: 'never'
+#          predefined-parameters: |
+#            SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
+#            TEST_GROUP=Heat
+#            REPORT_PREFIX=/srv/jenkins/heat
+#            MOS_VERSION=all
+#            MILESTONE=9.0
+#            SUITE=[9.0][MOSQA] Automated Cloud Testing
+#
+#      - trigger-builds:
+#        - project: '9.0-NOVA_tests_generated_from_template'
+#          same-node: true
+#          block: true
+#          block-thresholds:
+#            build-step-failure-threshold: 'never'
+#          predefined-parameters: |
+#            SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
+#            MOS_VERSION=all
+#      - trigger-builds:
+#        - project: 'test_rail_reporter'
+#          same-node: true
+#          block: true
+#          block-thresholds:
+#            build-step-failure-threshold: 'never'
+#          predefined-parameters: |
+#            SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
+#            TEST_GROUP=Nova
+#            REPORT_PREFIX=/srv/jenkins/nova
+#            MOS_VERSION=all
+#            MILESTONE=9.0
+#            SUITE=[9.0][MOSQA] Automated Cloud Testing
+#
+#      - trigger-builds:
+#        - project: '9.0-CINDER_tests_generated_from_template'
+#          same-node: true
+#          block: true
+#          block-thresholds:
+#            build-step-failure-threshold: 'never'
+#          predefined-parameters: |
+#            SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
+#            MOS_VERSION=all
+#      - trigger-builds:
+#        - project: 'test_rail_reporter'
+#          same-node: true
+#          block: true
+#          block-thresholds:
+#            build-step-failure-threshold: 'never'
+#          predefined-parameters: |
+#            SNAPSHOT_NAME=ha_deploy_VLAN_CINDER
+#            TEST_GROUP=Cinder
+#            REPORT_PREFIX=/srv/jenkins/cinder
+#            MOS_VERSION=all
+#            MILESTONE=9.0
+#            SUITE=[9.0][MOSQA] Automated Cloud Testing
+#
+#    triggers:
+#        - timed: "50 20 * * *"
+#    project-type: freestyle
+#    defaults: global
+#    node: Slave-7777
+#    description: 'VLAN NOVA tests with reporting to TestRail in a row.'
+#    disabled: false
+#    display-name: '9.0-mitaka VLAN HEAT NOVA'
+#    concurrent: false
+#    retry-count: 3
+#    logrotate:
+#      daysToKeep: 5
+#      numToKeep: 20
+#      artifactDaysToKeep: -1
+#      artifactNumToKeep: -1
+#
