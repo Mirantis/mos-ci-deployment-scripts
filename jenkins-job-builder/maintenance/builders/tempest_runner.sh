@@ -31,7 +31,7 @@ VM_USERNAME=${vm_master_username:-"root"}
 VM_PASSWORD=${vm_master_password:-"r00tme"}
 
 
-SSH_OPTIONS="-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
+SSH_OPTIONS="-o ConnectTimeout=20 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
 ssh_to_fuel_master() {
     #   $1 - command
     SSH_CMD="sshpass -p ${VM_PASSWORD} ssh ${SSH_OPTIONS} ${VM_USERNAME}@${VM_IP}"
@@ -90,26 +90,30 @@ enable_public_ip() {
 }
 
 wait_up_env() {
+set +e
 env_id=$(ssh_to_fuel_master "fuel env" | tail -1 | awk '{print $1}')
-ssh_to_fuel_master <<EOF
 for i in {1..60}; do
-    fuel health --env ${env_id} --check ha
-    if [[ $? == "0" ]]; then
+    failure=$(ssh_to_fuel_master "fuel health --env ${env_id} --check ha" | grep failure)
+    if [[ -z "${failure}" ]]; then
         echo "HA tests are passed"
         break
+    else
+        echo "failed HA tests: ${failure}"
     fi
     sleep 60
 done
 
 for i in {1..60}; do
-    fuel health --env ${env_id} --check sanity
-    if [[ $? == "0" ]]; then
+    failure=$(ssh_to_fuel_master "fuel health --env ${env_id} --check sanity" | grep failure)
+    if [[ -z "${failure}" ]]; then
         echo "Sanity tests are passed"
         break
+    else
+        echo "failed Sanity tests: ${failure}"
     fi
     sleep 60
 done
-EOF
+set -e
 }
 
 WORK_FLDR=$(ssh_to_fuel_master "mktemp -d")
@@ -162,5 +166,9 @@ elif [ "$RALLY_TEMPEST" == "rally_run" ];then
 
     scp_from_fuel_master /var/lib/rally-tempest-container-home-dir/verification.xml ./
 fi;
-
+set +e
 scp_from_fuel_master $WORK_FLDR/log.log ./
+source ${VENV_PATH}/bin/activate
+dos.py snapshot --snapshot-name after-tempest-$(date +%d-%m-%Y_%H:%M) $ENV_NAME
+dos.py destroy $ENV_NAME
+deactivate

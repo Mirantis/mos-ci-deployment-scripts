@@ -109,7 +109,7 @@ class TempestTest_6_1(TestBasic):
                 'images_ceph': False,
                 'objects_ceph': False,
                 'volumes_lvm': True,
-                'sahara': False,
+                'sahara': True,
                 'murano': False,
                 'ceilometer': False,
             }
