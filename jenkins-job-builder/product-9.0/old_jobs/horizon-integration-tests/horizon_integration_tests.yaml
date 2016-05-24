@@ -1,0 +1,90 @@
+#- job:
+#    name: horizon_integration_tests
+#    project-type: freestyle
+#
+#    wrappers:
+#      - build-name:
+#          name: ${{BUILD_NUMBER}}.${{FILE,path="build-name-setter.info"}}
+#    parameters:
+#      - string:
+#          name: ISO_DIR
+#          default: '/var/www/fuelweb-iso'
+#      - string:
+#          name: SNAPSHOT_NAME
+#      - string:
+#          name: REPORT_PREFIX
+#          default: '/srv/jenkins/horizon'
+#
+#    builders:
+#      - shell: |
+#          set +e
+#          ISO_NAME=`ls "$ISO_DIR"`
+#          ISO_ID=`echo "$ISO_NAME" | cut -f3 -d-`
+#          # Generate file for build-name plugin
+#          SNAPSHOT=`echo $SNAPSHOT_NAME | sed 's/ha_deploy_//'`
+#          echo "$ISO_ID"_"$SNAPSHOT" > build-name-setter.info
+#          ENV_NAME=MOS_CI_"$ISO_NAME"
+#
+#          # Storing path for xml reports, that will be used in
+#          # report_to_testrail job
+#          REPORT_PATH="$REPORT_PREFIX"/"$ENV_NAME"_"$SNAPSHOT_NAME"
+#          echo "$REPORT_PATH" > ./param.pm
+#          echo "$BUILD_URL" > ./build_url
+#
+#          sudo apt-get update
+#          sudo apt-get -y install firefox xvfb python-virtualenv
+#
+#          virtualenv venv
+#          . venv/bin/activate
+#          pip install -U pip
+#          pip install -r requirements.txt -r test-requirements.txt
+#
+#          export DASHBOARD_URL='http://10.109.4.3/horizon'
+#          ./run_tests.sh -N --integration --selenium-headless --skip-new-design --with-xunit --xunit-file=report.xml
+#
+#          deactivate
+#
+#    defaults: global
+#    node: Slave-srv131
+#    scm:
+#      - horizon-integration-tests-repository
+#    description: 'Runs Horizon Inegration Tests'
+#    disabled: false
+#    display-name: 'Horizon Inegration Tests'
+#    concurrent: true
+#    retry-count: 3
+#    logrotate:
+#      daysToKeep: 5
+#      numToKeep: 20
+#      artifactDaysToKeep: -1
+#      artifactNumToKeep: -1
+#    publishers:
+#      - postbuildscript:
+#          script-only-if-succeeded: False
+#          builders:
+#            - shell: |
+#                set -e
+#                REPORT_PATH=`cat ./param.pm`
+#                sudo mkdir -p "$REPORT_PATH"
+#                sudo cp report.xml "$REPORT_PATH"
+#                sudo cp build_url "$REPORT_PATH"
+#      - archive:
+#          artifacts: 'openstack_dashboard/test/integration_tests/integration_tests_screenshots/**'
+#          allow-empty: 'true'
+#          fingerprint: true
+#      - archive:
+#          artifacts: 'report.xml'
+#          allow-empty: 'true'
+#          fingerprint: true
+#      - junit:
+#          results: report.xml
+##      - archive:
+##          artifacts: 'verification.xml'
+##          allow-empty: 'true'
+##          fingerprint: true
+##      - junit:
+##          results: verification.xml
+#      - email:
+#          recipients: schipiga@mirantis.com
+#      - workspace-cleanup:
+#          fail-build: false

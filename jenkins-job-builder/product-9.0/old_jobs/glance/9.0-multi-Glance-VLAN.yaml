@@ -1,0 +1,108 @@
+#- job:
+#    name: (9.0)(multi)Glance(VLAN)
+#    project-type: multijob
+#
+#    parameters:
+#        #EnvInject file
+#        - string:
+#            name: ENV_INJECT_PATH
+#            default: "/home/jenkins/env_inject.properties"
+#
+#        # Deploy environment parameters
+#        - string:
+#            name: ISO_DIR
+#            default: "/var/www/fuelweb-iso"
+#        - string:
+#            name: INTERFACE_MODEL
+#            default: "virtio"
+#        - string:
+#            name: DISABLE_SSL
+#            default: "TRUE"
+#        - string:
+#            name: FUEL_DEV_VER
+#            default: "2.9.19"
+#        - string:
+#            name: FUEL_QA_VER
+#            default: "master"
+#        - string:
+#            name: NOVA_QUOTAS_ENABLED
+#            default: "FALSE"
+#        - string:
+#            name: DEPLOYMENT_TIMEOUT
+#            default: "10000"
+#        - string:
+#            name: CONFIG_PATH
+#            default: "./templates/glance/swift.yaml"
+#
+#        # TestRail Reporter parameters
+#        - string:
+#            name: TEST_GROUP
+#            default: "Glance(VLAN)"
+#        - string:
+#            name: TESTRAIL_FILE
+#            default: "/var/www/test_rail/user.sh"
+#        - string:
+#            name: REPORT_PREFIX
+#            default: "/srv/jenkins/glance"
+#        - string:
+#            name: REPORT_FILE
+#            default: "report.xml"
+#        - string:
+#            name: SUITE
+#            default: "[9.0][MOSQA] Automated Cloud Testing"
+#        - string:
+#            name: MILESTONE
+#            default: "9.0"
+#        - string:
+#            name: TEMPEST
+#            default: "FALSE"
+#        - string:
+#            name: TESTRAIL_TEMPEST
+#            default: "FALSE"
+#
+#    builders:
+#      - shell:
+#          !include-raw: ../../../shell_scripts/get_iso_and_erase_env.sh
+#      - multijob:
+#          name: Deploy_Env
+#          condition: COMPLETED
+#          projects:
+#              - name: (9.0)create_param_environment_from_template
+#                current-parameters: true
+#                node-label: Slave-srv150
+#                node-label-name: Slave-srv150
+#                abort-all-job: true
+#      - multijob:
+#          name: Run_Glance_Tests
+#          condition: COMPLETED
+#          projects:
+#              - name: 9.0-Glance_tests
+#                current-parameters: true
+#                node-label: Slave-srv150
+#                node-label-name: Slave-srv150
+#                abort-all-job: true
+#      - multijob:
+#          name: Report To TestRail
+#          condition: COMPLETED
+#          projects:
+#              - name: (for_multi)testrail_reporter
+#                current-parameters: true
+#                node-label: Slave-srv150
+#                node-label-name: Slave-srv150
+#                abort-all-job: true
+#
+#    triggers:
+#        - timed: "50 20 * * *"
+#
+#    defaults: global
+#    node: Slave-srv150
+#    description: 'Glance tests(VLAN)'
+#    disabled: true
+#    display-name: '(9.0)(multi)Glance Tests(VLAN)'
+#    concurrent: false
+#    retry-count: 3
+#    logrotate:
+#      daysToKeep: 5
+#      numToKeep: 20
+#      artifactDaysToKeep: -1
+#      artifactNumToKeep: -1
