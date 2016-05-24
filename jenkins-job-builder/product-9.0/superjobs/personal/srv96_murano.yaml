@@ -1,0 +1,26 @@
+- job:
+    name: srv96_murano
+    builders:
+      - trigger-builds:
+        - project: '9.0_create_param_environment'
+          same-node: true
+          block: true
+          block-thresholds:
+            build-step-failure-threshold: 'never'
+          predefined-parameters: |
+            SEGMENT_TYPE=VLAN
+            DISABLE_SSL=TRUE
+            MURANO_ENABLE=TRUE
+    project-type: freestyle
+    defaults: global
+    node: Slave-srv96
+    description: 'Deploy murano'
+    disabled: true
+    display-name: 'srv96_murano'
+    concurrent: false
+    retry-count: 3
+    logrotate:
+      daysToKeep: 30
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+

@@ -1,0 +1,175 @@
+#- job:
+#    name: 9.0-multi-Tempest-Ceph_SSL
+#    project-type: multijob
+#
+#    parameters:
+#        # EnvInject file
+#        - string:
+#            name: ENV_INJECT_PATH
+#            default: "/home/efazliev/env_inject.properties"
+#
+#        ################################
+#        # Deploy environment parameters#
+#        ################################
+#
+#        # Parameter template
+#        # - string:
+#        #     name:
+#        #     default: ""
+#
+#        # Common parameters
+#        - string:
+#            name: DEPLOYMENT_TIMEOUT
+#            default: "15000"
+#        - string:
+#            name: ISO_DIR
+#            default: "/var/www/fuelweb-iso"
+#
+#        # Components
+#        - string:
+#            name: SEGMENT_TYPE
+#            default: "VLAN"
+#        - string:
+#            name: LVM_ENABLE
+#            default: "FALSE"
+#        - string:
+#            name: CINDER_ENABLE
+#            default: "FALSE"
+#        - string:
+#            name: CEPH_ENABLE
+#            default: "TRUE"
+#        - string:
+#            name: RADOS_ENABLE
+#            default: "TRUE"
+#        - string:
+#            name: CEPH_GLANCE_ENABLE
+#            default: "TRUE"
+#        - string:
+#            name: REPLICA_CEPH
+#            default: "TRUE"
+#        - string:
+#            name: IRONIC_ENABLE
+#            default: "TRUE"
+#        - string:
+#            name: NOVA_QUOTAS_ENABLED
+#            default: "TRUE"
+#
+#        # Node parameters
+#        - string:
+#            name: IRONICS_COUNT
+#            default: "1"
+#        - string:
+#            name: CONTROLLERS_COUNT
+#            default: "1"
+#        - string:
+#            name: COMPUTES_COUNT
+#            default: "2"
+#        - string:
+#            name: SLAVE_NODE_CPU
+#            default: "2"
+#        - string:
+#            name: SLAVE_NODE_MEMORY
+#            default: "8192"
+#
+#        # SSL parameters
+#        - string:
+#            name: DISABLE_SSL
+#            default: "FALSE"
+#        - string:
+#            name: USER_OWNED_CERT
+#            default: "FALSE"
+#
+#        # TestRail Reporter parameters
+#        - string:
+#            name: TESTRAIL_FILE
+#            default: "/var/www/test_rail/user.sh"
+#        - string:
+#            name: REPORT_FILE
+#            default: "verification.xml"
+#        - string:
+#            name: REPORT_PREFIX
+#            default: "/srv/jenkins/rally-tempest"
+#        - string:
+#            name: CEPH_SKIP_TESTS
+#            default: "TRUE"
+#        - string:
+#            name: TEST_GROUP
+#            default: "Tempest,Ceph,Ironic,SSL"
+#
+#        - string:
+#            name: SUITE
+#            default: "[9.0][MOSQA] Tempest 9.0"
+#        - string:
+#            name: MILESTONE
+#            default: "9.0"
+#        - string:
+#            name: TEMPEST
+#            default: "FALSE"
+#            #####For tempest running on master#####
+#            #####default: "TRUE"                  #
+#            #######################################
+#        - string:
+#            name: TESTRAIL_TEMPEST
+#            default: "TRUE"
+#
+#        # Test parameters
+#        - string:
+#            name: LVM_CINDER_FIX
+#            default: "FALSE"
+#        - string:
+#            name: CEPH_RADOS
+#            default: "TRUE"
+#
+#    builders:
+#      - shell:
+#          !include-raw: ../../../shell_scripts/snapshot_name_generator.sh
+#      - shell:
+#          !include-raw: ../../../shell_scripts/get_iso_and_erase_env.sh
+#
+#      - multijob:
+#          name: Deploy_Env
+#          condition: COMPLETED
+#          projects:
+#              - name: 9.0_create_param_environment
+#                current-parameters: true
+#                same-node: true
+#                node-label: Slave-7775
+#                node-label-name: Slave-7775
+#                abort-all-job: true
+#
+#      - multijob:
+#          name: Run_Tempest
+#          condition: COMPLETED
+#          projects:
+#              - name: 9.0-Tempest_tests-on_controller
+#                current-parameters: true
+#                same-node: true
+#                node-label: Slave-7775
+#                node-label-name: Slave-7775
+#                abort-all-job: true
+#      - multijob:
+#          name: Report To TestRail
+#          condition: COMPLETED
+#          projects:
+#              - name: (for_multi)testrail_reporter
+#                current-parameters: true
+#                same-node: true
+#                node-label: Slave-7775
+#                node-label-name: Slave-7775
+#                abort-all-job: true
+#
+#    triggers:
+#        - timed: "50 20 * * *"
+#
+#    defaults: global
+#    node: Slave-7775
+#    description: 'Tempest Ceph SSL'
+#    disabled: false
+#    display-name: '9.0-multi-Tempest-Ceph_Ironic_SSL'
+#    concurrent: false
+#    retry-count: 3
+#    logrotate:
+#      daysToKeep: 5
+#      numToKeep: 20
+#      artifactDaysToKeep: -1
+#      artifactNumToKeep: -1

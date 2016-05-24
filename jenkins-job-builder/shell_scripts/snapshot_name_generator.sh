@@ -1,6 +1,4 @@
-#!/usr/bin/env bash
-# This script allows to deploy OpenStack environments
-# using simple configuration file
+set -x
 
 boolean(){
     eval val=\$$1
@@ -44,7 +42,7 @@ set_default(){
 
 ISO_NAME=`ls "$ISO_DIR"`
 ENV_NAME=MOS_CI_"$ISO_NAME"
-ISO_ID=`echo "$ISO_NAME" | cut -f3 -d-`
+ISO_ID=`echo "$ISO_NAME" | cut -f4 -d-`
 
 export ISO_PATH="$ISO_DIR"/"$ISO_NAME"
 export ENV_NAME="$ENV_NAME"
@@ -157,4 +155,4 @@ then
     SNAPSHOT_NAME="${SNAPSHOT_NAME}_LDAP"
 fi
 
-echo "SNAPSHOT_NAME=${SNAPSHOT_NAME}" > "${ENV_INJECT_PATH}"
+echo "SNAPSHOT_NAME=${SNAPSHOT_NAME}" >> "${ENV_INJECT_PATH}"

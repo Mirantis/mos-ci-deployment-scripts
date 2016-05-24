@@ -1,0 +1,126 @@
+- job-template:
+    name: '9.0_keystone_{name}'
+
+    wrappers:
+      - build-name:
+          name: ${{BUILD_NUMBER}}.${{FILE,path="build-name-setter.info"}}
+
+    properties:
+      - heavy-job:
+          weight: '{weight}'
+
+    parameters:
+        #EnvInject file
+        - string:
+            name: ENV_INJECT_PATH
+            default: '{env_inject_file}'
+
+        ##### Environment parameters #####
+        - string:
+            name: ISO_DIR
+            default: "/var/www/fuelweb-iso"
+        - string:
+            name: ENV_CHANGER
+            default: '{env_changer}'
+        - string:
+            name: DISABLE_SSL
+            default: "TRUE"
+        - string:
+            name: NOVA_QUOTAS_ENABLED
+            default: "FALSE"
+        - string:
+            name: DEPLOYMENT_TIMEOUT
+            default: "10000"
+        - string:
+            name: CONFIG_PATH
+            default: '{config_path}'
+
+        ##### TestRail Parameters #####
+        - string:
+            name: TESTRAIL_TEMPLATE_ALTER
+            default: "FALSE"
+        - string:
+            name: TEST_GROUP
+            default: '{test_group}'
+        - string:
+            name: TESTRAIL_FILE
+            default: "/var/www/test_rail/user.sh"
+        - string:
+            name: REPORT_PREFIX
+            default: "/srv/jenkins/nova-windows"
+        - string:
+            name: REPORT_FILE
+            default: "report.xml"
+        - string:
+            name: SUITE
+            default: "[9.0][MOSQA] Automated Cloud Testing"
+        - string:
+            name: MILESTONE
+            default: "9.0"
+
+    builders:
+        - shell:
+            !include-raw: ../../shell_scripts/template_scripts/env_variables_export.sh
+        - inject:
+            properties-file: "$ENV_INJECT_PATH"
+        - shell:
+            !include-raw: ../../shell_scripts/template_scripts/tox_based_test_runner.sh
+        - inject:
+            properties-file: "$ENV_INJECT_PATH"
+        - shell:
+            !include-raw: ../../shell_scripts/template_scripts/testrail_reporter.sh
+
+    triggers:
+        - timed: '{start_timer}'
+
+    defaults: global
+    node: '{node}'
+    description: '{description}'
+    disabled: false
+    display-name: '{display_name}'
+    concurrent: false
+    retry-count: 3
+    logrotate:
+      daysToKeep: 30
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+
+    publishers:
+      - email:
+          recipients: '{email-recipients}'
+
+      - postbuildscript:
+          script-only-if-succeeded: False
+
+      - archive:
+          artifacts: 'report.xml'
+          allow-empty: 'true'
+          fingerprint: true
+
+      - archive:
+          artifacts: '*.log'
+          allow-empty: 'true'
+          fingerprint: true
+
+      - junit:
+          results: report.xml
+
+      - workspace-cleanup:
+          fail-build: false
+
+- project:
+    name: keystone
+    weight: 2
+    iso_dir: /var/www/fuelweb-iso
+    env_changer: _vlan
+    env_inject_file: env_inject_vlan_keystone.properties
+    config_path: templates/neutron/vlan_qos.yaml
+    test_group: Keystone
+    start_timer: "0 23 * * *"
+    node: Slave-7774
+    description: Keystone tests
+    display_name: 9.0_Keystone_VLAN
+    email-recipients: efazliev@mirantis.net
+    tox_test_name: keystone
+    jobs:
+      - '9.0_keystone_{name}'

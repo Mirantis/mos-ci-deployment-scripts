@@ -24,6 +24,9 @@
           name: REPORT_FILE
           default: report.xml
       - string:
+          name: HORIZON
+          default: "FALSE"
+      - string:
           name: SUITE
       - string:
           name: MILESTONE
@@ -79,7 +82,12 @@
             set +e
             BUILD=`cat "$REPORT_PREFIX"/"$ENV_NAME"_"$SNAPSHOT_NAME"/build_url`
             set -e
+
+            if [[ "$HORIZON" == 'TRUE' ]]; then
+            report -v --iso-id "$ISO_ID" --env-description "$SNAPSHOT-$TEST_GROUP" --testrail-url  "${TESTRAIL_URL}" --testrail-user  "${TESTRAIL_USER}" --testrail-password "${TESTRAIL_PASSWORD}" --testrail-project "${TESTRAIL_PROJECT}" --testrail-milestone "${TESTRAIL_MILESTONE}" --testrail-suite "${TESTRAIL_SUITE}" --test-results-link "$BUILD" "$REPORT_XML" --testrail-name-template '{custom_test_group}.{title}' --xunit-name-template '{classname}.{methodname}'
+            else
             report -v --iso-id "$ISO_ID" --env-description "$SNAPSHOT-$TEST_GROUP" --testrail-url  "${TESTRAIL_URL}" --testrail-user  "${TESTRAIL_USER}" --testrail-password "${TESTRAIL_PASSWORD}" --testrail-project "${TESTRAIL_PROJECT}" --testrail-milestone "${TESTRAIL_MILESTONE}" --testrail-suite "${TESTRAIL_SUITE}" --test-results-link "$BUILD" "$REPORT_XML"
+            fi
 
     scm:
       - test-rail-reporter-master
@@ -92,10 +100,10 @@
     browser: githubweb
     retry-count: 3
     logrotate:
-      daysToKeep: 20
-      numToKeep: 50
+      daysToKeep: 30
       artifactDaysToKeep: -1
       artifactNumToKeep: -1
+
     publishers:
       - email:
           recipients: efazliev@mirantis.com, sturivnyi@mirantis.com, obutenko@mirantis.com
