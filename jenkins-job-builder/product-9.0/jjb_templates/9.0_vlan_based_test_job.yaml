@@ -102,6 +102,11 @@
           allow-empty: 'true'
           fingerprint: true
 
+      - archive:
+          artifacts: 'mos-integration-tests/snapshots/*'
+          allow-empty: 'true'
+          fingerprint: true
+
       - junit:
           results: report.xml
 
