@@ -102,6 +102,11 @@
       - archive:
           artifacts: 'report.xml'
           allow-empty: 'true'
+          fingerprint: 'true'
+
+      - archive:
+          artifacts: 'mos-integration-tests/snapshots/**'
+          allow-empty: 'true'
           fingerprint: true
 
       - archive:

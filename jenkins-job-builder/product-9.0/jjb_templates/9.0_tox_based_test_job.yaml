@@ -104,6 +104,11 @@
           fingerprint: true
 
       - archive:
+          artifacts: 'mos-integration-tests/snapshots/*'
+          allow-empty: 'true'
+          fingerprint: true
+
+      - archive:
           artifacts: '*.log'
           allow-empty: 'true'
           fingerprint: true
