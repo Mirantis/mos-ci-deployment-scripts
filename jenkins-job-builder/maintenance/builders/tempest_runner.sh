@@ -17,11 +17,11 @@ get_master_ip(){
 
 source ${VENV_PATH}/bin/activate
 
-if [ "$(echo $MILESTONE | cut -c 1)" -ge "8" ]; then
-    dos.py revert-resume $ENV_NAME $SNAPSHOT_NAME
-else
-    dos.py revert-resume $ENV_NAME --snapshot-name $SNAPSHOT_NAME
-fi
+#if [ "$(echo $MILESTONE | cut -c 1)" -ge "8" ]; then
+dos.py revert-resume $ENV_NAME $SNAPSHOT_NAME
+#else
+#    dos.py revert-resume $ENV_NAME --snapshot-name $SNAPSHOT_NAME
+#fi
 
 VM_IP=$(get_master_ip)
 VM_IP=${VM_IP:-"10.109.0.2"}
@@ -113,6 +113,17 @@ for i in {1..60}; do
     fi
     sleep 60
 done
+
+for i in {1..60}; do
+    failure=$(ssh_to_fuel_master "fuel health --env ${env_id} --check smoke" | grep failure)
+    if [[ -z "${failure}" ]]; then
+        echo "Smoke tests are passed"
+        break
+    else
+        echo "failed Smoke tests: ${failure}"
+    fi
+    sleep 60
+done
 set -e
 }
 
@@ -169,6 +180,7 @@ fi;
 set +e
 scp_from_fuel_master $WORK_FLDR/log.log ./
 source ${VENV_PATH}/bin/activate
-dos.py snapshot --snapshot-name after-tempest-$(date +%d-%m-%Y_%H:%M) $ENV_NAME
+#dos.py snapshot --snapshot-name after-tempest-$(date +%d-%m-%Y_%H:%M) $ENV_NAME
+dos.py snapshot $ENV_NAME after-tempest-$(date +%d-%m-%Y_%H:%M)
 dos.py destroy $ENV_NAME
 deactivate

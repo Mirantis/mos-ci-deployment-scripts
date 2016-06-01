@@ -24,7 +24,7 @@
           name: 'update_release_master'
           default: true
       - bool:
-          name: FORCE_DELETE_DEVOPS
+          name: 'FORCE_DELETE_DEVOPS'
           default: false
           description: 'Force to delete devops venv before update'
       - bool:
