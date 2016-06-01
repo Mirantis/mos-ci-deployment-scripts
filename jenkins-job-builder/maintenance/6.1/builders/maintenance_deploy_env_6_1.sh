@@ -138,7 +138,7 @@ fi
 export ENV_NAME=$ENV_NAME
 export ADMIN_NODE_CPU=1
 export ADMIN_NODE_MEMORY=4096
-export SLAVE_NODE_CPU=3
+export SLAVE_NODE_CPU=4
 export SLAVE_NODE_MEMORY=16384
 export DISABLE_SSL=$DISABLE_SSL
 export NOVA_QUOTAS_ENABLED=true
@@ -146,4 +146,4 @@ export KVM_USE=true
 export BONDING=$BONDING
 export OPENSTACK_RELEASE=$OPENSTACK_RELEASE
 
-./utils/jenkins/system_tests.sh -k -K -j fuelweb_test -t test -w $(pwd) -e "$ENV_NAME" -o --group="$GROUP" -i "$ISO_PATH"
+./utils/jenkins/system_tests.sh -j fuelweb_test -t test -w $(pwd) -e "$ENV_NAME" -o --group="$GROUP" -i "$ISO_PATH"
