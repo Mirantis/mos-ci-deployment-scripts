@@ -133,6 +133,7 @@
     display_name: 9.0_Glance(Swift)_OS
     email-recipients: efazliev@mirantis.net
     tox_test_name: object_storage
+    tox_properties: blabla
     jobs:
       - '9.0_tox_{name}'
 
@@ -151,6 +152,7 @@
     description: Glance Ceph tests
     display_name: 9.0_Glance(Ceph)_OS
     email-recipients: efazliev@mirantis.net
+    tox_properties: blabla
     tox_test_name: object_storage
     jobs:
       - '9.0_tox_{name}'
