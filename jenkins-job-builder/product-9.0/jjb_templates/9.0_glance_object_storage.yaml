@@ -84,7 +84,7 @@
     defaults: global
     node: '{node}'
     description: '{description}'
-    disabled: true
+    disabled: false
     display-name: '{display_name}'
     concurrent: false
     retry-count: 3
