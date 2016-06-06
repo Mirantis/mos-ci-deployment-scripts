@@ -75,8 +75,6 @@
             properties-file: "$ENV_INJECT_PATH"
         - shell:
             !include-raw: ../../shell_scripts/template_scripts/testrail_reporter.sh
-        - shell:
-            !include-raw: ../../shell_scripts/template_scripts/tox_object_storage.sh
 
     triggers:
         - timed: '{start_timer}'
@@ -124,13 +122,13 @@
     env_changer: _glance_swift
     env_inject_file: env_inject_glance_swift.properties
     config_path: templates/glance/swift.yaml
-    test_group: Glance(Swift)
+    test_group: Object Storage(Swift)
     report_prefix: /srv/jenkins/glance_swift/
     report_file: report.xml
-    start_timer: "0 21 * * *"
+    start_timer: "0 19 * * *"
     node: single_template
-    description: Glance Swift tests
-    display_name: 9.0_Glance(Swift)_OS
+    description: Object Storage tests for Swift
+    display_name: 9.0_Object_Storage(Swift)
     email-recipients: efazliev@mirantis.net
     tox_test_name: object_storage
     tox_properties: blabla
@@ -144,13 +142,13 @@
     env_changer: _glance_ceph
     env_inject_file: env_inject_glance_ceph.properties
     config_path: templates/glance/ceph.yaml
-    test_group: Glance(Ceph)
+    test_group: Object Storage(RadosGW)
     report_prefix: /srv/jenkins/glance_ceph/
     report_file: report.xml
-    start_timer: "0 21 * * *"
+    start_timer: "0 19 * * *"
     node: single_template
-    description: Glance Ceph tests
-    display_name: 9.0_Glance(Ceph)_OS
+    description: Object Storage tests for RadosGW
+    display_name: 9.0_Object_Storage(RadosGW)
     email-recipients: efazliev@mirantis.net
     tox_properties: blabla
     tox_test_name: object_storage
