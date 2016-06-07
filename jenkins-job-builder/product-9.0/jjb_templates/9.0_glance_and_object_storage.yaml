@@ -114,7 +114,6 @@
       - workspace-cleanup:
           fail-build: false
 
-
 - project:
     name: Glance_Swift
     weight: 2
@@ -122,15 +121,15 @@
     env_changer: _glance_swift
     env_inject_file: env_inject_glance_swift.properties
     config_path: templates/glance/swift.yaml
-    test_group: Object Storage(Swift)
+    test_group: Glance(Swift)
     report_prefix: /srv/jenkins/glance_swift/
     report_file: report.xml
-    start_timer: "0 19 * * *"
+    start_timer: "H 22 * * *"
     node: single_template
-    description: Object Storage tests for Swift
-    display_name: 9.0_Object_Storage(Swift)
+    description: Glance tests on Swift
+    display_name: 9.0_Glance(Swift)
     email-recipients: efazliev@mirantis.net
-    tox_test_name: object_storage
+    tox_test_name: glance
     tox_properties: blabla
     jobs:
       - '9.0_tox_{name}'
@@ -142,10 +141,50 @@
     env_changer: _glance_ceph
     env_inject_file: env_inject_glance_ceph.properties
     config_path: templates/glance/ceph.yaml
+    test_group: Glance(Ceph)
+    report_prefix: /srv/jenkins/glance_ceph/
+    report_file: report.xml
+    start_timer: "H 22 * * *"
+    node: single_template
+    description: Glance tests on Ceph
+    display_name: 9.0_Glance(Ceph)
+    email-recipients: efazliev@mirantis.net
+    tox_properties: blabla
+    tox_test_name: glance
+    jobs:
+      - '9.0_tox_{name}'
+
+- project:
+    name: Object_Storage_Swift
+    weight: 2
+    iso_dir: /var/www/fuelweb-iso
+    env_changer: _glance_swift
+    env_inject_file: env_inject_glance_swift.properties
+    config_path: templates/glance/swift.yaml
+    test_group: Object Storage(Swift)
+    report_prefix: /srv/jenkins/glance_swift/
+    report_file: report.xml
+    start_timer: "H 23 * * *"
+    node: single_template
+    description: Object Storage tests for Swift
+    display_name: 9.0_Object_Storage(Swift)
+    email-recipients: efazliev@mirantis.net
+    tox_test_name: object_storage
+    tox_properties: blabla
+    jobs:
+      - '9.0_tox_{name}'
+
+- project:
+    name: Object_Storage_Ceph
+    weight: 2
+    iso_dir: /var/www/fuelweb-iso
+    env_changer: _glance_ceph
+    env_inject_file: env_inject_glance_ceph.properties
+    config_path: templates/glance/ceph.yaml
     test_group: Object Storage(RadosGW)
     report_prefix: /srv/jenkins/glance_ceph/
     report_file: report.xml
-    start_timer: "0 19 * * *"
+    start_timer: "H 23 * * *"
     node: single_template
     description: Object Storage tests for RadosGW
     display_name: 9.0_Object_Storage(RadosGW)
