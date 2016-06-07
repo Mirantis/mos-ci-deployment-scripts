@@ -106,4 +106,4 @@ docker exec "$DOCK_ID" bash -c "cd .rally/tempest/for-deployment-${deployment} &
 # Run!
 docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start --system-wide"
 docker exec "$DOCK_ID" bash -c "rally verify results --json --output-file output.json"
-docker exec "$DOCK_ID" bash -c "rm -rf rally_json2junit && git clone https://github.com/EduardFazliev/rally_json2junit.git && python rally_json2junit/rally_json2junit/results_parser.py output.json"
+docker exec "$DOCK_ID" bash -c "rm -rf rally_json2junit && git clone https://github.com/greatehop/rally_json2junit && python rally_json2junit/rally_json2junit/results_parser.py output.json"

@@ -76,7 +76,7 @@
 #             ###################################################################
 #             echo 'wget -qO- https://get.docker.com/ | sh' > ssh_scr.sh
 #
-#             wget https://raw.githubusercontent.com/EduardFazliev/mos-ci-deployment-scripts/feature/jjb/jenkins-job-builder/product-9.0/superjobs/rally-tempest/prepare_controller.sh
+#             wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/product-9.0/superjobs/rally-tempest/prepare_controller.sh
 #             cat prepare_controller.sh >> ssh_scr.sh
 #             echo '' >> ssh_scr.sh
 #
@@ -133,7 +133,7 @@
 #             echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start --regex  tempest.api --concurrency 1"' >> ssh_scr.sh
 #
 #             echo 'docker exec "$DOCK_ID" bash -c "rally verify results --json --output-file output.json" ' >> ssh_scr.sh
-#             echo 'docker exec "$DOCK_ID" bash -c "rm -rf rally_json2junit && git clone https://github.com/EduardFazliev/rally_json2junit.git && python rally_json2junit/rally_json2junit/results_parser.py output.json" ' >> ssh_scr.sh
+#             echo 'docker exec "$DOCK_ID" bash -c "rm -rf rally_json2junit && git clone https://github.com/greatehop/rally_json2junit && python rally_json2junit/rally_json2junit/results_parser.py output.json" ' >> ssh_scr.sh
 #             chmod +x ssh_scr.sh
 #
 #             ##### Copying script to master node, then to controller #####
@@ -205,5 +205,5 @@
 #                 set +e
 #                 REPORT_PATH=`cat ./param.pm`
 #                 sudo mkdir -p "$REPORT_PATH"
-#                 wget -O verification.xml https://raw.githubusercontent.com/EduardFazliev/mos-ci-deployment-scripts/feature/jjb/jenkins-job-builder/product-9.0/superjobs/rally-tempest/verification.xml.template
+#                 wget -O verification.xml https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/product-9.0/superjobs/rally-tempest/verification.xml.template
 #                 sudo cp verification.xml "$REPORT_PATH"

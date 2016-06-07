@@ -5,7 +5,7 @@ virtualenv init
 pip install python-jenkins
 
 sudo rm -rf init_env.py
-sudo wget https://raw.githubusercontent.com/EduardFazliev/mos-ci-deployment-scripts/feature/jjb/jenkins-job-builder/python_scripts/9.0_init_env_for_job/init_env.py
+sudo wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/python_scripts/9.0_init_env_for_job/init_env.py
 sudo chmod +x init_env.py
 
 iso_link=`python init_env.py`

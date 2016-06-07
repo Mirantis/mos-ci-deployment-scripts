@@ -99,7 +99,7 @@ set -e
 ###################################################################
 echo 'wget -qO- https://get.docker.com/ | sh' > ssh_scr.sh
 
-wget https://raw.githubusercontent.com/EduardFazliev/mos-ci-deployment-scripts/feature/jjb/jenkins-job-builder/shell_scripts/prepare_controller.sh
+wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/prepare_controller.sh
 cat prepare_controller.sh >> ssh_scr.sh
 echo '' >> ssh_scr.sh
 
@@ -173,14 +173,14 @@ echo 'deployment=$(docker exec "$DOCK_ID" bash -c "rally deployment list" | awk 
 echo 'docker exec "$DOCK_ID" bash -c "cd .rally/tempest/for-deployment-${deployment} && git checkout 63cb9a3718f394c9da8e0cc04b170ca2a8196ec2" ' >> ssh_scr.sh
 
 if [[ "$CEPH_RADOS" == 'TRUE' ]]; then
-echo 'docker exec "$DOCK_ID" bash -c "wget https://raw.githubusercontent.com/EduardFazliev/mos-ci-deployment-scripts/feature/jjb/jenkins-job-builder/product-9.0/superjobs/rally-tempest/list" ' >> ssh_scr.sh
+echo 'docker exec "$DOCK_ID" bash -c "wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/product-9.0/superjobs/rally-tempest/list" ' >> ssh_scr.sh
 echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start --tests-file list --concurrency 1"' >> ssh_scr.sh
 else
 echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start --system-wide"' >> ssh_scr.sh
 fi
 
 echo 'docker exec "$DOCK_ID" bash -c "rally verify results --json --output-file output.json" ' >> ssh_scr.sh
-echo 'docker exec "$DOCK_ID" bash -c "rm -rf rally_json2junit && git clone https://github.com/EduardFazliev/rally_json2junit.git && python rally_json2junit/rally_json2junit/results_parser.py output.json" ' >> ssh_scr.sh
+echo 'docker exec "$DOCK_ID" bash -c "rm -rf rally_json2junit && git clone https://github.com/greatehop/rally_json2junit && python rally_json2junit/rally_json2junit/results_parser.py output.json" ' >> ssh_scr.sh
 chmod +x ssh_scr.sh
 
 ##### Copying script to master node, then to controller #####

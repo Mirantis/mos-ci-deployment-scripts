@@ -33,7 +33,7 @@ sshpass -p 'r00tme' scp -o "StrictHostKeyChecking no" dimage root@"$MASTER_NODE_
 echo '#!/bin/bash -xe' > ssh_scr.sh
 echo 'docker load -i /root/rally' >> ssh_scr.sh
 
-wget https://raw.githubusercontent.com/EduardFazliev/mos-ci-deployment-scripts/feature/jjb/jenkins-job-builder/shell_scripts/rally_tempest_prepare_host.sh
+wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/rally_tempest_prepare_host.sh
 cat rally_tempest_prepare_host.sh >> ssh_scr.sh
 echo '' >> ssh_scr.sh
 
@@ -88,7 +88,7 @@ echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify 
 # echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start --regex tempest.api --concurrency 1"' >> ssh_scr.sh
 
 echo 'docker exec "$DOCK_ID" bash -c "rally verify results --json --output-file output.json" ' >> ssh_scr.sh
-echo 'docker exec "$DOCK_ID" bash -c "rm -rf rally_json2junit && git clone https://github.com/EduardFazliev/rally_json2junit.git && python rally_json2junit/rally_json2junit/results_parser.py output.json" ' >> ssh_scr.sh
+echo 'docker exec "$DOCK_ID" bash -c "rm -rf rally_json2junit && git clone https://github.com/greatehop/rally_json2junit && python rally_json2junit/rally_json2junit/results_parser.py output.json" ' >> ssh_scr.sh
 chmod +x ssh_scr.sh
 sshpass -p 'r00tme' scp -o "StrictHostKeyChecking no" ssh_scr.sh root@"$MASTER_NODE_IP":/root/
 echo 'chmod +x /root/ssh_scr.sh && /bin/bash -xe /root/ssh_scr.sh > /root/log.log' | sshpass -p 'r00tme' ssh -T root@"$MASTER_NODE_IP"
