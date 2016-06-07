@@ -6,7 +6,7 @@
 #
 #    builders:
 #        - shell: |
-#            wget https://raw.githubusercontent.com/EduardFazliev/mos-ci-deployment-scripts/feature/jjb/jenkins-job-builder/python_scripts/ironic/proxy.py
+#            wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/python_scripts/ironic/proxy.py
 #            nohup python proxy.py  &>proxy.log </dev/null &
 #            PID=`echo $!`
 #            echo "PROXY_PID=$PID" >> "$ENV_INJECT_PATH"

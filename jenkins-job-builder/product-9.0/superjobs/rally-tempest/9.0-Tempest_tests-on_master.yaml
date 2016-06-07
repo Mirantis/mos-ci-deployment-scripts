@@ -60,5 +60,5 @@
                  set +e
                  REPORT_PATH=`cat ./param.pm`
                  sudo mkdir -p "$REPORT_PATH"
-                 wget -O verification.xml https://raw.githubusercontent.com/EduardFazliev/mos-ci-deployment-scripts/feature/jjb/jenkins-job-builder/product-9.0/superjobs/rally-tempest/verification.xml.template
+                 wget -O verification.xml https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/product-9.0/superjobs/rally-tempest/verification.xml.template
                  sudo cp verification.xml "$REPORT_PATH"
