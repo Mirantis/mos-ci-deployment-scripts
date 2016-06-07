@@ -89,7 +89,7 @@ template:
       rack-01-controller-node-params: &controller-node-params
         boot: [network, hd]
         interfaces: *rack-01-slave-interfaces
-        memory: 4096
+        memory: 10240
         network_config: *rack-01-slave-network_config
         vcpu: 2
         volumes:
