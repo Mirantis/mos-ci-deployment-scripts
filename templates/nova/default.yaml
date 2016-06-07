@@ -1,6 +1,6 @@
 template:
   cluster_template:
-    name: mos-tests
+    name: nova-cinder-lvm
     network:
       neutron-dvr: false
       neutron-l2-pop: false
