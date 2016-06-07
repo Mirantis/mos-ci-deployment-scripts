@@ -152,6 +152,7 @@ echo 'file=`find / -name tempest.conf`' >> ssh_scr.sh
 echo 'sed -i "79i max_template_size = 5440000" $file ' >> ssh_scr.sh
 echo 'sed -i "80i max_resources_per_stack = 20000" $file ' >> ssh_scr.sh
 echo 'sed -i "81i max_json_body_size = 10880000" $file ' >> ssh_scr.sh
+echo 'sed -i "24i volume_device_name = vdc" $tconf ' >> ssh_scr.sh
 #echo ' sed -i "s/sahara = False/sahara = True/g" $file ' >> ssh_scr.sh
 
 if [[ "$CEPH_RADOS" == 'TRUE' ]];
