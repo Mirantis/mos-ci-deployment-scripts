@@ -208,7 +208,7 @@
               - aborted: true
           fail-build: false
       - email:
-          recipients: efazliev@mirantis.com
+          recipients: ogubanov@mirantis.com
       - archive:
           artifacts: 'mos_tests.yaml'
           allow-empty: 'true'

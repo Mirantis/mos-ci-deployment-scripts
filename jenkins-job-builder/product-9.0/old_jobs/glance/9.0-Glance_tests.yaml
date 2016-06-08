@@ -49,7 +49,7 @@
 #
 #    publishers:
 #      - email:
-#          recipients: efazliev@mirantis.com
+#          recipients: ogubanov@mirantis.com
 #      - archive:
 #          artifacts: 'report.xml'
 #          allow-empty: 'true'

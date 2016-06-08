@@ -125,7 +125,7 @@
     node: Slave-7777
     description: Nova-windows tests
     display_name: 9.0_Nova_Windows
-    email-recipients: efazliev@mirantis.net
+    email-recipients: ogubanov@mirantis.com
     tox_test_name: windows
     jobs:
       - '9.0_nova_{name}'
@@ -142,7 +142,7 @@
     node: Slave-7777
     description: Nova-windows tests
     display_name: 9.0_Nova_Windows_Ceph
-    email-recipients: efazliev@mirantis.net
+    email-recipients: ogubanov@mirantis.com
     tox_test_name: windows
     jobs:
       - '9.0_nova_{name}'

@@ -125,7 +125,7 @@
     node: Slave-7774
     description: Failover tests
     display_name: 9.0_Failover_VLAN
-    email-recipients: efazliev@mirantis.net
+    email-recipients: ogubanov@mirantis.com
     test_path: mos_tests/failover
     jobs:
       - '9.0_vlan_based_{name}'
@@ -142,7 +142,7 @@
     node: Slave-7774
     description: RabbitMQ_OSLO tests
     display_name: 9.0_RabbitMQ_OSLO_VLAN
-    email-recipients: efazliev@mirantis.net
+    email-recipients: ogubanov@mirantis.com
     test_path: mos_tests/rabbitmq_oslo
     jobs:
       - '9.0_vlan_based_{name}'
@@ -159,7 +159,7 @@
     node: Slave-7777
     description: Heat tests
     display_name: 9.0_Heat
-    email-recipients: efazliev@mirantis.net
+    email-recipients: ogubanov@mirantis.com
     test_path: mos_tests/heat
     jobs:
       - '9.0_vlan_based_{name}'
@@ -176,7 +176,7 @@
     node: Slave-7777
     description: Cinder tests
     display_name: 9.0_Cinder
-    email-recipients: efazliev@mirantis.net
+    email-recipients: ogubanov@mirantis.com
     test_path: mos_tests/cinder
     jobs:
       - '9.0_vlan_based_{name}'

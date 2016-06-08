@@ -72,7 +72,7 @@
 #    test_path: mos_tests/neutron
 #    description: NEUTRON tests
 #    display-name: 9.0 NEUTRON test /from template/
-#    email-recipients: efazliev@mirantis.com
+#    email-recipients: ogubanov@mirantis.com
 #    jobs:
 #      - '9.0-{name}_tests_generated_from_template'
 #
@@ -85,7 +85,7 @@
 #    test_path: mos_tests/heat
 #    description: HEAT test runner
 #    display-name: 9.0 HEAT tests /from template/
-#    email-recipients: efazliev@mirantis.com
+#    email-recipients: ogubanov@mirantis.com
 #    jobs:
 #      - '9.0-{name}_tests_generated_from_template'
 #
@@ -98,7 +98,7 @@
 #    test_path: mos_tests/cinder
 #    description: CINDER tests runner
 #    display-name: 9.0 CINDER tests /from template/
-#    email-recipients: efazliev@mirantis.com
+#    email-recipients: ogubanov@mirantis.com
 #    jobs:
 #      - '9.0-{name}_tests_generated_from_template'
 #
@@ -111,7 +111,7 @@
 #    test_path: mos_tests/nova
 #    description: NOVA tests runner
 #    display-name: 9.0 NOVA tests /from template/
-#    email-recipients: efazliev@mirantis.com
+#    email-recipients: ogubanov@mirantis.com
 #    jobs:
 #      - '9.0-{name}_tests_generated_from_template'
 #
@@ -122,7 +122,7 @@
 #    test_path: mos_tests/failover
 #    description: FAILOVER tests runner
 #    display-name: 9.0 FAILOVER tests /from template/
-#    email-recipients: efazliev@mirantis.com
+#    email-recipients: ogubanov@mirantis.com
 #    jobs:
 #      - '9.0-{name}_tests_generated_from_template'
 #
@@ -133,6 +133,6 @@
 #    test_path: mos_tests/rabbitmq_oslo
 #    description: Rabbitmq_oslo tests runner
 #    display-name: 9.0 RABBITMQ_OSLO tests /from template/
-#    email-recipients: efazliev@mirantis.com
+#    email-recipients: ogubanov@mirantis.com
 #    jobs:
 #      - '9.0-{name}_tests_generated_from_template'

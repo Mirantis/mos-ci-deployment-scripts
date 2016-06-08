@@ -108,7 +108,7 @@
       artifactNumToKeep: -1
     publishers:
       - email:
-          recipients: 'efazliev@mirantis.com'
+          recipients: 'ogubanov@mirantis.com'
 
 #      - postbuildscript:
 #          script-only-if-succeeded: False

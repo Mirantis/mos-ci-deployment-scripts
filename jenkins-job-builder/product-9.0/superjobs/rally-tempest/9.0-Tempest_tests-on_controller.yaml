@@ -37,7 +37,7 @@
       - junit:
           results: verification.xml
       - email:
-          recipients: efazliev@mirantis.com
+          recipients: ogubanov@mirantis.com
       - postbuildscript:
           script-only-if-succeeded: False
           builders:

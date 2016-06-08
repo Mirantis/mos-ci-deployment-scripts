@@ -135,7 +135,7 @@
     node: single_template
     description: Ceilometer tests
     display_name: 9.0_Ceilometer_t
-    email-recipients: efazliev@mirantis.net
+    email-recipients: ogubanov@mirantis.com
     tox_test_name: ceilometer
     jobs:
       - '9.0_{name}_t'
@@ -155,7 +155,7 @@
     node: single_template
     description: Ironic tests
     display_name: 9.0_Ironic_t
-    email-recipients: efazliev@mirantis.net
+    email-recipients: ogubanov@mirantis.com
     tox_test_name: ironic
     jobs:
       - '9.0_{name}_t'

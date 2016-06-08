@@ -95,7 +95,7 @@
     test_path: mos_tests/neutron
     description: NEUTRON tests
     display-name: NEUTRON test /from template/
-    email-recipients: efazliev@mirantis.com
+    email-recipients: ogubanov@mirantis.com
     jobs:
       - '{name}_tests_generated_from_template'
 
@@ -108,7 +108,7 @@
     test_path: mos_tests/heat
     description: HEAT test runner
     display-name: HEAT tests /from template/
-    email-recipients: efazliev@mirantis.com
+    email-recipients: ogubanov@mirantis.com
     jobs:
       - '{name}_tests_generated_from_template'
 
@@ -121,7 +121,7 @@
     test_path: mos_tests/cinder
     description: CINDER tests runner
     display-name: CINDER tests /from template/
-    email-recipients: efazliev@mirantis.com
+    email-recipients: ogubanov@mirantis.com
     jobs:
       - '{name}_tests_generated_from_template'
 
@@ -134,6 +134,6 @@
     test_path: mos_tests/nova
     description: NOVA tests runner
     display-name: NOVA tests /from template/
-    email-recipients: efazliev@mirantis.com
+    email-recipients: ogubanov@mirantis.com
     jobs:
       - '{name}_tests_generated_from_template'

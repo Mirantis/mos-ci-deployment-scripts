@@ -128,7 +128,7 @@
     node: single_template
     description: Glance tests on Swift
     display_name: 9.0_Glance(Swift)
-    email-recipients: efazliev@mirantis.net
+    email-recipients: ogubanov@mirantis.com
     tox_test_name: glance
     tox_properties: blabla
     jobs:
@@ -148,7 +148,7 @@
     node: single_template
     description: Glance tests on Ceph
     display_name: 9.0_Glance(Ceph)
-    email-recipients: efazliev@mirantis.net
+    email-recipients: ogubanov@mirantis.com
     tox_properties: blabla
     tox_test_name: glance
     jobs:
@@ -168,7 +168,7 @@
     node: single_template
     description: Object Storage tests for Swift
     display_name: 9.0_Object_Storage(Swift)
-    email-recipients: efazliev@mirantis.net
+    email-recipients: ogubanov@mirantis.com
     tox_test_name: object_storage
     tox_properties: blabla
     jobs:
@@ -188,7 +188,7 @@
     node: single_template
     description: Object Storage tests for RadosGW
     display_name: 9.0_Object_Storage(RadosGW)
-    email-recipients: efazliev@mirantis.net
+    email-recipients: ogubanov@mirantis.com
     tox_properties: blabla
     tox_test_name: object_storage
     jobs:

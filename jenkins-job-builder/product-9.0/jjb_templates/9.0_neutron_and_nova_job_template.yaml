@@ -132,7 +132,7 @@
     node: Slave-7774
     description: Neutron(VLAN)
     display_name: 9.0_Neutron_VLAN
-    email-recipients: efazliev@mirantis.net
+    email-recipients: ogubanov@mirantis.com
     test_path: mos_tests/neutron
     tox_test_name: neutron
     jobs:
@@ -150,7 +150,7 @@
     node: single_template
     description: Neutron(VLAN,L3_HA)
     display_name: 9.0_Neutron_VLAN_L3_HA
-    email-recipients: efazliev@mirantis.net
+    email-recipients: ogubanov@mirantis.com
     test_path: mos_tests/neutron
     tox_test_name: neutron
     jobs:
@@ -168,7 +168,7 @@
     node: single_template
     description: Neutron tests(VLAN,DVR)
     display_name: 9.0_Neutron_VLAN_DVR
-    email-recipients: efazliev@mirantis.net
+    email-recipients: ogubanov@mirantis.com
     test_path: mos_tests/neutron
     tox_test_name: neutron
     jobs:
@@ -186,7 +186,7 @@
     node: single_template
     description: Neutron tests(VxLAN)
     display_name: 9.0_Neutron_VxLAN
-    email-recipients: efazliev@mirantis.net
+    email-recipients: ogubanov@mirantis.com
     test_path: mos_tests/neutron
     tox_test_name: neutron
     jobs:
@@ -204,7 +204,7 @@
     node: single_template
     description: Neutron tests(VxLAN,L2_POP)
     display_name: 9.0_Neutron_VxLAN_L2_POP
-    email-recipients: efazliev@mirantis.net
+    email-recipients: ogubanov@mirantis.com
     test_path: mos_tests/neutron
     tox_test_name: neutron
     jobs:
@@ -222,7 +222,7 @@
     node: single_template
     description: Neutron tests(VxLAN,L2_POP,DVR)
     display_name: 9.0_Neutron_VxLAN_L2_POP_DVR
-    email-recipients: efazliev@mirantis.net
+    email-recipients: ogubanov@mirantis.com
     test_path: mos_tests/neutron
     tox_test_name: neutron
     jobs:
@@ -240,7 +240,7 @@
     node: single_template
     description: Neutron tests(VxLAN,L2_POP,L3_HA)
     display_name: 9.0_Neutron_VxLAN_L2_POP_L3_HA
-    email-recipients: efazliev@mirantis.net
+    email-recipients: ogubanov@mirantis.com
     test_path: mos_tests/neutron
     tox_test_name: neutron
     jobs:
@@ -258,7 +258,7 @@
     node: Slave-7777
     description: Nova tests
     display_name: 9.0_Nova
-    email-recipients: efazliev@mirantis.net
+    email-recipients: ogubanov@mirantis.com
     test_path: mos_tests/nova
     tox_test_name: nova
     jobs:
@@ -276,7 +276,7 @@
     node: Slave-7777
     description: Nova-Ceph tests
     display_name: 9.0_Nova_Ceph
-    email-recipients: efazliev@mirantis.net
+    email-recipients: ogubanov@mirantis.com
     test_path: mos_tests/nova
     tox_test_name: nova
     jobs:

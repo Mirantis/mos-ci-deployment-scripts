@@ -120,7 +120,7 @@
     node: Slave-7774
     description: Keystone tests
     display_name: 9.0_Keystone_VLAN
-    email-recipients: efazliev@mirantis.net
+    email-recipients: ogubanov@mirantis.com
     tox_test_name: keystone
     jobs:
       - '9.0_keystone_{name}'
