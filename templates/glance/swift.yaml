@@ -38,7 +38,7 @@ template:
         params: {tag: 0}
       management-pool01:
         net: 10.109.0.0/16:24
-        params: {tag: 102}
+        params: {tag: 0}
       private-pool01:
         net: 10.109.0.0/16:24
         params: {tag: 103}
@@ -131,7 +131,10 @@ template:
           dhcp: false
           forward: {mode: nat}
         ironic: {address_pool: baremetal-pool01, dhcp: false}
-        management: {address_pool: management-pool01, dhcp: false}
+        management:
+          address_pool: management-pool01
+          dhcp: false
+          forward: {mode: nat}
         private: {address_pool: private-pool01, dhcp: false}
         public:
           address_pool: public-pool01
