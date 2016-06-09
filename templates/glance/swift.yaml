@@ -131,10 +131,7 @@ template:
           dhcp: false
           forward: {mode: nat}
         ironic: {address_pool: baremetal-pool01, dhcp: false}
-        management:
-          address_pool: management-pool01
-          dhcp: false
-          forward: {mode: nat}
+        management: {address_pool: management-pool01, dhcp: false}
         private: {address_pool: private-pool01, dhcp: false}
         public:
           address_pool: public-pool01
