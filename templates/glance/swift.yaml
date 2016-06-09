@@ -38,7 +38,7 @@ template:
         params: {tag: 0}
       management-pool01:
         net: 10.109.0.0/16:24
-        params: {tag: 102}
+        params: {tag: 0}
       private-pool01:
         net: 10.109.0.0/16:24
         params: {tag: 103}
