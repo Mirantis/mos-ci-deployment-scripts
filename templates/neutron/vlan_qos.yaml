@@ -59,11 +59,11 @@ template:
        - label: eth1
          l2_network_device: public
        - label: eth2
-         l2_network_device: storage
-       - label: eth3
          l2_network_device: management
-       - label: eth4
+       - label: eth3
          l2_network_device: private
+       - label: eth4
+         l2_network_device: storage
        - label: eth5
          l2_network_device: ironic
 
@@ -76,13 +76,13 @@ template:
            - public
         eth2:
           networks:
-           - storage
+           - management
         eth3:
           networks:
-           - management
+           - private
         eth4:
           networks:
-           - private
+           - storage
         eth5:
           networks:
            - baremetal
