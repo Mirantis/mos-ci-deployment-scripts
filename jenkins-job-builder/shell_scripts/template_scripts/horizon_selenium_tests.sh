@@ -7,7 +7,9 @@ cd mos-horizon
 git checkout stable/mitaka
 
 sudo apt-get update
-sudo apt-get -y install firefox xvfb python-virtualenv
+#TBD need to remove firefox updaed since after FF 47.0 selenium tests are
+#failed so far @schipiga will investigate on how to made that update
+sudo apt-get -y install xvfb python-virtualenv
 
 virtualenv venv
 . venv/bin/activate
