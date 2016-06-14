@@ -31,6 +31,9 @@
           name: ENABLE_UPDATES
           default: true
       - bool:
+          name: ENABLE_CENTOS_SECURITY
+          default: false
+      - bool:
           name: ERASE_PREV_ENV
           default: true
       - bool:
