@@ -31,7 +31,7 @@
         - timed: "50 20 * * *"
 
     description: 'Loads Swarm ISO to all slaves.'
-    disabled: false
+    disabled: true
     display-name: 'Get_Swarm_ISO'
     concurrent: true
     browser: githubweb
