@@ -38,7 +38,7 @@
             TEST_GROUP=long living env UBUNTU TEMPEST tests 8.0 maintenance
             MILESTONE=8.0
             CONFIG_NAME=Ubuntu 14.04
-            SUITE=[8.0][MOSQA] Tempest 8.0
+            SUITE=[8.0][Maintenance] Tempest
             ADD_TIMESTAMP=${ADD_TIMESTAMP}
     project-type: freestyle
     defaults: global

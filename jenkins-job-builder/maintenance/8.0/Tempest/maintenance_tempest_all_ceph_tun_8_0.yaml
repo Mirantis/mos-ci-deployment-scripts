@@ -73,7 +73,7 @@
             TESTRAIL_PLAN_NAME=${TESTRAIL_PLAN_NAME}
             TEST_GROUP=TUN+CEPH+SERVICES_RADOS_MONGO TEMPEST tests (8.0 maintenance)
             MILESTONE=8.0
-            SUITE=[8.0][MOSQA] Tempest 8.0
+            SUITE=[8.0][Maintenance] Tempest
             ADD_TIMESTAMP=${ADD_TIMESTAMP}
     project-type: freestyle
     defaults: global
