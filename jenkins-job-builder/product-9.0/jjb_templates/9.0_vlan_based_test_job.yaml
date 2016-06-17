@@ -154,7 +154,7 @@
     env_changer: _nova
     env_inject_file: env_inject_heat.properties
     config_path: templates/nova/default.yaml
-    test_group: Heat
+    test_group: Heat(Swift)
     start_timer: "0 22 * * *"
     node: Slave-7777
     description: Heat tests
@@ -163,6 +163,24 @@
     test_path: mos_tests/heat
     jobs:
       - '9.0_vlan_based_{name}'
+
+- project:
+    name: heat_ceph
+    weight: 4
+    iso_dir: /var/www/fuelweb-iso
+    env_changer: _nova_ceph
+    env_inject_file: env_inject_heat.properties
+    config_path: templates/nova/ceph.yaml
+    test_group: Heat(Ceph)
+    start_timer: "0 22 * * *"
+    node: Slave-srv129
+    description: Heat tests
+    display_name: 9.0_Heat
+    email-recipients: ogubanov@mirantis.com
+    test_path: mos_tests/heat
+    jobs:
+      - '9.0_vlan_based_{name}'
+
 
 - project:
     name: cinder
