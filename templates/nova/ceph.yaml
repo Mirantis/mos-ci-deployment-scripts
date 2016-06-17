@@ -9,7 +9,7 @@ template:
       pubip-to-all: false
       segment-type: vlan
     nodes:
-      - count: 1
+      - count: 3
         roles: [controller]
       - count: 2
         roles: [compute]
@@ -89,7 +89,7 @@ template:
       rack-01-controller-node-params: &controller-node-params
         boot: [network, hd]
         interfaces: *rack-01-slave-interfaces
-        memory: 10240
+        memory: 4096
         network_config: *rack-01-slave-network_config
         vcpu: 2
         volumes:
@@ -172,5 +172,5 @@ template:
       - name: slave-05
         params: *big-storage-node-params
         role: fuel_slave
-  name: 1 Controller, 2 Compute, 2 Storage, Neutron, Ceph
-  slaves: 5
+  name: 3 Controller, 2 Compute, 2 Storage, Neutron, Ceph
+  slaves: 7
