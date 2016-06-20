@@ -117,14 +117,30 @@
     name: selenium
     weight: 2
     iso_dir: /var/www/fuelweb-iso
-    env_changer: _vlan
+    env_changer: _nova
     env_inject_file: env_inject_vlan_horizon.properties
-    config_path: templates/neutron/vlan_qos.yaml
+    config_path: templates/nova/default.yaml
     test_group: Horizon
+    start_timer: "0 23 * * *"
+    node: Slave-7777
+    description: Horizon integration tests tests
+    display_name: 9.0_Horizon_integration_tests_Swift
+    email-recipients: schipiga@mirantis.com
+    jobs:
+      - '9.0_horizon_integraion_test_{name}'
+
+- project:
+    name: selenium_ceph
+    weight: 2
+    iso_dir: /var/www/fuelweb-iso
+    env_changer: _nova_ceph
+    env_inject_file: env_inject_vlan_horizon.properties
+    config_path: templates/nova/ceph.yaml
+    test_group: Horizon(Ceph)
     start_timer: "0 23 * * *"
     node: Slave-7774
     description: Horizon integration tests tests
-    display_name: 9.0_Horizon_integration_tests_VLAN
+    display_name: 9.0_Horizon_integration_tests_Ceph
     email-recipients: schipiga@mirantis.com
     jobs:
       - '9.0_horizon_integraion_test_{name}'
