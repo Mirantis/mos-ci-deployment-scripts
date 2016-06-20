@@ -122,6 +122,26 @@ class TempestTest70(TestBasic):
         self.helper_ceph_services('tun')
 
     @test(depends_on=[SetupEnvironment.prepare_slaves_5],
+          groups=["tempest_ceph_services_vlan"])
+    @log_snapshot_after_test
+    def tempest_ceph_services(self):
+        """Deploy env with 3 controller+mongo and 2
+           compute +ceph nodes.
+
+        Scenario:
+            1. Create cluster
+            2. Add 3 nodes with controller role
+            3. Add 2 nodes with compute role
+            4. Add 2 nodes with cinder and ceph OSD roles
+            5. Deploy the cluster
+            6. Run OSTF
+
+        Duration 40m
+        Snapshot tempest_test_ceph
+        """
+        self.helper_ceph_services('vlan')
+
+    @test(depends_on=[SetupEnvironment.prepare_slaves_5],
           groups=["tempest_cinder_glance_swift_tun"])
     @log_snapshot_after_test
     def tempest_cinder_glance_swift_tun(self):
