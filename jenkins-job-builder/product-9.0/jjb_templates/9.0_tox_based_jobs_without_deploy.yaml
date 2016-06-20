@@ -1,5 +1,5 @@
 - job-template:
-    name: '9.0_vlan_based_{name}'
+    name: '9.0_wo_deploy_{name}'
 
     wrappers:
       - build-name:
@@ -47,7 +47,7 @@
             default: "/var/www/test_rail/user.sh"
         - string:
             name: REPORT_PREFIX
-            default: "/srv/jenkins/neutron"
+            default: "{report_prefix}"
         - string:
             name: REPORT_FILE
             default: "report.xml"
@@ -64,7 +64,7 @@
         - inject:
             properties-file: "$ENV_INJECT_PATH"
         - shell:
-            !include-raw: ../../shell_scripts/template_scripts/pytest_runner.sh
+            !include-raw: ../../shell_scripts/template_scripts/tox_based_test_runner.sh
         - inject:
             properties-file: "$ENV_INJECT_PATH"
         - shell:
@@ -102,11 +102,6 @@
           allow-empty: 'true'
           fingerprint: true
 
-      - archive:
-          artifacts: 'mos-integration-tests/snapshots/*'
-          allow-empty: 'true'
-          fingerprint: true
-
       - junit:
           results: report.xml
 
@@ -114,73 +109,62 @@
           fail-build: false
 
 - project:
-    name: failover
+    name: keystone
     weight: 2
     iso_dir: /var/www/fuelweb-iso
     env_changer: _vlan
-    env_inject_file: env_inject_vlan_failover.properties
+    env_inject_file: env_inject_vlan_keystone.properties
     config_path: templates/neutron/vlan_qos.yaml
-    test_group: Failover
+    test_group: Keystone
+    report_prefix: /srv/jenkins/keystone/
     start_timer: "0 23 * * *"
     node: Slave-7774
-    description: Failover tests
-    display_name: 9.0_Failover_VLAN
+    description: Keystone tests
+    display_name: 9.0_Keystone_VLAN
     email-recipients: ogubanov@mirantis.com
-    test_path: mos_tests/failover
+    tox_test_name: keystone
     jobs:
-      - '9.0_vlan_based_{name}'
+      - '9.0_wo_deploy_{name}'
 
 - project:
-    name: rabbitmq_oslo
+    name: Object_Storage_Swift
     weight: 2
     iso_dir: /var/www/fuelweb-iso
-    env_changer: _vlan
-    env_inject_file: env_inject_vlan_rabbitmq_oslo.properties
-    config_path: templates/neutron/vlan_qos.yaml
-    test_group: RabbitMQ_OSLO
-    start_timer: "0 23 * * *"
-    node: Slave-7774
-    description: RabbitMQ_OSLO tests
-    display_name: 9.0_RabbitMQ_OSLO_VLAN
+    env_changer: _glance_swift
+    env_inject_file: env_inject_glance_swift.properties
+    config_path: templates/glance/swift.yaml
+    test_group: Object Storage(Swift)
+    report_prefix: /srv/jenkins/OS_swift/
+    report_file: report.xml
+    start_timer: "0 22 * * *"
+    node: Slave-srv135
+    description: Object Storage tests for Swift
+    display_name: 9.0_Object_Storage(Swift)
     email-recipients: ogubanov@mirantis.com
-    test_path: mos_tests/rabbitmq_oslo
+    tox_test_name: object_storage
+    tox_properties: blabla
     jobs:
-      - '9.0_vlan_based_{name}'
+      - '9.0_wo_deploy_{name}'
 
 - project:
-    name: heat
-    weight: 4
+    name: Object_Storage_Ceph
+    weight: 2
     iso_dir: /var/www/fuelweb-iso
-    env_changer: _nova
-    env_inject_file: env_inject_heat.properties
-    config_path: templates/nova/default.yaml
-    test_group: Heat(Swift)
+    env_changer: _glance_ceph
+    env_inject_file: env_inject_glance_ceph.properties
+    config_path: templates/glance/ceph.yaml
+    test_group: Object Storage(RadosGW)
+    report_prefix: /srv/jenkins/OS_ceph/
+    report_file: report.xml
     start_timer: "0 22 * * *"
-    node: Slave-7777
-    description: Heat tests
-    display_name: 9.0_Heat
+    node: Slave-srv135
+    description: Object Storage tests for RadosGW
+    display_name: 9.0_Object_Storage(RadosGW)
     email-recipients: ogubanov@mirantis.com
-    test_path: mos_tests/heat
+    tox_properties: blabla
+    tox_test_name: object_storage
     jobs:
-      - '9.0_vlan_based_{name}'
-
-- project:
-    name: heat_ceph
-    weight: 4
-    iso_dir: /var/www/fuelweb-iso
-    env_changer: _nova_ceph
-    env_inject_file: env_inject_heat.properties
-    config_path: templates/nova/ceph.yaml
-    test_group: Heat(Ceph)
-    start_timer: "0 22 * * *"
-    node: Slave-srv129
-    description: Heat tests
-    display_name: 9.0_Heat
-    email-recipients: ogubanov@mirantis.com
-    test_path: mos_tests/heat
-    jobs:
-      - '9.0_vlan_based_{name}'
-
+      - '9.0_wo_deploy_{name}'
 
 - project:
     name: cinder
@@ -190,11 +174,35 @@
     env_inject_file: env_inject_cinder.properties
     config_path: templates/nova/default.yaml
     test_group: Cinder
-    start_timer: "0 22 * * *"
+    report_prefix: /srv/jenkins/cinder/
+    report_file: report.xml
+    start_timer: "0 23 * * *"
     node: Slave-7777
     description: Cinder tests
     display_name: 9.0_Cinder
     email-recipients: ogubanov@mirantis.com
     test_path: mos_tests/cinder
+    tox_properties: blabla
+    tox_test_name: cinder 
     jobs:
-      - '9.0_vlan_based_{name}'
+      - '9.0_wo_deploy_{name}'
+
+- project:
+    name: rabbitmq_oslo
+    weight: 2
+    iso_dir: /var/www/fuelweb-iso
+    env_changer: _glance_swift
+    env_inject_file: env_inject_vlan_rabbitmq_oslo.properties
+    config_path: templates/glance/swift.yaml
+    test_group: RabbitMQ_OSLO
+    report_prefix: /srv/jenkins/rabbitmq_oslo/
+    report_file: report.xml
+    start_timer: "0 22 * * *"
+    node: Slave-srv135
+    description: RabbitMQ_OSLO tests
+    display_name: 9.0_RabbitMQ_OSLO_VLAN
+    email-recipients: ogubanov@mirantis.com
+    tox_properties: blabla
+    tox_test_name: rabbitmq_oslo
+    jobs:
+      - '9.0_wo_deploy_{name}'

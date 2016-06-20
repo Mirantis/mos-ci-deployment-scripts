@@ -1,5 +1,5 @@
 - job-template:
-    name: '9.0_nova_{name}'
+    name: '9.0_vlan_based_{name}'
 
     wrappers:
       - build-name:
@@ -47,7 +47,7 @@
             default: "/var/www/test_rail/user.sh"
         - string:
             name: REPORT_PREFIX
-            default: "/srv/jenkins/nova-windows"
+            default: "/srv/jenkins/neutron"
         - string:
             name: REPORT_FILE
             default: "report.xml"
@@ -64,7 +64,7 @@
         - inject:
             properties-file: "$ENV_INJECT_PATH"
         - shell:
-            !include-raw: ../../shell_scripts/template_scripts/tox_based_test_runner.sh
+            !include-raw: ../../shell_scripts/template_scripts/pytest_runner.sh
         - inject:
             properties-file: "$ENV_INJECT_PATH"
         - shell:
@@ -76,7 +76,7 @@
     defaults: global
     node: '{node}'
     description: '{description}'
-    disabled: true
+    disabled: false
     display-name: '{display_name}'
     concurrent: false
     retry-count: 3
@@ -114,35 +114,52 @@
           fail-build: false
 
 - project:
-    name: windows
+    name: failover
+    weight: 2
+    iso_dir: /var/www/fuelweb-iso
+    env_changer: _glance_swift
+    env_inject_file: env_inject_vlan_failover.properties
+    config_path: templates/glance/swift.yaml
+    test_group: Failover
+    start_timer: "0 23 * * *"
+    node: Slave-srv135
+    description: Failover tests
+    display_name: 9.0_Failover_VLAN
+    email-recipients: ogubanov@mirantis.com
+    test_path: mos_tests/failover
+    jobs:
+      - '9.0_vlan_based_{name}'
+
+- project:
+    name: heat
     weight: 4
     iso_dir: /var/www/fuelweb-iso
     env_changer: _nova
-    env_inject_file: env_inject_windows.properties
+    env_inject_file: env_inject_heat.properties
     config_path: templates/nova/default.yaml
-    test_group: Nova-Windows
-    start_timer: "0 23 * * *"
+    test_group: Heat(Swift)
+    start_timer: "0 22 * * *"
     node: Slave-7777
-    description: Nova-windows tests
-    display_name: 9.0_Nova_Windows
+    description: Heat tests
+    display_name: 9.0_Heat
     email-recipients: ogubanov@mirantis.com
-    tox_test_name: windows
+    test_path: mos_tests/heat
     jobs:
-      - '9.0_nova_{name}'
+      - '9.0_vlan_based_{name}'
 
 - project:
-    name: windows_ceph
+    name: heat_ceph
     weight: 4
     iso_dir: /var/www/fuelweb-iso
     env_changer: _nova_ceph
-    env_inject_file: env_inject_windows_ceph.properties
+    env_inject_file: env_inject_heat.properties
     config_path: templates/nova/ceph.yaml
-    test_group: Nova-Windows(Ceph)
-    start_timer: "0 2 * * *"
-    node: Slave-7777
-    description: Nova-windows tests
-    display_name: 9.0_Nova_Windows_Ceph
+    test_group: Heat(Ceph)
+    start_timer: "0 22 * * *"
+    node: Slave-7774
+    description: Heat tests
+    display_name: 9.0_Heat_Ceph
     email-recipients: ogubanov@mirantis.com
-    tox_test_name: windows
+    test_path: mos_tests/heat
     jobs:
-      - '9.0_nova_{name}'
+      - '9.0_vlan_based_{name}'

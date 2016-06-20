@@ -1,5 +1,5 @@
 - job-template:
-    name: '9.0_{name}_t'
+    name: '9.0_{name}'
 
     wrappers:
       - build-name:
@@ -138,7 +138,7 @@
     email-recipients: ogubanov@mirantis.com
     tox_test_name: ceilometer
     jobs:
-      - '9.0_{name}_t'
+      - '9.0_{name}'
 
 - project:
     name: Ironic
@@ -158,4 +158,222 @@
     email-recipients: ogubanov@mirantis.com
     tox_test_name: ironic
     jobs:
-      - '9.0_{name}_t'
+      - '9.0_{name}'
+
+- project:
+    name: Glance_Swift
+    weight: 2
+    iso_dir: /var/www/fuelweb-iso
+    env_changer: _glance_swift
+    env_inject_file: env_inject_glance_swift.properties
+    config_path: templates/glance/swift.yaml
+    test_group: Glance(Swift)
+    report_prefix: /srv/jenkins/glance_swift/
+    report_file: report.xml
+    start_timer: "0 21 * * *"
+    node: Slave-srv135 
+    description: Glance tests on Swift
+    display_name: 9.0_Glance(Swift)
+    email-recipients: ogubanov@mirantis.com
+    tox_test_name: glance
+    jobs:
+      - '9.0_{name}'
+
+- project:
+    name: Glance_Ceph
+    weight: 2
+    iso_dir: /var/www/fuelweb-iso
+    env_changer: _glance_ceph
+    env_inject_file: env_inject_glance_ceph.properties
+    config_path: templates/glance/ceph.yaml
+    test_group: Glance(Ceph)
+    report_prefix: /srv/jenkins/glance_ceph/
+    report_file: report.xml
+    start_timer: "0 21 * * *"
+    node:  Slave-srv135
+    description: Glance tests on Ceph
+    display_name: 9.0_Glance(Ceph)
+    email-recipients: ogubanov@mirantis.com
+    tox_test_name: glance
+    jobs:
+      - '9.0_{name}'
+
+- project:
+    name: VLAN
+    weight: 2
+    iso_dir: /var/www/fuelweb-iso
+    env_changer: _vlan
+    env_inject_file: env_inject_vlan.properties
+    config_path: templates/neutron/vlan_qos.yaml
+    test_group: Neutron(VLAN)
+    report_prefix: /srv/jenkins/neutron_vlan
+    report_file: report.xml
+    start_timer: "0 21 * * *"
+    node: single_template 
+    description: Neutron(VLAN)
+    display_name: 9.0_Neutron_VLAN
+    email-recipients: ogubanov@mirantis.com
+    test_path: mos_tests/neutron
+    tox_test_name: neutron
+    jobs:
+      - '9.0_{name}'
+
+- project:
+    name: VLAN_L3_HA
+    weight: 2
+    iso_dir: /var/www/fuelweb-iso
+    env_changer: _vlan_l3_ha
+    env_inject_file: env_inject_vlan_l3_ha.properties
+    config_path: templates/neutron/vlan_l3ha.yaml
+    test_group: Neutron(VLAN,L3_HA)
+    report_prefix: /srv/jenkins/neutron_vlan_l3_ha
+    report_file: report.xml
+    start_timer: "0 22 * * *"
+    node: single_template
+    description: Neutron(VLAN,L3_HA)
+    display_name: 9.0_Neutron_VLAN_L3_HA
+    email-recipients: ogubanov@mirantis.com
+    test_path: mos_tests/neutron
+    tox_test_name: neutron
+    jobs:
+      - '9.0_{name}'
+
+- project:
+    name: VLAN_DVR
+    weight: 2
+    iso_dir: /var/www/fuelweb-iso
+    env_changer: _vlan_dvr
+    env_inject_file: env_inject_vlan_dvr.properties
+    config_path: templates/neutron/vlan_dvr.yaml
+    test_group: Neutron(VLAN,DVR)
+    report_prefix: /srv/jenkins/neutron_vlan_dvr
+    report_file: report.xml
+    start_timer: "0 22 * * *"
+    node: single_template
+    description: Neutron tests(VLAN,DVR)
+    display_name: 9.0_Neutron_VLAN_DVR
+    email-recipients: ogubanov@mirantis.com
+    test_path: mos_tests/neutron
+    tox_test_name: neutron
+    jobs:
+      - '9.0_{name}'
+
+- project:
+    name: VxLAN
+    weight: 2
+    iso_dir: /var/www/fuelweb-iso
+    env_changer: _vxlan
+    env_inject_file: env_inject_vxlan.properties
+    config_path: templates/neutron/vxlan_qos.yaml
+    test_group: Neutron(VxLAN)
+    report_prefix: /srv/jenkins/neutron_vxlan
+    report_file: report.xml
+    start_timer: "0 22 * * *"
+    node: single_template
+    description: Neutron tests(VxLAN)
+    display_name: 9.0_Neutron_VxLAN
+    email-recipients: ogubanov@mirantis.com
+    test_path: mos_tests/neutron
+    tox_test_name: neutron
+    jobs:
+      - '9.0_{name}'
+
+- project:
+    name: VxLAN_L2_POP
+    weight: 2
+    iso_dir: /var/www/fuelweb-iso
+    env_changer: _vxlan_l2_pop
+    env_inject_file: env_inject_vxlan_l2_pop.properties
+    config_path: templates/neutron/vxlan_l2pop.yaml
+    test_group: Neutron(VxLAN,L2_POP)
+    report_prefix: /srv/jenkins/neutron_vxlan_l2_pop
+    report_file: report.xml
+    start_timer: "0 22 * * *"
+    node: single_template
+    description: Neutron tests(VxLAN,L2_POP)
+    display_name: 9.0_Neutron_VxLAN_L2_POP
+    email-recipients: ogubanov@mirantis.com
+    test_path: mos_tests/neutron
+    tox_test_name: neutron
+    jobs:
+      - '9.0_{name}'
+
+- project:
+    name: VxLAN_L2_POP_DVR
+    weight: 2
+    iso_dir: /var/www/fuelweb-iso
+    env_changer: _vxlan_l2_pop_dvr
+    env_inject_file: env_inject_vxlan_l2_pop_dvr.properties
+    config_path: templates/neutron/vxlan_l2pop_dvr.yaml
+    test_group: Neutron(VxLAN,L2_POP,DVR)
+    report_prefix: /srv/jenkins/neutron_vxlan_l2_pop_dvr
+    report_file: report.xml
+    start_timer: "0 22 * * *"
+    node: single_template
+    description: Neutron tests(VxLAN,L2_POP,DVR)
+    display_name: 9.0_Neutron_VxLAN_L2_POP_DVR
+    email-recipients: ogubanov@mirantis.com
+    test_path: mos_tests/neutron
+    tox_test_name: neutron
+    jobs:
+      - '9.0_{name}'
+
+- project:
+    name: VxLAN_L2_POP_L3_HA
+    weight: 2
+    iso_dir: /var/www/fuelweb-iso
+    env_changer: _vxlan_l2_pop_l3_ha
+    env_inject_file: env_inject_vxlan_l2_pop_l3_ha.properties
+    config_path: templates/neutron/vxlan_l2pop_l3ha.yaml
+    test_group: Neutron(VxLAN,L2_POP,L3_HA)
+    report_prefix: /srv/jenkins/neutron_vxlan_l2_pop_l3_ha
+    report_file: report.xml
+    start_timer: "0 22 * * *"
+    node: single_template
+    description: Neutron tests(VxLAN,L2_POP,L3_HA)
+    display_name: 9.0_Neutron_VxLAN_L2_POP_L3_HA
+    email-recipients: ogubanov@mirantis.com
+    test_path: mos_tests/neutron
+    tox_test_name: neutron
+    jobs:
+      - '9.0_{name}'
+
+- project:
+    name: Nova
+    weight: 4
+    iso_dir: /var/www/fuelweb-iso
+    env_changer: _nova
+    env_inject_file: env_inject_nova.properties
+    config_path: templates/nova/default.yaml
+    test_group: Nova
+    report_prefix: /srv/jenkins/nova
+    report_file: report.xml
+    start_timer: "0 21 * * *"
+    node: Slave-7777
+    description: Nova tests
+    display_name: 9.0_Nova
+    email-recipients: ogubanov@mirantis.com
+    test_path: mos_tests/nova
+    tox_test_name: nova
+    jobs:
+      - '9.0_{name}'
+
+- project:
+    name: NovaCeph
+    weight: 4
+    iso_dir: /var/www/fuelweb-iso
+    env_changer: _nova_ceph
+    env_inject_file: env_inject_nova_ceph.properties
+    config_path: templates/nova/ceph.yaml
+    test_group: Nova(Ceph)
+    report_prefix: /srv/jenkins/nova_ceph
+    report_file: report.xml
+    start_timer: "0 21 * * *"
+    node: Slave-7774
+    description: Nova-Ceph tests
+    display_name: 9.0_Nova_Ceph
+    email-recipients: ogubanov@mirantis.com
+    test_path: mos_tests/nova
+    tox_test_name: nova
+    jobs:
+      - '9.0_{name}'
