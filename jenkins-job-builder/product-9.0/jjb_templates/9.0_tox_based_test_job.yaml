@@ -171,7 +171,7 @@
     report_prefix: /srv/jenkins/glance_swift/
     report_file: report.xml
     start_timer: "0 21 * * *"
-    node: Slave-srv135 
+    node: Slave-srv135
     description: Glance tests on Swift
     display_name: 9.0_Glance(Swift)
     email-recipients: ogubanov@mirantis.com
@@ -209,7 +209,7 @@
     report_prefix: /srv/jenkins/neutron_vlan
     report_file: report.xml
     start_timer: "0 21 * * *"
-    node: single_template 
+    node: single_template
     description: Neutron(VLAN)
     display_name: 9.0_Neutron_VLAN
     email-recipients: ogubanov@mirantis.com
