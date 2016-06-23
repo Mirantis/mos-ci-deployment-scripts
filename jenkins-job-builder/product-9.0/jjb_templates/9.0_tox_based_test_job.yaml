@@ -27,7 +27,7 @@
             default: "TRUE"
         - string:
             name: NOVA_QUOTAS_ENABLED
-            default: "FALSE"
+            default: '{nova_quotas}'
         - string:
             name: DEPLOYMENT_TIMEOUT
             default: "10000"
@@ -137,6 +137,7 @@
     display_name: 9.0_Ceilometer_t
     email-recipients: ogubanov@mirantis.com
     tox_test_name: ceilometer
+    nova_quotas: "FALSE"
     jobs:
       - '9.0_{name}'
 
@@ -157,6 +158,7 @@
     display_name: 9.0_Ironic_t
     email-recipients: ogubanov@mirantis.com
     tox_test_name: ironic
+    nova_quotas: "FALSE"
     jobs:
       - '9.0_{name}'
 
@@ -176,6 +178,7 @@
     display_name: 9.0_Glance(Swift)
     email-recipients: ogubanov@mirantis.com
     tox_test_name: glance
+    nova_quotas: "TRUE"
     jobs:
       - '9.0_{name}'
 
@@ -195,6 +198,7 @@
     display_name: 9.0_Glance(Ceph)
     email-recipients: ogubanov@mirantis.com
     tox_test_name: glance
+    nova_quotas: "FALSE"
     jobs:
       - '9.0_{name}'
 
@@ -215,6 +219,7 @@
     email-recipients: ogubanov@mirantis.com
     test_path: mos_tests/neutron
     tox_test_name: neutron
+    nova_quotas: "FALSE"
     jobs:
       - '9.0_{name}'
 
@@ -235,6 +240,7 @@
     email-recipients: ogubanov@mirantis.com
     test_path: mos_tests/neutron
     tox_test_name: neutron
+    nova_quotas: "FALSE"
     jobs:
       - '9.0_{name}'
 
@@ -255,6 +261,7 @@
     email-recipients: ogubanov@mirantis.com
     test_path: mos_tests/neutron
     tox_test_name: neutron
+    nova_quotas: "FALSE"
     jobs:
       - '9.0_{name}'
 
@@ -275,6 +282,7 @@
     email-recipients: ogubanov@mirantis.com
     test_path: mos_tests/neutron
     tox_test_name: neutron
+    nova_quotas: "FALSE"
     jobs:
       - '9.0_{name}'
 
@@ -295,6 +303,7 @@
     email-recipients: ogubanov@mirantis.com
     test_path: mos_tests/neutron
     tox_test_name: neutron
+    nova_quotas: "FALSE"
     jobs:
       - '9.0_{name}'
 
@@ -315,6 +324,7 @@
     email-recipients: ogubanov@mirantis.com
     test_path: mos_tests/neutron
     tox_test_name: neutron
+    nova_quotas: "FALSE"
     jobs:
       - '9.0_{name}'
 
@@ -335,6 +345,7 @@
     email-recipients: ogubanov@mirantis.com
     test_path: mos_tests/neutron
     tox_test_name: neutron
+    nova_quotas: "FALSE"
     jobs:
       - '9.0_{name}'
 
@@ -355,6 +366,7 @@
     email-recipients: ogubanov@mirantis.com
     test_path: mos_tests/nova
     tox_test_name: nova
+    nova_quotas: "FALSE"
     jobs:
       - '9.0_{name}'
 
@@ -375,5 +387,6 @@
     email-recipients: ogubanov@mirantis.com
     test_path: mos_tests/nova
     tox_test_name: nova
+    nova_quotas: "FALSE"
     jobs:
       - '9.0_{name}'
