@@ -104,7 +104,7 @@ class TempestTest70(TestBasic):
     @test(depends_on=[SetupEnvironment.prepare_slaves_5],
           groups=["tempest_ceph_services_tun"])
     @log_snapshot_after_test
-    def tempest_ceph_services(self):
+    def tempest_ceph_services_tun(self):
         """Deploy env with 3 controller+mongo and 2
            compute +ceph nodes.
 
@@ -124,7 +124,7 @@ class TempestTest70(TestBasic):
     @test(depends_on=[SetupEnvironment.prepare_slaves_5],
           groups=["tempest_ceph_services_vlan"])
     @log_snapshot_after_test
-    def tempest_ceph_services(self):
+    def tempest_ceph_services_vlan(self):
         """Deploy env with 3 controller+mongo and 2
            compute +ceph nodes.
 
