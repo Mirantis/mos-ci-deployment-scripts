@@ -115,7 +115,7 @@
 
 - project:
     name: selenium
-    weight: 2
+    weight: 4
     iso_dir: /var/www/fuelweb-iso
     env_changer: _nova
     env_inject_file: env_inject_vlan_horizon.properties
@@ -131,7 +131,7 @@
 
 - project:
     name: selenium_ceph
-    weight: 2
+    weight: 4
     iso_dir: /var/www/fuelweb-iso
     env_changer: _nova_ceph
     env_inject_file: env_inject_vlan_horizon.properties
