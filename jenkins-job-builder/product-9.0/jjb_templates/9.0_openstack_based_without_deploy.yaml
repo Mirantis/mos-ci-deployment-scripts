@@ -1,5 +1,5 @@
 - job-template:
-    name: '9.0_wo_deploy_{name}'
+    name: '9.0_openstack_cli_{name}'
 
     wrappers:
       - build-name:
@@ -64,11 +64,11 @@
         - inject:
             properties-file: "$ENV_INJECT_PATH"
         - shell:
-            !include-raw: ../../shell_scripts/template_scripts/get_fuel_master_ip.sh
+            !include-raw-escape: ../../shell_scripts/template_scripts/get_fuel_master_ip.sh
         - inject:
             properties-file: "$ENV_INJECT_PATH"
         - shell:
-            !include-raw: ../../shell_scripts/template_scripts/openstack_cli_tests.sh
+            !include-raw-escape: ../../shell_scripts/template_scripts/openstack_cli_tests.sh
         - inject:
             properties-file: "$ENV_INJECT_PATH"
         - shell:
@@ -128,5 +128,5 @@
     display_name: 9.0 Openstack CLI
     email-recipients: ogubanov@mirantis.com
     jobs:
-      - '9.0_wo_deploy_{name}'
+      - '9.0_openstack_cli_{name}'
 
