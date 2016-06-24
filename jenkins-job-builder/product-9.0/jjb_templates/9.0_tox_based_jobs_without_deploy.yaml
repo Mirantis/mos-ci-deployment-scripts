@@ -173,19 +173,41 @@
     env_changer: _nova
     env_inject_file: env_inject_cinder.properties
     config_path: templates/nova/default.yaml
-    test_group: Cinder
+    test_group: Cinder(Swift)
     report_prefix: /srv/jenkins/cinder/
     report_file: report.xml
     start_timer: "0 23 * * *"
     node: Slave-7777
     description: Cinder tests
-    display_name: 9.0_Cinder
+    display_name: 9.0_Cinder_Swift
     email-recipients: ogubanov@mirantis.com
     test_path: mos_tests/cinder
     tox_properties: blabla
     tox_test_name: cinder
     jobs:
       - '9.0_wo_deploy_{name}'
+
+- project:
+    name: cinder_ceph
+    weight: 2
+    iso_dir: /var/www/fuelweb-iso
+    env_changer: _glance_ceph
+    env_inject_file: env_inject_cinder.properties
+    config_path: templates/glance/ceph.yaml
+    test_group: Cinder(Ceph)
+    report_prefix: /srv/jenkins/cinder_ceph/
+    report_file: report.xml
+    start_timer: "0 23 * * *"
+    node: Slave-srv135
+    description: Cinder tests
+    display_name: 9.0_Cinder_Ceph
+    email-recipients: ogubanov@mirantis.com
+    test_path: mos_tests/cinder
+    tox_properties: blabla
+    tox_test_name: cinder
+    jobs:
+      - '9.0_wo_deploy_{name}'
+
 
 - project:
     name: rabbitmq_oslo
