@@ -1,5 +1,5 @@
 - job-template:
-    name: '9.0_wo_deploy_{name}'
+    name: '9.0_openstack_cli_{name}'
 
     wrappers:
       - build-name:
