@@ -1,5 +1,5 @@
 - job-template:
-    name: '9.0_wo_deploy_{name}'
+    name: '9.0_openstack_cli_{name}'
 
     wrappers:
       - build-name:
@@ -128,5 +128,5 @@
     display_name: 9.0 Openstack CLI
     email-recipients: ogubanov@mirantis.com
     jobs:
-      - '9.0_wo_deploy_{name}'
+      - '9.0_openstack_cli_{name}'
 
