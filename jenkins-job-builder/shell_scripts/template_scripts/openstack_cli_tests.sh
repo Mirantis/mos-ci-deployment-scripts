@@ -9,7 +9,7 @@ sshpass -p r00tme scp $SSH_OPTIONS root@$FUEL_MASTER_IP:.ssh/id_rsa $FUEL_KEY
 
 # Get some information
 CONTROLLER_IP=$(sshpass -p r00tme ssh $SSH_OPTIONS root@$FUEL_MASTER_IP \
-    'fuel node | grep -m1 controller | awk "{{ print \$9 }}"')
+    'fuel node | grep -m1 controller | awk "{ print \$9 }"')
 
 # Copy openrc
 scp -i $FUEL_KEY $SSH_OPTIONS root@$CONTROLLER_IP:openrc .
@@ -17,7 +17,7 @@ scp -i $FUEL_KEY $SSH_OPTIONS root@$CONTROLLER_IP:openrc .
 
 # Get openstack CLI version
 OPENSTACK_VER=$(ssh -i $FUEL_KEY $SSH_OPTIONS root@$CONTROLLER_IP \
-    'openstack --version 2>&1 | awk "{{ print \$2 }}"')
+    'openstack --version 2>&1 | awk "{ print \$2 }"')
 
 # Create vitrualenv
 virtualenv --clear venv
