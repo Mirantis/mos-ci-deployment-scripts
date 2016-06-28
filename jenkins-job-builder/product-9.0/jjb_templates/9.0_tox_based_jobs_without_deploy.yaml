@@ -206,3 +206,43 @@
     tox_test_name: rabbitmq_oslo
     jobs:
       - '9.0_wo_deploy_{name}'
+
+- project:
+    name: glare_swift
+    weight: 2
+    iso_dir: /var/www/fuelweb-iso
+    env_changer: _glance_swift
+    env_inject_file: env_inject_glare_swift.properties
+    config_path: templates/glance/swift.yaml
+    test_group: Glare(Swift)
+    report_prefix: /srv/jenkins/glare_swift/
+    report_file: report.xml
+    start_timer: "0 22 * * *"
+    node: Slave-srv135
+    description: Glare tests
+    display_name: '9.0_{name}'
+    email-recipients: ogubanov@mirantis.com
+    tox_properties: ''
+    tox_test_name: glare
+    jobs:
+      - '9.0_wo_deploy_{name}'
+
+- project:
+    name: glare_ceph
+    weight: 2
+    iso_dir: /var/www/fuelweb-iso
+    env_changer: _glance_ceph
+    env_inject_file: env_inject_glare_ceph.properties
+    config_path: templates/glance/ceph.yaml
+    test_group: Glare(Ceph)
+    report_prefix: /srv/jenkins/glare_ceph/
+    report_file: report.xml
+    start_timer: "0 22 * * *"
+    node: Slave-srv135
+    description: Glare tests
+    display_name: '9.0_{name}'
+    email-recipients: ogubanov@mirantis.com
+    tox_properties: ''
+    tox_test_name: glare
+    jobs:
+      - '9.0_wo_deploy_{name}'
