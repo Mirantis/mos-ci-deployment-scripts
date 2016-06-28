@@ -1,0 +1,371 @@
+- job-template:
+    name: 'Tempest_{name}'
+
+    wrappers:
+      - build-name:
+          name: ${{BUILD_NUMBER}}.${{FILE,path="build-name-setter.info"}}
+
+    properties:
+      - heavy-job:
+          weight: '{weight}'
+
+    parameters:
+        #EnvInject file
+        - string:
+            name: ENV_INJECT_PATH
+            default: 'env_inject{name}.properties'
+
+        ##### Environment parameters #####
+        - string:
+            name: ISO_DIR
+            default: "{iso_dir}"
+        - string:
+            name: ENV_CHANGER
+            default: '{env_changer}'
+        - string:
+            name: DISABLE_SSL
+            default: "{is_ssl_disabled}"
+        - string:
+            name: CEPH_SKIP_TESTS
+            default: "{ceph_skip_tests}"
+        - string:
+            name: CEPH_RADOS
+            default: "{ceph_rados}"
+        - string:
+            name: NOVA_QUOTAS_ENABLED
+            default: "TRUE"
+        - string:
+            name: DEPLOYMENT_TIMEOUT
+            default: "10000"
+        - string:
+            name: CONFIG_PATH
+            default: '{config_path}'
+        - string:
+            name: PARSED_PLUGINS_LINK
+            default: "http://jenkins-product.srt.mirantis.net:8080/view/plugins/job/build-fuel-plugins/"
+        - string:
+            name: PLUGINS_DIR
+            default: "/var/www/detach-plugins"
+
+        ##### TestRail Parameters #####
+        - string:
+            name: TESTRAIL_TEMPLATE_ALTER
+            default: "FALSE"
+        - string:
+            name: TEST_GROUP
+            default: '{test_group}'
+        - string:
+            name: TESTRAIL_FILE
+            default: "/var/www/test_rail/user.sh"
+        - string:
+            name: REPORT_PREFIX
+            default: ' /srv/jenkins/{name}'
+        - string:
+            name: REPORT_FILE
+            default: 'report.xml'
+        - string:
+            name: SUITE
+            default: "{suite}"
+        - string:
+            name: MILESTONE
+            default: "{milestone}"
+        - string:
+            name: TEMPEST
+            default: "FALSE"
+            #####For tempest running on master#####
+            #####default: "TRUE"                  #
+            #######################################
+        - string:
+            name: TESTRAIL_TEMPEST
+            default: "TRUE"
+
+
+    builders:
+        - shell:
+            !include-raw: ../../shell_scripts/template_scripts/erase_ci_envs.sh
+        - shell:
+            !include-raw: ../../shell_scripts/template_scripts/env_variables_export.sh
+        - inject:
+            properties-file: "$ENV_INJECT_PATH"
+        - shell:
+            !include-raw: ../../shell_scripts/get_plugins.sh
+        - inject:
+            properties-file: "$ENV_INJECT_PATH"
+        - shell:
+            !include-raw: ../../shell_scripts/template_scripts/deploy_template_env.sh
+        - inject:
+            properties-file: "$ENV_INJECT_PATH"
+        - shell:
+            !include-raw-escape: ../../shell_scripts/template_scripts/get_fuel_master_ip.sh
+        - inject:
+            properties-file: "$ENV_INJECT_PATH"
+        - shell:
+            !include-raw-escape: ../../shell_scripts/tempest_tests.sh
+        - inject:
+            properties-file: "$ENV_INJECT_PATH"
+        - shell:
+            !include-raw: ../../shell_scripts/template_scripts/testrail_reporter.sh
+
+    #triggers:
+    #    - timed: "0 21 * * *"
+
+    defaults: global
+    node: '{node}'
+    description: '{description}'
+    disabled: false
+    display-name: 'Tempest-{name}'
+    concurrent: false
+    retry-count: 3
+    logrotate:
+      daysToKeep: 30
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+
+    publishers:
+      - email:
+          recipients: '{email-recipients}'
+
+      - postbuildscript:
+          script-only-if-succeeded: False
+
+      - archive:
+          artifacts: 'report.xml'
+          allow-empty: 'true'
+          fingerprint: true
+
+      - archive:
+          artifacts: 'mos-integration-tests/snapshots/*'
+          allow-empty: 'true'
+          fingerprint: true
+
+      - archive:
+          artifacts: '*.log'
+          allow-empty: 'true'
+          fingerprint: true
+
+      - junit:
+          results: report.xml
+
+      - workspace-cleanup:
+          fail-build: false
+
+
+- project:
+    name: 9.0_LVM_Cinder_DVR_Sahara_Ceilometer_Ironic
+    weight: 4
+    iso_dir: /var/www/fuelweb-iso
+    env_changer: _ironic_cinder
+    config_path: templates/tempest/ironic_cinder.yaml
+    test_group: 'Tempest (LVM,Cinder,DVR,Sahara,Ceilometer,Ironic)'
+    iso_dir: '/var/www/fuelweb-iso'
+    is_ssl_disabled: 'TRUE'
+    ceph_skip_tests: 'FALSE'
+    ceph_rados: 'FALSE'
+    suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
+    milestone: '9.0'
+    node: Slave-srv136
+    description: Tempest tests
+    #display_name: '9.0_Tempest_{name}'
+    email-recipients: ogubanov@mirantis.com
+    jobs:
+      - 'Tempest_{name}'
+
+- project:
+    name: 9.0_Ceph_DVR_Sahara_Ceilometer_Ironic
+    weight: 4
+    iso_dir: /var/www/fuelweb-iso
+    env_changer: _ironic_ceph
+    config_path: templates/tempest/ironic_ceph.yaml
+    test_group: 'Tempest (Ceph,DVR,Sahara,Ceilometer)'
+    is_ssl_disabled: 'TRUE'
+    ceph_skip_tests: 'TRUE'
+    ceph_rados: 'TRUE'
+    suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
+    milestone: '9.0'
+    node: Slave-srv136
+    description: Tempest tests
+    email-recipients: ogubanov@mirantis.com
+    jobs:
+      - 'Tempest_{name}'
+
+- project: 
+    name: 9.0_LVM_Cinder_DVR_Sahara_Ceilometer_Ironic_SSL
+    weight: 4
+    iso_dir: /var/www/fuelweb-iso
+    env_changer: _ironic_cinder
+    config_path: templates/tempest/ironic_cinder.yaml
+    test_group: 'Tempest (SSL,LVM,Cinder,DVR,Sahara,Ceilometer,Ironic)'
+    is_ssl_disabled: 'FALSE'
+    ceph_skip_tests: 'FALSE'
+    ceph_rados: 'FALSE'
+    suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
+    milestone: '9.0'
+    node: Slave-srv136
+    description: Tempest tests
+    email-recipients: ogubanov@mirantis.com
+    jobs:
+      - 'Tempest_{name}'
+
+- project:
+    name: 9.0_Ceph_DVR_Sahara_Ceilometer_Ironic_SSL
+    weight: 4
+    iso_dir: /var/www/fuelweb-iso
+    env_changer: _ironic_ceph
+    config_path: templates/tempest/ironic_ceph.yaml
+    test_group: 'Tempest (Ceph,SSL,DVR,Sahara,Ceilometer)'
+    is_ssl_disabled: 'FALSE'
+    ceph_skip_tests: 'TRUE'
+    ceph_rados: 'TRUE'
+    suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
+    milestone: '9.0'
+    node: Slave-srv136
+    description: Tempest tests
+    email-recipients: ogubanov@mirantis.com
+    jobs:
+      - 'Tempest_{name}'
+
+
+- project:
+    name: 10.0_LVM_Cinder_DVR_Sahara_Ceilometer_Ironic
+    weight: 4
+    iso_dir: /var/www/mos-10.0_iso
+    env_changer: _ironic_cinder
+    config_path: templates/tempest/ironic_cinder.yaml
+    test_group: 'Tempest (LVM,Cinder,DVR,Sahara,Ceilometer,Ironic)'
+    iso_dir: '/var/www/fuelweb-iso'
+    is_ssl_disabled: 'TRUE'
+    ceph_skip_tests: 'FALSE'
+    ceph_rados: 'FALSE'
+    suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
+    milestone: '10.0'
+    node: Slave-srv136
+    description: Tempest tests
+    email-recipients: ogubanov@mirantis.com
+    jobs:
+      - 'Tempest_{name}'
+
+- project:
+    name: 10.0_Ceph_DVR_Sahara_Ceilometer_Ironic
+    weight: 4
+    iso_dir: /var/www/mos-10.0_iso
+    env_changer: _ironic_ceph
+    config_path: templates/tempest/ironic_ceph.yaml
+    test_group: 'Tempest (Ceph,DVR,Sahara,Ceilometer)'
+    is_ssl_disabled: 'TRUE'
+    ceph_skip_tests: 'TRUE'
+    ceph_rados: 'TRUE'
+    suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
+    milestone: '10.0'
+    node: Slave-srv136
+    description: Tempest tests
+    email-recipients: ogubanov@mirantis.com
+    jobs:
+      - 'Tempest_{name}'
+
+- project: 
+    name: 10.0_LVM_Cinder_DVR_Sahara_Ceilometer_Ironic_SSL
+    weight: 4
+    iso_dir: /var/www/mos-10.0_iso
+    env_changer: _ironic_cinder
+    config_path: templates/tempest/ironic_cinder.yaml
+    test_group: 'Tempest (SSL,LVM,Cinder,DVR,Sahara,Ceilometer,Ironic)'
+    is_ssl_disabled: 'FALSE'
+    ceph_skip_tests: 'FALSE'
+    ceph_rados: 'FALSE'
+    suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
+    milestone: '10.0'
+    node: Slave-srv136
+    description: Tempest tests
+    email-recipients: ogubanov@mirantis.com
+    jobs:
+      - 'Tempest_{name}'
+
+- project:
+    name: 10.0_Ceph_DVR_Sahara_Ceilometer_Ironic_SSL
+    weight: 4
+    iso_dir: /var/www/mos-10.0_iso
+    env_changer: _ironic_ceph
+    config_path: templates/tempest/ironic_ceph.yaml
+    test_group: 'Tempest (Ceph,SSL,DVR,Sahara,Ceilometer)'
+    is_ssl_disabled: 'FALSE'
+    ceph_skip_tests: 'TRUE'
+    ceph_rados: 'TRUE'
+    suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
+    milestone: '10.0'
+    node: Slave-srv136
+    description: Tempest tests
+    email-recipients: ogubanov@mirantis.com
+    jobs:
+      - 'Tempest_{name}'
+
+- project:
+    name: 9.0_Detached_RabbitMQ
+    weight: 4
+    iso_dir: /var/www/fuelweb-iso
+    env_changer: _rabbit
+    config_path: templates/separate_componenets/rabbit.yaml
+    test_group: Separated_Components(RabbitMQ)
+    is_ssl_disabled: 'TRUE'
+    ceph_skip_tests: 'FALSE'
+    ceph_rados: 'FALSE'
+    suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
+    milestone: '9.0'
+    node: Slave-srv136
+    description: Separated Components
+    email-recipients: ogubanov@mirantis.com
+    jobs:
+      - 'Tempest_{name}'
+
+- project:
+    name: 9.0_Detached_Database
+    weight: 4
+    iso_dir: /var/www/fuelweb-iso
+    env_changer: _database
+    config_path: templates/separate_componenets/database.yaml
+    test_group: Separated_Components(Database)
+    is_ssl_disabled: 'TRUE'
+    ceph_skip_tests: 'FALSE'
+    ceph_rados: 'FALSE'
+    suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
+    milestone: '9.0'
+    node: Slave-srv136
+    description: Separated Components
+    email-recipients: ogubanov@mirantis.com
+    jobs:
+      - 'Tempest_{name}'
+
+- project:
+    name: 9.0_Detached_DB_Keystone
+    weight: 4
+    iso_dir: /var/www/fuelweb-iso
+    env_changer: _db_keystone
+    config_path: templates/separate_componenets/db_keystone.yaml
+    test_group: Separated_Components(DB,Keystone)
+    is_ssl_disabled: 'TRUE'
+    ceph_skip_tests: 'FALSE'
+    ceph_rados: 'FALSE'
+    suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
+    milestone: '9.0'
+    node: Slave-srv136
+    description: Separated Components
+    email-recipients: ogubanov@mirantis.com
+    jobs:
+      - 'Tempest_{name}'
+
+- project:
+    name: 9.0_Detached_RabbitMQ_DB_Keystone
+    weight: 4
+    iso_dir: /var/www/fuelweb-iso
+    env_changer: _db_rabbit_keystone
+    config_path: templates/separate_componenets/db_rabbit_keystone.yaml
+    test_group: Separated_Components(RabbitMQ,DB,Keystone)
+    is_ssl_disabled: 'TRUE'
+    ceph_skip_tests: 'FALSE'
+    ceph_rados: 'FALSE'
+    suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
+    milestone: '9.0'
+    node: Slave-srv136
+    description: Separated Components
+    email-recipients: ogubanov@mirantis.com
+    jobs:
+      - 'Tempest_{name}'
