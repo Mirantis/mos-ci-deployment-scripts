@@ -49,9 +49,6 @@
 
         ##### TestRail Parameters #####
         - string:
-            name: TESTRAIL_TEMPLATE_ALTER
-            default: "FALSE"
-        - string:
             name: TEST_GROUP
             default: '{test_group}'
         - string:
@@ -165,7 +162,6 @@
     milestone: '9.0'
     node: Slave-srv136
     description: Tempest tests
-    #display_name: '9.0_Tempest_{name}'
     email-recipients: ogubanov@mirantis.com
     jobs:
       - 'Tempest_{name}'

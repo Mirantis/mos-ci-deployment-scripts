@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+#Get the doceker config.
+# TBD need to prepare config with all needed settings
+# to avoid the 'sed' operations below
 rm -rf dockerfiles
 git clone https://review.fuel-infra.org/fuel-infra/dockerfiles
 git checkout master
@@ -22,10 +25,10 @@ echo "$ISO_ID"_CONF:"$SNAPSHOT" > build-name-setter.info
 dos.py revert-resume "$ENV_NAME" "$SNAPSHOT_NAME"
 
 ##### Generation Report Path for copying report files #####
-REPORT_PATH="$REPORT_PREFIX"/"$ENV_NAME"_"$SNAPSHOT_NAME"
-echo "BUILD=$BUILD_URL" >> "$ENV_INJECT_PATH"
-echo "REPORT_PATH=$REPORT_PATH" >> "$ENV_INJECT_PATH"
-echo "$REPORT_PATH" > ./param.pm
+#REPORT_PATH="$REPORT_PREFIX"/"$ENV_NAME"_"$SNAPSHOT_NAME"
+#echo "BUILD=$BUILD_URL" >> "$ENV_INJECT_PATH"
+#echo "REPORT_PATH=$REPORT_PATH" >> "$ENV_INJECT_PATH"
+#echo "$REPORT_PATH" > ./param.pm
 
 ##### Workaround for rally docker files #####
 sed -i 's|rally verify install --source /var/lib/tempest --no-tempest-venv \
@@ -133,10 +136,13 @@ echo "$EXEC_CMD" | sshpass -p 'r00tme' ssh -o UserKnownHostsFile=/dev/null -o St
 
 GET_RES_CMD="scp node-$CONTROLLER_ID:/var/lib/rally-tempest-container-home-dir/verification.xml /root/verification.xml"
 echo "$GET_RES_CMD" |  sshpass -p 'r00tme' ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -T root@"$FUEL_MASTER_IP"
-sshpass -p 'r00tme' scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@"$FUEL_MASTER_IP":/root/verification.xml ./
+sshpass -p 'r00tme' scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@"$FUEL_MASTER_IP":/root/verification.xml report.xml
 
 GET_LOG_CMD="scp node-$CONTROLLER_ID:/root/log.log /root/log.log"
 echo "$GET_LOG_CMD" |  sshpass -p 'r00tme' ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -T root@"$FUEL_MASTER_IP"
 sshpass -p 'r00tme' scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@"$FUEL_MASTER_IP":/root/log.log ./
 
+# make snapshot for further investigation and disable env
+dos.py suspend ${ENV_NAME}
+dos.py snapshot ${ENV_NAME} ${SNAPSHOT_NAME}
 dos.py destroy "$ENV_NAME"

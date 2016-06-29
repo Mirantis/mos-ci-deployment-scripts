@@ -37,7 +37,7 @@
 
         ##### TestRail Parameters #####
         - string:
-            name: TESTRAIL_TEMPLATE_ALTER
+            name: TESTRAIL_TEMPEST
             default: "FALSE"
         - string:
             name: TEST_GROUP
@@ -56,7 +56,7 @@
             default: "[9.0][MOSQA] Automated Cloud Testing"
         - string:
             name: MILESTONE
-            default: "9.0"
+            default: "{milestone}"
 
     builders:
         - shell:
@@ -119,6 +119,7 @@
     report_prefix: /srv/jenkins/keystone/
     start_timer: "0 23 * * *"
     node: Slave-srv135
+    milestone: '9.0'
     description: Keystone tests
     display_name: 9.0_Keystone_VLAN
     email-recipients: ogubanov@mirantis.com
@@ -138,6 +139,7 @@
     report_file: report.xml
     start_timer: "0 22 * * *"
     node: Slave-srv135
+    milestone: '9.0'
     description: Object Storage tests for Swift
     display_name: 9.0_Object_Storage(Swift)
     email-recipients: ogubanov@mirantis.com
@@ -158,6 +160,7 @@
     report_file: report.xml
     start_timer: "0 22 * * *"
     node: Slave-srv135
+    milestone: '9.0'
     description: Object Storage tests for RadosGW
     display_name: 9.0_Object_Storage(RadosGW)
     email-recipients: ogubanov@mirantis.com
@@ -178,6 +181,7 @@
     report_file: report.xml
     start_timer: "0 23 * * *"
     node: Slave-7777
+    milestone: '9.0'
     description: Cinder tests
     display_name: 9.0_Cinder
     email-recipients: ogubanov@mirantis.com
@@ -199,6 +203,7 @@
     report_file: report.xml
     start_timer: "0 22 * * *"
     node: Slave-srv135
+    milestone: '9.0'
     description: RabbitMQ_OSLO tests
     display_name: 9.0_RabbitMQ_OSLO_VLAN
     email-recipients: ogubanov@mirantis.com
@@ -219,6 +224,7 @@
     report_file: report.xml
     start_timer: "0 22 * * *"
     node: Slave-srv135
+    milestone: '9.0'
     description: Glare tests
     display_name: '9.0_{name}'
     email-recipients: ogubanov@mirantis.com
@@ -239,6 +245,7 @@
     report_file: report.xml
     start_timer: "0 22 * * *"
     node: Slave-srv135
+    milestone: '9.0'
     description: Glare tests
     display_name: '9.0_{name}'
     email-recipients: ogubanov@mirantis.com
