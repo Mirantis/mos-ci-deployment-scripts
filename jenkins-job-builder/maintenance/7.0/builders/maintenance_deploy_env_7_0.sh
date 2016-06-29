@@ -47,6 +47,7 @@ DISABLE_SSL=${DISABLE_SSL:-false}
 
 OPENSTACK_RELEASE=${OPENSTACK_RELEASE:-ubuntu}
 
+dos.py list | tail -n+3 | xargs -I {} dos.py destroy {}
 # erase previous environments
 if ${ERASE_PREV_ENV} ; then
     dos.py list | tail -n+3 | xargs -I {} dos.py erase {}
