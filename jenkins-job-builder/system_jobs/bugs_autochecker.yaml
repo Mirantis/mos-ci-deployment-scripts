@@ -16,7 +16,7 @@
        - mos-integration-tests-repository
 
     description: 'Bugs autocheck'
-    disabled: false
+    disabled: true
     display-name: 'Bugs Autochecker'
     concurrent: false
     browser: githubweb
