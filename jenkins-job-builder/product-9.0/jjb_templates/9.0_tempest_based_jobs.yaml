@@ -188,7 +188,7 @@
     jobs:
       - 'Tempest_{name}'
 
-- project: 
+- project:
     name: 9.0_LVM_Cinder_DVR_Sahara_Ceilometer_Ironic_SSL
     weight: 4
     iso_dir: /var/www/fuelweb-iso
@@ -262,7 +262,7 @@
     jobs:
       - 'Tempest_{name}'
 
-- project: 
+- project:
     name: 10.0_LVM_Cinder_DVR_Sahara_Ceilometer_Ironic_SSL
     weight: 4
     iso_dir: /var/www/mos-10.0_iso
