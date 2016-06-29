@@ -37,7 +37,7 @@
 
         ##### TestRail Parameters #####
         - string:
-            name: TESTRAIL_TEMPLATE_ALTER
+            name: TESTRAIL_TEMPEST
             default: "TRUE"
         - string:
             name: TEST_GROUP
@@ -56,7 +56,7 @@
             default: "[9.0][MOSQA] Automated Cloud Testing"
         - string:
             name: MILESTONE
-            default: "9.0"
+            default: "{milestone}"
 
     builders:
         - shell:
@@ -123,6 +123,7 @@
     test_group: Horizon
     start_timer: "0 23 * * *"
     node: Slave-7777
+    milestone: '9.0'
     description: Horizon integration tests tests
     display_name: 9.0_Horizon_integration_tests_Swift
     email-recipients: schipiga@mirantis.com
@@ -139,6 +140,7 @@
     test_group: Horizon(Ceph)
     start_timer: "0 23 * * *"
     node: Slave-7774
+    milestone: '9.0'
     description: Horizon integration tests tests
     display_name: 9.0_Horizon_integration_tests_Ceph
     email-recipients: schipiga@mirantis.com

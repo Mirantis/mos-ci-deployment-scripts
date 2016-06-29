@@ -28,10 +28,10 @@ TESTRAIL_MILESTONE="$MILESTONE"
 export TESTRAIL_MILESTONE="$MILESTONE"
 fi
 
-if [[ "$TESTRAIL_TEMPLATE_ALTER" == 'TRUE' ]] ;
+if [[ "$TESTRAIL_TEMPEST" == 'TRUE' ]] ;
 then
 report -v \
-    --testrail-plan-name "9.0 mos iso #$ISO_ID" \
+    --testrail-plan-name "$MILESTONE mos iso #$ISO_ID" \
     --env-description "$TEST_GROUP" \
     --testrail-url  "$TESTRAIL_URL" \
     --testrail-user  "$TESTRAIL_USER" \
@@ -45,7 +45,7 @@ report -v \
     "$REPORT_FILE"
 else
 report -v \
-    --testrail-plan-name "9.0 mos iso #$ISO_ID" \
+    --testrail-plan-name "$MILESTONE mos iso #$ISO_ID" \
     --env-description "$TEST_GROUP" \
     --testrail-url  "$TESTRAIL_URL" \
     --testrail-user  "$TESTRAIL_USER" \
