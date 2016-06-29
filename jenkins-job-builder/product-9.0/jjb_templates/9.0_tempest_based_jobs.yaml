@@ -62,7 +62,7 @@
             default: ' /srv/jenkins/{name}'
         - string:
             name: REPORT_FILE
-            default: 'report.xml'
+            default: 'verification.xml'
         - string:
             name: SUITE
             default: "{suite}"
