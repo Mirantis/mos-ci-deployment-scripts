@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+PLUGINS_DIR=${PLUGINS_DIR:-"/var/www/detach-plugins/"}
+PARSED_PLUGINS_LINK=${PARSED_PLUGINS_LINK:-"http://jenkins-product.srt.mirantis.net:8080/view/plugins/job/build-fuel-plugins/"}
 
 sudo rm -rf "$PLUGINS_DIR"/*
 git clone https://review.gerrithub.io/Mirantis/mos-ci-deployment-scripts
