@@ -49,9 +49,6 @@
 
         ##### TestRail Parameters #####
         - string:
-            name: TESTRAIL_TEMPLATE_ALTER
-            default: "FALSE"
-        - string:
             name: TEST_GROUP
             default: '{test_group}'
         - string:
@@ -163,10 +160,11 @@
     ceph_rados: 'FALSE'
     suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
     milestone: '9.0'
-    node: Slave-srv136
+    node: Slave-srv133
     description: Tempest tests
-    #display_name: '9.0_Tempest_{name}'
     email-recipients: ogubanov@mirantis.com
+    triggers:
+        - timed: "0 21 * * *"
     jobs:
       - 'Tempest_{name}'
 
@@ -182,9 +180,11 @@
     ceph_rados: 'TRUE'
     suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
     milestone: '9.0'
-    node: Slave-srv136
+    node: Slave-srv133
     description: Tempest tests
     email-recipients: ogubanov@mirantis.com
+    triggers:
+        - timed: "0 21 * * *"
     jobs:
       - 'Tempest_{name}'
 
@@ -200,9 +200,11 @@
     ceph_rados: 'FALSE'
     suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
     milestone: '9.0'
-    node: Slave-srv136
+    node: Slave-srv133
     description: Tempest tests
     email-recipients: ogubanov@mirantis.com
+    triggers:
+        - timed: "0 21 * * *"
     jobs:
       - 'Tempest_{name}'
 
@@ -218,9 +220,11 @@
     ceph_rados: 'TRUE'
     suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
     milestone: '9.0'
-    node: Slave-srv136
+    node: Slave-srv133
     description: Tempest tests
     email-recipients: ogubanov@mirantis.com
+    triggers:
+        - timed: "0 21 * * *"
     jobs:
       - 'Tempest_{name}'
 
