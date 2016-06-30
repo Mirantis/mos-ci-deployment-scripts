@@ -203,6 +203,7 @@
     report_file: report.xml
     start_timer: "0 23 * * *"
     node: Slave-srv135
+    milestone: '9.0'
     description: Cinder tests
     display_name: 9.0_Cinder_Ceph
     email-recipients: ogubanov@mirantis.com
