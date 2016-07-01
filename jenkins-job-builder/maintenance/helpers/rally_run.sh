@@ -86,6 +86,7 @@ env_id=$(fuel env | tail -1 | awk '{print $1}')
 fuel --env ${env_id} settings --download
 volumes_lvm=$(cat settings_${env_id}.yaml | grep -A 7 "volumes_lvm:" | awk '/value:/{print $2}')
 volumes_ceph=$(cat settings_${env_id}.yaml | grep -A 7 "volumes_ceph:" | awk '/value:/{print $2}')
+ephemeral_ceph==$(cat settings_${env_id}.yaml | grep -A 7 "ephemeral_ceph:" | awk '/value:/{print $2}')
 
 if ${volumes_ceph}; then
     echo "[volume]" >> $file
@@ -103,7 +104,21 @@ fi
 deployment=$(docker exec "$DOCK_ID" bash -c "rally deployment list" | awk '/tempest/{print $2}')
 docker exec "$DOCK_ID" bash -c "cd .rally/tempest/for-deployment-${deployment} && git checkout b39bbce80c69a57c708ed1b672319f111c79bdd5"
 
+# Add xfails file
+xfails="""tempest.api.identity.admin.v3.test_inherits.InheritsV3TestJSON.test_inherit_assign_check_revoke_roles_on_projects_group[id-26021436-d5a4-4256-943c-ded01e0d4b45]: This API is not enabled
+tempest.api.identity.admin.v3.test_inherits.InheritsV3TestJSON.test_inherit_assign_check_revoke_roles_on_projects_user[id-18b70e45-7687-4b72-8277-b8f1a47d7591]: This API is not enabled
+tempest.api.identity.admin.v3.test_inherits.InheritsV3TestJSON.test_inherit_assign_list_check_revoke_roles_on_domains_group[id-c7a8dda2-be50-4fb4-9a9c-e830771078b1]: This API is not enabled
+tempest.api.identity.admin.v3.test_inherits.InheritsV3TestJSON.test_inherit_assign_list_check_revoke_roles_on_domains_user[id-4e6f0366-97c8-423c-b2be-41eae6ac91c8]: This API is not enabled"""
+
+ceph_xfails="""tempest.api.compute.servers.test_server_personality.ServerPersonalityTestJSON.test_create_server_with_personality[id-3cfe87fd-115b-4a02-b942-7dc36a337fdf]: not worked with ephemeral ceph
+tempest.api.compute.servers.test_server_personality.ServerPersonalityTestJSON.test_can_create_server_with_max_number_personality_files[id-52f12ee8-5180-40cc-b417-31572ea3d555]: not worked with ephemeral ceph"""
+
+docker exec "$DOCK_ID" bash -c "echo \"${xfails}\" > xfails.txt"
+if ${volumes_ceph}; then
+    docker exec "$DOCK_ID" bash -c "echo \"${ceph_xfails}\" >> xfails.txt"
+fi
+
 # Run!
-docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start --system-wide"
+docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start --system-wide --xfails-file xfails.txt"
 docker exec "$DOCK_ID" bash -c "rally verify results --json --output-file output.json"
 docker exec "$DOCK_ID" bash -c "rm -rf rally_json2junit && git clone https://github.com/greatehop/rally_json2junit && python rally_json2junit/rally_json2junit/results_parser.py output.json"
