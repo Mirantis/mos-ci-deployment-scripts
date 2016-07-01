@@ -15,6 +15,18 @@ $ export ISO_PATH=/path/to/fuel.iso
 $ ./deploy_template.sh templates/neutron/vlan_dvr.yaml
 ```
 
+
+#### Deploying of separate components with templates
+
+Again choose suitable template from *templates* folder and just source script to obtain the plugins and set up the environment variables. By default the plugins to be stored in $HOME/detach-plugins/:
+
+```bash
+$ source jenkins-job-builder/shell_scripts/get_plugins.sh
+$ export ISO_PATH=/path/to/fuel.iso
+$ ./deploy_template.sh templates/neutron/vlan_dvr.yaml
+```
+
+
 #### Write your own template
 
 Template is just YAML file with next keys under root key (template):
