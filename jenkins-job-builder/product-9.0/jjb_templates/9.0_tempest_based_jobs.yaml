@@ -7,7 +7,7 @@
 
     properties:
       - heavy-job:
-          weight: '{weight}'
+          weight: 4
 
     parameters:
         #EnvInject file
@@ -108,9 +108,8 @@
 
     defaults: global
     node: '{node}'
-    description: '{description}'
+    description: 'Job to run tempest tests on deployed environment'
     disabled: false
-    display-name: 'Tempest-{name}'
     concurrent: false
     retry-count: 3
     logrotate:
@@ -120,7 +119,7 @@
 
     publishers:
       - email:
-          recipients: '{email-recipients}'
+          recipients: 'ogubanov@mirantis.com'
 
       - postbuildscript:
           script-only-if-succeeded: False
@@ -148,8 +147,8 @@
 
 
 - project:
-    name: 9.0_LVM_Cinder_DVR_Sahara_Ceilometer_Ironic
-    weight: 4
+    name: Tempest-9.0_LVM_no_ssl
+    display-name: 'Tempest-9.0_LVM_Cinder_DVR_Sahara_Ceilometer_Ironic'
     iso_dir: /var/www/fuelweb-iso
     env_changer: _ironic_cinder
     config_path: templates/tempest/ironic_cinder.yaml
@@ -161,16 +160,12 @@
     suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
     milestone: '9.0'
     node: Slave-srv133
-    description: Tempest tests
-    email-recipients: ogubanov@mirantis.com
-    triggers:
-        - timed: "0 21 * * *"
     jobs:
       - 'Tempest_{name}'
 
 - project:
-    name: 9.0_Ceph_DVR_Sahara_Ceilometer_Ironic
-    weight: 4
+    name: Tempest-9.0_Ceph_no_ssl
+    display-name: 'Tempest-9.0_Ceph_DVR_Sahara_Ceilometer_Ironic'
     iso_dir: /var/www/fuelweb-iso
     env_changer: _ironic_ceph
     config_path: templates/tempest/ironic_ceph.yaml
@@ -181,16 +176,12 @@
     suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
     milestone: '9.0'
     node: Slave-srv133
-    description: Tempest tests
-    email-recipients: ogubanov@mirantis.com
-    triggers:
-        - timed: "0 21 * * *"
     jobs:
       - 'Tempest_{name}'
 
 - project:
-    name: 9.0_LVM_Cinder_DVR_Sahara_Ceilometer_Ironic_SSL
-    weight: 4
+    name: Tempest-9.0_LVM_SSL
+    display-name: 'Tempest-9.0_LVM_Cinder_DVR_Sahara_Ceilometer_Ironic_SSL'
     iso_dir: /var/www/fuelweb-iso
     env_changer: _ironic_cinder
     config_path: templates/tempest/ironic_cinder.yaml
@@ -201,16 +192,12 @@
     suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
     milestone: '9.0'
     node: Slave-srv133
-    description: Tempest tests
-    email-recipients: ogubanov@mirantis.com
-    triggers:
-        - timed: "0 21 * * *"
     jobs:
       - 'Tempest_{name}'
 
 - project:
-    name: 9.0_Ceph_DVR_Sahara_Ceilometer_Ironic_SSL
-    weight: 4
+    name: Tempest-9.0_Ceph_SSL
+    display-name: 'Tempest-9.0_Ceph_DVR_Sahara_Ceilometer_Ironic_SSL'
     iso_dir: /var/www/fuelweb-iso
     env_changer: _ironic_ceph
     config_path: templates/tempest/ironic_ceph.yaml
@@ -221,17 +208,13 @@
     suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
     milestone: '9.0'
     node: Slave-srv133
-    description: Tempest tests
-    email-recipients: ogubanov@mirantis.com
-    triggers:
-        - timed: "0 21 * * *"
     jobs:
       - 'Tempest_{name}'
 
 
 - project:
-    name: 10.0_LVM_Cinder_DVR_Sahara_Ceilometer_Ironic
-    weight: 4
+    name: Tempest-10.0_LVM_no_SSL
+    display-name: 'Tempest-10.0_LVM_Cinder_DVR_Sahara_Ceilometer_Ironic'
     iso_dir: /var/www/mos-10.0_iso
     env_changer: _ironic_cinder
     config_path: templates/tempest/ironic_cinder.yaml
@@ -243,14 +226,12 @@
     suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
     milestone: '10.0'
     node: Slave-srv136
-    description: Tempest tests
-    email-recipients: ogubanov@mirantis.com
     jobs:
       - 'Tempest_{name}'
 
 - project:
-    name: 10.0_Ceph_DVR_Sahara_Ceilometer_Ironic
-    weight: 4
+    name: Tempest-10.0_Ceph_no_SSL
+    display-name: 'Tempest-10.0_Ceph_DVR_Sahara_Ceilometer_Ironic'
     iso_dir: /var/www/mos-10.0_iso
     env_changer: _ironic_ceph
     config_path: templates/tempest/ironic_ceph.yaml
@@ -261,14 +242,12 @@
     suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
     milestone: '10.0'
     node: Slave-srv136
-    description: Tempest tests
-    email-recipients: ogubanov@mirantis.com
     jobs:
       - 'Tempest_{name}'
 
 - project:
-    name: 10.0_LVM_Cinder_DVR_Sahara_Ceilometer_Ironic_SSL
-    weight: 4
+    name: Tempest-10.0_LVM_Cinder_SSL
+    display-name: 'Tempest-10.0_Ceph_DVR_Sahara_Ceilometer_Ironic'
     iso_dir: /var/www/mos-10.0_iso
     env_changer: _ironic_cinder
     config_path: templates/tempest/ironic_cinder.yaml
@@ -279,14 +258,12 @@
     suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
     milestone: '10.0'
     node: Slave-srv136
-    description: Tempest tests
-    email-recipients: ogubanov@mirantis.com
     jobs:
       - 'Tempest_{name}'
 
 - project:
-    name: 10.0_Ceph_DVR_Sahara_Ceilometer_Ironic_SSL
-    weight: 4
+    name: Tempest-10.0_Ceph_SSL
+    display-name: 'Tempest-10.0_Ceph_DVR_Sahara_Ceilometer_Ironic_SSL'
     iso_dir: /var/www/mos-10.0_iso
     env_changer: _ironic_ceph
     config_path: templates/tempest/ironic_ceph.yaml
@@ -297,14 +274,12 @@
     suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
     milestone: '10.0'
     node: Slave-srv136
-    description: Tempest tests
-    email-recipients: ogubanov@mirantis.com
     jobs:
       - 'Tempest_{name}'
 
 - project:
     name: 9.0_Detached_RabbitMQ
-    weight: 4
+    display-name: 'Tempest-{name}'
     iso_dir: /var/www/fuelweb-iso
     env_changer: _rabbit
     config_path: templates/separate_componenets/rabbit.yaml
@@ -315,14 +290,12 @@
     suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
     milestone: '9.0'
     node: Slave-srv136
-    description: Separated Components
-    email-recipients: ogubanov@mirantis.com
     jobs:
       - 'Tempest_{name}'
 
 - project:
     name: 9.0_Detached_Database
-    weight: 4
+    display-name: 'Tempest-{name}'
     iso_dir: /var/www/fuelweb-iso
     env_changer: _database
     config_path: templates/separate_componenets/database.yaml
@@ -333,14 +306,12 @@
     suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
     milestone: '9.0'
     node: Slave-srv136
-    description: Separated Components
-    email-recipients: ogubanov@mirantis.com
     jobs:
       - 'Tempest_{name}'
 
 - project:
     name: 9.0_Detached_DB_Keystone
-    weight: 4
+    display-name: 'Tempest-{name}'
     iso_dir: /var/www/fuelweb-iso
     env_changer: _db_keystone
     config_path: templates/separate_componenets/db_keystone.yaml
@@ -351,14 +322,12 @@
     suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
     milestone: '9.0'
     node: Slave-srv136
-    description: Separated Components
-    email-recipients: ogubanov@mirantis.com
     jobs:
       - 'Tempest_{name}'
 
 - project:
     name: 9.0_Detached_RabbitMQ_DB_Keystone
-    weight: 4
+    display-name: 'Tempest-{name}'
     iso_dir: /var/www/fuelweb-iso
     env_changer: _db_rabbit_keystone
     config_path: templates/separate_componenets/db_rabbit_keystone.yaml
@@ -369,7 +338,5 @@
     suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
     milestone: '9.0'
     node: Slave-srv136
-    description: Separated Components
-    email-recipients: ogubanov@mirantis.com
     jobs:
       - 'Tempest_{name}'

@@ -144,5 +144,5 @@ sshpass -p 'r00tme' scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking
 
 # make snapshot for further investigation and disable env
 dos.py suspend ${ENV_NAME}
-dos.py snapshot ${ENV_NAME} ${SNAPSHOT_NAME}
+dos.py snapshot "${ENV_NAME}" "${SNAPSHOT_NAME}_after_test"
 dos.py destroy "$ENV_NAME"
