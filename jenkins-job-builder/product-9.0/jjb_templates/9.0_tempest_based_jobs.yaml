@@ -289,7 +289,7 @@
     ceph_rados: 'FALSE'
     suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
     milestone: '9.0'
-    node: Slave-srv136
+    node: single_template
     jobs:
       - 'Tempest_{name}'
 
@@ -305,7 +305,7 @@
     ceph_rados: 'FALSE'
     suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
     milestone: '9.0'
-    node: Slave-srv136
+    node: single_template
     jobs:
       - 'Tempest_{name}'
 
@@ -321,7 +321,7 @@
     ceph_rados: 'FALSE'
     suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
     milestone: '9.0'
-    node: Slave-srv136
+    node: single_template
     jobs:
       - 'Tempest_{name}'
 
@@ -337,6 +337,6 @@
     ceph_rados: 'FALSE'
     suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
     milestone: '9.0'
-    node: Slave-srv136
+    node: single_template
     jobs:
       - 'Tempest_{name}'

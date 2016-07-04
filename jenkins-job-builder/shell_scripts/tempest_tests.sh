@@ -6,7 +6,6 @@
 rm -rf dockerfiles
 git clone https://review.fuel-infra.org/fuel-infra/dockerfiles
 git checkout master
-cd dockerfiles
 
 ##### Define SSH Opts #####
 SSH_OPTS='-o UserKnownHostsFile=/dev/null \
@@ -33,15 +32,15 @@ dos.py revert-resume "$ENV_NAME" "$SNAPSHOT_NAME"
 ##### Workaround for rally docker files #####
 sed -i 's|rally verify install --source /var/lib/tempest --no-tempest-venv \
        |rally verify install --source /var/lib/tempest|g' \
-       rally-tempest/latest/setup_tempest.sh
+       dockerfiles/rally-tempest/latest/setup_tempest.sh
 sed -i 's|FROM rallyforge/rally:latest|FROM rallyforge/rally:0.4.0|g' \
-       rally-tempest/latest/Dockerfile
+       dockerfiles/rally-tempest/latest/Dockerfile
 
-sed -i '/RUN git clone/d' rally-tempest/latest/Dockerfile
-sed -i '/pip install -r tempest/d' rally-tempest/latest/Dockerfile
-sed -i '/mv tempest/d' rally-tempest/latest/Dockerfile
+sed -i '/RUN git clone/d' dockerfiles/rally-tempest/latest/Dockerfile
+sed -i '/pip install -r tempest/d' dockerfiles/rally-tempest/latest/Dockerfile
+sed -i '/mv tempest/d' dockerfiles/rally-tempest/latest/Dockerfile
 
-sed -i '8i\RUN git clone https://git.openstack.org/openstack/tempest &&  cd tempest && git checkout 63cb9a3718f394c9da8e0cc04b170ca2a8196ec2 && cd ../ && pip install -r tempest/requirements.txt -r tempest/test-requirements.txt && mv tempest/ /var/lib/' rally-tempest/latest/Dockerfile
+sed -i '8i\RUN git clone https://git.openstack.org/openstack/tempest &&  cd tempest && git checkout 63cb9a3718f394c9da8e0cc04b170ca2a8196ec2 && cd ../ && pip install -r tempest/requirements.txt -r tempest/test-requirements.txt && mv tempest/ /var/lib/' dockerfiles/rally-tempest/latest/Dockerfile
 
 
 ##### Get ID of controller via SSH to admin node #####
@@ -51,7 +50,7 @@ CONTROLLER_ID=`echo 'fuel node | grep controller | awk '\''{print $1}'\'' | \
 
 ##### Generating docker file and copying it to admin node,#####
 ##### and then to controller node                         #####
-sudo docker build -t rally-tempest rally-tempest/latest
+sudo docker build -t rally-tempest dockerfiles/rally-tempest/latest
 sudo docker save -o ./dimage rally-tempest
 sshpass -p 'r00tme' scp -o UserKnownHostsFile=/dev/null \
                         -o StrictHostKeyChecking=no dimage root@"$FUEL_MASTER_IP":/root/rally
@@ -136,7 +135,7 @@ echo "$EXEC_CMD" | sshpass -p 'r00tme' ssh -o UserKnownHostsFile=/dev/null -o St
 
 GET_RES_CMD="scp node-$CONTROLLER_ID:/var/lib/rally-tempest-container-home-dir/verification.xml /root/verification.xml"
 echo "$GET_RES_CMD" |  sshpass -p 'r00tme' ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -T root@"$FUEL_MASTER_IP"
-sshpass -p 'r00tme' scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@"$FUEL_MASTER_IP":/root/verification.xml report.xml
+sshpass -p 'r00tme' scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@"$FUEL_MASTER_IP":/root/verification.xml $REPORT_FILE
 
 GET_LOG_CMD="scp node-$CONTROLLER_ID:/root/log.log /root/log.log"
 echo "$GET_LOG_CMD" |  sshpass -p 'r00tme' ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -T root@"$FUEL_MASTER_IP"
