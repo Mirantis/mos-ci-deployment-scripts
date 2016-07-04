@@ -12,19 +12,19 @@ for file in `find $PLUGINS_DIR -type f -name "*.rpm"`
 do
     if [[ $file =~ .*rabbit.* ]]
     then
-        SEPARATE_SERVICE_RABBIT_PLUGIN_PATH=$file
+         export SEPARATE_SERVICE_RABBIT_PLUGIN_PATH=$file
         echo "SEPARATE_SERVICE_RABBIT_PLUGIN_PATH=${SEPARATE_SERVICE_RABBIT_PLUGIN_PATH}" >> "$ENV_INJECT_PATH"
     fi
 
     if [[ $file =~ .*database.* ]]
     then
-        SEPARATE_SERVICE_DB_PLUGIN_PATH=$file
+        export SEPARATE_SERVICE_DB_PLUGIN_PATH=$file
         echo "SEPARATE_SERVICE_DB_PLUGIN_PATH=${SEPARATE_SERVICE_DB_PLUGIN_PATH}" >>  "$ENV_INJECT_PATH"
     fi
 
     if [[ $file =~ .*keystone.* ]]
     then
-        SEPARATE_SERVICE_KEYSTONE_PLUGIN_PATH=$file
+        export SEPARATE_SERVICE_KEYSTONE_PLUGIN_PATH=$file
         echo "SEPARATE_SERVICE_KEYSTONE_PLUGIN_PATH=${SEPARATE_SERVICE_KEYSTONE_PLUGIN_PATH}" >>  "$ENV_INJECT_PATH"
     fi
 
