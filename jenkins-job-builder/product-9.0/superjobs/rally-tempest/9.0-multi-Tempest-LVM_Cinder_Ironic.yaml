@@ -164,7 +164,7 @@
     defaults: global
     node: Slave-srv138
     description: 'Tempest LVM SSL'
-    disabled: false
+    disabled: true
     display-name: '9.0-multi-Tempest-LVM_Cinder_DVR_Sahara_Ceilometer_Ironic'
     concurrent: false
     retry-count: 3

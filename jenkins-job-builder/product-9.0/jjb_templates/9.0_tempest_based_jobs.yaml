@@ -46,6 +46,9 @@
         - string:
             name: PLUGINS_DIR
             default: "/var/www/detach-plugins"
+        - string:
+            name: DESTROY_ENV_AFTER_TESTS
+            default: "{destroy_env}"
 
         ##### TestRail Parameters #####
         - string:
@@ -103,8 +106,8 @@
         - shell:
             !include-raw: ../../shell_scripts/template_scripts/testrail_reporter.sh
 
-    #triggers:
-    #    - timed: "0 21 * * *"
+    triggers:
+        - timed: "0 21 * * *"
 
     defaults: global
     node: '{node}'
@@ -157,9 +160,10 @@
     is_ssl_disabled: 'TRUE'
     ceph_skip_tests: 'FALSE'
     ceph_rados: 'FALSE'
+    destroy_env: 'FALSE'
     suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
     milestone: '9.0'
-    node: Slave-srv133
+    node: Slave-srv137
     jobs:
       - 'Tempest_{name}'
 
@@ -173,9 +177,10 @@
     is_ssl_disabled: 'TRUE'
     ceph_skip_tests: 'TRUE'
     ceph_rados: 'TRUE'
+    destroy_env: 'FALSE'
     suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
     milestone: '9.0'
-    node: Slave-srv133
+    node: Slave-srv139
     jobs:
       - 'Tempest_{name}'
 
@@ -189,9 +194,10 @@
     is_ssl_disabled: 'FALSE'
     ceph_skip_tests: 'FALSE'
     ceph_rados: 'FALSE'
+    destroy_env: 'FALSE'
     suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
     milestone: '9.0'
-    node: Slave-srv133
+    node: Slave-srv138
     jobs:
       - 'Tempest_{name}'
 
@@ -205,75 +211,10 @@
     is_ssl_disabled: 'FALSE'
     ceph_skip_tests: 'TRUE'
     ceph_rados: 'TRUE'
+    destroy_env: 'FALSE'
     suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
     milestone: '9.0'
-    node: Slave-srv133
-    jobs:
-      - 'Tempest_{name}'
-
-
-- project:
-    name: Tempest-10.0_LVM_no_SSL
-    display-name: 'Tempest-10.0_LVM_Cinder_DVR_Sahara_Ceilometer_Ironic'
-    iso_dir: /var/www/mos-10.0_iso
-    env_changer: _ironic_cinder
-    config_path: templates/tempest/ironic_cinder.yaml
-    test_group: 'Tempest (LVM,Cinder,DVR,Sahara,Ceilometer,Ironic)'
-    iso_dir: '/var/www/fuelweb-iso'
-    is_ssl_disabled: 'TRUE'
-    ceph_skip_tests: 'FALSE'
-    ceph_rados: 'FALSE'
-    suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
-    milestone: '10.0'
-    node: Slave-srv136
-    jobs:
-      - 'Tempest_{name}'
-
-- project:
-    name: Tempest-10.0_Ceph_no_SSL
-    display-name: 'Tempest-10.0_Ceph_DVR_Sahara_Ceilometer_Ironic'
-    iso_dir: /var/www/mos-10.0_iso
-    env_changer: _ironic_ceph
-    config_path: templates/tempest/ironic_ceph.yaml
-    test_group: 'Tempest (Ceph,DVR,Sahara,Ceilometer)'
-    is_ssl_disabled: 'TRUE'
-    ceph_skip_tests: 'TRUE'
-    ceph_rados: 'TRUE'
-    suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
-    milestone: '10.0'
-    node: Slave-srv136
-    jobs:
-      - 'Tempest_{name}'
-
-- project:
-    name: Tempest-10.0_LVM_Cinder_SSL
-    display-name: 'Tempest-10.0_Ceph_DVR_Sahara_Ceilometer_Ironic'
-    iso_dir: /var/www/mos-10.0_iso
-    env_changer: _ironic_cinder
-    config_path: templates/tempest/ironic_cinder.yaml
-    test_group: 'Tempest (SSL,LVM,Cinder,DVR,Sahara,Ceilometer,Ironic)'
-    is_ssl_disabled: 'FALSE'
-    ceph_skip_tests: 'FALSE'
-    ceph_rados: 'FALSE'
-    suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
-    milestone: '10.0'
-    node: Slave-srv136
-    jobs:
-      - 'Tempest_{name}'
-
-- project:
-    name: Tempest-10.0_Ceph_SSL
-    display-name: 'Tempest-10.0_Ceph_DVR_Sahara_Ceilometer_Ironic_SSL'
-    iso_dir: /var/www/mos-10.0_iso
-    env_changer: _ironic_ceph
-    config_path: templates/tempest/ironic_ceph.yaml
-    test_group: 'Tempest (Ceph,SSL,DVR,Sahara,Ceilometer)'
-    is_ssl_disabled: 'FALSE'
-    ceph_skip_tests: 'TRUE'
-    ceph_rados: 'TRUE'
-    suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
-    milestone: '10.0'
-    node: Slave-srv136
+    node: Slave-7775
     jobs:
       - 'Tempest_{name}'
 
@@ -287,6 +228,7 @@
     is_ssl_disabled: 'TRUE'
     ceph_skip_tests: 'FALSE'
     ceph_rados: 'FALSE'
+    destroy_env: 'TRUE'
     suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
     milestone: '9.0'
     node: single_template
@@ -303,6 +245,7 @@
     is_ssl_disabled: 'TRUE'
     ceph_skip_tests: 'FALSE'
     ceph_rados: 'FALSE'
+    destroy_env: 'TRUE'
     suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
     milestone: '9.0'
     node: single_template
@@ -319,6 +262,7 @@
     is_ssl_disabled: 'TRUE'
     ceph_skip_tests: 'FALSE'
     ceph_rados: 'FALSE'
+    destroy_env: 'TRUE'
     suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
     milestone: '9.0'
     node: single_template
@@ -335,6 +279,7 @@
     is_ssl_disabled: 'TRUE'
     ceph_skip_tests: 'FALSE'
     ceph_rados: 'FALSE'
+    destroy_env: 'TRUE'
     suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
     milestone: '9.0'
     node: single_template

@@ -174,7 +174,7 @@
     defaults: global
     node: Slave-srv139
     description: 'Tempest Ceph'
-    disabled: false
+    disabled: true
     display-name: '9.0-multi-Tempest-Ceph_DVR_Sahara_Ceilometer_Ironic'
     concurrent: false
     retry-count: 3

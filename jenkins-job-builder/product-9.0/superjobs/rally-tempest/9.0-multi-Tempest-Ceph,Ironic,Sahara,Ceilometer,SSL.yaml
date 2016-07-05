@@ -178,7 +178,7 @@
     defaults: global
     node: Slave-7775
     description: 'Tempest Ceph SSL'
-    disabled: false
+    disabled: true
     display-name: '9.0-multi-Tempest-Ceph_DVR_Sahara_Ceilometer_Ironic_SSL'
     concurrent: false
     retry-count: 3

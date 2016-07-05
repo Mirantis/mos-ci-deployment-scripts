@@ -141,7 +141,10 @@ GET_LOG_CMD="scp node-$CONTROLLER_ID:/root/log.log /root/log.log"
 echo "$GET_LOG_CMD" |  sshpass -p 'r00tme' ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -T root@"$FUEL_MASTER_IP"
 sshpass -p 'r00tme' scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@"$FUEL_MASTER_IP":/root/log.log ./
 
+if [[ "$DESTROY_ENV_AFTER_TESTS" == 'TRUE' ]];
+then
 # make snapshot for further investigation and disable env
 dos.py suspend ${ENV_NAME}
 dos.py snapshot "${ENV_NAME}" "${SNAPSHOT_NAME}_after_test"
 dos.py destroy "$ENV_NAME"
+fi
