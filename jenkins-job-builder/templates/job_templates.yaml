@@ -1,0 +1,386 @@
+- parameter:
+    name: 'common_parameters'
+    parameters:
+      - string:
+          name: DEPLOYMENT_TIMEOUT
+          default: "10000"
+      - string:
+          name: TESTRAIL_FILE
+          default: "/var/www/test_rail/user.sh"
+      - string:
+          name: REPORT_PREFIX
+          default: ' /srv/jenkins/{name}'
+      - string:
+          name: REPORT_FILE
+          default: 'report.xml'
+      - string:
+          name: ENV_INJECT_PATH
+          default: 'env_inject{name}.properties'
+
+
+- defaults:
+    name: 'common_job_settings'
+    wrappers:
+      - build-name:
+          name: ${{BUILD_NUMBER}}.${{FILE,path="build-name-setter.info"}}
+
+    properties:
+      - heavy-job:
+          weight: '{weight}'
+    defaults: global
+    node: '{node}'
+    description: '{description}'
+    disabled: false
+    display-name: '{display_name}'
+    concurrent: false
+    retry-count: 3
+    logrotate:
+      daysToKeep: 30
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+
+    triggers:
+        - timed: '{start_timer}'
+
+- publisher:
+    name: 'common_publisher'
+    publishers:
+      - email:
+          recipients: 'ogubanov@mirantis.com'
+
+      - postbuildscript:
+          script-only-if-succeeded: False
+
+      - archive:
+          artifacts: 'report.xml'
+          allow-empty: 'true'
+          fingerprint: true
+
+      - archive:
+          artifacts: '*.log'
+          allow-empty: 'true'
+          fingerprint: true
+
+      - junit:
+          results: report.xml
+
+      - workspace-cleanup:
+          fail-build: false
+
+
+- job-template:
+    name: 'horizon_integraion_test_{name}'
+
+    defaults: common_job_settings
+
+    parameters:
+        - common_parameters
+        - string:
+            name: TESTRAIL_TEMPEST
+            default: "FALSE"
+
+    builders:
+        - shell:
+            !include-raw: ../shell_scripts/template_scripts/env_variables_export.sh
+        - inject:
+            properties-file: "$ENV_INJECT_PATH"
+        - shell:
+            !include-raw: ../shell_scripts/template_scripts/horizon_selenium_tests.sh
+        - inject:
+            properties-file: "$ENV_INJECT_PATH"
+        - shell:
+            !include-raw: ../shell_scripts/template_scripts/testrail_reporter.sh
+
+    publishers:
+        - common_publisher
+        - archive:
+            artifacts: 'mos-horizon/openstack_dashboard/test/integration_tests/test_reports/**'
+            allow-empty: 'true'
+            fingerprint: true
+
+
+- job-template:
+    name: 'openstack_cli_{name}'
+
+    defaults: common_job_settings
+
+    parameters:
+        - common_parameters
+        - string:
+            name: ISO_DIR
+            default: "{iso_dir}"
+        - string:
+            name: ENV_CHANGER
+            default: '{env_changer}'
+        - string:
+            name: CONFIG_PATH
+            default: '{config_path}'
+        - string:
+            name: TEST_GROUP
+            default: '{test_group}'
+        - string:
+            name: SUITE
+            default: "{suite}"
+        - string:
+            name: MILESTONE
+            default: "{milestone}"
+        - string:
+            name: TESTRAIL_TEMPEST
+            default: "FALSE"
+
+    builders:
+        - shell:
+            !include-raw: ../shell_scripts/template_scripts/env_variables_export.sh
+        - inject:
+            properties-file: "$ENV_INJECT_PATH"
+        - shell:
+            !include-raw-escape: ../shell_scripts/template_scripts/get_fuel_master_ip.sh
+        - inject:
+            properties-file: "$ENV_INJECT_PATH"
+        - shell:
+            !include-raw-escape: ../shell_scripts/template_scripts/openstack_cli_tests.sh
+        - inject:
+            properties-file: "$ENV_INJECT_PATH"
+        - shell:
+            !include-raw: ../shell_scripts/template_scripts/testrail_reporter.sh
+
+    publishers:
+        - common_publisher
+
+- job-template:
+    name: 'vlan_based_{name}'
+
+    defaults: common_job_settings
+
+    parameters:
+        - common_parameters
+        - string:
+            name: ISO_DIR
+            default: "{iso_dir}"
+        - string:
+            name: ENV_CHANGER
+            default: '{env_changer}'
+        - string:
+            name: CONFIG_PATH
+            default: '{config_path}'
+        - string:
+            name: TEST_GROUP
+            default: '{test_group}'
+        - string:
+            name: SUITE
+            default: "{suite}"
+        - string:
+            name: MILESTONE
+            default: "{milestone}"
+        - string:
+            name: TESTRAIL_TEMPEST
+            default: "FALSE"
+
+    builders:
+        - shell:
+            !include-raw: ../shell_scripts/template_scripts/env_variables_export.sh
+        - inject:
+            properties-file: "$ENV_INJECT_PATH"
+        - shell:
+            !include-raw: ../shell_scripts/template_scripts/pytest_runner.sh
+        - inject:
+            properties-file: "$ENV_INJECT_PATH"
+        - shell:
+            !include-raw: ../shell_scripts/template_scripts/testrail_reporter.sh
+
+    publishers:
+        - common_publisher
+        - archive:
+            artifacts: 'mos-integration-tests/snapshots/*'
+            allow-empty: 'true'
+            fingerprint: true
+
+
+- job-template:
+    name: 'Tempest_{name}'
+
+    defaults: common_job_settings
+
+    parameters:
+        - common_parameters
+        - string:
+            name: ISO_DIR
+            default: "{iso_dir}"
+        - string:
+            name: ENV_CHANGER
+            default: '{env_changer}'
+        - string:
+            name: DISABLE_SSL
+            default: "{is_ssl_disabled}"
+        - string:
+            name: CEPH_SKIP_TESTS
+            default: "{ceph_skip_tests}"
+        - string:
+            name: CEPH_RADOS
+            default: "{ceph_rados}"
+        - string:
+            name: CONFIG_PATH
+            default: '{config_path}'
+        - string:
+            name: TEST_GROUP
+            default: '{test_group}'
+        - string:
+            name: SUITE
+            default: "{suite}"
+        - string:
+            name: MILESTONE
+            default: "{milestone}"
+        - string:
+            name: NOVA_QUOTAS_ENABLED
+            default: "{nova_quotas}"
+        - string:
+            name: PARSED_PLUGINS_LINK
+            default: "http://jenkins-product.srt.mirantis.net:8080/view/plugins/job/build-fuel-plugins/"
+        - string:
+            name: PLUGINS_DIR
+            default: "/var/www/detach-plugins"
+        - string:
+            name: TESTRAIL_TEMPEST
+            default: "TRUE"
+        - string:
+            name: TEMPEST
+            default: "FALSE"
+
+    builders:
+        - shell:
+            !include-raw: ../shell_scripts/template_scripts/erase_ci_envs.sh
+        - shell:
+            !include-raw: ../shell_scripts/template_scripts/env_variables_export.sh
+        - inject:
+            properties-file: "$ENV_INJECT_PATH"
+        - shell:
+            !include-raw-escape: ../shell_scripts/get_plugins.sh
+        - inject:
+            properties-file: "$ENV_INJECT_PATH"
+        - shell:
+            !include-raw: ../shell_scripts/deploy_env_from_template.sh
+        - inject:
+            properties-file: "$ENV_INJECT_PATH"
+        - shell:
+            !include-raw-escape: ../shell_scripts/template_scripts/get_fuel_master_ip.sh
+        - inject:
+            properties-file: "$ENV_INJECT_PATH"
+        - shell:
+            !include-raw-escape: ../shell_scripts/tempest_tests.sh
+        - inject:
+            properties-file: "$ENV_INJECT_PATH"
+        - shell:
+            !include-raw: ../shell_scripts/template_scripts/testrail_reporter.sh
+
+    publishers:
+        - common_publisher
+        - archive:
+            artifacts: 'mos-integration-tests/snapshots/*'
+            allow-empty: 'true'
+            fingerprint: true
+
+
+- job-template:
+    name: 'wo_deploy_{name}'
+
+    defaults: common_job_settings
+
+    parameters:
+        - common_parameters
+        - string:
+            name: ISO_DIR
+            default: "{iso_dir}"
+        - string:
+            name: ENV_CHANGER
+            default: '{env_changer}'
+        - string:
+            name: CONFIG_PATH
+            default: '{config_path}'
+        - string:
+            name: TEST_GROUP
+            default: '{test_group}'
+        - string:
+            name: SUITE
+            default: "{suite}"
+        - string:
+            name: MILESTONE
+            default: "{milestone}"
+        - string:
+            name: TESTRAIL_TEMPEST
+            default: "FALSE"
+
+    builders:
+        - shell:
+            !include-raw: ../shell_scripts/template_scripts/env_variables_export.sh
+        - inject:
+            properties-file: "$ENV_INJECT_PATH"
+        - shell:
+            !include-raw: ../shell_scripts/template_scripts/tox_based_test_runner.sh
+        - inject:
+            properties-file: "$ENV_INJECT_PATH"
+        - shell:
+            !include-raw: ../shell_scripts/template_scripts/testrail_reporter.sh
+
+    publishers:
+        - common_publisher
+        - archive:
+            artifacts: 'mos-integration-tests/snapshots/*'
+            allow-empty: 'true'
+            fingerprint: true
+
+- job-template:
+    name: 'tox_based_{name}'
+
+    defaults: common_job_settings
+
+    parameters:
+        - common_parameters
+        - string:
+            name: ISO_DIR
+            default: "{iso_dir}"
+        - string:
+            name: ENV_CHANGER
+            default: '{env_changer}'
+        - string:
+            name: CONFIG_PATH
+            default: '{config_path}'
+        - string:
+            name: TEST_GROUP
+            default: '{test_group}'
+        - string:
+            name: SUITE
+            default: "{suite}"
+        - string:
+            name: MILESTONE
+            default: "{milestone}"
+        - string:
+            name: NOVA_QUOTAS_ENABLED
+            default: "{nova_quotas}"
+        - string:
+            name: TESTRAIL_TEMPEST
+            default: "FALSE"
+
+    builders:
+        - shell:
+            !include-raw: ../shell_scripts/template_scripts/erase_ci_envs.sh
+        - shell:
+            !include-raw: ../shell_scripts/template_scripts/env_variables_export.sh
+        - inject:
+            properties-file: "$ENV_INJECT_PATH"
+        - shell:
+            !include-raw: ../shell_scripts/deploy_env_from_template.sh
+        - inject:
+            properties-file: "$ENV_INJECT_PATH"
+        - shell:
+            !include-raw: ../shell_scripts/template_scripts/tox_based_test_runner.sh
+        - inject:
+            properties-file: "$ENV_INJECT_PATH"
+        - shell:
+            !include-raw: ../shell_scripts/template_scripts/testrail_reporter.sh
+
+    publishers:
+        - common_publisher
+        - archive:
+            artifacts: 'mos-integration-tests/snapshots/*'
+            allow-empty: 'true'
+            fingerprint: true

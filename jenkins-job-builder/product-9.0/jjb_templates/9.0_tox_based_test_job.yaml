@@ -1,125 +1,3 @@
-- job-template:
-    name: '9.0_{name}'
-
-    wrappers:
-      - build-name:
-          name: ${{BUILD_NUMBER}}.${{FILE,path="build-name-setter.info"}}
-
-    properties:
-      - heavy-job:
-          weight: '{weight}'
-
-    parameters:
-        #EnvInject file
-        - string:
-            name: ENV_INJECT_PATH
-            default: '{env_inject_file}'
-
-        ##### Environment parameters #####
-        - string:
-            name: ISO_DIR
-            default: "/var/www/fuelweb-iso"
-        - string:
-            name: ENV_CHANGER
-            default: '{env_changer}'
-        - string:
-            name: DISABLE_SSL
-            default: "TRUE"
-        - string:
-            name: NOVA_QUOTAS_ENABLED
-            default: '{nova_quotas}'
-        - string:
-            name: DEPLOYMENT_TIMEOUT
-            default: "10000"
-        - string:
-            name: CONFIG_PATH
-            default: '{config_path}'
-
-        ##### TestRail Parameters #####
-        - string:
-            name: TESTRAIL_TEMPEST
-            default: "FALSE"
-        - string:
-            name: TEST_GROUP
-            default: '{test_group}'
-        - string:
-            name: TESTRAIL_FILE
-            default: "/var/www/test_rail/user.sh"
-        - string:
-            name: REPORT_PREFIX
-            default: '{report_prefix}'
-        - string:
-            name: REPORT_FILE
-            default: '{report_file}'
-        - string:
-            name: SUITE
-            default: "[9.0][MOSQA] Automated Cloud Testing"
-        - string:
-            name: MILESTONE
-            default: "{milestone}"
-
-    builders:
-        - shell:
-            !include-raw: ../../shell_scripts/template_scripts/erase_ci_envs.sh
-        - shell:
-            !include-raw: ../../shell_scripts/template_scripts/env_variables_export.sh
-        - inject:
-            properties-file: "$ENV_INJECT_PATH"
-        - shell:
-            !include-raw: ../../shell_scripts/deploy_env_from_template.sh
-        - inject:
-            properties-file: "$ENV_INJECT_PATH"
-        - shell:
-            !include-raw: ../../shell_scripts/template_scripts/tox_based_test_runner.sh
-        - inject:
-            properties-file: "$ENV_INJECT_PATH"
-        - shell:
-            !include-raw: ../../shell_scripts/template_scripts/testrail_reporter.sh
-
-    triggers:
-        - timed: '{start_timer}'
-
-    defaults: global
-    node: '{node}'
-    description: '{description}'
-    disabled: false
-    display-name: '{display_name}'
-    concurrent: false
-    retry-count: 3
-    logrotate:
-      daysToKeep: 30
-      artifactDaysToKeep: -1
-      artifactNumToKeep: -1
-
-    publishers:
-      - email:
-          recipients: '{email-recipients}'
-
-      - postbuildscript:
-          script-only-if-succeeded: False
-
-      - archive:
-          artifacts: 'report.xml'
-          allow-empty: 'true'
-          fingerprint: true
-
-      - archive:
-          artifacts: 'mos-integration-tests/snapshots/*'
-          allow-empty: 'true'
-          fingerprint: true
-
-      - archive:
-          artifacts: '*.log'
-          allow-empty: 'true'
-          fingerprint: true
-
-      - junit:
-          results: report.xml
-
-      - workspace-cleanup:
-          fail-build: false
-
-
 - project:
     name: Ceilometer
     weight: 2
@@ -128,6 +6,7 @@
     env_inject_file: env_inject_ceilometer.properties
     config_path: templates/ceilometer/default.yaml
     test_group: Ceilometer
+    suite: '[9.0][MOSQA] Automated Cloud Testing'
     tox_propertires: ''
     report_prefix: /srv/jenkins/ceilometer
     report_file: report.xml
@@ -136,11 +15,10 @@
     milestone: '9.0'
     description: Ceilometer tests
     display_name: 9.0_Ceilometer_t
-    email-recipients: ogubanov@mirantis.com
     tox_test_name: ceilometer
     nova_quotas: "FALSE"
     jobs:
-      - '9.0_{name}'
+      - 'tox_based_{name}'
 
 - project:
     name: Ironic
@@ -150,6 +28,7 @@
     env_inject_file: env_inject_ironic.properties
     config_path: templates/ironic/default.yaml
     test_group: Ironic
+    suite: '[9.0][MOSQA] Automated Cloud Testing'
     tox_propertires: ''
     report_prefix: /srv/jenkins/ironic
     report_file: report.xml
@@ -158,11 +37,10 @@
     milestone: '9.0'
     description: Ironic tests
     display_name: 9.0_Ironic_t
-    email-recipients: ogubanov@mirantis.com
     tox_test_name: ironic
     nova_quotas: "FALSE"
     jobs:
-      - '9.0_{name}'
+      - 'tox_based_{name}'
 
 - project:
     name: Glance_Swift
@@ -172,6 +50,7 @@
     env_inject_file: env_inject_glance_swift.properties
     config_path: templates/glance/swift.yaml
     test_group: Glance(Swift)
+    suite: '[9.0][MOSQA] Automated Cloud Testing'
     report_prefix: /srv/jenkins/glance_swift/
     report_file: report.xml
     start_timer: "0 21 * * *"
@@ -179,11 +58,10 @@
     milestone: '9.0'
     description: Glance tests on Swift
     display_name: 9.0_Glance(Swift)
-    email-recipients: ogubanov@mirantis.com
     tox_test_name: glance
     nova_quotas: "TRUE"
     jobs:
-      - '9.0_{name}'
+      - 'tox_based_{name}'
 
 - project:
     name: Glance_Ceph
@@ -193,6 +71,7 @@
     env_inject_file: env_inject_glance_ceph.properties
     config_path: templates/glance/ceph.yaml
     test_group: Glance(Ceph)
+    suite: '[9.0][MOSQA] Automated Cloud Testing'
     report_prefix: /srv/jenkins/glance_ceph/
     report_file: report.xml
     start_timer: "0 21 * * *"
@@ -200,11 +79,10 @@
     milestone: '9.0'
     description: Glance tests on Ceph
     display_name: 9.0_Glance(Ceph)
-    email-recipients: ogubanov@mirantis.com
     tox_test_name: glance
     nova_quotas: "FALSE"
     jobs:
-      - '9.0_{name}'
+      - 'tox_based_{name}'
 
 - project:
     name: VLAN
@@ -214,6 +92,7 @@
     env_inject_file: env_inject_vlan.properties
     config_path: templates/neutron/vlan_qos.yaml
     test_group: Neutron(VLAN)
+    suite: '[9.0][MOSQA] Automated Cloud Testing'
     report_prefix: /srv/jenkins/neutron_vlan
     report_file: report.xml
     start_timer: "0 21 * * *"
@@ -221,12 +100,11 @@
     milestone: '9.0'
     description: Neutron(VLAN)
     display_name: 9.0_Neutron_VLAN
-    email-recipients: ogubanov@mirantis.com
     test_path: mos_tests/neutron
     tox_test_name: neutron
     nova_quotas: "FALSE"
     jobs:
-      - '9.0_{name}'
+      - 'tox_based_{name}'
 
 - project:
     name: VLAN_L3_HA
@@ -236,6 +114,7 @@
     env_inject_file: env_inject_vlan_l3_ha.properties
     config_path: templates/neutron/vlan_l3ha.yaml
     test_group: Neutron(VLAN,L3_HA)
+    suite: '[9.0][MOSQA] Automated Cloud Testing'
     report_prefix: /srv/jenkins/neutron_vlan_l3_ha
     report_file: report.xml
     start_timer: "0 22 * * *"
@@ -243,12 +122,11 @@
     milestone: '9.0'
     description: Neutron(VLAN,L3_HA)
     display_name: 9.0_Neutron_VLAN_L3_HA
-    email-recipients: ogubanov@mirantis.com
     test_path: mos_tests/neutron
     tox_test_name: neutron
     nova_quotas: "FALSE"
     jobs:
-      - '9.0_{name}'
+      - 'tox_based_{name}'
 
 - project:
     name: VLAN_DVR
@@ -258,6 +136,7 @@
     env_inject_file: env_inject_vlan_dvr.properties
     config_path: templates/neutron/vlan_dvr.yaml
     test_group: Neutron(VLAN,DVR)
+    suite: '[9.0][MOSQA] Automated Cloud Testing'
     report_prefix: /srv/jenkins/neutron_vlan_dvr
     report_file: report.xml
     start_timer: "0 22 * * *"
@@ -265,12 +144,11 @@
     milestone: '9.0'
     description: Neutron tests(VLAN,DVR)
     display_name: 9.0_Neutron_VLAN_DVR
-    email-recipients: ogubanov@mirantis.com
     test_path: mos_tests/neutron
     tox_test_name: neutron
     nova_quotas: "FALSE"
     jobs:
-      - '9.0_{name}'
+      - 'tox_based_{name}'
 
 - project:
     name: VxLAN
@@ -280,6 +158,7 @@
     env_inject_file: env_inject_vxlan.properties
     config_path: templates/neutron/vxlan_qos.yaml
     test_group: Neutron(VxLAN)
+    suite: '[9.0][MOSQA] Automated Cloud Testing'
     report_prefix: /srv/jenkins/neutron_vxlan
     report_file: report.xml
     start_timer: "0 22 * * *"
@@ -287,12 +166,11 @@
     milestone: '9.0'
     description: Neutron tests(VxLAN)
     display_name: 9.0_Neutron_VxLAN
-    email-recipients: ogubanov@mirantis.com
     test_path: mos_tests/neutron
     tox_test_name: neutron
     nova_quotas: "FALSE"
     jobs:
-      - '9.0_{name}'
+      - 'tox_based_{name}'
 
 - project:
     name: VxLAN_L2_POP
@@ -302,6 +180,7 @@
     env_inject_file: env_inject_vxlan_l2_pop.properties
     config_path: templates/neutron/vxlan_l2pop.yaml
     test_group: Neutron(VxLAN,L2_POP)
+    suite: '[9.0][MOSQA] Automated Cloud Testing'
     report_prefix: /srv/jenkins/neutron_vxlan_l2_pop
     report_file: report.xml
     start_timer: "0 22 * * *"
@@ -309,12 +188,11 @@
     milestone: '9.0'
     description: Neutron tests(VxLAN,L2_POP)
     display_name: 9.0_Neutron_VxLAN_L2_POP
-    email-recipients: ogubanov@mirantis.com
     test_path: mos_tests/neutron
     tox_test_name: neutron
     nova_quotas: "FALSE"
     jobs:
-      - '9.0_{name}'
+      - 'tox_based_{name}'
 
 - project:
     name: VxLAN_L2_POP_DVR
@@ -324,6 +202,7 @@
     env_inject_file: env_inject_vxlan_l2_pop_dvr.properties
     config_path: templates/neutron/vxlan_l2pop_dvr.yaml
     test_group: Neutron(VxLAN,L2_POP,DVR)
+    suite: '[9.0][MOSQA] Automated Cloud Testing'
     report_prefix: /srv/jenkins/neutron_vxlan_l2_pop_dvr
     report_file: report.xml
     start_timer: "0 22 * * *"
@@ -331,12 +210,11 @@
     milestone: '9.0'
     description: Neutron tests(VxLAN,L2_POP,DVR)
     display_name: 9.0_Neutron_VxLAN_L2_POP_DVR
-    email-recipients: ogubanov@mirantis.com
     test_path: mos_tests/neutron
     tox_test_name: neutron
     nova_quotas: "FALSE"
     jobs:
-      - '9.0_{name}'
+      - 'tox_based_{name}'
 
 - project:
     name: VxLAN_L2_POP_L3_HA
@@ -346,6 +224,7 @@
     env_inject_file: env_inject_vxlan_l2_pop_l3_ha.properties
     config_path: templates/neutron/vxlan_l2pop_l3ha.yaml
     test_group: Neutron(VxLAN,L2_POP,L3_HA)
+    suite: '[9.0][MOSQA] Automated Cloud Testing'
     report_prefix: /srv/jenkins/neutron_vxlan_l2_pop_l3_ha
     report_file: report.xml
     start_timer: "0 22 * * *"
@@ -353,12 +232,11 @@
     milestone: '9.0'
     description: Neutron tests(VxLAN,L2_POP,L3_HA)
     display_name: 9.0_Neutron_VxLAN_L2_POP_L3_HA
-    email-recipients: ogubanov@mirantis.com
     test_path: mos_tests/neutron
     tox_test_name: neutron
     nova_quotas: "FALSE"
     jobs:
-      - '9.0_{name}'
+      - 'tox_based_{name}'
 
 - project:
     name: Nova
@@ -368,6 +246,7 @@
     env_inject_file: env_inject_nova.properties
     config_path: templates/nova/default.yaml
     test_group: Nova
+    suite: '[9.0][MOSQA] Automated Cloud Testing'
     report_prefix: /srv/jenkins/nova
     report_file: report.xml
     start_timer: "0 21 * * *"
@@ -375,12 +254,11 @@
     milestone: '9.0'
     description: Nova tests
     display_name: 9.0_Nova
-    email-recipients: ogubanov@mirantis.com
     test_path: mos_tests/nova
     tox_test_name: nova
     nova_quotas: "FALSE"
     jobs:
-      - '9.0_{name}'
+      - 'tox_based_{name}'
 
 - project:
     name: NovaCeph
@@ -390,6 +268,7 @@
     env_inject_file: env_inject_nova_ceph.properties
     config_path: templates/nova/ceph.yaml
     test_group: Nova(Ceph)
+    suite: '[9.0][MOSQA] Automated Cloud Testing'
     report_prefix: /srv/jenkins/nova_ceph
     report_file: report.xml
     start_timer: "0 21 * * *"
@@ -397,9 +276,8 @@
     milestone: '9.0'
     description: Nova-Ceph tests
     display_name: 9.0_Nova_Ceph
-    email-recipients: ogubanov@mirantis.com
     test_path: mos_tests/nova
     tox_test_name: nova
     nova_quotas: "FALSE"
     jobs:
-      - '9.0_{name}'
+      - 'tox_based_{name}'

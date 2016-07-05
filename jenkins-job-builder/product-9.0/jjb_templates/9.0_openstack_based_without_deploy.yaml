@@ -1,124 +1,12 @@
-- job-template:
-    name: '9.0_openstack_cli_{name}'
-
-    wrappers:
-      - build-name:
-          name: ${{BUILD_NUMBER}}.${{FILE,path="build-name-setter.info"}}
-
-    properties:
-      - heavy-job:
-          weight: '{weight}'
-
-    parameters:
-        #EnvInject file
-        - string:
-            name: ENV_INJECT_PATH
-            default: '{env_inject_file}'
-
-        ##### Environment parameters #####
-        - string:
-            name: ISO_DIR
-            default: "/var/www/fuelweb-iso"
-        - string:
-            name: ENV_CHANGER
-            default: '{env_changer}'
-        - string:
-            name: DISABLE_SSL
-            default: "TRUE"
-        - string:
-            name: NOVA_QUOTAS_ENABLED
-            default: "FALSE"
-        - string:
-            name: DEPLOYMENT_TIMEOUT
-            default: "10000"
-        - string:
-            name: CONFIG_PATH
-            default: '{config_path}'
-
-        ##### TestRail Parameters #####
-        - string:
-            name: TESTRAIL_TEMPEST
-            default: "TRUE"
-        - string:
-            name: TEST_GROUP
-            default: '{test_group}'
-        - string:
-            name: TESTRAIL_FILE
-            default: "/var/www/test_rail/user.sh"
-        - string:
-            name: REPORT_PREFIX
-            default: "{report_prefix}"
-        - string:
-            name: REPORT_FILE
-            default: "report.xml"
-        - string:
-            name: SUITE
-            default: "[9.0][MOSQA] Automated Cloud Testing"
-        - string:
-            name: MILESTONE
-            default: "{milestone}"
-
-    builders:
-        - shell:
-            !include-raw: ../../shell_scripts/template_scripts/env_variables_export.sh
-        - inject:
-            properties-file: "$ENV_INJECT_PATH"
-        - shell:
-            !include-raw-escape: ../../shell_scripts/template_scripts/get_fuel_master_ip.sh
-        - inject:
-            properties-file: "$ENV_INJECT_PATH"
-        - shell:
-            !include-raw-escape: ../../shell_scripts/template_scripts/openstack_cli_tests.sh
-        - inject:
-            properties-file: "$ENV_INJECT_PATH"
-        - shell:
-            !include-raw: ../../shell_scripts/template_scripts/testrail_reporter.sh
-
-    triggers:
-        - timed: '{start_timer}'
-
-    defaults: global
-    node: '{node}'
-    description: '{description}'
-    disabled: false
-    display-name: '{display_name}'
-    concurrent: false
-    retry-count: 3
-    logrotate:
-      daysToKeep: 30
-      artifactDaysToKeep: -1
-      artifactNumToKeep: -1
-
-    publishers:
-      - email:
-          recipients: '{email-recipients}'
-
-      - postbuildscript:
-          script-only-if-succeeded: False
-
-      - archive:
-          artifacts: 'report.xml'
-          allow-empty: 'true'
-          fingerprint: true
-
-      - archive:
-          artifacts: '*.log'
-          allow-empty: 'true'
-          fingerprint: true
-
-      - junit:
-          results: report.xml
-
-      - workspace-cleanup:
-          fail-build: false
-
 - project:
     name: Openstack_CLI
     weight: 2
+    iso_dir: /var/www/fuelweb-iso
     env_changer: _glance_swift
     env_inject_file: env_inject_vlan_keystone.properties
     config_path: templates/glance/swift.yaml
     test_group: Openstack CLI
+    suite: '[9.0][MOSQA] Automated Cloud Testing'
     report_prefix: /srv/jenkins/openstack_cli/
     start_timer: "0 0 * * *"
     node: Slave-srv135
@@ -127,7 +15,5 @@
       Openstack CLI tests
       (from https://github.com/openstack/python-openstackclient)
     display_name: 9.0 Openstack CLI
-    email-recipients: ogubanov@mirantis.com
     jobs:
-      - '9.0_openstack_cli_{name}'
-
+      - 'openstack_cli_{name}'
