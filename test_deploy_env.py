@@ -14,12 +14,9 @@
 
 import os
 
-from proboscis import factory
+import dpath.util
 
 from system_test import action
-from system_test import deferred_decorator
-from system_test.helpers.decorators import make_snapshot_if_step_fail
-from system_test.core.repository import case_factory
 from system_test.core.discover import load_yaml
 from system_test import logger
 from system_test import testcase
@@ -45,18 +42,17 @@ class DeployEnv(ActionTest, BaseActions):
         10. Run OSTF
     """
 
-    base_group = ['system_test',
-                  'system_test.deploy_env']
+    base_group = ['system_test', 'system_test.deploy_env']
     actions_order = [
         'setup_master',
         'config_release',
         'make_slaves',
         'revert_slaves',
-        'upload_plugins',
         'install_plugins',
         'create_env',
-        'enable_plugins',
+        'config_plugins',
         'add_nodes',
+        'override_config',
         'network_check',
         'deploy_cluster',
         'network_check',
@@ -65,75 +61,107 @@ class DeployEnv(ActionTest, BaseActions):
 
     def __init__(self, config_file=None):
         super(DeployEnv, self).__init__(config_file)
-        self._required_plugins = None
+        self._fuel_plugins = None
 
-        plugins_config = os.environ.get("PLUGINS_CONFIG_PATH")
-        if not plugins_config:
+        plugin_config_file = os.environ.get("PLUGINS_CONFIG_PATH")
+        if not plugin_config_file:
             raise Exception("Path to config file for plugins is empty. "
                             "Please set PLUGINS_CONFIG_PATH env variable.")
-        config = load_yaml(plugins_config)
-        self.plugins_dependencies = config['dependencies']
-        self.plugins_paths = config['paths']
-        self.plugins_to_roles = config['plugins_to_roles']
+        self.plugins_configs = load_yaml(plugin_config_file)
 
     @property
-    def required_plugins(self):
-        """Get the list of plugins which are going to be used."""
-        if self._required_plugins is None:
-            self._required_plugins = set()
-            nodes = self.env_config['nodes']
-            for plugin_name in self.plugins_paths.keys():
-                for node in nodes:
-                    if (node['roles'] is not None and
-                            self.plugins_to_roles[plugin_name] in node['roles']):
-                        self._required_plugins.add(plugin_name)
-                        break
-            self._sort_required_plugins()
+    def enabled_plugins(self):
+        return self.full_config.get('plugins', {})
+
+    def _sort_plugins(self, plugins):
+        """Sort the list of plugins by their dependencies"""
+
+        def plugins_compare(x, y):
+            x_deps = self.plugins_configs[x].get('depend-on', [])
+            y_deps = self.plugins_configs[y].get('depend-on', [])
+            if x in y_deps:
+                return -1
+            elif y in x_deps:
+                return 1
+            return 0
+
+        return sorted(set(plugins), cmp=plugins_compare)
+
+    def _get_plugins_required_by_roles(self):
+        """Get the dict of plugins by desired nodes roles"""
+        plugins = []
+        nodes = self.env_config['nodes']
+        for plugin_name, plugin_config in self.plugins_configs.items():
+            if 'role' not in plugin_config:
+                continue
+            for node in nodes:
+                if plugin_config['role'] in node.get('roles', []):
+                    plugins.append(plugin_name)
+                    break
+        return plugins
+
+    @property
+    def fuel_plugins(self):
+        """Get OrderedDict of plugins to install"""
+        if self._fuel_plugins is None:
+            plugins = self._get_plugins_required_by_roles()
+            plugins.extend(self.enabled_plugins.keys())
+            self._fuel_plugins = self._sort_plugins(plugins)
 
             logger.info("The following plugins will be used: {}".format(
-                self._required_plugins))
+                self._fuel_plugins))
 
-        return self._required_plugins
+        return self._fuel_plugins
 
-    def _sort_required_plugins(self):
-        """Sort the list of required plugins considering dependencies."""
-        def plugins_compare(x, y):
-            if (x in self.plugins_dependencies and
-                    y in self.plugins_dependencies[x]):
-                return 1
-            elif (y in self.plugins_dependencies and
-                  x in self.plugins_dependencies[y]):
-                return -1
-            return 0
-        self._required_plugins = sorted(list(self._required_plugins),
-                                        cmp=plugins_compare)
-
-    @deferred_decorator([make_snapshot_if_step_fail])
-    @action
-    def upload_plugins(self):
-        """Upload plugins for Fuel if it is required"""
-        for plugin_name in self.required_plugins:
-            self.plugin_name = plugin_name
-            self.plugin_path = self.plugins_paths[plugin_name]
-            self.upload_plugin()
-            logger.info("{} plugin has been uploaded.".format(plugin_name))
-
-    @deferred_decorator([make_snapshot_if_step_fail])
     @action
     def install_plugins(self):
-        """Install plugins for Fuel if it is required"""
-        for plugin_name in self.required_plugins:
-            self.plugin_name = plugin_name
-            self.plugin_path = self.plugins_paths[plugin_name]
+        """Upload and install plugins for Fuel if it is required"""
+        for plugin_name in self.fuel_plugins:
+            self.plugin_path = self.plugins_configs[plugin_name]['path']
+            self.upload_plugin()
+            logger.info("{} plugin has been uploaded.".format(plugin_name))
             self.install_plugin()
             logger.info("{} plugin has been installed.".format(plugin_name))
 
-    @deferred_decorator([make_snapshot_if_step_fail])
+    def _get_settings_path(self, data, glob):
+        """Returns expanded path in data matched by glob"""
+        paths = [x[0] for x in dpath.util.search(data, glob, yielded=True)]
+        assert len(paths) == 1, (
+            'Should be only one path for glob `{glob}`,'
+            ' founded: {paths}').format(glob=glob, paths=paths)
+        return paths[0]
+
     @action
-    def enable_plugins(self):
-        """Enable plugins for Fuel if it is required"""
-        for plugin_name in self.required_plugins:
-            self.plugin_name = plugin_name
-            self.plugin_path = self.plugins_paths[plugin_name]
-            self.enable_plugin()
+    def config_plugins(self):
+        """Config plugins for Fuel"""
+        configs = {}
+        for plugin_name in self.fuel_plugins:
+            plugin_path_prefix = '/*/{0}'.format(plugin_name)
+            # Enable plugin
+            configs['{0}/metadata/enabled'.format(plugin_path_prefix)] = True
+            plugin_config = self.enabled_plugins.get(plugin_name, {})
+            if 'config_file' in plugin_config:
+                config_data = load_yaml('../' + plugin_config['config_file'])
+                for k, v in config_data.items():
+                    configs['{0}/**/{1}/value'.format(plugin_path_prefix,
+                                                      k)] = v
             logger.info("{} plugin has been enabled.".format(plugin_name))
+        self._apply_cluster_attributes(configs)
+
+    def _apply_cluster_attributes(self, replacements):
+        """Apply replacements to fuel attributes (settings)"""
+        if len(replacements) == 0:
+            return
+        attrs = self.fuel_web.client.get_cluster_attributes(self.cluster_id)
+        for glob, value in replacements.items():
+            path = self._get_settings_path(attrs, glob)
+            logger.info('Set `{path}` to `{value}`'.format(path=path,
+                                                           value=value))
+            dpath.util.set(attrs, path, value)
+        self.fuel_web.client.update_cluster_attributes(self.cluster_id, attrs)
+
+    @action
+    def override_config(self):
+        """Override fuel config"""
+        overrides = self.full_config.get('overrides', {})
+        self._apply_cluster_attributes(overrides.get('attributes', {}))

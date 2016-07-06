@@ -1,10 +1,16 @@
-dependencies:
-    'detach-keystone': 'detach-database'
-paths:
-    'detach-rabbitmq': !os_env SEPARATE_SERVICE_RABBIT_PLUGIN_PATH,
-    'detach-database': !os_env SEPARATE_SERVICE_DB_PLUGIN_PATH,
-    'detach-keystone': !os_env SEPARATE_SERVICE_KEYSTONE_PLUGIN_PATH,
-plugins_to_roles:
-    'detach-rabbitmq': 'standalone-rabbitmq'
-    'detach-database': 'standalone-database'
-    'detach-keystone': 'standalone-keystone'
+detach-rabbitmq:
+  path: !os_env SEPARATE_SERVICE_RABBIT_PLUGIN_PATH,
+  role: standalone-rabbitmq
+
+detach-database:
+  path: !os_env SEPARATE_SERVICE_DB_PLUGIN_PATH,
+  role: standalone-database
+
+detach-keystone:
+  path: !os_env SEPARATE_SERVICE_KEYSTONE_PLUGIN_PATH,
+  role: standalone-keystone
+  depend-on:
+    - detach-database
+
+ldap:
+  path: !os_env LDAP_PLUGIN_PATH,
