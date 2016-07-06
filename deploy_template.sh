@@ -48,7 +48,7 @@ CONFIG_FOLDER=$(basename $(dirname $CONFIG_PATH))
 CONFIG_FILE=$(basename $CONFIG_PATH)
 CONFIG_NAME="${CONFIG_FILE%.*}"
 
-SNAPSHOT_NAME="ha_deploy_"$CONFIG_FOLDER"_"$CONFIG_NAME
+SNAPSHOT_NAME=${SNAPSHOT_NAME:-$CONFIG_FOLDER"_"$CONFIG_NAME}
 
 # Set fuel QA version
 # https://github.com/openstack/fuel-qa/branches
@@ -96,6 +96,9 @@ fi
 patch_fuel_qa qos.patch
 
 pip install -r fuel-qa/fuelweb_test/requirements.txt --upgrade
+
+# dpath.util used for fuel config patching
+pip install dpath
 
 django-admin.py syncdb --settings=devops.settings
 django-admin.py migrate devops --settings=devops.settings
