@@ -48,7 +48,7 @@ CONFIG_FOLDER=$(basename $(dirname $CONFIG_PATH))
 CONFIG_FILE=$(basename $CONFIG_PATH)
 CONFIG_NAME="${CONFIG_FILE%.*}"
 
-SNAPSHOT_NAME="ha_deploy_"$CONFIG_FOLDER"_"$CONFIG_NAME
+SNAPSHOT_NAME=${SNAPSHOT_NAME:-$CONFIG_FOLDER"_"$CONFIG_NAME}
 
 # Set fuel QA version
 # https://github.com/openstack/fuel-qa/branches
@@ -115,6 +115,8 @@ if [ "${INTERFACE_MODEL}" == 'virtio' ]; then
         export IFACE_$i=eth$i
     done
 fi
+
+pip install dpath
 
 # create new environment
 ./run_system_test.py run 'system_test.deploy_env' --with-config $CONFIG_NAME
