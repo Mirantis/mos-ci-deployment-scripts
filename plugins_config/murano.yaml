@@ -1,0 +1,9 @@
+murano_cfapi: false
+murano_glance_artifacts: true
+murano_repo_url: http://storage.apps.openstack.org/
+yaml_additional_config: |
+  #Uncomment to add custom settings
+  #murano_db_password: database_password
+  #murano_user_password: keystone_user_password
+  #murano_rabbit_vhost: "/"
+  #murano_rabbit_port: 55572

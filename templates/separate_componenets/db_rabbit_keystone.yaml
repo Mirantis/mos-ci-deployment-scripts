@@ -161,3 +161,8 @@ template:
         role: fuel_slave
   name: 3 Controller+MongoDB, 2 Compute+Cinder, 3 Standalone, Neutron, VLAN
   slaves: 8
+
+plugins:
+  - detach-database:
+  - detach-keystone:
+  - detach-rabbitmq:
