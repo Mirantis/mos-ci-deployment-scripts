@@ -179,5 +179,5 @@ template:
   slaves: 6
 
 plugins:
-  ldap:
-    config_file: !os_env LDAP_CONFIG_FILE, plugins/ldap_config.yaml
+  - ldap:
+      config_file: !os_env LDAP_CONFIG_FILE, plugins_config/ldap.yaml

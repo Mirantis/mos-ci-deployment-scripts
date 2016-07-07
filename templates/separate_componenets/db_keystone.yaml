@@ -161,3 +161,7 @@ template:
 
   name: 1 Controller, 1 Compute+Cinder, 1 Ironic, Neutron, VLAN
   slaves: 7
+
+plugins:
+  - detach-database:
+  - detach-keystone:

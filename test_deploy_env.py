@@ -12,6 +12,7 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
+import collections
 import os
 
 import dpath.util
@@ -63,61 +64,33 @@ class DeployEnv(ActionTest, BaseActions):
         super(DeployEnv, self).__init__(config_file)
         self._fuel_plugins = None
 
-        plugin_config_file = os.environ.get("PLUGINS_CONFIG_PATH")
-        if not plugin_config_file:
-            raise Exception("Path to config file for plugins is empty. "
-                            "Please set PLUGINS_CONFIG_PATH env variable.")
-        self.plugins_configs = load_yaml(plugin_config_file)
-
-    @property
-    def enabled_plugins(self):
-        return self.full_config.get('plugins', {})
-
-    def _sort_plugins(self, plugins):
-        """Sort the list of plugins by their dependencies"""
-
-        def plugins_compare(x, y):
-            x_deps = self.plugins_configs[x].get('depend-on', [])
-            y_deps = self.plugins_configs[y].get('depend-on', [])
-            if x in y_deps:
-                return -1
-            elif y in x_deps:
-                return 1
-            return 0
-
-        return sorted(set(plugins), cmp=plugins_compare)
-
-    def _get_plugins_required_by_roles(self):
-        """Get the dict of plugins by desired nodes roles"""
-        plugins = []
-        nodes = self.env_config['nodes']
-        for plugin_name, plugin_config in self.plugins_configs.items():
-            if 'role' not in plugin_config:
-                continue
-            for node in nodes:
-                if plugin_config['role'] in node.get('roles', []):
-                    plugins.append(plugin_name)
-                    break
-        return plugins
+        self.plugins_folder = os.environ.get("PLUGINS_PATH", '.')
 
     @property
     def fuel_plugins(self):
-        """Get OrderedDict of plugins to install"""
         if self._fuel_plugins is None:
-            plugins = self._get_plugins_required_by_roles()
-            plugins.extend(self.enabled_plugins.keys())
-            self._fuel_plugins = self._sort_plugins(plugins)
-
-            logger.info("The following plugins will be used: {}".format(
-                self._fuel_plugins))
-
+            self._fuel_plugins = collections.OrderedDict()
+            for plugin in self.full_config.get('plugins', []):
+                for k, v in plugin.items():
+                    self._fuel_plugins[k] = v
         return self._fuel_plugins
+
+    def _get_plugin_path(self, plugin_name):
+        files = os.listdir(self.plugins_folder)
+        variants = [x for x in files if plugin_name in x]
+        assert len(variants) == 1, (
+            "Can't find plugin file for `{0}` "
+            "within `{1}`").format(plugin_name, files)
+        plugin_filename = variants[0]
+        return os.path.join(self.plugins_folder, plugin_filename)
 
     @action
     def install_plugins(self):
         """Upload and install plugins for Fuel if it is required"""
+        logger.info("The following plugins will be used: {}".format(
+            self.fuel_plugins))
         for plugin_name in self.fuel_plugins:
-            self.plugin_path = self.plugins_configs[plugin_name]['path']
+            self.plugin_path = self._get_plugin_path(plugin_name)
             self.upload_plugin()
             logger.info("{} plugin has been uploaded.".format(plugin_name))
             self.install_plugin()
@@ -135,12 +108,11 @@ class DeployEnv(ActionTest, BaseActions):
     def config_plugins(self):
         """Config plugins for Fuel"""
         configs = {}
-        for plugin_name in self.fuel_plugins:
+        for plugin_name, plugin_config in self.fuel_plugins.items():
             plugin_path_prefix = '/*/{0}'.format(plugin_name)
             # Enable plugin
             configs['{0}/metadata/enabled'.format(plugin_path_prefix)] = True
-            plugin_config = self.enabled_plugins.get(plugin_name, {})
-            if 'config_file' in plugin_config:
+            if plugin_config is not None and 'config_file' in plugin_config:
                 config_data = load_yaml('../' + plugin_config['config_file'])
                 for k, v in config_data.items():
                     configs['{0}/**/{1}/value'.format(plugin_path_prefix,

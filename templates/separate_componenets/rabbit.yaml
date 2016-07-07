@@ -155,3 +155,6 @@ template:
         role: fuel_slave
   name: 3 Controller+Mongo, 2 Compute+Cinder, 1 Standalone RabbitMQ, Neutron, VLAN
   slaves: 6
+
+plugins:
+  - detach-rabbitmq:

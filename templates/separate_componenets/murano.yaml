@@ -1,8 +1,8 @@
 template:
   cluster_template:
-    name: standalone_database
+    name: detach-murano
     network:
-      neutron-dvr: true
+      neutron-dvr: false
       neutron-l2-pop: false
       neutron-l3-ha: false
       provider: neutron
@@ -10,20 +10,18 @@ template:
       segment-type: vlan
     nodes:
       - count: 3
-        roles: [controller, mongo]
+        roles: [controller]
       - count: 2
         roles: [compute, cinder]
       - count: 1
-        roles: [standalone-database]
-      - count: 1
-        roles: [ironic]
+        roles: [murano-node]
     release: ubuntu
     settings:
       components:
-        ceilometer: true
-        ironic: true
+        ceilometer: false
+        ironic: false
         murano: false
-        sahara: true
+        sahara: false
       storages:
         ephemeral-ceph: false
         image-ceph: false
@@ -155,12 +153,9 @@ template:
       - name: slave-06
         params: *node-params
         role: fuel_slave
-      - name: slave-07
-        params: *node-params
-        role: fuel_slave
-
-  name: 1 Controller, 1 Compute+Cinder, 1 Ironic, Neutron, VLAN
-  slaves: 7
+  name: 3 Controller, 2 Compute+Cinder, 1 Murano Node, Neutron, VLAN
+  slaves: 6
 
 plugins:
-  - detach-database:
+  - detach-murano:
+      config_file: !os_env MURANO_CONFIG_FILE, plugins_config/murano.yaml
