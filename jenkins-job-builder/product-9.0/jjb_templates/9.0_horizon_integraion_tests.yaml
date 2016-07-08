@@ -14,7 +14,7 @@
     display_name: 9.0_Horizon_integration_tests_Swift
     email-recipients: schipiga@mirantis.com
     jobs:
-      - 'horizon_integraion_test_{name}'
+      - '{milestone}_horizon_integraion_test_{name}'
 
 - project:
     name: selenium_ceph
@@ -32,4 +32,4 @@
     display_name: 9.0_Horizon_integration_tests_Ceph
     email-recipients: schipiga@mirantis.com
     jobs:
-      - 'horizon_integraion_test_{name}'
+      - '{milestone}_horizon_integraion_test_{name}'

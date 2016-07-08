@@ -1,5 +1,5 @@
 - project:
-    name: Tempest-9.0_LVM_no_ssl
+    name: LVM_no_ssl
     weight: 4
     display_name: 'Tempest-9.0_LVM_Cinder_DVR_Sahara_Ceilometer_Ironic'
     iso_dir: /var/www/fuelweb-iso
@@ -17,10 +17,10 @@
     node: Slave-srv137
     nova_quotas: "TRUE"
     jobs:
-      - 'Tempest_{name}'
+      - '{milestone}_Tempest_{name}'
 
 - project:
-    name: Tempest-9.0_Ceph_no_ssl
+    name: Ceph_no_ssl
     weight: 4
     display_name: 'Tempest-9.0_Ceph_DVR_Sahara_Ceilometer_Ironic'
     iso_dir: /var/www/fuelweb-iso
@@ -37,10 +37,10 @@
     node: Slave-srv139
     nova_quotas: "TRUE"
     jobs:
-      - 'Tempest_{name}'
+      - '{milestone}_Tempest_{name}'
 
 - project:
-    name: Tempest-9.0_LVM_SSL
+    name: LVM_SSL
     weight: 4
     display_name: 'Tempest-9.0_LVM_Cinder_DVR_Sahara_Ceilometer_Ironic_SSL'
     iso_dir: /var/www/fuelweb-iso
@@ -57,10 +57,10 @@
     node: Slave-srv138
     nova_quotas: "TRUE"
     jobs:
-      - 'Tempest_{name}'
+      - '{milestone}_Tempest_{name}'
 
 - project:
-    name: Tempest-9.0_Ceph_SSL
+    name: Ceph_SSL
     weight: 4
     display_name: 'Tempest-9.0_Ceph_DVR_Sahara_Ceilometer_Ironic_SSL'
     iso_dir: /var/www/fuelweb-iso
@@ -77,10 +77,10 @@
     node: Slave-7775
     nova_quotas: "TRUE"
     jobs:
-      - 'Tempest_{name}'
+      - '{milestone}_Tempest_{name}'
 
 - project:
-    name: 9.0_Detached_RabbitMQ
+    name: Detached_RabbitMQ
     weight: 4
     display_name: 'Tempest-{name}'
     iso_dir: /var/www/fuelweb-iso
@@ -97,10 +97,10 @@
     node: single_template
     nova_quotas: "TRUE"
     jobs:
-      - 'Tempest_{name}'
+      - '{milestone}_Tempest_{name}'
 
 - project:
-    name: 9.0_Detached_Database
+    name: Detached_Database
     weight: 4
     display_name: 'Tempest-{name}'
     iso_dir: /var/www/fuelweb-iso
@@ -117,10 +117,10 @@
     node: single_template
     nova_quotas: "TRUE"
     jobs:
-      - 'Tempest_{name}'
+      - '{milestone}_Tempest_{name}'
 
 - project:
-    name: 9.0_Detached_DB_Keystone
+    name: Detached_DB_Keystone
     weight: 4
     display_name: 'Tempest-{name}'
     iso_dir: /var/www/fuelweb-iso
@@ -137,10 +137,10 @@
     node: single_template
     nova_quotas: "TRUE"
     jobs:
-      - 'Tempest_{name}'
+      - '{milestone}_Tempest_{name}'
 
 - project:
-    name: 9.0_Detached_RabbitMQ_DB_Keystone
+    name: Detached_RabbitMQ_DB_Keystone
     weight: 4
     display_name: 'Tempest-{name}'
     iso_dir: /var/www/fuelweb-iso
@@ -157,4 +157,4 @@
     node: single_template
     nova_quotas: "TRUE"
     jobs:
-      - 'Tempest_{name}'
+      - '{milestone}_Tempest_{name}'

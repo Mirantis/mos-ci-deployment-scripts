@@ -16,4 +16,4 @@
       (from https://github.com/openstack/python-openstackclient)
     display_name: 9.0 Openstack CLI
     jobs:
-      - 'openstack_cli_{name}'
+      - '{milestone}_openstack_cli_{name}'

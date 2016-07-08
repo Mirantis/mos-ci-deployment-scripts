@@ -14,7 +14,7 @@
     display_name: 9.0_Failover_VLAN
     test_path: mos_tests/failover
     jobs:
-      - 'vlan_based_{name}'
+      - '{milestone}_vlan_based_{name}'
 
 - project:
     name: heat
@@ -32,7 +32,7 @@
     display_name: 9.0_Heat
     test_path: mos_tests/heat
     jobs:
-      - 'vlan_based_{name}'
+      - '{milestone}_vlan_based_{name}'
 
 - project:
     name: heat_ceph
@@ -50,4 +50,4 @@
     display_name: 9.0_Heat_Ceph
     test_path: mos_tests/heat
     jobs:
-      - 'vlan_based_{name}'
+      - '{milestone}_vlan_based_{name}'
