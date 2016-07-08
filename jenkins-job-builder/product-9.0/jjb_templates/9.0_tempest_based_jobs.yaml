@@ -92,7 +92,7 @@
         - inject:
             properties-file: "$ENV_INJECT_PATH"
         - shell:
-            !include-raw: ../../shell_scripts/template_scripts/deploy_template_env.sh
+            !include-raw: ../../shell_scripts/deploy_env_from_template.sh
         - inject:
             properties-file: "$ENV_INJECT_PATH"
         - shell:
