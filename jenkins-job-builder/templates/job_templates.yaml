@@ -76,6 +76,24 @@
     parameters:
         - common_parameters
         - string:
+            name: ISO_DIR
+            default: "{iso_dir}"
+        - string:
+            name: ENV_CHANGER
+            default: '{env_changer}'
+        - string:
+            name: CONFIG_PATH
+            default: '{config_path}'
+        - string:
+            name: TEST_GROUP
+            default: '{test_group}'
+        - string:
+            name: SUITE
+            default: "{suite}"
+        - string:
+            name: MILESTONE
+            default: "{milestone}"
+        - string:
             name: TESTRAIL_TEMPEST
             default: "FALSE"
 
