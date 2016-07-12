@@ -5,7 +5,10 @@ SNAPSHOT=$(echo $SNAPSHOT_NAME | sed 's/ha_deploy_//')
 echo 8.0_"$ENV_NAME"__"$SNAPSHOT" > build-name-setter.info
 
 set +e
-source ~/qa-venv-8.0/bin/activate
+source /home/jenkins/qa-venv-8.0/bin/activate
+#   Destroy all envs before deploy env
+dos.py list | tail -n+3 | xargs -I {} dos.py destroy {}
+#   Find already installed env
 UT=$(dos.py snapshot-list "$ENV_NAME" || true)
 OUT=$(echo "$UT" | grep "$SNAPSHOT_NAME")
 deactivate
