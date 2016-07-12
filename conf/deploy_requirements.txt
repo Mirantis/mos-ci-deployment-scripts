@@ -1,0 +1,5 @@
+# Fuel devops (was removed from fuel-qa's requirements)
+git+git://github.com/openstack/fuel-devops.git@2.9.20
+
+# dpath.util used for fuel config patching
+dpath

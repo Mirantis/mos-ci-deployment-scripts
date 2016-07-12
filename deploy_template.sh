@@ -97,8 +97,7 @@ patch_fuel_qa qos.patch
 
 pip install -r fuel-qa/fuelweb_test/requirements.txt --upgrade
 
-# dpath.util used for fuel config patching
-pip install dpath
+pip install -r conf/deploy_requirements.txt --upgrade
 
 django-admin.py syncdb --settings=devops.settings
 django-admin.py migrate devops --settings=devops.settings
