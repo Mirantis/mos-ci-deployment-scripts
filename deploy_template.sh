@@ -79,6 +79,7 @@ fi
 
 source ${V_ENV_DIR}/bin/activate
 pip install -U pip
+pip install -r conf/deploy_requirements.txt
 
 # Check if fuel-qa folder exist
 if [ ! -d fuel-qa ]; then
