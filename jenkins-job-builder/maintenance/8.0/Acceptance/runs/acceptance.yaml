@@ -1,0 +1,186 @@
+# Nova & heat projects
+
+- project:
+    name: vlan.cinder
+    segmentation: VLAN
+    ceph: FALSE
+    cinder: TRUE
+    env: maintenance_vlan_NEUTRON_8_0_cinder
+    description: 8.0 VLAN CINDER-NOVA-HEAT tests with reporting to TestRail in a row.
+    display-name: 8.0-VLAN CINDER-NOVA-HEAT
+    node: maintenance
+    weight: 2
+    jobs:
+      - '8.0.acceptance.{name}.nova-heat'
+
+# Neutron projects
+
+- project:
+    name: vlan.dvr
+    env: maintenance_VLAN_DVR_NEUTRON_8_0
+    segment: VLAN
+    disable_ssl: TRUE
+    dvr: TRUE
+    l3ha: FALSE
+    l2pop: FALSE
+    description: 8.0 VLAN+DVR NEUTRON tests
+    display-name: 8.0-NEUTRON-VLAN+DVR
+    node: maintenance
+    weight: 2
+    jobs:
+      - '8.0.acceptance.{name}.neutron'
+
+- project:
+    name: vlan.l3ha
+    env: maintenance_VLAN_L3_HA_NEUTRON_8_0
+    segment: VLAN
+    disable_ssl: TRUE
+    dvr: FALSE
+    l3ha: TRUE
+    l2pop: FALSE
+    description: 8.0 VLAN+L3_HA NEUTRON tests
+    display-name: 8.0-NEUTRON-VLAN+L3_HA
+    node: maintenance
+    weight: 2
+    jobs:
+      - '8.0.acceptance.{name}.neutron'
+
+- project:
+    name: vlan
+    env: maintenance_VLAN_NEUTRON_8_0
+    segment: VLAN
+    disable_ssl: TRUE
+    dvr: FALSE
+    l3ha: FALSE
+    l2pop: FALSE
+    description: 8.0 VLAN NEUTRON tests
+    display-name: 8.0-NEUTRON-VLAN
+    node: maintenance
+    weight: 2
+    jobs:
+      - '8.0.acceptance.{name}.neutron'
+
+- project:
+    name: vxlan.dvr.pop
+    env: maintenance_VxLAN_L2_POP_DVR_NEUTRON_8_0
+    segment: VxLAN
+    disable_ssl: TRUE
+    dvr: TRUE
+    l3ha: FALSE
+    l2pop: TRUE
+    description: 8.0 VxLAN+L2_POP+DVR NEUTRON tests
+    display-name: 8.0-NEUTRON-VxLAN+L2_POP+DVR
+    node: maintenance
+    weight: 2
+    jobs:
+      - '8.0.acceptance.{name}.neutron'
+
+- project:
+    name: vxlan.l3ha.pop
+    env: maintenance_VxLAN_L2_POP_L3_HA_NEUTRON_8_0
+    segment: VxLAN
+    disable_ssl: TRUE
+    dvr: FALSE
+    l3ha: TRUE
+    l2pop: TRUE
+    description: 8.0 VxLAN+L2_POP+L3_HA NEUTRON tests
+    display-name: 8.0-NEUTRON-VxLAN+L2_POP+L3_HA
+    node: maintenance
+    weight: 2
+    jobs:
+      - '8.0.acceptance.{name}.neutron'
+
+- project:
+    name: vxlan.pop
+    env: maintenance_VxLAN_L2_POP_NEUTRON_8_0
+    segment: VxLAN
+    disable_ssl: TRUE
+    dvr: FALSE
+    l3ha: FALSE
+    l2pop: TRUE
+    description: 8.0 VxLAN+L2_POP NEUTRON tests
+    display-name: 8.0-NEUTRON-VxLAN+L2_POP
+    node: maintenance
+    weight: 2
+    jobs:
+      - '8.0.acceptance.{name}.neutron'
+
+- project:
+    name: vxlan
+    env: maintenance_VxLAN_NEUTRON_8_0
+    segment: VxLAN
+    disable_ssl: TRUE
+    dvr: FALSE
+    l3ha: FALSE
+    l2pop: FALSE
+    description: 8.0 VxLAN NEUTRON tests
+    display-name: 8.0-NEUTRON-VxLAN
+    node: maintenance
+    weight: 2
+    jobs:
+      - '8.0.acceptance.{name}.neutron'
+
+# Run templates
+
+- job-template:
+    name: 8.0.acceptance_part_1
+    project-type: multijob
+    description: 'Run acceptance tests part 1'
+    concurrent: false
+    node: 'master'
+    properties:
+      - heavy-job:
+          weight: 1
+    builders:
+      - multijob:
+          name: 'Run 8.0 accpeptance part 1'
+          condition: COMPLETED
+          projects:
+            - name: '8.0.acceptance.vlan.dvr.neutron'
+              current-parameters: true
+              kill-phase-on: NEVER
+            - name: '8.0.acceptance.vlan.l3ha.neutron'
+              current-parameters: true
+              kill-phase-on: NEVER
+            - name: '8.0.acceptance.vlan.neutron'
+              current-parameters: true
+              kill-phase-on: NEVER
+            - name: '8.0.acceptance.vxlan.dvr.pop.neutron'
+              current-parameters: true
+              kill-phase-on: NEVER
+
+- job-template:
+    name: 8.0.acceptance_part_2
+    project-type: multijob
+    description: 'Run acceptance tests part 2'
+    concurrent: false
+    node: 'master'
+    properties:
+      - heavy-job:
+          weight: 1
+    builders:
+      - multijob:
+          name: 'Run 8.0 accpeptance part 2'
+          condition: COMPLETED
+          projects:
+            - name: '8.0.acceptance.vlan.cinder.nova-heat'
+              current-parameters: true
+              kill-phase-on: NEVER
+            - name: '8.0.acceptance.vxlan.l3ha.pop.neutron'
+              current-parameters: true
+              kill-phase-on: NEVER
+            - name: '8.0.acceptance.vxlan.pop.neutron'
+              current-parameters: true
+              kill-phase-on: NEVER
+            - name: '8.0.acceptance.vxlan.neutron'
+              current-parameters: true
+              kill-phase-on: NEVER
+
+# Run projects
+
+- project:
+    name: 8.0.acceprance_helper
+    email-recipients: vrovachev@mirantis.com
+    jobs:
+      - '8.0.acceptance_part_1'
+      - '8.0.acceptance_part_2'
