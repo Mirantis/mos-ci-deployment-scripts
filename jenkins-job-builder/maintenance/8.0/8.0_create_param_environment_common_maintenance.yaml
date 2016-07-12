@@ -129,7 +129,10 @@
             !include-raw: 'builders/maintenance_deploy_env_8_0_common.sh'
 
     scm:
-       - mos-ci-deployment-scripts
+      - mirantis-git:
+          reponame: 'mos-ci-deployment-scripts'
+          repobranch: 'origin/stable/8.0'
+          basedir: ''
     project-type: freestyle
     node: maintenance
     defaults: global

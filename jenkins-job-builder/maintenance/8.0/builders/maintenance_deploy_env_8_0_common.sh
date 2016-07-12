@@ -143,18 +143,4 @@ if [[ -n "${DEB_LATEST}" ]]; then
     export EXTRA_DEB_REPOS
 fi
 
-### Deploy environment using stable/8.0 branch
-if [ ! -d mos-ci-deployment-scripts ]; then
-    git clone -b stable/8.0 https://github.com/Mirantis/mos-ci-deployment-scripts
-else
-    pushd mos-ci-deployment-scripts
-    git clean -f -d -x
-    git checkout stable/8.0
-    git reset --hard
-    git pull
-    popd
-fi
-
-cd mos-ci-deployment-scripts
 /bin/bash -x deploy_env.sh
-cd ..

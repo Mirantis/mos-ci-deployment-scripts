@@ -9,7 +9,7 @@
     description: 8.0 VLAN CINDER-NOVA-HEAT tests with reporting to TestRail in a row.
     display-name: 8.0-VLAN CINDER-NOVA-HEAT
     node: maintenance
-    weight: 2
+    weight: 3
     jobs:
       - '8.0.acceptance.{name}.nova-heat'
 
@@ -26,7 +26,7 @@
     description: 8.0 VLAN+DVR NEUTRON tests
     display-name: 8.0-NEUTRON-VLAN+DVR
     node: maintenance
-    weight: 2
+    weight: 3
     jobs:
       - '8.0.acceptance.{name}.neutron'
 
@@ -41,7 +41,7 @@
     description: 8.0 VLAN+L3_HA NEUTRON tests
     display-name: 8.0-NEUTRON-VLAN+L3_HA
     node: maintenance
-    weight: 2
+    weight: 3
     jobs:
       - '8.0.acceptance.{name}.neutron'
 
@@ -56,7 +56,7 @@
     description: 8.0 VLAN NEUTRON tests
     display-name: 8.0-NEUTRON-VLAN
     node: maintenance
-    weight: 2
+    weight: 3
     jobs:
       - '8.0.acceptance.{name}.neutron'
 
@@ -71,7 +71,7 @@
     description: 8.0 VxLAN+L2_POP+DVR NEUTRON tests
     display-name: 8.0-NEUTRON-VxLAN+L2_POP+DVR
     node: maintenance
-    weight: 2
+    weight: 3
     jobs:
       - '8.0.acceptance.{name}.neutron'
 
@@ -86,7 +86,7 @@
     description: 8.0 VxLAN+L2_POP+L3_HA NEUTRON tests
     display-name: 8.0-NEUTRON-VxLAN+L2_POP+L3_HA
     node: maintenance
-    weight: 2
+    weight: 3
     jobs:
       - '8.0.acceptance.{name}.neutron'
 
@@ -101,7 +101,7 @@
     description: 8.0 VxLAN+L2_POP NEUTRON tests
     display-name: 8.0-NEUTRON-VxLAN+L2_POP
     node: maintenance
-    weight: 2
+    weight: 3
     jobs:
       - '8.0.acceptance.{name}.neutron'
 
@@ -116,7 +116,7 @@
     description: 8.0 VxLAN NEUTRON tests
     display-name: 8.0-NEUTRON-VxLAN
     node: maintenance
-    weight: 2
+    weight: 3
     jobs:
       - '8.0.acceptance.{name}.neutron'
 
