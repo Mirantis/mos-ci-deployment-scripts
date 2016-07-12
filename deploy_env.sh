@@ -316,6 +316,7 @@ else
     popd
 fi
 
+pip install -r fuel-qa/fuelweb_test/requirements-devops-source.txt --upgrade
 pip install -r fuel-qa/fuelweb_test/requirements.txt --upgrade
 
 django-admin.py syncdb --settings=devops.settings
