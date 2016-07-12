@@ -13,9 +13,6 @@
             DISABLE_SSL=TRUE
             SAHARA_ENABLE=TRUE
             MURANO_ENABLE=TRUE
-            SLAVE_NODE_CPU=2
-            SLAVE_NODE_MEMORY=8192
-            ENABLE_PROPOSED=true
       - trigger-builds:
         - project: '8.0-murano_tests'
           same-node: true
@@ -32,11 +29,11 @@
           predefined-parameters: |
             ENV_NAME=maintenance_VLAN_SAHARA_MURANO_8_0
             SNAPSHOT_NAME=ha_deploy_VLAN_SAHARA_MURANO_CINDER
-            TESTRAIL_PLAN_NAME=8.0 Acceptance testing
+            TESTRAIL_PLAN_NAME="8.0 Acceptance testing #$(date +%Y/%m/%d)"
             TEST_GROUP=MURANO_HORIZON
             REPORT_PREFIX=/srv/jenkins/murano
             MILESTONE=8.0
-            SUITE=[8.0][MOSQA] Automated Cloud Testing
+            SUITE='[8.0][MOSQA] Automated Cloud Testing'
 
     project-type: freestyle
     defaults: global

@@ -1,7 +1,6 @@
 - job:
     name: maintenance_tempest_non_ceph_vlan_8_0_ubuntu_on_node
     parameters:
-    parameters:
       - string:
           name: TESTRAIL_PLAN_NAME
           default: 'TEMPEST-TEST-MU'

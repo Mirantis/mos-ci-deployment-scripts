@@ -31,6 +31,9 @@ fi
 # Bonding
 BONDING=${BONDING:-false}
 
+# Ironic
+IRONIC_ENABLED=${IRONIC_ENABLED:-false}
+
 # Set env name
 ENV_NAME=${ENV_NAME:-maintenance_env_8.0}
 
