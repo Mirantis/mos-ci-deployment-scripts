@@ -6,8 +6,8 @@
           same-node: true
           block: true
           predefined-parameters: |
-            ENV_NAME={env}
-            SNAPSHOT_NAME=ha_deploy_{segment}
+            ENV_NAME=8.0.acceptance.neutron
+            SNAPSHOT_NAME=ha_deploy_{snapshot}
             TEST_TYPE=NEUTRON
             SEGMENT_TYPE={segment}
             DISABLE_SSL={disable_ssl}
@@ -24,15 +24,15 @@
           block-thresholds:
             build-step-failure-threshold: 'never'
           predefined-parameters: |
-            ENV_NAME={env}
-            SNAPSHOT_NAME=ha_deploy_{segment}
+            ENV_NAME=8.0.acceptance.neutron
+            SNAPSHOT_NAME=ha_deploy_{snapshot}
       - trigger-builds:
         - project: '8.0_test_rail_reporter_common_maintenance'
           same-node: true
           block: true
           predefined-parameters: |
-            ENV_NAME={env}
-            SNAPSHOT_NAME=ha_deploy_{segment}
+            ENV_NAME=8.0.acceptance.neutron
+            SNAPSHOT_NAME=ha_deploy_{snapshot}
             TESTRAIL_PLAN_NAME=8.0 Acceptance testing
             TEST_GROUP=NEUTRON
             REPORT_PREFIX=/srv/jenkins/neutron
