@@ -249,6 +249,9 @@
             name: MILESTONE
             default: "{milestone}"
         - string:
+            name: DESTROY_ENV_AFTER_TESTS
+            default: "{destroy_env}"
+        - string:
             name: NOVA_QUOTAS_ENABLED
             default: "{nova_quotas}"
         - string:

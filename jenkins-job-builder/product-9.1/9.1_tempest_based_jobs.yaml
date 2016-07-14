@@ -5,7 +5,8 @@
     milestone: '9.1'
     iso_dir: '/var/www/mos-{milestone}_iso'
     suite: '[{milestone}][MOSQA] Tempest {milestone}'
-    nova_quotas: "TRUE"
+    nova_quotas: 'TRUE'
+    destroy_env: 'FALSE'
     start_timer: ''
     jobs:
       - '{milestone}_Tempest_{name}'

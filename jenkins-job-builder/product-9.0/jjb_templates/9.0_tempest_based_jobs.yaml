@@ -82,7 +82,7 @@
 - project:
     name: Detached_RabbitMQ
     weight: 4
-    display_name: 'Tempest-{name}'
+    display_name: 'Tempest-9.0_{name}'
     iso_dir: /var/www/fuelweb-iso
     env_changer: _rabbit
     config_path: templates/separate_componenets/rabbit.yaml
@@ -102,7 +102,7 @@
 - project:
     name: Detached_Database
     weight: 4
-    display_name: 'Tempest-{name}'
+    display_name: 'Tempest-9.0_{name}'
     iso_dir: /var/www/fuelweb-iso
     env_changer: _database
     config_path: templates/separate_componenets/database.yaml
@@ -122,7 +122,7 @@
 - project:
     name: Detached_DB_Keystone
     weight: 4
-    display_name: 'Tempest-{name}'
+    display_name: 'Tempest-9.0_{name}'
     iso_dir: /var/www/fuelweb-iso
     env_changer: _db_keystone
     config_path: templates/separate_componenets/db_keystone.yaml
@@ -142,7 +142,7 @@
 - project:
     name: Detached_RabbitMQ_DB_Keystone
     weight: 4
-    display_name: 'Tempest-{name}'
+    display_name: 'Tempest-9.0_{name}'
     iso_dir: /var/www/fuelweb-iso
     env_changer: _db_rabbit_keystone
     config_path: templates/separate_componenets/db_rabbit_keystone.yaml
