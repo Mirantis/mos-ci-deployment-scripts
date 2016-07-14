@@ -2,8 +2,8 @@
 
 - project:
     name: vlan.cinder
-    snapshot: maintenance_vlan_NEUTRON_8_0_cinder
-    segmentation: VLAN_CINDER
+    snapshot: VLAN_CINDER
+    segmentation: VLAN
     ceph: FALSE
     cinder: TRUE
     description: 8.0 VLAN CINDER-NOVA-HEAT tests with reporting to TestRail in a row.
@@ -18,7 +18,7 @@
 - project:
     name: vlan.dvr
     snapshot: VLAN_DVR_CINDER
-    segment: VLAN
+    segmentation: VLAN
     disable_ssl: TRUE
     dvr: TRUE
     l3ha: FALSE
@@ -33,7 +33,7 @@
 - project:
     name: vlan.l3ha
     snapshot: VLAN_L3_HA_CINDER
-    segment: VLAN
+    segmentation: VLAN
     disable_ssl: TRUE
     dvr: FALSE
     l3ha: TRUE
@@ -48,7 +48,7 @@
 - project:
     name: vlan
     snapshot: VLAN_CINDER
-    segment: VLAN
+    segmentation: VLAN
     disable_ssl: TRUE
     dvr: FALSE
     l3ha: FALSE
@@ -63,7 +63,7 @@
 - project:
     name: vxlan.dvr.pop
     snapshot: VxLAN_L2_POP_DVR_CINDER
-    segment: VxLAN
+    segmentation: VxLAN
     disable_ssl: TRUE
     dvr: TRUE
     l3ha: FALSE
@@ -78,7 +78,7 @@
 - project:
     name: vxlan.l3ha.pop
     snapshot: VxLAN_L2_POP_L3_HA_CINDER
-    segment: VxLAN
+    segmentation: VxLAN
     disable_ssl: TRUE
     dvr: FALSE
     l3ha: TRUE
@@ -93,7 +93,7 @@
 - project:
     name: vxlan.pop
     snapshot: VxLAN_L2_POP_CINDER
-    segment: VxLAN
+    segmentation: VxLAN
     disable_ssl: TRUE
     dvr: FALSE
     l3ha: FALSE
@@ -108,7 +108,7 @@
 - project:
     name: vxlan
     snapshot: VxLAN_CINDER
-    segment: VxLAN
+    segmentation: VxLAN
     disable_ssl: TRUE
     dvr: FALSE
     l3ha: FALSE
@@ -123,7 +123,7 @@
 # Run templates
 
 - job-template:
-    name: 8.0.acceptance_part_1
+    name: 8.0.acceptance
     project-type: multijob
     description: 'Run acceptance tests part 1'
     concurrent: false
@@ -133,7 +133,7 @@
           weight: 1
     builders:
       - multijob:
-          name: 'Run 8.0 accpeptance part 1'
+          name: 'Run 8.0 accpeptance'
           condition: COMPLETED
           projects:
             - name: '8.0.acceptance.vlan.dvr.neutron'
@@ -148,21 +148,6 @@
             - name: '8.0.acceptance.vxlan.dvr.pop.neutron'
               current-parameters: true
               kill-phase-on: NEVER
-
-- job-template:
-    name: 8.0.acceptance_part_2
-    project-type: multijob
-    description: 'Run acceptance tests part 2'
-    concurrent: false
-    node: 'master'
-    properties:
-      - heavy-job:
-          weight: 1
-    builders:
-      - multijob:
-          name: 'Run 8.0 accpeptance part 2'
-          condition: COMPLETED
-          projects:
             - name: '8.0.acceptance.vlan.cinder.nova-heat'
               current-parameters: true
               kill-phase-on: NEVER
@@ -182,5 +167,4 @@
     name: 8.0.acceprance_helper
     email-recipients: vrovachev@mirantis.com
     jobs:
-      - '8.0.acceptance_part_1'
-      - '8.0.acceptance_part_2'
+      - '8.0.acceptance'

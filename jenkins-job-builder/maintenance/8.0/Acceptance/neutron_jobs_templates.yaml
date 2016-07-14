@@ -9,7 +9,7 @@
             ENV_NAME=8.0.acceptance.neutron
             SNAPSHOT_NAME=ha_deploy_{snapshot}
             TEST_TYPE=NEUTRON
-            SEGMENT_TYPE={segment}
+            SEGMENT_TYPE={segmentation}
             DISABLE_SSL={disable_ssl}
             DVR_ENABLE={dvr}
             L3_HA_ENABLE={l3ha}
