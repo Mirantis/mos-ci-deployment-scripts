@@ -102,7 +102,7 @@ template:
     - driver:
         name: devops.driver.libvirt.libvirt_driver
         params: {connection_string: 'qemu:///system', hpet: false, storage_pool_name: default,
-          stp: true, use_host_cpu: true}
+          stp: false, use_host_cpu: true}
       l2_network_devices:
         admin:
           address_pool: fuelweb_admin-pool01
