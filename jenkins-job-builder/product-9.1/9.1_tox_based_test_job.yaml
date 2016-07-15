@@ -1,0 +1,205 @@
+- common_parameters: &common_parameters
+    name: 'common tox based project parameters'
+    description: 'Tox based jobs with deploy for milestone {milestone}'
+    weight: 4
+    milestone: '9.1'
+    iso_dir: /var/www/fuelweb-iso
+    suite: '[{milestone}][MOSQA] Tempest {milestone}'
+    start_timer: ''
+    #start_timer: '0 21 * * *'
+    tox_propertires: ''
+    jobs:
+      - '{milestone}_{name}'
+
+- project:
+    name: Ceilometer
+    weight: 2
+    env_changer: _ceilometer
+    env_inject_file: env_inject_ceilometer.properties
+    config_path: templates/ceilometer/default.yaml
+    test_group: Ceilometer
+    report_prefix: /srv/jenkins/ceilometer
+    node: single_template
+    description: Ceilometer tests
+    display_name: '{milestone}_{name}'
+    tox_test_name: ceilometer
+    nova_quotas: "FALSE"
+    <<: *common_parameters
+
+- project:
+    name: Ironic
+    weight: 2
+    env_changer: _ironic
+    env_inject_file: env_inject_ironic.properties
+    config_path: templates/ironic/default.yaml
+    test_group: Ironic
+    node: single_template
+    description: Ironic tests
+    display_name: '{milestone}_{name}'
+    tox_test_name: ironic
+    nova_quotas: "FALSE"
+    <<: *common_parameters
+
+- project:
+    name: Glance_Swift
+    weight: 2
+    env_changer: _glance_swift
+    env_inject_file: env_inject_glance_swift.properties
+    config_path: templates/glance/swift.yaml
+    test_group: Glance(Swift)
+    node: Slave-srv135
+    description: Glance tests on Swift
+    display_name: '{milestone}_{name}'
+    tox_test_name: glance
+    nova_quotas: "TRUE"
+    <<: *common_parameters
+
+- project:
+    name: Glance_Ceph
+    weight: 2
+    env_changer: _glance_ceph
+    env_inject_file: env_inject_glance_ceph.properties
+    config_path: templates/glance/ceph.yaml
+    test_group: Glance(Ceph)
+    node:  Slave-srv135
+    description: Glance tests on Ceph
+    display_name: '{milestone}_{name}'
+    tox_test_name: glance
+    nova_quotas: "FALSE"
+    <<: *common_parameters
+
+- project:
+    name: VLAN
+    weight: 2
+    env_changer: _vlan
+    env_inject_file: env_inject_vlan.properties
+    config_path: templates/neutron/vlan_qos.yaml
+    test_group: Neutron(VLAN)
+    node: single_template
+    description: Neutron(VLAN)
+    display_name: '{milestone}_{name}'
+    test_path: mos_tests/neutron
+    tox_test_name: neutron
+    nova_quotas: "FALSE"
+    <<: *common_parameters
+
+- project:
+    name: VLAN_L3_HA
+    weight: 2
+    env_changer: _vlan_l3_ha
+    env_inject_file: env_inject_vlan_l3_ha.properties
+    config_path: templates/neutron/vlan_l3ha.yaml
+    test_group: Neutron(VLAN,L3_HA)
+    node: single_template
+    description: Neutron(VLAN,L3_HA)
+    display_name: '{milestone}_{name}'
+    test_path: mos_tests/neutron
+    tox_test_name: neutron
+    nova_quotas: "FALSE"
+    <<: *common_parameters
+
+- project:
+    name: VLAN_DVR
+    weight: 2
+    env_changer: _vlan_dvr
+    env_inject_file: env_inject_vlan_dvr.properties
+    config_path: templates/neutron/vlan_dvr.yaml
+    test_group: Neutron(VLAN,DVR)
+    node: single_template
+    description: Neutron tests(VLAN,DVR)
+    display_name: '{milestone}_{name}'
+    test_path: mos_tests/neutron
+    tox_test_name: neutron
+    nova_quotas: "FALSE"
+    <<: *common_parameters
+
+- project:
+    name: VxLAN
+    weight: 2
+    env_changer: _vxlan
+    env_inject_file: env_inject_vxlan.properties
+    config_path: templates/neutron/vxlan_qos.yaml
+    test_group: Neutron(VxLAN)
+    node: single_template
+    milestone: '9.0'
+    description: Neutron tests(VxLAN)
+    display_name: '{milestone}_{name}'
+    test_path: mos_tests/neutron
+    tox_test_name: neutron
+    nova_quotas: "FALSE"
+    <<: *common_parameters
+
+- project:
+    name: VxLAN_L2_POP
+    weight: 2
+    env_changer: _vxlan_l2_pop
+    env_inject_file: env_inject_vxlan_l2_pop.properties
+    config_path: templates/neutron/vxlan_l2pop.yaml
+    test_group: Neutron(VxLAN,L2_POP)
+    node: single_template
+    description: Neutron tests(VxLAN,L2_POP)
+    display_name: '{milestone}_{name}'
+    test_path: mos_tests/neutron
+    tox_test_name: neutron
+    nova_quotas: "FALSE"
+    <<: *common_parameters
+
+- project:
+    name: VxLAN_L2_POP_DVR
+    weight: 2
+    env_changer: _vxlan_l2_pop_dvr
+    env_inject_file: env_inject_vxlan_l2_pop_dvr.properties
+    config_path: templates/neutron/vxlan_l2pop_dvr.yaml
+    test_group: Neutron(VxLAN,L2_POP,DVR)
+    node: single_template
+    description: Neutron tests(VxLAN,L2_POP,DVR)
+    display_name: '{milestone}_{name}'
+    test_path: mos_tests/neutron
+    tox_test_name: neutron
+    nova_quotas: "FALSE"
+    <<: *common_parameters
+
+- project:
+    name: VxLAN_L2_POP_L3_HA
+    weight: 2
+    iso_dir: /var/www/fuelweb-iso
+    env_changer: _vxlan_l2_pop_l3_ha
+    env_inject_file: env_inject_vxlan_l2_pop_l3_ha.properties
+    config_path: templates/neutron/vxlan_l2pop_l3ha.yaml
+    test_group: Neutron(VxLAN,L2_POP,L3_HA)
+    node: single_template
+    description: Neutron tests(VxLAN,L2_POP,L3_HA)
+    display_name: '{milestone}_{name}'
+    test_path: mos_tests/neutron
+    tox_test_name: neutron
+    nova_quotas: "FALSE"
+    <<: *common_parameters
+
+- project:
+    name: Nova
+    weight: 4
+    env_changer: _nova
+    env_inject_file: env_inject_nova.properties
+    config_path: templates/nova/default.yaml
+    test_group: Nova
+    node: Slave-7777
+    description: Nova tests
+    display_name: '{milestone}_{name}'
+    test_path: mos_tests/nova
+    tox_test_name: nova
+    nova_quotas: "FALSE"
+    <<: *common_parameters
+
+- project:
+    name: NovaCeph
+    weight: 4
+    env_changer: _nova_ceph
+    env_inject_file: env_inject_nova_ceph.properties
+    config_path: templates/nova/ceph.yaml
+    test_group: Nova(Ceph)
+    node: Slave-7774
+    display_name: '{milestone}_{name}'
+    test_path: mos_tests/nova
+    tox_test_name: nova
+    nova_quotas: "FALSE"
+    <<: *common_parameters

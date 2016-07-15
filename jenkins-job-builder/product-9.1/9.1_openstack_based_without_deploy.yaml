@@ -1,0 +1,19 @@
+- project:
+    name: Openstack_CLI
+    weight: 2
+    iso_dir: /var/www/fuelweb-iso
+    env_changer: _glance_swift
+    env_inject_file: env_inject_vlan_keystone.properties
+    config_path: templates/glance/swift.yaml
+    test_group: Openstack CLI
+    suite: '[{milestone}][MOSQA] Tempest {milestone}'
+    start_timer: ""
+    #start_timer: "0 0 * * *"
+    node: Slave-srv135
+    milestone: '9.1'
+    description:  |
+      Openstack CLI tests
+      (from https://github.com/openstack/python-openstackclient)
+    display_name: '{milestone} Openstack CLI'
+    jobs:
+      - '{milestone}_openstack_cli_{name}'

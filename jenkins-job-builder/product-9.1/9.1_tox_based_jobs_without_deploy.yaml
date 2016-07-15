@@ -1,0 +1,146 @@
+- common_parameters: &common_parameters
+    name: 'common tox based wo deplopy project parameters'
+    description: 'Tox based jobs without deploy for milestone {milestone}'
+    weight: 4
+    milestone: '9.1'
+    iso_dir: /var/www/fuelweb-iso
+    suite: '[{milestone}][MOSQA] Tempest {milestone}'
+    start_timer: ''
+    #start_timer: '0 22 * * *'
+    tox_properties: ''
+    jobs:
+      - '{milestone}_wo_deploy_{name}'
+
+- project:
+    name: keystone
+    weight: 2
+    env_changer: _glance_swift
+    env_inject_file: env_inject_vlan_keystone.properties
+    config_path: templates/glance/swift.yaml
+    test_group: Keystone
+    node: Slave-srv135
+    display_name: '{milestone}_{name}'
+    tox_test_name: keystone
+    <<: *common_parameters
+
+- project:
+    name: Object_Storage_Swift
+    weight: 2
+    env_changer: _glance_swift
+    env_inject_file: env_inject_glance_swift.properties
+    config_path: templates/glance/swift.yaml
+    test_group: Object Storage(Swift)
+    node: Slave-srv135
+    display_name: '{milestone}_{name}'
+    tox_test_name: object_storage
+    <<: *common_parameters
+
+- project:
+    name: Object_Storage_Ceph
+    weight: 2
+    env_changer: _glance_ceph
+    env_inject_file: env_inject_glance_ceph.properties
+    config_path: templates/glance/ceph.yaml
+    test_group: Object Storage(RadosGW)
+    node: Slave-srv135
+    display_name: '{milestone}_{name}'
+    tox_test_name: object_storage
+    <<: *common_parameters
+
+- project:
+    name: cinder
+    weight: 4
+    env_changer: _nova
+    env_inject_file: env_inject_cinder.properties
+    config_path: templates/nova/default.yaml
+    test_group: Cinder(Swift)
+    node: Slave-7777
+    display_name: '{milestone}_{name}'
+    test_path: mos_tests/cinder
+    tox_test_name: cinder
+    <<: *common_parameters
+
+- project:
+    name: cinder_ceph
+    weight: 2
+    env_changer: _glance_ceph
+    env_inject_file: env_inject_cinder.properties
+    config_path: templates/glance/ceph.yaml
+    test_group: Cinder(Ceph)
+    node: Slave-srv135
+    display_name: '{milestone}_{name}'
+    test_path: mos_tests/cinder
+    tox_test_name: cinder
+    <<: *common_parameters
+
+- project:
+    name: rabbitmq_oslo
+    weight: 2
+    env_changer: _glance_swift
+    env_inject_file: env_inject_vlan_rabbitmq_oslo.properties
+    config_path: templates/glance/swift.yaml
+    test_group: RabbitMQ_OSLO
+    node: Slave-srv135
+    display_name: '{milestone}_{name}'
+    tox_test_name: rabbitmq_oslo
+    <<: *common_parameters
+
+- project:
+    name: glare_swift
+    weight: 2
+    env_changer: _glance_swift
+    env_inject_file: env_inject_glare_swift.properties
+    config_path: templates/glance/swift.yaml
+    test_group: Glare(Swift)
+    node: Slave-srv135
+    display_name: '{milestone}_{name}'
+    tox_test_name: glare
+    <<: *common_parameters
+
+- project:
+    name: glare_ceph
+    weight: 2
+    env_changer: _glance_ceph
+    env_inject_file: env_inject_glare_ceph.properties
+    config_path: templates/glance/ceph.yaml
+    test_group: Glare(Ceph)
+    node: Slave-srv135
+    display_name: '{milestone}_{name}'
+    tox_test_name: glare
+    <<: *common_parameters
+
+- project:
+    name: failover
+    weight: 2
+    env_changer: _glance_swift
+    env_inject_file: env_inject_vlan_failover.properties
+    config_path: templates/glance/swift.yaml
+    test_group: Failover
+    node: Slave-srv135
+    display_name: '{milestone}_{name}'
+    tox_test_name: failover
+    <<: *common_parameters
+
+- project:
+    name: heat
+    weight: 4
+    env_changer: _nova
+    env_inject_file: env_inject_heat.properties
+    config_path: templates/nova/default.yaml
+    test_group: Heat(Swift)
+    node: Slave-7777
+    display_name: '{milestone}_{name}'
+    tox_test_name: heat
+    <<: *common_parameters
+
+- project:
+    name: heat_ceph
+    weight: 4
+    env_changer: _nova_ceph
+    env_inject_file: env_inject_heat.properties
+    config_path: templates/nova/ceph.yaml
+    test_group: Heat(Ceph)
+    node: Slave-7774
+    display_name: '{milestone}_{name}'
+    tox_test_name: heat
+    <<: *common_parameters

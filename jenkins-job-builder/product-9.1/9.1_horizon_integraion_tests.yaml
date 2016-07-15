@@ -1,0 +1,35 @@
+- common_parameters: &common_parameters
+    name: 'common horizon project parameters'
+    description: 'Horizon integration tests tests for milestone {milestone}'
+    weight: 4
+    milestone: '9.1'
+    iso_dir: /var/www/fuelweb-iso
+    suite: '[{milestone}][MOSQA] Tempest {milestone}'
+    start_timer: ''
+    #start_timer: '0 23 * * *'
+    tox_properties: ''
+    email-recipients: schipiga@mirantis.com
+    jobs:
+      - '{milestone}_horizon_integraion_test_{name}'
+
+- project:
+    name: Horizon_integration_tests_Swift
+    weight: 4
+    env_changer: _nova
+    env_inject_file: env_inject_vlan_horizon.properties
+    config_path: templates/nova/default.yaml
+    test_group: Horizon
+    node: Slave-7777
+    display_name: '{milestone}_{name}'
+    <<: *common_parameters
+
+- project:
+    name: Horizon_integration_tests_Ceph
+    weight: 4
+    env_changer: _nova_ceph
+    env_inject_file: env_inject_vlan_horizon.properties
+    config_path: templates/nova/ceph.yaml
+    test_group: Horizon(Ceph)
+    node: Slave-7774
+    display_name: '{milestone}_{name}'
+    <<: *common_parameters
