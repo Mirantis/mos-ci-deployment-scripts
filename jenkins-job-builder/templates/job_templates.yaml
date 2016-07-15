@@ -15,7 +15,7 @@
           default: 'report.xml'
       - string:
           name: ENV_INJECT_PATH
-          default: 'env_inject.properties'
+          default: 'env_inject{name}.properties'
 
 
 - defaults:
