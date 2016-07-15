@@ -8,8 +8,6 @@
     test_group: Ceilometer
     suite: '[9.0][MOSQA] Automated Cloud Testing'
     tox_propertires: ''
-    report_prefix: /srv/jenkins/ceilometer
-    report_file: report.xml
     start_timer: "0 21 * * *"
     node: single_template
     milestone: '9.0'
@@ -30,8 +28,6 @@
     test_group: Ironic
     suite: '[9.0][MOSQA] Automated Cloud Testing'
     tox_propertires: ''
-    report_prefix: /srv/jenkins/ironic
-    report_file: report.xml
     start_timer: "0 21 * * *"
     node: single_template
     milestone: '9.0'
@@ -51,8 +47,6 @@
     config_path: templates/glance/swift.yaml
     test_group: Glance(Swift)
     suite: '[9.0][MOSQA] Automated Cloud Testing'
-    report_prefix: /srv/jenkins/glance_swift/
-    report_file: report.xml
     start_timer: "0 21 * * *"
     node: Slave-srv135
     milestone: '9.0'
@@ -72,8 +66,6 @@
     config_path: templates/glance/ceph.yaml
     test_group: Glance(Ceph)
     suite: '[9.0][MOSQA] Automated Cloud Testing'
-    report_prefix: /srv/jenkins/glance_ceph/
-    report_file: report.xml
     start_timer: "0 21 * * *"
     node:  Slave-srv135
     milestone: '9.0'
@@ -93,14 +85,11 @@
     config_path: templates/neutron/vlan_qos.yaml
     test_group: Neutron(VLAN)
     suite: '[9.0][MOSQA] Automated Cloud Testing'
-    report_prefix: /srv/jenkins/neutron_vlan
-    report_file: report.xml
     start_timer: "0 21 * * *"
     node: single_template
     milestone: '9.0'
     description: Neutron(VLAN)
     display_name: 9.0_Neutron_VLAN
-    test_path: mos_tests/neutron
     tox_test_name: neutron
     nova_quotas: "FALSE"
     jobs:
@@ -115,14 +104,11 @@
     config_path: templates/neutron/vlan_l3ha.yaml
     test_group: Neutron(VLAN,L3_HA)
     suite: '[9.0][MOSQA] Automated Cloud Testing'
-    report_prefix: /srv/jenkins/neutron_vlan_l3_ha
-    report_file: report.xml
     start_timer: "0 22 * * *"
     node: single_template
     milestone: '9.0'
     description: Neutron(VLAN,L3_HA)
     display_name: 9.0_Neutron_VLAN_L3_HA
-    test_path: mos_tests/neutron
     tox_test_name: neutron
     nova_quotas: "FALSE"
     jobs:
@@ -137,14 +123,11 @@
     config_path: templates/neutron/vlan_dvr.yaml
     test_group: Neutron(VLAN,DVR)
     suite: '[9.0][MOSQA] Automated Cloud Testing'
-    report_prefix: /srv/jenkins/neutron_vlan_dvr
-    report_file: report.xml
     start_timer: "0 22 * * *"
     node: single_template
     milestone: '9.0'
     description: Neutron tests(VLAN,DVR)
     display_name: 9.0_Neutron_VLAN_DVR
-    test_path: mos_tests/neutron
     tox_test_name: neutron
     nova_quotas: "FALSE"
     jobs:
@@ -159,14 +142,11 @@
     config_path: templates/neutron/vxlan_qos.yaml
     test_group: Neutron(VxLAN)
     suite: '[9.0][MOSQA] Automated Cloud Testing'
-    report_prefix: /srv/jenkins/neutron_vxlan
-    report_file: report.xml
     start_timer: "0 22 * * *"
     node: single_template
     milestone: '9.0'
     description: Neutron tests(VxLAN)
     display_name: 9.0_Neutron_VxLAN
-    test_path: mos_tests/neutron
     tox_test_name: neutron
     nova_quotas: "FALSE"
     jobs:
@@ -181,14 +161,11 @@
     config_path: templates/neutron/vxlan_l2pop.yaml
     test_group: Neutron(VxLAN,L2_POP)
     suite: '[9.0][MOSQA] Automated Cloud Testing'
-    report_prefix: /srv/jenkins/neutron_vxlan_l2_pop
-    report_file: report.xml
     start_timer: "0 22 * * *"
     node: single_template
     milestone: '9.0'
     description: Neutron tests(VxLAN,L2_POP)
     display_name: 9.0_Neutron_VxLAN_L2_POP
-    test_path: mos_tests/neutron
     tox_test_name: neutron
     nova_quotas: "FALSE"
     jobs:
@@ -203,14 +180,11 @@
     config_path: templates/neutron/vxlan_l2pop_dvr.yaml
     test_group: Neutron(VxLAN,L2_POP,DVR)
     suite: '[9.0][MOSQA] Automated Cloud Testing'
-    report_prefix: /srv/jenkins/neutron_vxlan_l2_pop_dvr
-    report_file: report.xml
     start_timer: "0 22 * * *"
     node: single_template
     milestone: '9.0'
     description: Neutron tests(VxLAN,L2_POP,DVR)
     display_name: 9.0_Neutron_VxLAN_L2_POP_DVR
-    test_path: mos_tests/neutron
     tox_test_name: neutron
     nova_quotas: "FALSE"
     jobs:
@@ -225,14 +199,11 @@
     config_path: templates/neutron/vxlan_l2pop_l3ha.yaml
     test_group: Neutron(VxLAN,L2_POP,L3_HA)
     suite: '[9.0][MOSQA] Automated Cloud Testing'
-    report_prefix: /srv/jenkins/neutron_vxlan_l2_pop_l3_ha
-    report_file: report.xml
     start_timer: "0 22 * * *"
     node: single_template
     milestone: '9.0'
     description: Neutron tests(VxLAN,L2_POP,L3_HA)
     display_name: 9.0_Neutron_VxLAN_L2_POP_L3_HA
-    test_path: mos_tests/neutron
     tox_test_name: neutron
     nova_quotas: "FALSE"
     jobs:
@@ -247,14 +218,11 @@
     config_path: templates/nova/default.yaml
     test_group: Nova
     suite: '[9.0][MOSQA] Automated Cloud Testing'
-    report_prefix: /srv/jenkins/nova
-    report_file: report.xml
     start_timer: "0 21 * * *"
     node: Slave-7777
     milestone: '9.0'
     description: Nova tests
     display_name: 9.0_Nova
-    test_path: mos_tests/nova
     tox_test_name: nova
     nova_quotas: "FALSE"
     jobs:
@@ -269,15 +237,32 @@
     config_path: templates/nova/ceph.yaml
     test_group: Nova(Ceph)
     suite: '[9.0][MOSQA] Automated Cloud Testing'
-    report_prefix: /srv/jenkins/nova_ceph
-    report_file: report.xml
     start_timer: "0 21 * * *"
     node: Slave-7774
     milestone: '9.0'
     description: Nova-Ceph tests
     display_name: 9.0_Nova_Ceph
-    test_path: mos_tests/nova
     tox_test_name: nova
     nova_quotas: "FALSE"
     jobs:
       - '{milestone}_{name}'
+
+- project:
+    name: Fuel_LDAP
+    weight: 2
+    iso_dir: /var/www/fuelweb-iso
+    env_changer: _nova_ceph
+    env_inject_file: env_inject.properties
+    config_path: templates/ldap/default.yaml
+    test_group: Fule_LDAP_plugin
+    suite: '[9.0][MOSQA] Automated Cloud Testing'
+    start_timer: "0 21 * * *"
+    node: single_template 
+    milestone: '9.0'
+    description: Nova-Ceph tests
+    display_name: '{milestone}_{name}'
+    tox_test_name: 
+    nova_quotas: "FALSE"
+    jobs:
+      - '{milestone}_{name}'
+

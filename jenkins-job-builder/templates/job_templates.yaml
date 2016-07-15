@@ -15,7 +15,7 @@
           default: 'report.xml'
       - string:
           name: ENV_INJECT_PATH
-          default: 'env_inject{name}.properties'
+          default: 'env_inject.properties'
 
 
 - defaults:
@@ -164,54 +164,6 @@
 
     publishers:
         - common_publisher
-
-- job-template:
-    name: '{milestone}_vlan_based_{name}'
-
-    defaults: common_job_settings
-
-    parameters:
-        - common_parameters
-        - string:
-            name: ISO_DIR
-            default: "{iso_dir}"
-        - string:
-            name: ENV_CHANGER
-            default: '{env_changer}'
-        - string:
-            name: CONFIG_PATH
-            default: '{config_path}'
-        - string:
-            name: TEST_GROUP
-            default: '{test_group}'
-        - string:
-            name: SUITE
-            default: "{suite}"
-        - string:
-            name: MILESTONE
-            default: "{milestone}"
-        - string:
-            name: TESTRAIL_TEMPEST
-            default: "FALSE"
-
-    builders:
-        - shell:
-            !include-raw: ../shell_scripts/template_scripts/env_variables_export.sh
-        - inject:
-            properties-file: "$ENV_INJECT_PATH"
-        - shell:
-            !include-raw: ../shell_scripts/template_scripts/pytest_runner.sh
-        - inject:
-            properties-file: "$ENV_INJECT_PATH"
-        - shell:
-            !include-raw: ../shell_scripts/template_scripts/testrail_reporter.sh
-
-    publishers:
-        - common_publisher
-        - archive:
-            artifacts: 'mos-integration-tests/snapshots/*'
-            allow-empty: 'true'
-            fingerprint: true
 
 
 - job-template:
@@ -386,6 +338,10 @@
             !include-raw: ../shell_scripts/template_scripts/erase_ci_envs.sh
         - shell:
             !include-raw: ../shell_scripts/template_scripts/env_variables_export.sh
+        - inject:
+            properties-file: "$ENV_INJECT_PATH"
+        - shell:
+            !include-raw-escape: ../shell_scripts/get_plugins.sh
         - inject:
             properties-file: "$ENV_INJECT_PATH"
         - shell:
