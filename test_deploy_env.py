@@ -113,7 +113,7 @@ class DeployEnv(ActionTest, BaseActions):
             # Enable plugin
             configs['{0}/metadata/enabled'.format(plugin_path_prefix)] = True
             if plugin_config is not None and 'config_file' in plugin_config:
-                config_data = load_yaml('../' + plugin_config['config_file'])
+                config_data = load_yaml(plugin_config['config_file'])
                 for k, v in config_data.items():
                     configs['{0}/**/{1}/value'.format(plugin_path_prefix,
                                                       k)] = v
