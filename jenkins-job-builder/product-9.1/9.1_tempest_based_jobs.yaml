@@ -1,0 +1,160 @@
+- project:
+    name: LVM_no_ssl
+    weight: 4
+    display_name: 'Tempest-9.0_LVM_Cinder_DVR_Sahara_Ceilometer_Ironic'
+    iso_dir: /var/www/fuelweb-iso
+    env_changer: _ironic_cinder
+    config_path: templates/tempest/ironic_cinder.yaml
+    test_group: 'Tempest (LVM,Cinder,DVR,Sahara,Ceilometer,Ironic)'
+    start_timer: '0 21 * * *'
+    iso_dir: '/var/www/fuelweb-iso'
+    is_ssl_disabled: 'TRUE'
+    ceph_skip_tests: 'FALSE'
+    ceph_rados: 'FALSE'
+    destroy_env: 'FALSE'
+    suite: '[9.1][MOSQA] Tempest 9.1'
+    milestone: '9.1'
+    node: Slave-srv137
+    nova_quotas: "TRUE"
+    jobs:
+      - '{milestone}_Tempest_{name}'
+
+- project:
+    name: Ceph_no_ssl
+    weight: 4
+    display_name: 'Tempest-9.0_Ceph_DVR_Sahara_Ceilometer_Ironic'
+    iso_dir: /var/www/fuelweb-iso
+    env_changer: _ironic_ceph
+    config_path: templates/tempest/ironic_ceph.yaml
+    test_group: 'Tempest (Ceph,DVR,Sahara,Ceilometer)'
+    start_timer: '0 21 * * *'
+    is_ssl_disabled: 'TRUE'
+    ceph_skip_tests: 'TRUE'
+    ceph_rados: 'TRUE'
+    destroy_env: 'FALSE'
+    suite: '[9.1][MOSQA] Tempest 9.1'
+    milestone: '9.1'
+    node: Slave-srv139
+    nova_quotas: "TRUE"
+    jobs:
+      - '{milestone}_Tempest_{name}'
+
+- project:
+    name: LVM_SSL
+    weight: 4
+    display_name: 'Tempest-9.0_LVM_Cinder_DVR_Sahara_Ceilometer_Ironic_SSL'
+    iso_dir: /var/www/fuelweb-iso
+    env_changer: _ironic_cinder
+    config_path: templates/tempest/ironic_cinder.yaml
+    test_group: 'Tempest (SSL,LVM,Cinder,DVR,Sahara,Ceilometer,Ironic)'
+    start_timer: '0 21 * * *'
+    is_ssl_disabled: 'FALSE'
+    ceph_skip_tests: 'FALSE'
+    ceph_rados: 'FALSE'
+    destroy_env: 'FALSE'
+    suite: '[9.1][MOSQA] Tempest 9.1'
+    milestone: '9.1'
+    node: Slave-srv138
+    nova_quotas: "TRUE"
+    jobs:
+      - '{milestone}_Tempest_{name}'
+
+- project:
+    name: Ceph_SSL
+    weight: 4
+    display_name: 'Tempest-9.0_Ceph_DVR_Sahara_Ceilometer_Ironic_SSL'
+    iso_dir: /var/www/fuelweb-iso
+    env_changer: _ironic_ceph
+    config_path: templates/tempest/ironic_ceph.yaml
+    test_group: 'Tempest (Ceph,SSL,DVR,Sahara,Ceilometer)'
+    start_timer: '0 21 * * *'
+    is_ssl_disabled: 'FALSE'
+    ceph_skip_tests: 'TRUE'
+    ceph_rados: 'TRUE'
+    destroy_env: 'FALSE'
+    suite: '[9.1][MOSQA] Tempest 9.1'
+    milestone: '9.1'
+    node: Slave-7775
+    nova_quotas: "TRUE"
+    jobs:
+      - '{milestone}_Tempest_{name}'
+
+- project:
+    name: Detached_RabbitMQ
+    weight: 4
+    display_name: 'Tempest-9.0_{name}'
+    iso_dir: /var/www/fuelweb-iso
+    env_changer: _rabbit
+    config_path: templates/separate_componenets/rabbit.yaml
+    test_group: Separated_Components(RabbitMQ)
+    start_timer: '0 21 * * *'
+    is_ssl_disabled: 'TRUE'
+    ceph_skip_tests: 'FALSE'
+    ceph_rados: 'FALSE'
+    destroy_env: 'TRUE'
+    suite: '[9.1][MOSQA] Tempest 9.1'
+    milestone: '9.1'
+    node: single_template
+    nova_quotas: "TRUE"
+    jobs:
+      - '{milestone}_Tempest_{name}'
+
+- project:
+    name: Detached_Database
+    weight: 4
+    display_name: 'Tempest-9.0_{name}'
+    iso_dir: /var/www/fuelweb-iso
+    env_changer: _database
+    config_path: templates/separate_componenets/database.yaml
+    test_group: Separated_Components(Database)
+    start_timer: '0 21 * * *'
+    is_ssl_disabled: 'TRUE'
+    ceph_skip_tests: 'FALSE'
+    ceph_rados: 'FALSE'
+    destroy_env: 'TRUE'
+    suite: '[9.1][MOSQA] Tempest 9.1'
+    milestone: '9.1'
+    node: single_template
+    nova_quotas: "TRUE"
+    jobs:
+      - '{milestone}_Tempest_{name}'
+
+- project:
+    name: Detached_DB_Keystone
+    weight: 4
+    display_name: 'Tempest-9.0_{name}'
+    iso_dir: /var/www/fuelweb-iso
+    env_changer: _db_keystone
+    config_path: templates/separate_componenets/db_keystone.yaml
+    test_group: Separated_Components(DB,Keystone)
+    start_timer: '0 21 * * *'
+    is_ssl_disabled: 'TRUE'
+    ceph_skip_tests: 'FALSE'
+    ceph_rados: 'FALSE'
+    destroy_env: 'TRUE'
+    suite: '[9.1][MOSQA] Tempest 9.1'
+    milestone: '9.1'
+    node: single_template
+    nova_quotas: "TRUE"
+    jobs:
+      - '{milestone}_Tempest_{name}'
+
+- project:
+    name: Detached_RabbitMQ_DB_Keystone
+    weight: 4
+    display_name: 'Tempest-9.0_{name}'
+    iso_dir: /var/www/fuelweb-iso
+    env_changer: _db_rabbit_keystone
+    config_path: templates/separate_componenets/db_rabbit_keystone.yaml
+    test_group: Separated_Components(RabbitMQ,DB,Keystone)
+    start_timer: '0 21 * * *'
+    is_ssl_disabled: 'TRUE'
+    ceph_skip_tests: 'FALSE'
+    ceph_rados: 'FALSE'
+    destroy_env: 'TRUE'
+    suite: '[9.1][MOSQA] Tempest 9.1'
+    milestone: '9.1'
+    node: single_template
+    nova_quotas: "TRUE"
+    jobs:
+      - '{milestone}_Tempest_{name}'
