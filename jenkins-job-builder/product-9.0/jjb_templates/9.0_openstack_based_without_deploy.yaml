@@ -6,11 +6,11 @@
     env_inject_file: env_inject_vlan_keystone.properties
     config_path: templates/glance/swift.yaml
     test_group: Openstack CLI
-    suite: '[9.0][MOSQA] Automated Cloud Testing'
+    suite: '[9.1][MOSQA] Automated Cloud Testing'
     report_prefix: /srv/jenkins/openstack_cli/
     start_timer: "0 0 * * *"
     node: Slave-srv135
-    milestone: '9.0'
+    milestone: '9.1'
     description:  |
       Openstack CLI tests
       (from https://github.com/openstack/python-openstackclient)

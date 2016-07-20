@@ -6,10 +6,10 @@
     env_inject_file: env_inject_vlan_keystone.properties
     config_path: templates/glance/swift.yaml
     test_group: Keystone
-    suite: '[9.0][MOSQA] Automated Cloud Testing'
+    suite: '[9.1][MOSQA] Automated Cloud Testing'
     start_timer: "0 23 * * *"
     node: Slave-srv135
-    milestone: '9.0'
+    milestone: '9.1'
     description: Keystone tests
     display_name: 9.0_Keystone_VLAN
     tox_test_name: keystone
@@ -24,10 +24,10 @@
     env_inject_file: env_inject_glance_swift.properties
     config_path: templates/glance/swift.yaml
     test_group: Object Storage(Swift)
-    suite: '[9.0][MOSQA] Automated Cloud Testing'
+    suite: '[9.1][MOSQA] Automated Cloud Testing'
     start_timer: "0 22 * * *"
     node: Slave-srv135
-    milestone: '9.0'
+    milestone: '9.1'
     description: Object Storage tests for Swift
     display_name: 9.0_Object_Storage(Swift)
     tox_test_name: object_storage
@@ -43,10 +43,10 @@
     env_inject_file: env_inject_glance_ceph.properties
     config_path: templates/glance/ceph.yaml
     test_group: Object Storage(RadosGW)
-    suite: '[9.0][MOSQA] Automated Cloud Testing'
+    suite: '[9.1][MOSQA] Automated Cloud Testing'
     start_timer: "0 22 * * *"
     node: Slave-srv135
-    milestone: '9.0'
+    milestone: '9.1'
     description: Object Storage tests for RadosGW
     display_name: 9.0_Object_Storage(RadosGW)
     tox_properties: blabla
@@ -62,10 +62,10 @@
     env_inject_file: env_inject_cinder.properties
     config_path: templates/nova/default.yaml
     test_group: Cinder(Swift)
-    suite: '[9.0][MOSQA] Automated Cloud Testing'
+    suite: '[9.1][MOSQA] Automated Cloud Testing'
     start_timer: "0 23 * * *"
     node: Slave-7777
-    milestone: '9.0'
+    milestone: '9.1'
     description: Cinder tests
     display_name: 9.0_Cinder_Swift
     test_path: mos_tests/cinder
@@ -82,10 +82,10 @@
     env_inject_file: env_inject_cinder.properties
     config_path: templates/glance/ceph.yaml
     test_group: Cinder(Ceph)
-    suite: '[9.0][MOSQA] Automated Cloud Testing'
+    suite: '[9.1][MOSQA] Automated Cloud Testing'
     start_timer: "0 23 * * *"
     node: Slave-srv135
-    milestone: '9.0'
+    milestone: '9.1'
     description: Cinder tests
     display_name: 9.0_Cinder_Ceph
     test_path: mos_tests/cinder
@@ -102,10 +102,10 @@
     env_inject_file: env_inject_vlan_rabbitmq_oslo.properties
     config_path: templates/glance/swift.yaml
     test_group: RabbitMQ_OSLO
-    suite: '[9.0][MOSQA] Automated Cloud Testing'
+    suite: '[9.1][MOSQA] Automated Cloud Testing'
     start_timer: "0 22 * * *"
     node: Slave-srv135
-    milestone: '9.0'
+    milestone: '9.1'
     description: RabbitMQ_OSLO tests
     display_name: 9.0_RabbitMQ_OSLO_VLAN
     tox_properties: blabla
@@ -121,10 +121,10 @@
     env_inject_file: env_inject_glare_swift.properties
     config_path: templates/glance/swift.yaml
     test_group: Glare(Swift)
-    suite: '[9.0][MOSQA] Automated Cloud Testing'
+    suite: '[9.1][MOSQA] Automated Cloud Testing'
     start_timer: "0 22 * * *"
     node: Slave-srv135
-    milestone: '9.0'
+    milestone: '9.1'
     description: Glare tests
     display_name: '9.0_{name}'
     tox_properties: ''
@@ -140,10 +140,10 @@
     env_inject_file: env_inject_glare_ceph.properties
     config_path: templates/glance/ceph.yaml
     test_group: Glare(Ceph)
-    suite: '[9.0][MOSQA] Automated Cloud Testing'
+    suite: '[9.1][MOSQA] Automated Cloud Testing'
     start_timer: "0 22 * * *"
     node: Slave-srv135
-    milestone: '9.0'
+    milestone: '9.1'
     description: Glare tests
     display_name: '9.0_{name}'
     tox_properties: ''
@@ -159,10 +159,10 @@
     env_inject_file: env_inject_vlan_failover.properties
     config_path: templates/glance/swift.yaml
     test_group: Failover
-    suite: '[9.0][MOSQA] Automated Cloud Testing'
+    suite: '[9.1][MOSQA] Automated Cloud Testing'
     start_timer: "0 23 * * *"
     node: Slave-srv135
-    milestone: '9.0'
+    milestone: '9.1'
     description: Failover tests
     display_name: 9.0_Failover_VLAN
     tox_properties: ''
@@ -178,10 +178,10 @@
     env_inject_file: env_inject_heat.properties
     config_path: templates/nova/default.yaml
     test_group: Heat(Swift)
-    suite: '[9.0][MOSQA] Automated Cloud Testing'
+    suite: '[9.1][MOSQA] Automated Cloud Testing'
     start_timer: "0 22 * * *"
     node: Slave-7777
-    milestone: '9.0'
+    milestone: '9.1'
     description: Heat tests
     display_name: 9.0_Heat
     tox_properties: ''
@@ -197,10 +197,10 @@
     env_inject_file: env_inject_heat.properties
     config_path: templates/nova/ceph.yaml
     test_group: Heat(Ceph)
-    suite: '[9.0][MOSQA] Automated Cloud Testing'
+    suite: '[9.1][MOSQA] Automated Cloud Testing'
     start_timer: "0 22 * * *"
     node: Slave-7774
-    milestone: '9.0'
+    milestone: '9.1'
     description: Heat tests
     display_name: 9.0_Heat_Ceph
     tox_properties: ''

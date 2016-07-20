@@ -6,11 +6,11 @@
     env_inject_file: env_inject_ceilometer.properties
     config_path: templates/ceilometer/default.yaml
     test_group: Ceilometer
-    suite: '[9.0][MOSQA] Automated Cloud Testing'
+    suite: '[9.1][MOSQA] Automated Cloud Testing'
     tox_propertires: ''
     start_timer: "0 21 * * *"
     node: single_template
-    milestone: '9.0'
+    milestone: '9.1'
     description: Ceilometer tests
     display_name: 9.0_Ceilometer_t
     tox_test_name: ceilometer
@@ -26,11 +26,11 @@
     env_inject_file: env_inject_ironic.properties
     config_path: templates/ironic/default.yaml
     test_group: Ironic
-    suite: '[9.0][MOSQA] Automated Cloud Testing'
+    suite: '[9.1][MOSQA] Automated Cloud Testing'
     tox_propertires: ''
     start_timer: "0 21 * * *"
     node: single_template
-    milestone: '9.0'
+    milestone: '9.1'
     description: Ironic tests
     display_name: 9.0_Ironic_t
     tox_test_name: ironic
@@ -46,10 +46,10 @@
     env_inject_file: env_inject_glance_swift.properties
     config_path: templates/glance/swift.yaml
     test_group: Glance(Swift)
-    suite: '[9.0][MOSQA] Automated Cloud Testing'
+    suite: '[9.1][MOSQA] Automated Cloud Testing'
     start_timer: "0 21 * * *"
     node: Slave-srv135
-    milestone: '9.0'
+    milestone: '9.1'
     description: Glance tests on Swift
     display_name: 9.0_Glance(Swift)
     tox_test_name: glance
@@ -65,10 +65,10 @@
     env_inject_file: env_inject_glance_ceph.properties
     config_path: templates/glance/ceph.yaml
     test_group: Glance(Ceph)
-    suite: '[9.0][MOSQA] Automated Cloud Testing'
+    suite: '[9.1][MOSQA] Automated Cloud Testing'
     start_timer: "0 21 * * *"
     node:  Slave-srv135
-    milestone: '9.0'
+    milestone: '9.1'
     description: Glance tests on Ceph
     display_name: 9.0_Glance(Ceph)
     tox_test_name: glance
@@ -84,10 +84,10 @@
     env_inject_file: env_inject_vlan.properties
     config_path: templates/neutron/vlan_qos.yaml
     test_group: Neutron(VLAN)
-    suite: '[9.0][MOSQA] Automated Cloud Testing'
+    suite: '[9.1][MOSQA] Automated Cloud Testing'
     start_timer: "0 21 * * *"
     node: single_template
-    milestone: '9.0'
+    milestone: '9.1'
     description: Neutron(VLAN)
     display_name: 9.0_Neutron_VLAN
     tox_test_name: neutron
@@ -103,10 +103,10 @@
     env_inject_file: env_inject_vlan_l3_ha.properties
     config_path: templates/neutron/vlan_l3ha.yaml
     test_group: Neutron(VLAN,L3_HA)
-    suite: '[9.0][MOSQA] Automated Cloud Testing'
+    suite: '[9.1][MOSQA] Automated Cloud Testing'
     start_timer: "0 22 * * *"
     node: single_template
-    milestone: '9.0'
+    milestone: '9.1'
     description: Neutron(VLAN,L3_HA)
     display_name: 9.0_Neutron_VLAN_L3_HA
     tox_test_name: neutron
@@ -122,10 +122,10 @@
     env_inject_file: env_inject_vlan_dvr.properties
     config_path: templates/neutron/vlan_dvr.yaml
     test_group: Neutron(VLAN,DVR)
-    suite: '[9.0][MOSQA] Automated Cloud Testing'
+    suite: '[9.1][MOSQA] Automated Cloud Testing'
     start_timer: "0 22 * * *"
     node: single_template
-    milestone: '9.0'
+    milestone: '9.1'
     description: Neutron tests(VLAN,DVR)
     display_name: 9.0_Neutron_VLAN_DVR
     tox_test_name: neutron
@@ -141,10 +141,10 @@
     env_inject_file: env_inject_vxlan.properties
     config_path: templates/neutron/vxlan_qos.yaml
     test_group: Neutron(VxLAN)
-    suite: '[9.0][MOSQA] Automated Cloud Testing'
+    suite: '[9.1][MOSQA] Automated Cloud Testing'
     start_timer: "0 22 * * *"
     node: single_template
-    milestone: '9.0'
+    milestone: '9.1'
     description: Neutron tests(VxLAN)
     display_name: 9.0_Neutron_VxLAN
     tox_test_name: neutron
@@ -160,10 +160,10 @@
     env_inject_file: env_inject_vxlan_l2_pop.properties
     config_path: templates/neutron/vxlan_l2pop.yaml
     test_group: Neutron(VxLAN,L2_POP)
-    suite: '[9.0][MOSQA] Automated Cloud Testing'
+    suite: '[9.1][MOSQA] Automated Cloud Testing'
     start_timer: "0 22 * * *"
     node: single_template
-    milestone: '9.0'
+    milestone: '9.1'
     description: Neutron tests(VxLAN,L2_POP)
     display_name: 9.0_Neutron_VxLAN_L2_POP
     tox_test_name: neutron
@@ -179,10 +179,10 @@
     env_inject_file: env_inject_vxlan_l2_pop_dvr.properties
     config_path: templates/neutron/vxlan_l2pop_dvr.yaml
     test_group: Neutron(VxLAN,L2_POP,DVR)
-    suite: '[9.0][MOSQA] Automated Cloud Testing'
+    suite: '[9.1][MOSQA] Automated Cloud Testing'
     start_timer: "0 22 * * *"
     node: single_template
-    milestone: '9.0'
+    milestone: '9.1'
     description: Neutron tests(VxLAN,L2_POP,DVR)
     display_name: 9.0_Neutron_VxLAN_L2_POP_DVR
     tox_test_name: neutron
@@ -198,10 +198,10 @@
     env_inject_file: env_inject_vxlan_l2_pop_l3_ha.properties
     config_path: templates/neutron/vxlan_l2pop_l3ha.yaml
     test_group: Neutron(VxLAN,L2_POP,L3_HA)
-    suite: '[9.0][MOSQA] Automated Cloud Testing'
+    suite: '[9.1][MOSQA] Automated Cloud Testing'
     start_timer: "0 22 * * *"
     node: single_template
-    milestone: '9.0'
+    milestone: '9.1'
     description: Neutron tests(VxLAN,L2_POP,L3_HA)
     display_name: 9.0_Neutron_VxLAN_L2_POP_L3_HA
     tox_test_name: neutron
@@ -217,10 +217,10 @@
     env_inject_file: env_inject_nova.properties
     config_path: templates/nova/default.yaml
     test_group: Nova
-    suite: '[9.0][MOSQA] Automated Cloud Testing'
+    suite: '[9.1][MOSQA] Automated Cloud Testing'
     start_timer: "0 21 * * *"
     node: Slave-7777
-    milestone: '9.0'
+    milestone: '9.1'
     description: Nova tests
     display_name: 9.0_Nova
     tox_test_name: nova
@@ -236,10 +236,10 @@
     env_inject_file: env_inject_nova_ceph.properties
     config_path: templates/nova/ceph.yaml
     test_group: Nova(Ceph)
-    suite: '[9.0][MOSQA] Automated Cloud Testing'
+    suite: '[9.1][MOSQA] Automated Cloud Testing'
     start_timer: "0 21 * * *"
     node: Slave-7774
-    milestone: '9.0'
+    milestone: '9.1'
     description: Nova-Ceph tests
     display_name: 9.0_Nova_Ceph
     tox_test_name: nova
@@ -255,10 +255,10 @@
     env_inject_file: env_inject.properties
     config_path: templates/ldap/default.yaml
     test_group: Fule_LDAP_plugin
-    suite: '[9.0][MOSQA] Automated Cloud Testing'
+    suite: '[9.1][MOSQA] Automated Cloud Testing'
     start_timer: "0 21 * * *"
     node: single_template 
-    milestone: '9.0'
+    milestone: '9.1'
     description: Nova-Ceph tests
     display_name: '{milestone}_{name}'
     tox_test_name: 
