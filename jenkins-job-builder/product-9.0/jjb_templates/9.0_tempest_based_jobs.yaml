@@ -12,8 +12,8 @@
     ceph_skip_tests: 'FALSE'
     ceph_rados: 'FALSE'
     destroy_env: 'FALSE'
-    suite: '[9.1][MOSQA] Tempest 9.1'
-    milestone: '9.1'
+    suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
+    milestone: '9.0'
     node: Slave-srv137
     nova_quotas: "TRUE"
     jobs:
@@ -32,8 +32,8 @@
     ceph_skip_tests: 'TRUE'
     ceph_rados: 'TRUE'
     destroy_env: 'FALSE'
-    suite: '[9.1][MOSQA] Tempest 9.1'
-    milestone: '9.1'
+    suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
+    milestone: '9.0'
     node: Slave-srv139
     nova_quotas: "TRUE"
     jobs:
@@ -52,8 +52,8 @@
     ceph_skip_tests: 'FALSE'
     ceph_rados: 'FALSE'
     destroy_env: 'FALSE'
-    suite: '[9.1][MOSQA] Tempest 9.1'
-    milestone: '9.1'
+    suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
+    milestone: '9.0'
     node: Slave-srv138
     nova_quotas: "TRUE"
     jobs:
@@ -72,8 +72,8 @@
     ceph_skip_tests: 'TRUE'
     ceph_rados: 'TRUE'
     destroy_env: 'FALSE'
-    suite: '[9.1][MOSQA] Tempest 9.1'
-    milestone: '9.1'
+    suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
+    milestone: '9.0'
     node: Slave-7775
     nova_quotas: "TRUE"
     jobs:
@@ -92,8 +92,8 @@
     ceph_skip_tests: 'FALSE'
     ceph_rados: 'FALSE'
     destroy_env: 'TRUE'
-    suite: '[9.1][MOSQA] Tempest 9.1'
-    milestone: '9.1'
+    suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
+    milestone: '9.0'
     node: single_template
     nova_quotas: "TRUE"
     jobs:
@@ -112,8 +112,8 @@
     ceph_skip_tests: 'FALSE'
     ceph_rados: 'FALSE'
     destroy_env: 'TRUE'
-    suite: '[9.1][MOSQA] Tempest 9.1'
-    milestone: '9.1'
+    suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
+    milestone: '9.0'
     node: single_template
     nova_quotas: "TRUE"
     jobs:
@@ -132,8 +132,8 @@
     ceph_skip_tests: 'FALSE'
     ceph_rados: 'FALSE'
     destroy_env: 'TRUE'
-    suite: '[9.1][MOSQA] Tempest 9.1'
-    milestone: '9.1'
+    suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
+    milestone: '9.0'
     node: single_template
     nova_quotas: "TRUE"
     jobs:
@@ -152,8 +152,8 @@
     ceph_skip_tests: 'FALSE'
     ceph_rados: 'FALSE'
     destroy_env: 'TRUE'
-    suite: '[9.1][MOSQA] Tempest 9.1'
-    milestone: '9.1'
+    suite: '[9.0][MOSQA] Tempest 9.0 Mitaka'
+    milestone: '9.0'
     node: single_template
     nova_quotas: "TRUE"
     jobs:
