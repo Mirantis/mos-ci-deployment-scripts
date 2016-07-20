@@ -71,8 +71,7 @@ for _dn in  "os"        \
     store "MOS_CENTOS_$(to_uppercase "${_dn}")_MIRROR_ID" "${__dt_snapshot}"
 done
 
-#LOCATION_FACT=$(facter --external-dir /etc/facter/facts.d/ location || :)
-#LOCATION=${LOCATION_FACT:-bud}
+source snapshots.params
 
 LOCATION_FACT=bud
 LOCATION=bud

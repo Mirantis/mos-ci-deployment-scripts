@@ -14,6 +14,10 @@ pip install git+https://github.com/gdyuldin/testrail_reporter.git@stable
 
 . "$TESTRAIL_FILE"
 
+# get last snapshot id
+sudo wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/python_scripts/9.0_init_env_for_job/get_shapshot_id.py
+SNAPSHOT_ID=$(python get_shapshot_id.py)
+
 # if we need to change SUITE
 if [ -n "$SUITE" ];
 then
@@ -31,7 +35,7 @@ fi
 if [[ "$TESTRAIL_TEMPEST" == 'TRUE' ]] ;
 then
 report -v \
-    --testrail-plan-name "$MILESTONE mos iso #$ISO_ID" \
+    --testrail-plan-name "$MILESTONE snapshot $SNAPSHOT_ID" \
     --env-description "$TEST_GROUP" \
     --testrail-url  "$TESTRAIL_URL" \
     --testrail-user  "$TESTRAIL_USER" \
@@ -45,7 +49,7 @@ report -v \
     "$REPORT_FILE"
 else
 report -v \
-    --testrail-plan-name "$MILESTONE mos iso #$ISO_ID" \
+    --testrail-plan-name "$MILESTONE snapshot $SNAPSHOT_ID" \
     --env-description "$TEST_GROUP" \
     --testrail-url  "$TESTRAIL_URL" \
     --testrail-user  "$TESTRAIL_USER" \
