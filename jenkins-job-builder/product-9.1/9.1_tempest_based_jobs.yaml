@@ -12,7 +12,7 @@
       - '{milestone}_Tempest_{name}'
 
 - project:
-    name: 'LVM_no_SSL'
+    name: 'LVM_no_ssl'
     display_name: 'Tempest-{milestone}_LVM_Cinder_DVR_Sahara_Ceilometer_Ironic'
     env_changer: _ironic_cinder
     config_path: templates/tempest/ironic_cinder.yaml
@@ -24,7 +24,7 @@
     <<: *common_parameters
 
 - project:
-    name: 'Ceph_no_SSL'
+    name: 'Ceph_no_ssl'
     display_name: 'Tempest-{milestone}_Ceph_DVR_Sahara_Ceilometer_Ironic'
     env_changer: _ironic_ceph
     config_path: templates/tempest/ironic_ceph.yaml
