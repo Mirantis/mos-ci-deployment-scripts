@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-#Get the doceker config.
+#Get the docker config.
 # TBD need to prepare config with all needed settings
 # to avoid the 'sed' operations below
 rm -rf dockerfiles
@@ -30,18 +30,8 @@ dos.py revert-resume "$ENV_NAME" "$SNAPSHOT_NAME"
 #echo "$REPORT_PATH" > ./param.pm
 
 ##### Workaround for rally docker files #####
-sed -i 's|rally verify install --source /var/lib/tempest --no-tempest-venv \
-       |rally verify install --source /var/lib/tempest|g' \
-       dockerfiles/rally-tempest/latest/setup_tempest.sh
-sed -i 's|FROM rallyforge/rally:latest|FROM rallyforge/rally:0.4.0|g' \
+sed -i 's|FROM rallyforge/rally:latest|FROM rallyforge/rally:0.5.0|g' \
        dockerfiles/rally-tempest/latest/Dockerfile
-
-sed -i '/RUN git clone/d' dockerfiles/rally-tempest/latest/Dockerfile
-sed -i '/pip install -r tempest/d' dockerfiles/rally-tempest/latest/Dockerfile
-sed -i '/mv tempest/d' dockerfiles/rally-tempest/latest/Dockerfile
-
-sed -i '8i\RUN git clone https://git.openstack.org/openstack/tempest &&  cd tempest && git checkout 63cb9a3718f394c9da8e0cc04b170ca2a8196ec2 && cd ../ && pip install -r tempest/requirements.txt -r tempest/test-requirements.txt && mv tempest/ /var/lib/' dockerfiles/rally-tempest/latest/Dockerfile
-
 
 ##### Get ID of controller via SSH to admin node #####
 CONTROLLER_ID=`echo 'fuel node | grep controller | awk '\''{print $1}'\'' | \
@@ -94,7 +84,6 @@ echo 'sed -i "79i max_template_size = 5440000" $file ' >> ssh_scr.sh
 echo 'sed -i "80i max_resources_per_stack = 20000" $file ' >> ssh_scr.sh
 echo 'sed -i "81i max_json_body_size = 10880000" $file ' >> ssh_scr.sh
 echo 'sed -i "24i volume_device_name = vdc" $file ' >> ssh_scr.sh
-#echo ' sed -i "s/sahara = False/sahara = True/g" $file ' >> ssh_scr.sh
 
 if [[ "$CEPH_RADOS" == 'TRUE' ]];
 then
@@ -110,16 +99,7 @@ echo 'echo "build_timeout = 300" >> $file' >> ssh_scr.sh
 echo 'echo "storage_protocol = iSCSI" >> $file' >> ssh_scr.sh
 fi
 
-
-echo 'deployment=$(docker exec "$DOCK_ID" bash -c "rally deployment list" | awk '\''/tempest/{print $2}'\'')' >> ssh_scr.sh
-echo 'docker exec "$DOCK_ID" bash -c "cd .rally/tempest/for-deployment-${deployment} && git checkout 63cb9a3718f394c9da8e0cc04b170ca2a8196ec2" ' >> ssh_scr.sh
-
-if [[ "$CEPH_RADOS" == 'TRUE' ]]; then
-echo 'docker exec "$DOCK_ID" bash -c "wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/product-9.0/superjobs/rally-tempest/list" ' >> ssh_scr.sh
-echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start --tests-file list --concurrency 1 --system-wide"' >> ssh_scr.sh
-else
-echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start --concurrency 1 --system-wide"' >> ssh_scr.sh
-fi
+echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start --system-wide"' >> ssh_scr.sh
 
 echo 'docker exec "$DOCK_ID" bash -c "rally verify results --json --output-file output.json" ' >> ssh_scr.sh
 echo 'docker exec "$DOCK_ID" bash -c "rm -rf rally_json2junit && git clone https://github.com/greatehop/rally_json2junit && python rally_json2junit/rally_json2junit/results_parser.py output.json" ' >> ssh_scr.sh
