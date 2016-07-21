@@ -11,12 +11,16 @@ virtualenv --clear testrail
 #python setup.py install
 #cd ../
 pip install git+https://github.com/gdyuldin/testrail_reporter.git@stable
+pip install python-jenkins
 
 . "$TESTRAIL_FILE"
 
 # get last snapshot id
-sudo wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/python_scripts/9.0_init_env_for_job/get_shapshot_id.py
+wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/python_scripts/9.0_init_env_for_job/get_shapshot_id.py
 SNAPSHOT_ID=$(python get_shapshot_id.py)
+
+# NEED FIX!
+MILESTONE="9.1"
 
 # if we need to change SUITE
 if [ -n "$SUITE" ];
@@ -31,9 +35,6 @@ then
 TESTRAIL_MILESTONE="$MILESTONE"
 export TESTRAIL_MILESTONE="$MILESTONE"
 fi
-
-# NEED FIX!
-MILESTONE="9.1"
 
 if [[ "$TESTRAIL_TEMPEST" == 'TRUE' ]] ;
 then
