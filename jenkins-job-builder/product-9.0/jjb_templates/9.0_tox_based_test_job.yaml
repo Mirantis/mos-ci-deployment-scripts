@@ -257,11 +257,11 @@
     test_group: Fule_LDAP_plugin
     suite: '[9.1][MOSQA] Automated Cloud Testing'
     start_timer: "0 21 * * *"
-    node: single_template 
+    node: single_template
     milestone: '9.0'
     description: Nova-Ceph tests
     display_name: '{milestone}_{name}'
-    tox_test_name: 
+    tox_test_name: fuel-ldap
     nova_quotas: "FALSE"
     jobs:
       - '{milestone}_{name}'
