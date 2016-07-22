@@ -10,6 +10,9 @@ pip install git+https://github.com/gdyuldin/testrail_reporter.git@stable
 
 source "$TESTRAIL_FILE"
 
+# export variables with fuel snapshots
+source /home/jenkins/env_inject.properties
+
 # NEED FIX!
 MILESTONE="9.1"
 
