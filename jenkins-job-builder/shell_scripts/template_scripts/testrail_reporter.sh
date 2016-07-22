@@ -5,19 +5,10 @@ echo "$ISO_ID.$SNAPSHOT_NAME" > build-name-setter.info
 virtualenv --clear testrail
 . testrail/bin/activate
 
-#git clone https://github.com/gdyuldin/testrail_reporter.git
-#cd testrail_reporter
-#git checkout stable
-#python setup.py install
-#cd ../
+# NEED FIX! (move scripts from custom repo to Mirantis repo)
 pip install git+https://github.com/gdyuldin/testrail_reporter.git@stable
-pip install python-jenkins
 
-. "$TESTRAIL_FILE"
-
-# get last snapshot id
-wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/python_scripts/9.0_init_env_for_job/get_shapshot_id.py
-SNAPSHOT_ID=$(python get_shapshot_id.py)
+source "$TESTRAIL_FILE"
 
 # NEED FIX!
 MILESTONE="9.1"
@@ -25,20 +16,20 @@ MILESTONE="9.1"
 # if we need to change SUITE
 if [ -n "$SUITE" ];
 then
-TESTRAIL_SUITE="$SUITE"
-export TESTRAIL_SUITE="$SUITE"
+    TESTRAIL_SUITE="$SUITE"
+    export TESTRAIL_SUITE="$SUITE"
 fi
 
 # if we need to change MILESTONE
 if [ -n "$MILESTONE" ];
 then
-TESTRAIL_MILESTONE="$MILESTONE"
-export TESTRAIL_MILESTONE="$MILESTONE"
+    TESTRAIL_MILESTONE="$MILESTONE"
+    export TESTRAIL_MILESTONE="$MILESTONE"
 fi
 
 if [[ "$TESTRAIL_TEMPEST" == 'TRUE' ]] ;
 then
-report -v \
+    report -v \
     --testrail-plan-name "$MILESTONE snapshot $SNAPSHOT_ID" \
     --env-description "$TEST_GROUP" \
     --testrail-url  "$TESTRAIL_URL" \
@@ -52,7 +43,7 @@ report -v \
     --xunit-name-template "{{classname}}.{{methodname}}" \
     "$REPORT_FILE"
 else
-report -v \
+    report -v \
     --testrail-plan-name "$MILESTONE snapshot $SNAPSHOT_ID" \
     --env-description "$TEST_GROUP" \
     --testrail-url  "$TESTRAIL_URL" \
