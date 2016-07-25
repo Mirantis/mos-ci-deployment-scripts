@@ -82,10 +82,6 @@ echo 'sed -e $c_n"s/^/min_microversion = 2.1\n/" -i $file' >> ssh_scr.sh
 echo 'sed -e $c_n"s/^/max_microversion = latest\n/" -i $file' >> ssh_scr.sh
 echo 'sed -e $c_n"s/^/min_compute_nodes = 2\n/" -i $file' >> ssh_scr.sh
 
-echo 'c_f_n=$(grep -n "\[compute-feature-enabled\]" $file | cut -d':' -f1)' >> ssh_scr.sh
-echo 'c_f_n=$(($c_f_n+1))' >> ssh_scr.sh
-echo 'sed -e $c_f_n"s/^/block_migration_for_live_migration = True\n/" -i $file' >> ssh_scr.sh
-
 echo 'sed -i "s|live_migration = False|live_migration = True|g" $file' >> ssh_scr.sh
 echo 'sed -i "s|attach_encrypted_volume = False|attach_encrypted_volume = True|g" $file' >> ssh_scr.sh
 
@@ -100,6 +96,9 @@ if [[ "$CEPH_RADOS" == 'TRUE' ]]; then
 fi
 
 if [[ "$LVM_CINDER_FIX" == 'TRUE' ]]; then
+    echo 'c_f_n=$(grep -n "\[compute-feature-enabled\]" $file | cut -d':' -f1)' >> ssh_scr.sh
+    echo 'c_f_n=$(($c_f_n+1))' >> ssh_scr.sh
+    echo 'sed -e $c_f_n"s/^/block_migration_for_live_migration = True\n/" -i $file' >> ssh_scr.sh
     echo 'echo "[volume]" >> $file' >> ssh_scr.sh
     echo 'echo "build_timeout = 300" >> $file' >> ssh_scr.sh
     echo 'echo "storage_protocol = iSCSI" >> $file' >> ssh_scr.sh
