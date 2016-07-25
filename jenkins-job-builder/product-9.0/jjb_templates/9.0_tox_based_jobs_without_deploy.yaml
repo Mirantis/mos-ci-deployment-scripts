@@ -45,7 +45,7 @@
     test_group: Object Storage(RadosGW)
     suite: '[9.1][MOSQA] Automated Cloud Testing'
     start_timer: "0 22 * * *"
-    node: Slave-srv135
+    node: Slave-srv95
     milestone: '9.0'
     description: Object Storage tests for RadosGW
     display_name: 9.0_Object_Storage(RadosGW)
@@ -84,7 +84,7 @@
     test_group: Cinder(Ceph)
     suite: '[9.1][MOSQA] Automated Cloud Testing'
     start_timer: "0 23 * * *"
-    node: Slave-srv135
+    node: Slave-srv95
     milestone: '9.0'
     description: Cinder tests
     display_name: 9.0_Cinder_Ceph
@@ -142,7 +142,7 @@
     test_group: Glare(Ceph)
     suite: '[9.1][MOSQA] Automated Cloud Testing'
     start_timer: "0 22 * * *"
-    node: Slave-srv135
+    node: Slave-srv95
     milestone: '9.0'
     description: Glare tests
     display_name: '9.0_{name}'
