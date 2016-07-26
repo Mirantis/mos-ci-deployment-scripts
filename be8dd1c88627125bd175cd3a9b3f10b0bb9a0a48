@@ -1,0 +1,9 @@
+Code-Review+1: MOS Jenkins <g.dyuldin+mos-jenkins@gmail.com>
+Code-Review+2: Yaroslav Lobankov <ylobankov@mirantis.com>
+Code-Review+2: Timur Nurlygayanov <tnurlygayanov@mirantis.com>
+Verified+1: Timur Nurlygayanov <tnurlygayanov@mirantis.com>
+Submitted-by: Timur Nurlygayanov <tnurlygayanov@mirantis.com>
+Submitted-at: Tue, 26 Jul 2016 06:00:12 -0400
+Reviewed-on: https://review.gerrithub.io/285247
+Project: Mirantis/mos-ci-deployment-scripts
+Branch: refs/heads/master
