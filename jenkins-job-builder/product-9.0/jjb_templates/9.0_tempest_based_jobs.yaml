@@ -116,7 +116,7 @@
     milestone: '9.0'
     node: single_template
     nova_quotas: 'TRUE'
-    disabled: 'TRUE'
+    disabled: true
     jobs:
       - '{milestone}_Tempest_{name}'
 
@@ -137,7 +137,7 @@
     milestone: '9.0'
     node: single_template
     nova_quotas: 'TRUE'
-    disabled: 'TRUE'
+    disabled: true
     jobs:
       - '{milestone}_Tempest_{name}'
 
@@ -158,6 +158,6 @@
     milestone: '9.0'
     node: single_template
     nova_quotas: 'TRUE'
-    disabled: 'TRUE'
+    disabled: true
     jobs:
       - '{milestone}_Tempest_{name}'
