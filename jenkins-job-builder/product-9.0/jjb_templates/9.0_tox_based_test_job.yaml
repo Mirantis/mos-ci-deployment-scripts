@@ -251,15 +251,15 @@
     name: Fuel_LDAP
     weight: 2
     iso_dir: /var/www/fuelweb-iso
-    env_changer: _nova_ceph
+    env_changer: _ldap
     env_inject_file: env_inject.properties
     config_path: templates/ldap/default.yaml
-    test_group: Fule_LDAP_plugin
+    test_group: Fuel_LDAP_plugin
     suite: '[9.1][MOSQA] Automated Cloud Testing'
     start_timer: "0 21 * * *"
     node: single_template
     milestone: '9.0'
-    description: Nova-Ceph tests
+    description: LDAP plugin tests
     display_name: '{milestone}_{name}'
     tox_test_name: fuel-ldap
     nova_quotas: "FALSE"
