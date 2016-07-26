@@ -167,6 +167,11 @@
 
 
 - job-template:
+    # empty value causes disabled_var to be ignored internally
+    disabled_var:
+
+    disabled: '{obj:disabled_var}'
+
     name: '{milestone}_Tempest_{name}'
 
     defaults: common_job_settings
