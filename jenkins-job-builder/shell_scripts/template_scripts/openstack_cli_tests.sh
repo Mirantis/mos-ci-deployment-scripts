@@ -46,4 +46,6 @@ tox \
 
 deactivate
 
+dos.py destroy "$ENV_NAME"
+
 exit 0

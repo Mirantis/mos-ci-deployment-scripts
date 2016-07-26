@@ -67,7 +67,7 @@
     test_group: Glance(Ceph)
     suite: '[9.1][MOSQA] Automated Cloud Testing'
     start_timer: "0 21 * * *"
-    node:  Slave-srv95
+    node:  Slave-srv135
     milestone: '9.0'
     description: Glance tests on Ceph
     display_name: 9.0_Glance(Ceph)
