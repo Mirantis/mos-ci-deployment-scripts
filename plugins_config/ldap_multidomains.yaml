@@ -1,3 +1,4 @@
+domain: openldap1
 suffix: dc=openldap1,dc=tld
 url: ldap://172.16.56.27
 ca_chain: '-----BEGIN CERTIFICATE-----
@@ -40,7 +41,6 @@ ca_chain: '-----BEGIN CERTIFICATE-----
 
     -----END CERTIFICATE-----'
 chase_referrals: 'False'
-domain: openstack.test
 group_desc_attribute: description
 group_filter: ''
 group_id_attribute: cn
