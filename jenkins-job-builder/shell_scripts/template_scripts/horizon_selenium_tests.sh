@@ -1,6 +1,6 @@
 set +e
 
-sudo dos.py revert-resume "$ENV_NAME" "$SNAPSHOT_NAME"
+dos.py revert-resume "$ENV_NAME" "$SNAPSHOT_NAME"
 
 git clone https://github.com/Mirantis/mos-horizon.git
 cd mos-horizon
@@ -34,6 +34,6 @@ sudo cp "$REPORT_FILE" "$REPORT_PREFIX"/"$ENV_NAME"_"$SNAPSHOT_NAME" && \
 sudo cp *.log "$REPORT_PREFIX"/"$ENV_NAME"_"$SNAPSHOT_NAME" \
 || true
 
-sudo dos.py destroy "$ENV_NAME"
+dos.py destroy "$ENV_NAME"
 
 exit 0

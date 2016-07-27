@@ -95,7 +95,7 @@
             default: "{milestone}"
         - string:
             name: TESTRAIL_TEMPEST
-            default: "FALSE"
+            default: "TRUE"
 
     builders:
         - shell:
