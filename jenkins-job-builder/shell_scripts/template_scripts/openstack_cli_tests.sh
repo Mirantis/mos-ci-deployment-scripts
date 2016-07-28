@@ -33,6 +33,9 @@ cd python-openstackclient
 # install subunit2junitxml with dependencies
 pip install -U python_subunit junitxml
 
+# WA wrong version of openstack client installed as dependency of ironic client
+echo "python-openstackclient==2.2.0" >> test-requirements.txt
+
 # Run tests
 tox \
     -e functional -- \
