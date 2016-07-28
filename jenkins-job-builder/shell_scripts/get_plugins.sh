@@ -14,6 +14,6 @@ unzip -jo $TMPFILE '*.rpm' -d $PLUGINS_PATH
 rm $TMPFILE
 
 export LDAP_CONFIG_FILE=$PWD/ldap_config.yaml 
-wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/stable/9.0/plugins_config/ldap.yaml -O $LDAP_CONFIG_FILE 
+wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/stable/9.0/plugins_config/ldap_multidomains.yaml -O $LDAP_CONFIG_FILE 
 
 env > "$ENV_INJECT_PATH"
