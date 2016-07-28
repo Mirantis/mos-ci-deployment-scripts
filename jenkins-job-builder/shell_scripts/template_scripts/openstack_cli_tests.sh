@@ -32,6 +32,7 @@ cd python-openstackclient
 
 # install subunit2junitxml with dependencies
 pip install -U python_subunit junitxml
+echo "python-openstackclient==2.2.0" >> test-requirements.txt
 
 # Run tests
 tox \
