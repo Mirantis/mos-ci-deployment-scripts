@@ -45,6 +45,10 @@
           choices:
             - 'rally_run'
             - 'run_tempest'
+      - string:
+          name: FUEL_QA_VER
+          default: 'stable/6.1'
+          description: 'stable git-sha for 6.1: 49885aef4590cd0e748d33ed2c4753648017ba44'
       - node:
           name: NODE_LABELS
           description: |
@@ -69,6 +73,7 @@
             DISABLE_SSL=$DISABLE_SSL
             RALLY_TEMPEST=$RALLY_TEMPEST
             CUSTOM_VERSION=$CUSTOM_VERSION
+            FUEL_QA_VER=$FUEL_QA_VER
     project-type: freestyle
     defaults: global
     description: 'GRE+NON_CEPH TEMPEST CENTOS tests (6.1 maintenance) on node'
