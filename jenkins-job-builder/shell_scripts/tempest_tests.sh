@@ -39,6 +39,9 @@ echo "scp /root/rally node-$CONTROLLER_ID:/root/rally" | \
                               -o StrictHostKeyChecking=no \
                               -T root@"$FUEL_MASTER_IP"
 
+# remove docker build
+sudo docker rmi rally-tempest
+
 ##### For Ironic #####
 set +e
 EXEC_ADD_CMD=$(echo 'source /root/openrc && ironic node-create -d fake' | ssh -T node-$CONTROLLER_ID)
