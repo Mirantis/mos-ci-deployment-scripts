@@ -8,7 +8,7 @@
     test_group: Ceilometer
     suite: '[9.1][MOSQA] Automated Cloud Testing'
     tox_propertires: ''
-    start_timer: "0 21 * * *"
+    start_timer: "5 21 * * *"
     node: single_template
     milestone: '9.0'
     description: Ceilometer tests
@@ -28,7 +28,7 @@
     test_group: Ironic
     suite: '[9.1][MOSQA] Automated Cloud Testing'
     tox_propertires: ''
-    start_timer: "0 21 * * *"
+    start_timer: "5 21 * * *"
     node: single_template
     milestone: '9.0'
     description: Ironic tests
@@ -47,7 +47,7 @@
     config_path: templates/glance/swift.yaml
     test_group: Glance(Swift)
     suite: '[9.1][MOSQA] Automated Cloud Testing'
-    start_timer: "0 21 * * *"
+    start_timer: "5 21 * * *"
     node: Slave-srv135
     milestone: '9.0'
     description: Glance tests on Swift
@@ -66,7 +66,7 @@
     config_path: templates/glance/ceph.yaml
     test_group: Glance(Ceph)
     suite: '[9.1][MOSQA] Automated Cloud Testing'
-    start_timer: "0 21 * * *"
+    start_timer: "5 21 * * *"
     node:  Slave-srv135
     milestone: '9.0'
     description: Glance tests on Ceph
@@ -85,7 +85,7 @@
     config_path: templates/neutron/vlan_qos.yaml
     test_group: Neutron(VLAN)
     suite: '[9.1][MOSQA] Automated Cloud Testing'
-    start_timer: "0 21 * * *"
+    start_timer: "5 21 * * *"
     node: single_template
     milestone: '9.0'
     description: Neutron(VLAN)
@@ -218,7 +218,7 @@
     config_path: templates/nova/default.yaml
     test_group: Nova
     suite: '[9.1][MOSQA] Automated Cloud Testing'
-    start_timer: "0 21 * * *"
+    start_timer: "5 21 * * *"
     node: Slave-7777
     milestone: '9.0'
     description: Nova tests
@@ -237,7 +237,7 @@
     config_path: templates/nova/ceph.yaml
     test_group: Nova(Ceph)
     suite: '[9.1][MOSQA] Automated Cloud Testing'
-    start_timer: "0 21 * * *"
+    start_timer: "5 21 * * *"
     node: Slave-7774
     milestone: '9.0'
     description: Nova-Ceph tests
@@ -256,7 +256,7 @@
     config_path: templates/ldap/default.yaml
     test_group: Fuel_LDAP_plugin
     suite: '[9.1][MOSQA] Automated Cloud Testing'
-    start_timer: "0 21 * * *"
+    start_timer: "5 21 * * *"
     node: single_template
     milestone: '9.0'
     description: LDAP plugin tests

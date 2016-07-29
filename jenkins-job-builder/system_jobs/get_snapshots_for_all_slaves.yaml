@@ -28,7 +28,7 @@
     defaults: global
     node: master
     triggers:
-        - timed: "40 20 * * *"
+        - timed: "0 21 * * *"
 
     description: 'Get snapshots for all slaves'
     disabled: false
