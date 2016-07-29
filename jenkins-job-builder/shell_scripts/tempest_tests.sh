@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-#Get the docker config.
+# Get the docker config.
 # TBD need to prepare config with all needed settings
 # to avoid the 'sed' operations below
 rm -rf dockerfiles
@@ -30,7 +30,7 @@ CONTROLLER_ID=$(echo 'fuel node | grep controller | awk '\''{print $1}'\'' | \
 
 ##### Generating docker file and copying it to admin node,#####
 ##### and then to controller node                         #####
-sudo docker build -t rally-tempest dockerfiles/rally-tempest/latest
+sudo docker build -no-cache -t rally-tempest dockerfiles/rally-tempest/latest
 sudo docker save -o ./dimage rally-tempest
 sshpass -p 'r00tme' scp -o UserKnownHostsFile=/dev/null \
                         -o StrictHostKeyChecking=no dimage root@"$FUEL_MASTER_IP":/root/rally
