@@ -112,6 +112,10 @@
     tox_test_name: rabbitmq_oslo
     jobs:
       - '{milestone}_wo_deploy_{name}'
+    publishers:
+      - email:
+          recipients: agalkin@mirantis.com ogubanov@mirantis.com
+          notify-every-unstable-build: true
 
 - project:
     name: glare_swift
