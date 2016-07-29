@@ -45,6 +45,10 @@
           choices:
             - 'rally_run'
             - 'run_tempest'
+      - string:
+          name: FUEL_QA_VER
+          default: 'stable/6.1'
+          description: 'stable git-sha for 6.1: 49885aef4590cd0e748d33ed2c4753648017ba44'
     builders:
       - trigger-builds:
         - project: 'maintenance_create_param_environment_6_1'
@@ -66,6 +70,7 @@
             ENV_NAME=maintenance_tempest_non_ceph_6_1_ubuntu
             FILE=test_tempest_6_1.py
             GROUP=tempest_cinder_glance_swift_vlan
+            FUEL_QA_VER=$FUEL_QA_VER
       - trigger-builds:
         - project: 'maintenance_tempest_runner'
           same-node: true
