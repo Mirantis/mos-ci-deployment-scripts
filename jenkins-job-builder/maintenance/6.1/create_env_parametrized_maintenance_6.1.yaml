@@ -38,7 +38,7 @@
           default: false
       - string:
           name: FUEL_QA_VER
-          default: "stable/6.1"
+          default: "origin/stable/6.1"
       - string:
           name: FILE
       - string:
@@ -64,7 +64,7 @@
     scm:
       - openstack-git:
           reponame: 'fuel-qa'
-          repobranch: 'origin/stable/6.1'
+          repobranch: "$FUEL_QA_VER"
           basedir: ''
       - mirantis-git:
           reponame: 'mos-ci-deployment-scripts'
