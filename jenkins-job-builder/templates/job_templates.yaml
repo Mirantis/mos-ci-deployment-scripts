@@ -118,6 +118,51 @@
 
 
 - job-template:
+    name: '{milestone}_horizon_steps_integraion_test_{name}'
+
+    defaults: common_job_settings
+
+    parameters:
+        - common_parameters
+        - string:
+            name: ISO_DIR
+            default: "{iso_dir}"
+        - string:
+            name: ENV_CHANGER
+            default: '{env_changer}'
+        - string:
+            name: CONFIG_PATH
+            default: '{config_path}'
+        - string:
+            name: TEST_GROUP
+            default: '{test_group}'
+        - string:
+            name: SUITE
+            default: "{suite}"
+        - string:
+            name: MILESTONE
+            default: "{milestone}"
+        - string:
+            name: TESTRAIL_TEMPEST
+            default: "TRUE"
+
+    builders:
+        - shell:
+            !include-raw: ../shell_scripts/template_scripts/env_variables_export.sh
+        - inject:
+            properties-file: "$ENV_INJECT_PATH"
+        - shell:
+            !include-raw: ../shell_scripts/template_scripts/horizon_ui_tests.sh
+
+    publishers:
+        - common_publisher
+        - archive:
+            artifacts: 'horizon_autotests/horizon_autotests/tests/test_reports/**'
+            allow-empty: 'true'
+            fingerprint: true
+
+
+- job-template:
     name: '{milestone}_openstack_cli_{name}'
 
     defaults: common_job_settings
