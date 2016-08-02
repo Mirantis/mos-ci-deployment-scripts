@@ -33,21 +33,3 @@
     email-recipients: schipiga@mirantis.com
     jobs:
       - '{milestone}_horizon_integraion_test_{name}'
-
-- project:
-    name: steps_architecture
-    weight: 4
-    iso_dir: /var/www/fuelweb-iso
-    env_changer: _nova
-    env_inject_file: env_inject_vlan_horizon.properties
-    config_path: templates/nova/default.yaml
-    test_group: Horizon(Steps)
-    suite: '[9.1][MOSQA] Automated Cloud Testing'
-    start_timer: "0 0 0 0 0"
-    node: Slave-7774
-    milestone: '9.0'
-    description: Horizon integration tests via STEPS architecture
-    display_name: 9.0_Horizon_integration_tests_STEPS
-    email-recipients: schipiga@mirantis.com
-    jobs:
-      - '{milestone}_horizon_steps_integraion_test_{name}'
