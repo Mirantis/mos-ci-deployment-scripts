@@ -2,32 +2,31 @@ set +e
 
 dos.py revert-resume "$ENV_NAME" "$SNAPSHOT_NAME"
 
-git clone https://github.com/Mirantis/mos-horizon.git
-cd mos-horizon
-git checkout stable/mitaka
-
 sudo apt-get update
 #TBD need to remove firefox updaed since after FF 47.0 selenium tests are
 #failed so far @schipiga will investigate on how to made that update
-sudo apt-get -y install xvfb python-virtualenv
+sudo apt-get -y install xvfb python-virtualenv libav-tools
 
-virtualenv venv
-. venv/bin/activate
+git clone -b v9.1 https://github.com/Mirantis/mos-horizon.git
+cd horizon_autotests
+
+virtualenv .venv
+. .venv/bin/activate
 
 pip install -U pip
-pip install -r requirements.txt -r test-requirements.txt
+pip install -r requirements
+pip install -e .
 
 export DASHBOARD_URL='http://10.109.4.6/horizon'
 
 printenv || true
 
-./run_tests.sh -N --integration --selenium-headless --skip-new-design --with-xunit --xunit-file=report.xml
+VIRTUAL_DISPLAY=1 py.test horizon_autotests -v --junitxml="$REPORT_FILE"
 
 deactivate
 
 cp "$REPORT_FILE" ../
 cp *.log ../
-cp openstack_dashboard/test/integration_tests/integration_tests_screenshots/** ../
 
 sudo mkdir -p "$REPORT_PREFIX"/"$ENV_NAME"_"$SNAPSHOT_NAME" && \
 sudo cp "$REPORT_FILE" "$REPORT_PREFIX"/"$ENV_NAME"_"$SNAPSHOT_NAME" && \
