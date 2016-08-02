@@ -18,4 +18,4 @@ cat /home/jenkins/env_inject.properties >> "$ENV_INJECT_PATH"
 # https://github.com/openstack/fuel-qa/commit/cd6f3d1f0736fb20e1f5935ad557034552d94da4 workaround
 echo "OPENSTACK_RELEASE_UBUNTU=Ubuntu+UCA 14.04" >> "$ENV_INJECT_PATH"
 echo "OPENSTACK_RELEASE_UBUNTU_UCA=Ubuntu+UCA 14.04" >> "$ENV_INJECT_PATH"
-echo "UBUNTU_SERVICE_PROVIDER=" >> "$ENV_INJECT_PATH"
+echo "UBUNTU_SERVICE_PROVIDER=not_default" >> "$ENV_INJECT_PATH"
