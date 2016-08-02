@@ -112,7 +112,7 @@
     publishers:
         - common_publisher
         - archive:
-            artifacts: 'horizon_autotests/horizon_autotests/tests/test_reports/**'
+            artifacts: 'mos-horizon/horizon_autotests/tests/test_reports/**'
             allow-empty: 'true'
             fingerprint: true
 
