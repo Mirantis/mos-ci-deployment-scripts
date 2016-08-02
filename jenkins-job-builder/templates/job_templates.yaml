@@ -287,6 +287,9 @@
             name: TESTRAIL_TEMPEST
             default: "FALSE"
 
+    wrappers:
+      - ansicolor
+
     builders:
         - shell:
             !include-raw: ../shell_scripts/template_scripts/env_variables_export.sh
@@ -359,6 +362,9 @@
             properties-file: "$ENV_INJECT_PATH"
         - shell:
             !include-raw: ../shell_scripts/template_scripts/testrail_reporter.sh
+
+    wrappers:
+      - ansicolor
 
     publishers:
         - common_publisher
