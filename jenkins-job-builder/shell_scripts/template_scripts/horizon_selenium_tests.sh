@@ -8,7 +8,7 @@ sudo apt-get update
 sudo apt-get -y install xvfb python-virtualenv libav-tools
 
 git clone -b v9.1 https://github.com/Mirantis/mos-horizon.git
-cd horizon_autotests
+cd mos-horizon
 
 virtualenv .venv
 . .venv/bin/activate
