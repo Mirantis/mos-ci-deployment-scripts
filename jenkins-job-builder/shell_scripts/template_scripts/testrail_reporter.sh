@@ -10,9 +10,6 @@ pip install git+https://github.com/gdyuldin/testrail_reporter.git@stable
 
 source "$TESTRAIL_FILE"
 
-# export variables with fuel snapshots
-source /home/jenkins/env_inject.properties
-
 # NEED FIX!
 MILESTONE="9.1"
 
@@ -44,6 +41,7 @@ then
     --test-results-link "$BUILD_URL" \
     --testrail-name-template "{{custom_test_group}}.{{title}}" \
     --xunit-name-template "{{classname}}.{{methodname}}" \
+    --send-skipped \
     "$REPORT_FILE"
 
 elif [[ "$HORIZON_UI_TESTS" == 'TRUE' ]] ;
