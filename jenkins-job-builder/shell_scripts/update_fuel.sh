@@ -2,74 +2,11 @@
 
 set -ex
 
-# we just search for snapshots, no need to guess nearest
-# MIRROR_HOST="mirror.fuel-infra.org"
-
-# fixme: mirror.fuel-infra.org could point to brokem mirror
 MIRROR_HOST="mirror.seed-cz1.fuel-infra.org"
 
 rm -rvf snapshots.params snapshots.sh
 
-function to_uppercase() {
-    echo "$1" | awk '{print toupper($0)}'
-}
-
-function store() {
-    echo "$1=$2" >> snapshots.params
-    echo "$1=\"$2\"" >> snapshots.sh
-}
-
-
-
-# Create and store ID of this snapshot file, which will be used as PK for snapshot set
-
-__ubuntu_latest_repo_snaphot_url="$(\
-    curl "http://${MIRROR_HOST}/pkgs/ubuntu-latest.htm" \
-    | head -1)"
-__ubuntu_latest_repo_snaphot_id="${__ubuntu_latest_repo_snaphot_url##*/}"
-store "UBUNTU_MIRROR_ID" "${__ubuntu_latest_repo_snaphot_id}"
-
-
-
-# Store snapshot for copy of Centos rpm repo
-
-# http://mirror.fuel-infra.org/pkgs/snapshots/centos-7.2.1511-2016-05-31-083834/
-#                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-__centos_latest_repo_snaphot_url="$(\
-    curl "http://${MIRROR_HOST}/pkgs/centos-latest.htm" \
-    | head -1)"
-__tmp="${__centos_latest_repo_snaphot_url%/}"
-__centos_latest_repo_snaphot_id="${__tmp##*/}"
-store "CENTOS_MIRROR_ID" "${__centos_latest_repo_snaphot_id}"
-
-
-
-# Store snapshot for MOS deb repo
-
-# 9.0-2016-06-23-164100
-# ^^^^^^^^^^^^^^^^^^^^^
-__mos_latest_deb_mirror_id="$(\
-    curl "http://${MIRROR_HOST}/mos-repos/ubuntu/snapshots/9.0-latest.target.txt" \
-    | head -1)"
-store "MOS_UBUNTU_MIRROR_ID" "${__mos_latest_deb_mirror_id}"
-
-
-
-# Store snapshots for full set of MOS rpm repos
-
-# <distribution_name>-2016-07-14-082020
-# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-for _dn in  "os"        \
-            "proposed"  \
-            "updates"   \
-            "holdback"  \
-            "hotfix"    \
-            "security"  ; do
-    __dt_snapshot="$(\
-        curl "http://${MIRROR_HOST}/mos-repos/centos/mos9.0-centos7/snapshots/${_dn}-latest.target.txt" \
-        | head -1)"
-    store "MOS_CENTOS_$(to_uppercase "${_dn}")_MIRROR_ID" "${__dt_snapshot}"
-done
+wget https://product-ci.infra.mirantis.net/job/9.x.snapshot/lastSuccessfulBuild/artifact/snapshots.params
 
 source snapshots.params
 
@@ -211,7 +148,6 @@ for _dn in  "proposed"  \
     fi
 done
 
-echo "EXTRA_DEB_REPOS=$EXTRA_DEB_REPOS" >> "$ENV_INJECT_PATH"
 echo "UPDATE_FUEL_MIRROR=$UPDATE_FUEL_MIRROR" >> "$ENV_INJECT_PATH"
 echo "UPDATE_MASTER=$UPDATE_MASTER" >> "$ENV_INJECT_PATH"
 echo "EXTRA_RPM_REPOS=$EXTRA_RPM_REPOS" >> "$ENV_INJECT_PATH"
