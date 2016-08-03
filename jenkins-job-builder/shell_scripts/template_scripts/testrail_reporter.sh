@@ -44,6 +44,7 @@ then
     --test-results-link "$BUILD_URL" \
     --testrail-name-template "{{custom_test_group}}.{{title}}" \
     --xunit-name-template "{{classname}}.{{methodname}}" \
+    --send-skipped \
     "$REPORT_FILE"
 
 elif [[ "$HORIZON_UI_TESTS" == 'TRUE' ]] ;
