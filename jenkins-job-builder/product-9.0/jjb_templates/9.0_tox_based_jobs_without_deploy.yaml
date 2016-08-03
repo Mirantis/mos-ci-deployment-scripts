@@ -1,213 +1,166 @@
+- common_parameters: &common_parameters
+    name: 'common tox wo deploy projects parameters'
+    iso_dir: /var/www/fuelweb-iso
+    tox_properties: ''
+    milestone: '9.1'
+    suite: '[{milestone}][MOSQA] Automated Cloud Testing'
+
 - project:
     name: keystone
     weight: 2
-    iso_dir: /var/www/fuelweb-iso
     env_changer: _glance_swift
     env_inject_file: env_inject_vlan_keystone.properties
     config_path: templates/glance/swift.yaml
     test_group: Keystone
-    suite: '[9.1][MOSQA] Automated Cloud Testing'
     start_timer: "0 23 * * *"
     node: Slave-srv135
-    milestone: '9.0'
     description: Keystone tests
     display_name: 9.0_Keystone_VLAN
     tox_test_name: keystone
-    jobs:
-      - '{milestone}_wo_deploy_{name}'
+    <<: *common_parameters
 
 - project:
     name: Object_Storage_Swift
     weight: 2
-    iso_dir: /var/www/fuelweb-iso
     env_changer: _glance_swift
     env_inject_file: env_inject_glance_swift.properties
     config_path: templates/glance/swift.yaml
     test_group: Object Storage(Swift)
-    suite: '[9.1][MOSQA] Automated Cloud Testing'
     start_timer: "0 22 * * *"
     node: Slave-srv135
-    milestone: '9.0'
     description: Object Storage tests for Swift
     display_name: 9.0_Object_Storage(Swift)
     tox_test_name: object_storage
-    tox_properties: blabla
-    jobs:
-      - '{milestone}_wo_deploy_{name}'
+    <<: *common_parameters
 
 - project:
     name: Object_Storage_Ceph
     weight: 2
-    iso_dir: /var/www/fuelweb-iso
     env_changer: _glance_ceph
     env_inject_file: env_inject_glance_ceph.properties
     config_path: templates/glance/ceph.yaml
     test_group: Object Storage(RadosGW)
-    suite: '[9.1][MOSQA] Automated Cloud Testing'
     start_timer: "0 22 * * *"
     node: Slave-srv135
-    milestone: '9.0'
     description: Object Storage tests for RadosGW
     display_name: 9.0_Object_Storage(RadosGW)
-    tox_properties: blabla
     tox_test_name: object_storage
-    jobs:
-      - '{milestone}_wo_deploy_{name}'
+    <<: *common_parameters
 
 - project:
     name: cinder
     weight: 4
-    iso_dir: /var/www/fuelweb-iso
     env_changer: _nova
     env_inject_file: env_inject_cinder.properties
     config_path: templates/nova/default.yaml
     test_group: Cinder(Swift)
-    suite: '[9.1][MOSQA] Automated Cloud Testing'
     start_timer: "0 23 * * *"
     node: Slave-7777
-    milestone: '9.0'
     description: Cinder tests
     display_name: 9.0_Cinder_Swift
     test_path: mos_tests/cinder
-    tox_properties: blabla
     tox_test_name: cinder
-    jobs:
-      - '{milestone}_wo_deploy_{name}'
+    <<: *common_parameters
 
 - project:
     name: cinder_ceph
     weight: 2
-    iso_dir: /var/www/fuelweb-iso
     env_changer: _glance_ceph
     env_inject_file: env_inject_cinder.properties
     config_path: templates/glance/ceph.yaml
     test_group: Cinder(Ceph)
-    suite: '[9.1][MOSQA] Automated Cloud Testing'
     start_timer: "0 23 * * *"
     node: Slave-srv135
-    milestone: '9.0'
     description: Cinder tests
     display_name: 9.0_Cinder_Ceph
     test_path: mos_tests/cinder
-    tox_properties: blabla
     tox_test_name: cinder
-    jobs:
-      - '{milestone}_wo_deploy_{name}'
+    <<: *common_parameters
 
 - project:
     name: rabbitmq_oslo
     weight: 2
-    iso_dir: /var/www/fuelweb-iso
     env_changer: _glance_swift
     env_inject_file: env_inject_vlan_rabbitmq_oslo.properties
     config_path: templates/glance/swift.yaml
     test_group: RabbitMQ_OSLO
-    suite: '[9.1][MOSQA] Automated Cloud Testing'
     start_timer: "0 22 * * *"
     node: Slave-srv135
-    milestone: '9.0'
     description: RabbitMQ_OSLO tests
     display_name: 9.0_RabbitMQ_OSLO_VLAN
-    tox_properties: blabla
     tox_test_name: rabbitmq_oslo
-    jobs:
-      - '{milestone}_wo_deploy_{name}'
     publishers:
       - email:
           recipients: agalkin@mirantis.com ogubanov@mirantis.com
           notify-every-unstable-build: true
+    <<: *common_parameters
 
 - project:
     name: glare_swift
     weight: 2
-    iso_dir: /var/www/fuelweb-iso
     env_changer: _glance_swift
     env_inject_file: env_inject_glare_swift.properties
     config_path: templates/glance/swift.yaml
     test_group: Glare(Swift)
-    suite: '[9.1][MOSQA] Automated Cloud Testing'
     start_timer: "0 22 * * *"
     node: Slave-srv135
-    milestone: '9.0'
     description: Glare tests
     display_name: '9.0_{name}'
-    tox_properties: ''
     tox_test_name: glare
-    jobs:
-      - '{milestone}_wo_deploy_{name}'
+    <<: *common_parameters
 
 - project:
     name: glare_ceph
     weight: 2
-    iso_dir: /var/www/fuelweb-iso
     env_changer: _glance_ceph
     env_inject_file: env_inject_glare_ceph.properties
     config_path: templates/glance/ceph.yaml
     test_group: Glare(Ceph)
-    suite: '[9.1][MOSQA] Automated Cloud Testing'
     start_timer: "0 22 * * *"
     node: Slave-srv135
-    milestone: '9.0'
     description: Glare tests
     display_name: '9.0_{name}'
-    tox_properties: ''
     tox_test_name: glare
-    jobs:
-      - '{milestone}_wo_deploy_{name}'
+    <<: *common_parameters
 
 - project:
     name: failover
     weight: 2
-    iso_dir: /var/www/fuelweb-iso
     env_changer: _glance_swift
     env_inject_file: env_inject_vlan_failover.properties
     config_path: templates/glance/swift.yaml
     test_group: Failover
-    suite: '[9.1][MOSQA] Automated Cloud Testing'
     start_timer: "0 23 * * *"
     node: Slave-srv135
-    milestone: '9.0'
     description: Failover tests
     display_name: 9.0_Failover_VLAN
-    tox_properties: ''
-    tox_test_name: failover 
-    jobs:
-      - '{milestone}_wo_deploy_{name}'
+    tox_test_name: failover
+    <<: *common_parameters
 
 - project:
     name: heat
     weight: 4
-    iso_dir: /var/www/fuelweb-iso
     env_changer: _nova
     env_inject_file: env_inject_heat.properties
     config_path: templates/nova/default.yaml
     test_group: Heat(Swift)
-    suite: '[9.1][MOSQA] Automated Cloud Testing'
     start_timer: "0 22 * * *"
     node: Slave-7777
-    milestone: '9.0'
     description: Heat tests
     display_name: 9.0_Heat
-    tox_properties: ''
-    tox_test_name: heat 
-    jobs:
-      - '{milestone}_wo_deploy_{name}'
+    tox_test_name: heat
+    <<: *common_parameters
 
 - project:
     name: heat_ceph
     weight: 4
-    iso_dir: /var/www/fuelweb-iso
     env_changer: _nova_ceph
     env_inject_file: env_inject_heat.properties
     config_path: templates/nova/ceph.yaml
     test_group: Heat(Ceph)
-    suite: '[9.1][MOSQA] Automated Cloud Testing'
     start_timer: "0 22 * * *"
     node: Slave-7774
-    milestone: '9.0'
     description: Heat tests
     display_name: 9.0_Heat_Ceph
-    tox_properties: ''
-    tox_test_name: heat 
-    jobs:
-      - '{milestone}_wo_deploy_{name}'
+    tox_test_name: heat
+    <<: *common_parameters

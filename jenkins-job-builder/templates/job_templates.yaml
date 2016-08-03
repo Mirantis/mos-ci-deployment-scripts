@@ -69,7 +69,7 @@
 
 
 - job-template:
-    name: '{milestone}_horizon_integraion_test_{name}'
+    name: '9.x_horizon_integraion_test_{name}'
 
     defaults: common_job_settings
 
@@ -118,7 +118,7 @@
 
 
 - job-template:
-    name: '{milestone}_openstack_cli_{name}'
+    name: '9.x_openstack_cli_{name}'
 
     defaults: common_job_settings
 
@@ -172,7 +172,7 @@
 
     disabled: '{obj:disabled_var}'
 
-    name: '{milestone}_Tempest_{name}'
+    name: '9.x_Tempest_{name}'
 
     defaults: common_job_settings
 
@@ -259,7 +259,7 @@
 
 
 - job-template:
-    name: '{milestone}_wo_deploy_{name}'
+    name: '9.x_wo_deploy_{name}'
 
     defaults: common_job_settings
 
@@ -310,7 +310,7 @@
             fingerprint: true
 
 - job-template:
-    name: '{milestone}_{name}'
+    name: '9.x_{name}'
 
     defaults: common_job_settings
 

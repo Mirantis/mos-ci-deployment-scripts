@@ -10,9 +10,6 @@ pip install git+https://github.com/gdyuldin/testrail_reporter.git@stable
 
 source "$TESTRAIL_FILE"
 
-# NEED FIX!
-MILESTONE="9.1"
-
 # if we need to change SUITE
 if [ -n "$SUITE" ];
 then
