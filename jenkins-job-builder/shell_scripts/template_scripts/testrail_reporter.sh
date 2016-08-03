@@ -13,9 +13,6 @@ source "$TESTRAIL_FILE"
 # export variables with fuel snapshots
 source /home/jenkins/env_inject.properties
 
-# NEED FIX!
-MILESTONE="9.1"
-
 # if we need to change SUITE
 if [ -n "$SUITE" ];
 then
