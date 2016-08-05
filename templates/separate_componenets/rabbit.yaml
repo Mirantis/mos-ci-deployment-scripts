@@ -20,8 +20,8 @@ template:
       components:
         ceilometer: true
         ironic: false
-        murano: false
-        sahara: false
+        murano: true
+        sahara: true
       storages:
         ephemeral-ceph: false
         image-ceph: false
