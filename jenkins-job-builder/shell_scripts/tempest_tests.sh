@@ -109,8 +109,8 @@ if [[ "$LVM_CINDER_FIX" == 'TRUE' ]]; then
 fi
 
 # ballot stuffing for tempest test results
-echo 'docker exec "$DOCK_ID" bash -c "wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/python_scripts/ballot_stuffing/remove_skiped_test.py"' >> ssh_scr.sh
-echo 'docker exec "$DOCK_ID" bash -c "wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/python_scripts/ballot_stuffing/skiped_tests.txt"' >> ssh_scr.sh
+echo 'docker exec "$DOCK_ID" bash -c "wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/python_scripts/ballot_stuffing/remove_skiped_test.py"' >> ssh_scr.sh
+echo 'docker exec "$DOCK_ID" bash -c "wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/python_scripts/ballot_stuffing/skiped_tests.txt"' >> ssh_scr.sh
 echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify discover > all_tests.txt"' >> ssh_scr.sh
 echo 'docker exec "$DOCK_ID" bash -c "python remove_skiped_test.py all_tests.txt skiped_tests.txt new_tests.txt"' >> ssh_scr.sh
 echo 'docker exec "$DOCK_ID" bash -c "rally verify start --tests-file new_tests.txt --system-wide"' >> ssh_scr.sh
