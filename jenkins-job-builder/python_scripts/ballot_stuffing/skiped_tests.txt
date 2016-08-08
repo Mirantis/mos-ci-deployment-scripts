@@ -118,3 +118,7 @@ tempest.api.object_storage.test_object_slo.ObjectSloTest.test_upload_manifest[id
 tempest.api.object_storage.test_object_temp_url.ObjectTempUrlTest.test_head_object_using_temp_url[id-249a0111-5ad3-4534-86a7-1993d55f9185]
 tempest.api.object_storage.test_object_temp_url_negative.ObjectTempUrlNegativeTest.test_get_object_after_expiration_time[id-5a583aca-c804-41ba-9d9a-e7be132bdf0b,negative]
 tempest.api.object_storage.test_object_version.ContainerTest.test_versioned_container[id-a151e158-dcbf-4a1f-a1e7-46cd65895a6f]
+tempest.api.volume.admin.test_multi_backend.VolumeMultiBackendV1Test.test_backend_name_distinction_with_prefix[id-4236305b-b65a-4bfc-a9d2-69cb5b2bf2ed]
+tempest.api.volume.admin.test_multi_backend.VolumeMultiBackendV1Test.test_backend_name_reporting_with_prefix[id-f38e647f-ab42-4a31-a2e7-ca86a6485215]
+tempest.api.volume.admin.test_multi_backend.VolumeMultiBackendV1Test.test_backend_name_distinction[id-46435ab1-a0af-4401-8373-f14e66b0dd58]
+tempest.api.volume.admin.test_multi_backend.VolumeMultiBackendV1Test.test_backend_name_reporting[id-c1a41f3f-9dad-493e-9f09-3ff197d477cc]
