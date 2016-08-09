@@ -99,9 +99,16 @@ pip install -r conf/deploy_requirements.txt --upgrade
 
 pip install -r fuel-qa/fuelweb_test/requirements.txt --upgrade
 
+# if we want to use devops 3.0
+if [ ! -z "$FUEL_DEVOPS_VER" ]; then
+    pip install git+https://github.com/openstack/fuel-devops.git@${FUEL_DEVOPS_VER} --upgrade
+
+    # workaround for devops 3.0 installation
+    pip install psycopg2 --upgrade
+fi
+
 django-admin.py syncdb --settings=devops.settings
 django-admin.py migrate devops --settings=devops.settings
-
 
 cp test_deploy_env.py fuel-qa/system_test/tests/
 cp -r templates/* fuel-qa/system_test/tests_templates/

@@ -18,12 +18,11 @@ import os
 import dpath.util
 
 from system_test import action
+from system_test.actions import BaseActions
 from system_test.core.discover import load_yaml
 from system_test import logger
 from system_test import testcase
-
 from system_test.tests import ActionTest
-from system_test.actions import BaseActions
 
 
 @testcase(groups=['system_test.deploy_env'])
@@ -54,6 +53,7 @@ class DeployEnv(ActionTest, BaseActions):
         'config_plugins',
         'add_nodes',
         'override_config',
+        'update_nodes',
         'network_check',
         'deploy_cluster',
         'network_check',
@@ -118,22 +118,119 @@ class DeployEnv(ActionTest, BaseActions):
                     configs['{0}/**/{1}/value'.format(plugin_path_prefix,
                                                       k)] = v
             logger.info("{} plugin has been enabled.".format(plugin_name))
-        self._apply_cluster_attributes(configs)
+        self._update_cluster_attributes(configs)
 
-    def _apply_cluster_attributes(self, replacements):
-        """Apply replacements to fuel attributes (settings)"""
-        if len(replacements) == 0:
-            return
-        attrs = self.fuel_web.client.get_cluster_attributes(self.cluster_id)
-        for glob, value in replacements.items():
-            path = self._get_settings_path(attrs, glob)
+    def _update_dict_values(self, replacements_dict, dict_values):
+        for glob, value in replacements_dict.items():
+            path = self._get_settings_path(dict_values, glob)
             logger.info('Set `{path}` to `{value}`'.format(path=path,
-                                                           value=value))
-            dpath.util.set(attrs, path, value)
-        self.fuel_web.client.update_cluster_attributes(self.cluster_id, attrs)
+                                                           value=dict_values))
+            dpath.util.set(dict_values, path, value)
+        return dict_values
+
+    def _update_cluster_attributes(self, replacements_dict):
+        """Apply replacements to fuel attributes (settings)"""
+        if not replacements_dict:
+            return
+
+        attrs = self.fuel_web.client.get_cluster_attributes(self.cluster_id)
+        updated_attrs = self._update_dict_values(replacements_dict, attrs)
+
+        self.fuel_web.client.update_cluster_attributes(
+            self.cluster_id, updated_attrs)
+
+    def _update_network_params(self, replacements_dict):
+        if not replacements_dict:
+            return
+
+        params = self.fuel_web.client.get_networks(
+            cluster_id=self.cluster_id)
+
+        networking_parameters = replacements_dict.get(
+            'networking_parameters', {})
+
+        updated_net_params = self._update_dict_values(
+            replacements_dict=networking_parameters,
+            dict_values=params['networking_parameters']
+        )
+
+        self.fuel_web.client.update_network(
+            cluster_id=self.cluster_id,
+            networking_parameters=updated_net_params
+        )
 
     @action
     def override_config(self):
         """Override fuel config"""
         overrides = self.full_config.get('overrides', {})
-        self._apply_cluster_attributes(overrides.get('attributes', {}))
+
+        self._update_cluster_attributes(overrides.get('attributes', {}))
+        self._update_network_params(overrides.get('networks', {}))
+
+    def _get_interface_index(self, replacements_dict, total_interface_count):
+        """Get interface number and convert it to array index"""
+        try:
+            number = replacements_dict['number']
+        except AttributeError:
+            raise AttributeError(
+                "'number' parameter should be set for each "
+                "interface which should be updated nodes."
+            )
+
+        assert 1 <= number <= total_interface_count, (
+            "'number' of interface should be from '1' to '{0}'.").format(
+                total_interface_count)
+
+        return number - 1
+
+    def _update_node_interfaces(self, node_id, replacements_list):
+        if not replacements_list:
+            return
+
+        interfaces_list = self.fuel_web.client.get_node_interfaces(
+            node_id=node_id)
+
+        for interface_repl in replacements_list:
+            interface_index = self._get_interface_index(
+                replacements_dict=interface_repl,
+                total_interface_count=len(interfaces_list)
+            )
+            interface_dict = interfaces_list[interface_index]
+
+            params_dict = interface_repl.get('params', {})
+            self._update_dict_values(replacements_dict=params_dict,
+                                     dict_values=interface_dict)
+
+        self.fuel_web.client.put_node_interfaces(
+            [{'id': node_id, 'interfaces': interfaces_list}])
+
+    def _update_node_attributes(self, node_id, replacements_dict):
+        if not replacements_dict:
+            return
+
+        attributes_dict = self.fuel_web.client.get_node_attributes(
+            node_id=node_id)
+
+        self._update_dict_values(replacements_dict=replacements_dict,
+                                 dict_values=attributes_dict)
+
+        self.fuel_web.client.upload_node_attributes(
+            attributes=attributes_dict,
+            node_id=node_id
+        )
+
+    @action
+    def update_nodes(self):
+        """Update attributes of nodes"""
+        nodes = self.full_config.get('update_nodes', [])
+
+        for node in nodes:
+            nailgun_node = self.fuel_web.get_nailgun_node_by_name(node['name'])
+
+            interfaces_list = node.get('interfaces', [])
+            self._update_node_interfaces(node_id=nailgun_node['id'],
+                                         replacements_list=interfaces_list)
+
+            attributes_dict = node.get('attributes', {})
+            self._update_node_attributes(node_id=nailgun_node['id'],
+                                         replacements_dict=attributes_dict)
