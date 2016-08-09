@@ -1,0 +1,338 @@
+template:
+  cluster_template:
+    name: sr-iov_ceph
+    network:
+      neutron-dvr: false
+      neutron-l2-pop: false
+      neutron-l3-ha: false
+      neutron-qos: true
+      provider: neutron
+      pubip-to-all: false
+      segment-type: vlan
+    nodes:
+      - count: 1
+        roles: [controller]
+      - count: 4
+        roles: [compute, ceph-osd]
+
+    release: ubuntu
+    settings:
+      components:
+        ceilometer: false
+        ironic: false
+        murano: false
+        sahara: false
+      storages:
+        ephemeral-ceph: false
+        image-ceph: true
+        rados-ceph: true
+        volume-ceph: true
+        volume-lvm: false
+
+  devops_settings:
+    env_name: !os_env ENV_NAME
+
+    aliases:
+      dynamic_address_pool:
+       - &pool_default !os_env POOL_DEFAULT, 10.109.0.0/16:24
+
+      default_interface_model:
+       - &interface_model !os_env INTERFACE_MODEL, e1000
+
+    address_pools:
+    # Network pools used by the environment
+      fuelweb_admin-pool01:
+        net: *pool_default
+        params: {tag: 0}
+      public-pool01:
+        net: *pool_default
+        params: {tag: 200}
+      storage-pool01:
+        net: *pool_default
+        params: {tag: 201}
+      management-pool01:
+        net: *pool_default
+        params: {tag: 202}
+      private-pool01:
+        net: *pool_default
+        params: {tag: 203}
+      fuelweb_admin-pool02:
+        net: *pool_default
+        params: {tag: 0}
+      public-pool02:
+        net: *pool_default
+        params: {tag: 200}
+      storage-pool02:
+        net: *pool_default
+        params: {tag: 201}
+      management-pool02:
+        net: *pool_default
+        params: {tag: 202}
+      private-pool02:
+        net: *pool_default
+        params: {tag: 203}
+
+    groups:
+     - name: default
+       driver:
+         name: devops.driver.libvirt
+         params:
+           connection_string: !os_env CONNECTION_STRING, qemu:///system
+           storage_pool_name: !os_env STORAGE_POOL_NAME, default
+           stp: True
+           hpet: False
+           use_host_cpu: !os_env DRIVER_USE_HOST_CPU, true
+
+       network_pools:
+         # Address pools for OpenStack networks.
+         # Actual names should be used for keys
+         # (the same as in Nailgun, for example)
+
+         fuelweb_admin: fuelweb_admin-pool01
+         public: public-pool01
+         storage: storage-pool01
+         management: management-pool01
+         private: private-pool01
+
+       l2_network_devices:  # Libvirt bridges. It is *NOT* Nailgun networks
+         admin:
+           address_pool: fuelweb_admin-pool01
+           dhcp: false
+           forward:
+             mode: nat
+           parent_iface:
+             phys_dev: !os_env BAREMETAL_ADMIN_IFACE, eth1
+           vlan_ifaces:
+            - 200
+
+         public:
+           address_pool: public-pool01
+           dhcp: false
+           forward:
+             mode: nat
+           parent_iface:
+             l2_net_dev: admin
+             tag: 200
+
+       nodes:
+        - name: admin        # Custom name of VM for Fuel admin node
+          role: fuel_master  # Fixed role for Fuel master node properties
+          params:
+            vcpu: !os_env ADMIN_NODE_CPU, 2
+            memory: !os_env ADMIN_NODE_MEMORY, 3072
+            boot:
+              - hd
+              - cdrom  # for boot from usb - without 'cdrom'
+            volumes:
+             - name: system
+               capacity: !os_env ADMIN_NODE_VOLUME_SIZE, 75
+               format: qcow2
+             - name: iso
+               source_image: !os_env ISO_PATH    # if 'source_image' set, then volume capacity is calculated from it's size
+               format: raw
+               device: cdrom   # for boot from usb - 'disk'
+               bus: ide        # for boot from usb - 'usb'
+            interfaces:
+             - label: iface1
+               l2_network_device: admin    # Libvirt bridge name. It is *NOT* a Nailgun network
+               interface_model: *interface_model
+            network_config:
+              iface1:
+                networks:
+                 - fuelweb_admin
+
+     - name: baremetal-rack01
+       driver:
+         name: devops.driver.baremetal
+          # Slave nodes
+
+       network_pools:  # Address pools for OpenStack networks.
+         # Actual names should be used for keys
+         # (the same as in Nailgun, for example)
+
+         fuelweb_admin: fuelweb_admin-pool02
+         public: public-pool02
+         storage: storage-pool02
+         management: management-pool02
+         private: private-pool02
+
+       nodes:
+        - name: slave-01  # Custom name of baremetal for Fuel slave node
+          role: fuel_slave  # Fixed role for Fuel master node properties
+          params:
+            ipmi_user: !os_env MOSQA_IPMI_USER
+            ipmi_password: !os_env MOSQA_IPMI_PASSWORD
+            ipmi_previlegies: OPERATOR
+            ipmi_host: cz7935-kvm.host-telecom.com
+            ipmi_lan_interface: lanplus
+            ipmi_port: 623
+
+            # so, interfaces can be turn on in one or in a different switches.
+            interfaces:
+             - label: iface1
+               mac_address: 0c:c4:7a:6c:9b:96
+             - label: iface2
+               mac_address: 0c:c4:7a:6c:9b:97
+            network_config:
+              iface1:
+                networks:
+                 - fuelweb_admin  ## OpenStack network, NOT switch name
+                 - public  ## OpenStack network, NOT switch name
+              iface2:
+                networks:
+                 - storage  ## OpenStack network, NOT switch name
+                 - management  ## OpenStack network, NOT switch name
+                 - private  ## OpenStack network, NOT switch name
+
+        - name: slave-02  # Custom name of baremetal for Fuel slave node
+          role: fuel_slave  # Fixed role for Fuel master node properties
+          params:
+            ipmi_user: !os_env MOSQA_IPMI_USER
+            ipmi_password: !os_env MOSQA_IPMI_PASSWORD
+            ipmi_previlegies: OPERATOR
+            ipmi_host: cz7936-kvm.host-telecom.com
+            ipmi_lan_interface: lanplus
+            ipmi_port: 623
+
+            # so, interfaces can be turn on in one or in a different switches.
+            interfaces:
+             - label: iface1
+               mac_address: 0c:c4:7a:6c:9a:16
+             - label: iface2
+               mac_address: 0c:c4:7a:6c:9a:17
+            network_config:
+              iface1:
+                networks:
+                 - fuelweb_admin  ## OpenStack network, NOT switch name
+                 - public  ## OpenStack network, NOT switch name
+              iface2:
+                networks:
+                 - storage  ## OpenStack network, NOT switch name
+                 - management  ## OpenStack network, NOT switch name
+                 - private  ## OpenStack network, NOT switch name
+
+        - name: slave-03  # Custom name of baremetal for Fuel slave node
+          role: fuel_slave  # Fixed role for Fuel master node properties
+          params:
+            ipmi_user: !os_env MOSQA_IPMI_USER
+            ipmi_password: !os_env MOSQA_IPMI_PASSWORD
+            ipmi_previlegies: OPERATOR
+            ipmi_host: cz7937-kvm.host-telecom.com
+            ipmi_lan_interface: lanplus
+            ipmi_port: 623
+
+            # so, interfaces can be turn on in one or in a different switches.
+            interfaces:
+             - label: iface1
+               mac_address: 0c:c4:7a:6c:9b:40
+             - label: iface2
+               mac_address: 0c:c4:7a:6c:9b:41
+            network_config:
+              iface1:
+                networks:
+                 - fuelweb_admin  ## OpenStack network, NOT switch name
+                 - public  ## OpenStack network, NOT switch name
+              iface2:
+                networks:
+                 - storage  ## OpenStack network, NOT switch name
+                 - management  ## OpenStack network, NOT switch name
+                 - private  ## OpenStack network, NOT switch name
+
+        - name: slave-04  # Custom name of baremetal for Fuel slave node
+          role: fuel_slave  # Fixed role for Fuel master node properties
+          params:
+            ipmi_user: !os_env MOSQA_IPMI_USER
+            ipmi_password: !os_env MOSQA_IPMI_PASSWORD
+            ipmi_previlegies: OPERATOR
+            ipmi_host: cz7903-kvm.host-telecom.com
+            ipmi_lan_interface: lanplus
+            ipmi_port: 623
+
+            # so, interfaces can be turn on in one or in a different switches.
+            interfaces:
+             - label: iface1
+               mac_address: 0c:c4:7a:6d:35:98
+             - label: iface3
+               mac_address: 00:1b:21:8a:7b:18
+             - label: iface4
+               mac_address: 00:1b:21:8a:7b:19
+               features: ['sriov']
+            network_config:
+              iface1:
+                networks:
+                 - fuelweb_admin  ## OpenStack network, NOT switch name
+                 - public  ## OpenStack network, NOT switch name
+              iface3:
+                networks:
+                 - storage  ## OpenStack network, NOT switch name
+                 - management  ## OpenStack network, NOT switch name
+                 - private  ## OpenStack network, NOT switch name
+
+        - name: slave-05  # Custom name of baremetal for Fuel slave node
+          role: fuel_slave  # Fixed role for Fuel master node properties
+          params:
+            ipmi_user: !os_env MOSQA_IPMI_USER
+            ipmi_password: !os_env MOSQA_IPMI_PASSWORD
+            ipmi_previlegies: OPERATOR
+            ipmi_host: cz7904-kvm.host-telecom.com
+            ipmi_lan_interface: lanplus
+            ipmi_port: 623
+
+            # so, interfaces can be turn on in one or in a different switches.
+            interfaces:
+             - label: iface1
+               mac_address: 0c:c4:7a:6d:28:de
+             - label: iface3
+               mac_address: 00:1b:21:89:47:90
+             - label: iface4
+               mac_address: 00:1b:21:89:47:91
+               features: ['sriov']
+            network_config:
+              iface1:
+                networks:
+                 - fuelweb_admin  ## OpenStack network, NOT switch name
+                 - public  ## OpenStack network, NOT switch name
+              iface3:
+                networks:
+                 - storage  ## OpenStack network, NOT switch name
+                 - management  ## OpenStack network, NOT switch name
+                 - private  ## OpenStack network, NOT switch name
+
+  name: 1 Controller, 2 Compute+Ceph, 2 Compute+Ceph SR-IOV, Neutron, VLAN
+  slaves: 5
+
+update_nodes:
+  - name: slave-02
+    attributes:
+      cpu_pinning/nova/value: 18
+  - name: slave-03
+    attributes:
+      hugepages/nova/value/1048576: 10
+      hugepages/nova/value/2048: 20000
+  - name: slave-04
+    attributes:
+      cpu_pinning/nova/value: 18
+      hugepages/nova/value/1048576: 10
+      hugepages/nova/value/2048: 20000
+    interfaces:
+      - number: 4
+        params:
+          interface_properties/sriov/enabled: true
+          interface_properties/sriov/sriov_numvfs: 8
+          interface_properties/sriov/sriov_totalvfs: 63
+  - name: slave-05
+    attributes:
+      cpu_pinning/nova/value: 18
+      hugepages/nova/value/1048576: 10
+      hugepages/nova/value/2048: 20000
+    interfaces:
+      - number: 4
+        params:
+          interface_properties/sriov/enabled: true
+          interface_properties/sriov/sriov_numvfs: 8
+          interface_properties/sriov/sriov_totalvfs: 63
+
+overrides:
+  networks:
+    networking_parameters:
+      vlan_range: [960, 1000]
