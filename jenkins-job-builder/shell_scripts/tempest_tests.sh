@@ -121,7 +121,7 @@ fi
 #echo 'docker exec "$DOCK_ID" bash -c "python remove_skiped_test.py all_tests.txt skiped_tests.txt new_tests.txt"' >> ssh_scr.sh
 
 echo 'docker exec "$DOCK_ID" bash -c "wget http://cz7776.bud.mirantis.net/www/new_tests.txt"' >> ssh_scr.sh
-echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start --tests-file new_tests.txt --sytem-wide"' >> ssh_scr.sh
+echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start --tests-file new_tests.txt --system-wide"' >> ssh_scr.sh
 #echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start --system-wide"' >> ssh_scr.sh
 
 echo 'docker exec "$DOCK_ID" bash -c "rally verify results --json --output-file output.json" ' >> ssh_scr.sh
