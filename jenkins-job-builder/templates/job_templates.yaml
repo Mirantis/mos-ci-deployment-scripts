@@ -14,7 +14,6 @@
           name: ENV_INJECT_PATH
           default: 'env_inject{name}.properties'
 
-
 - defaults:
     name: 'common_job_settings'
     wrappers:
@@ -337,6 +336,12 @@
         - string:
             name: TESTRAIL_TEMPEST
             default: "FALSE"
+        - string:
+            name: FUEL_DEVOPS_VER
+            default: "{fuel_devops_ver}"
+        - string:
+            name: USE_IPMI
+            default: "{use_ipmi}"
 
     builders:
         - shell:
@@ -362,6 +367,10 @@
 
     wrappers:
       - ansicolor
+      - inject-passwords:
+          global: true
+          mask-password-params: true
+
 
     publishers:
         - common_publisher
