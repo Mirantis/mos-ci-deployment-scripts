@@ -12,13 +12,6 @@ function prepare {
           rally verify showconfig" > /home/vagrant/rally/install_tempest.sh
     chmod +x /home/vagrant/rally/install_tempest.sh
     cp /home/vagrant/openrc-* /home/vagrant/rally/openrc
-    V2_FIX=$(cat /home/vagrant/rally/openrc |grep v2.0| wc -l)
-    if [ ${V2_FIX} == '0' ]; then
-        sed -i 's|:5000/v3|:5000/v2.0|g' /home/vagrant/rally/openrc
-    else
-        echo "openrc file already fixed"
-    fi
-    
 }
 
 function install_docker_and_run {
