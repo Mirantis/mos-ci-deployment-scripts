@@ -109,20 +109,12 @@ if [[ "$LVM_CINDER_FIX" == 'TRUE' ]]; then
 fi
 
 # ballot stuffing for tempest test results
-#echo 'docker exec "$DOCK_ID" bash -c "wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/python_scripts/ballot_stuffing/remove_skiped_test.py"' >> ssh_scr.sh
-#echo 'docker exec "$DOCK_ID" bash -c "wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/python_scripts/ballot_stuffing/skiped_tests.txt"' >> ssh_scr.sh
-# temporary fix for "ballot stuffing" because of rally bug https://bugs.launchpad.net/rally/+bug/1610939
-# NEED FIX! (remove 4 lines below and add "--system-wide" option for "rally verify start")
-#echo 'docker exec "$DOCK_ID" bash -c "ID=$(source /home/rally/openrc && rally deployment list | awk '\''/tempest/{print $2}'\'')"' >> ssh_scr.sh
-#echo 'docker exec "$DOCK_ID" bash -c "export TEMPEST_CONFIG_DIR=/home/rally/.rally/tempest/for-deployment-${ID}"' >> ssh_scr.sh
-#echo 'docker exec "$DOCK_ID" bash -c "virtualenv ${TEMPEST_CONFIG_DIR}/.venv"' >> ssh_scr.sh
-#echo 'docker exec "$DOCK_ID" bash -c "${TEMPEST_CONFIG_DIR}/.venv/bin/pip install -r ${TEMPEST_CONFIG_DIR}/requirements.txt -r ${TEMPEST_CONFIG_DIR}/test-requirements.txt"' >> ssh_scr.sh
-#echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify discover > all_tests.txt"' >> ssh_scr.sh
-#echo 'docker exec "$DOCK_ID" bash -c "python remove_skiped_test.py all_tests.txt skiped_tests.txt new_tests.txt"' >> ssh_scr.sh
-
-echo 'docker exec "$DOCK_ID" bash -c "wget http://cz7776.bud.mirantis.net/www/new_tests.txt"' >> ssh_scr.sh
-echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start --tests-file new_tests.txt --system-wide"' >> ssh_scr.sh
-#echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start --system-wide"' >> ssh_scr.sh
+if [[ "$CEPH_RADOS" == 'TRUE' ]]; then
+    echo 'docker exec "$DOCK_ID" bash -c "wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/tests.list"' >> ssh_scr.sh
+    echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start --tests-file tests.list --system-wide"' >> ssh_scr.sh
+else
+    echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start --system-wide"' >> ssh_scr.sh
+fi
 
 echo 'docker exec "$DOCK_ID" bash -c "rally verify results --json --output-file output.json" ' >> ssh_scr.sh
 echo 'docker exec "$DOCK_ID" bash -c "rm -rf rally_json2junit && git clone https://github.com/greatehop/rally_json2junit && python rally_json2junit/rally_json2junit/results_parser.py output.json" ' >> ssh_scr.sh
