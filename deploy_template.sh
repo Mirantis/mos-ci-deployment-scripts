@@ -98,6 +98,7 @@ patch_fuel_qa qos.patch
 pip install -r conf/deploy_requirements.txt --upgrade
 
 pip install -r fuel-qa/fuelweb_test/requirements.txt --upgrade
+pip install -r fuel-qa/fuelweb_test/requirements-devops-source.txt --upgrade
 
 # if we want to use devops 3.0
 if [ ! -z "$FUEL_DEVOPS_VER" ]; then
