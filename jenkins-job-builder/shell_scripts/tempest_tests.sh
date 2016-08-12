@@ -88,6 +88,8 @@ echo 'sed -e $c_n"s/^/min_compute_nodes = 2\n/" -i $file' >> ssh_scr.sh
 echo 'cfe_n=$(grep -n "\[compute-feature-enabled\]" $file | cut -d':' -f1)' >> ssh_scr.sh
 echo 'cfe_n=$(($cfe_n+1))' >> ssh_scr.sh
 echo 'sed -e $cfe_n"s/^/block_migration_for_live_migration = True\n/" -i $file' >> ssh_scr.sh
+echo 'sed -e $cfe_n"s/^/nova_cert = True\n/" -i $file' >> ssh_scr.sh
+echo 'sed -e $cfe_n"s/^/personality = True\n/" -i $file' >> ssh_scr.sh
 
 echo 'sed -i "s|live_migration = False|live_migration = True|g" $file' >> ssh_scr.sh
 echo 'sed -i "s|attach_encrypted_volume = False|attach_encrypted_volume = True|g" $file' >> ssh_scr.sh
