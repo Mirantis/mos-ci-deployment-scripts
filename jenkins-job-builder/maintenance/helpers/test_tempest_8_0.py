@@ -59,7 +59,7 @@ class TempestTest70(TestBasic):
         # Check network
         self.fuel_web.verify_network(cluster_id)
 
-        self.env.make_snapshot("tempest_test_ceph_{}".format(seg_type),
+        self.env.make_snapshot("tempest_ceph_services_{}".format(seg_type),
                                is_make=True)
 
     def helper_cinder_glance_swift(self, seg_type):

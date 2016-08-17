@@ -36,7 +36,7 @@
           default: maintenance
     builders:
         - shell:
-            !include-raw: 'helpers/testrail.sh'
+            !include-raw: 'builders/testrail.sh'
     scm:
       - test-rail-reporter
     project-type: freestyle
