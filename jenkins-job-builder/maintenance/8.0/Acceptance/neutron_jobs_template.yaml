@@ -2,7 +2,7 @@
     name: 8.0.acceptance.{name}.neutron
     builders:
       - trigger-builds:
-        - project: '8.0_create_param_environment_common_maintenance'
+        - project: 'create_env_8_0_acceptance'
           same-node: true
           block: true
           predefined-parameters: |
@@ -27,7 +27,7 @@
             ENV_NAME=8.0.acceptance.neutron
             SNAPSHOT_NAME=ha_deploy_{snapshot}
       - trigger-builds:
-        - project: '8.0_test_rail_reporter_common_maintenance'
+        - project: 'test_rail_reporter_maintenance'
           same-node: true
           block: true
           predefined-parameters: |

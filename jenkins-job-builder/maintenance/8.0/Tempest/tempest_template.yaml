@@ -1,0 +1,64 @@
+- job-template:
+    name: 8.0.tempest.{name}
+    builders:
+      - trigger-builds:
+        - project: 'create_env_8_0'
+          same-node: true
+          block: true
+          predefined-parameters: |
+            OPENSTACK_RELEASE=ubuntu
+            ENABLE_PROPOSED=$ENABLE_PROPOSED
+            ENABLE_SECURITY=$ENABLE_SECURITY
+            ENABLE_UPDATES=$ENABLE_UPDATES
+            ERASE_PREV_ENV=$ERASE_PREV_ENV
+            SKIP_INSTALL_ENV=$SKIP_INSTALL_ENV
+            DISABLE_SSL=$DISABLE_SSL
+            ENV_NAME=8.0.tempest
+            FILE=test_tempest_8_0.py
+            GROUP={group}
+            FUEL_QA_VER=$FUEL_QA_VER
+      - trigger-builds:
+        - project: 'maintenance_tempest_runner'
+          same-node: true
+          block: true
+          block-thresholds:
+            build-step-failure-threshold: 'never'
+          predefined-parameters: |
+            ENV_NAME=8.0.tempest
+            SNAPSHOT_NAME={group}
+            REPORT_PREFIX=/srv/jenkins/rally-tempest
+            VENV_PATH=/home/jenkins/qa-venv-8.0
+            RALLY_TEMPEST=$RALLY_TEMPEST
+            MILESTONE=8.0
+      - trigger-builds:
+        - project: 'test_rail_reporter_maintenance'
+          same-node: true
+          block: true
+          block-thresholds:
+            build-step-failure-threshold: 'never'
+          predefined-parameters: |
+            REPORT_PREFIX=/srv/jenkins/rally-tempest
+            ENV_NAME=8.0.tempest
+            SNAPSHOT_NAME={group}
+            REPORT_FILE=verification.xml
+            TESTRAIL_PLAN_NAME=$TESTRAIL_PLAN_NAME
+            TEST_GROUP={test_group}
+            MILESTONE=8.0
+            SUITE=[8.0][Maintenance] Tempest
+            ADD_TIMESTAMP=$ADD_TIMESTAMP
+    project-type: freestyle
+    defaults: global
+    node: '{node}'
+    description: '{description}'
+    disabled: false
+    display-name: '{display-name}'
+    concurrent: false
+    retry-count: 3
+    logrotate:
+      daysToKeep: 5
+      numToKeep: 20
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+    properties:
+    - heavy-job:
+        weight: '{weight}'
