@@ -125,7 +125,7 @@
 - job-template:
     name: 8.0.acceptance
     project-type: multijob
-    description: 'Run acceptance tests part 1'
+    description: 'Run acceptance tests'
     concurrent: false
     node: 'master'
     properties:

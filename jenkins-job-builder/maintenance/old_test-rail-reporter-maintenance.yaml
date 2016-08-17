@@ -32,7 +32,7 @@
           default: maintenance
     builders:
       - shell:
-          !include-raw: 'helpers/old_testrail.sh'
+          !include-raw: 'builders/old_testrail.sh'
     scm:
       - openstack-git:
           reponame: 'fuel-qa'
