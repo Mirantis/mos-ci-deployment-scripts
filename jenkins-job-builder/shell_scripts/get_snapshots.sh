@@ -9,7 +9,7 @@
 git clone https://github.com/openstack/fuel-qa
 cd fuel-qa
 git checkout stable/mitaka
-wget https://product-ci.infra.mirantis.net/job/9.x.snapshot/lastSuccessfulBuild/artifact/snapshots.param
+wget https://product-ci.infra.mirantis.net/job/9.x.snapshot/lastSuccessfulBuild/artifact/snapshots.params
 python ./utils/jenkins/conv_snapshot_file.py
 
 # get SNAPSHOT_ID for TestRail
