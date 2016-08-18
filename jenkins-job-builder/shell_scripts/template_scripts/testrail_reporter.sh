@@ -5,6 +5,9 @@ echo "$ISO_ID.$SNAPSHOT_NAME" > build-name-setter.info
 virtualenv --clear testrail
 . testrail/bin/activate
 
+source ${ENV_INJECT_PATH}
+export SNAPSHOT_ID
+
 # NEED FIX! (move scripts from custom repo to Mirantis repo)
 pip install git+https://github.com/gdyuldin/testrail_reporter.git@stable
 

@@ -11,6 +11,3 @@ echo "ENV_NAME=$ENV_NAME" > "$ENV_INJECT_PATH"
 echo "ISO_ID=$ISO_ID" >> "$ENV_INJECT_PATH"
 echo "ISO_PATH=$ISO_PATH" >> "$ENV_INJECT_PATH"
 echo "SNAPSHOT_NAME=$SNAPSHOT_NAME" >> "$ENV_INJECT_PATH"
-
-# export variables with fuel snapshots
-cat /home/jenkins/env_inject.properties >> "$ENV_INJECT_PATH"
