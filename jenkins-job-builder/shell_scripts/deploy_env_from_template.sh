@@ -12,6 +12,13 @@ if [[ "$USE_IPMI" == 'TRUE' ]]; then
     export MOSQA_IPMI_PASSWORD="$IPMI_PASSWORD"
 fi
 
+# export 9.x repos
+source /home/jenkins/env_inject.properties
+export EXTRA_DEB_REPOS
+export EXTRA_RPM_REPOS
+export UPDATE_FUEL_MIRROR
+export UPDATE_MASTER
+
 # Not exiting from shell if error happens
 set +e
 ./deploy_template.sh $CONFIG_PATH
