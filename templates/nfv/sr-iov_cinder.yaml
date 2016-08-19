@@ -1,6 +1,6 @@
 template:
   cluster_template:
-    name: sr-iov_ceph
+    name: sr-iov_cinder
     network:
       neutron-dvr: false
       neutron-l2-pop: false
@@ -300,7 +300,7 @@ template:
                  - management  ## OpenStack network, NOT switch name
                  - private  ## OpenStack network, NOT switch name
 
-  name: 1 Controller, 2 Compute+Ceph, 2 Compute+Ceph SR-IOV, Neutron, VLAN
+  name: 1 Controller, 1 Cinder, 1 Compute, 2 Compute SR-IOV, Neutron, VLAN
   slaves: 5
 
 update_nodes:
