@@ -42,15 +42,13 @@ echo "scp /root/rally node-$CONTROLLER_ID:/root/rally" | \
 # remove docker build
 sudo docker rmi rally-tempest
 
-##### For Ironic #####
-set +e
-EXEC_ADD_CMD=$(echo 'source /root/openrc && ironic node-create -d fake' | ssh -T node-$CONTROLLER_ID)
-echo "$EXEC_ADD_CMD" | sshpass -p 'r00tme' ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -T root@"$FUEL_MASTER_IP"
-set -e
-
 ###################################################################
 ##### Generate ssh file, which will be executed on controller #####
 ###################################################################
+
+##### For Ironic ##### https://bugs.launchpad.net/mos/+bug/1570864
+echo 'source /root/openrc && ironic node-create -d fake' >> ssh_scr.sh
+
 echo 'wget -qO- https://get.docker.com/ | sh' > ssh_scr.sh
 
 wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/prepare_controller.sh
