@@ -47,9 +47,9 @@ sudo docker rmi rally-tempest
 ###################################################################
 
 ##### For Ironic ##### https://bugs.launchpad.net/mos/+bug/1570864
-echo 'source /root/openrc && ironic node-create -d fake' >> ssh_scr.sh
+echo 'source /root/openrc && ironic node-create -d fake' > ssh_scr.sh
 
-echo 'wget -qO- https://get.docker.com/ | sh' > ssh_scr.sh
+echo 'wget -qO- https://get.docker.com/ | sh' >> ssh_scr.sh
 
 wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/prepare_controller.sh
 cat prepare_controller.sh >> ssh_scr.sh
