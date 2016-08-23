@@ -133,10 +133,16 @@ enable_public_ip
 wait_up_env
 
 if [ "$RALLY_TEMPEST" == "run_tempest" ];then
-
+    env_id=$(ssh_to_fuel_master "fuel env" | tail -1 | awk '{print $1}')
+    ssh_to_fuel_master "fuel --env ${env_id} settings --download"
+    objects_ceph=$(ssh_to_fuel_master "cat settings_${env_id}.yaml" | grep -A 7 "objects_ceph:" | awk '/value:/{print $2}')
     echo "Download and install mos-tempest-runner project"
     git clone https://github.com/Mirantis/mos-tempest-runner.git -b stable/${MILESTONE}
     rm -rf mos-tempest-runner/.git*
+    if ! ${objects_ceph}; then
+        sed -i '/test_list_no_containers/d' shouldfail/*/swift
+        sed -i '/test_list_no_containers/d' shouldfail/default_shouldfail.yaml
+    fi
     scp_to_fuel_master -r mos-tempest-runner $WORK_FLDR
     #ssh_to_fuel_master "ssh $(fuel nodes | grep controller | awk -F'|' '{print $5}' | head -1) \". openrc && keystone service-list 2>/dev/null | grep identity | awk '{print \$2}'\""
     ssh_to_fuel_master "/bin/bash -x $WORK_FLDR/mos-tempest-runner/setup_env.sh"
