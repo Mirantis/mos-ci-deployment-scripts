@@ -23,10 +23,10 @@ function install_docker_and_run {
 
 function run_tempest {
     source /home/vagrant/rally/openrc
-    docker exec -ti $docker_id bash -c "./install_tempest.sh"
-    docker exec -ti $docker_id bash -c "source /home/rally/openrc && rally verify start $1"
-    docker exec -ti $docker_id bash -c "rally verify results --json --output-file result.json"
-    docker exec -ti $docker_id bash -c "rally verify results --html --output-file result.html"
+    docker exec -i $docker_id bash -c "./install_tempest.sh"
+    docker exec -i $docker_id bash -c "source /home/rally/openrc && rally verify start $1"
+    docker exec -i $docker_id bash -c "rally verify results --json --output-file result.json"
+    docker exec -i $docker_id bash -c "rally verify results --html --output-file result.html"
 }
 
 prepare
