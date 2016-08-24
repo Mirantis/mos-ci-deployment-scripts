@@ -43,7 +43,6 @@ template:
     # Network pools used by the environment
       fuelweb_admin-pool01:
         net: *pool_default
-        params: {tag: 0}
       public-pool01:
         net: *pool_default
         params: {tag: 200}
@@ -58,7 +57,6 @@ template:
         params: {tag: 203}
       fuelweb_admin-pool02:
         net: *pool_default
-        params: {tag: 0}
       public-pool02:
         net: *pool_default
         params: {tag: 200}
