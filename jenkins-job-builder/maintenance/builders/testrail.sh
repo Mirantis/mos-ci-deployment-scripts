@@ -2,7 +2,7 @@
 
 SNAPSHOT=$(echo $SNAPSHOT_NAME | sed 's/ha_deploy_//')
 
-echo 8.0_"$ENV_NAME"__"$SNAPSHOT" > build-name-setter.info
+echo "${MILESTONE}"_"$ENV_NAME"__"$SNAPSHOT" > build-name-setter.info
 
 REPORT_XML="${REPORT_PREFIX}/${ENV_NAME}_${SNAPSHOT_NAME}/${REPORT_FILE}"
 
@@ -26,7 +26,7 @@ if [ -n "${MILESTONE}" ]; then
 fi
 
 if ${ADD_TIMESTAMP}; then
-    TESTRAIL_PLAN_NAME+=" #$(date +%Y/%m/%d)"
+    TESTRAIL_PLAN_NAME+="-$(date +%Y/%m/%d)"
 fi
 
 virtualenv venv

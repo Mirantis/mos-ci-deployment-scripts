@@ -108,7 +108,7 @@ if [[ -n "${RPM_LATEST}" ]]; then
         EXTRA_RPM_REPOS+="${RPM_SECURITY}"
         UPDATE_FUEL_MIRROR+="${RPM_MIRROR}security-${RPM_LATEST}/x86_64"
     fi
-    if [[ "${ENABLE_CENTOS_SECURITY}" == "true" ]]; then
+    if [[ "${ENABLE_UPDATE_CENTOS}" == "true" ]]; then
         RPM_UPDATE_CENTOS="centos-security,${CENTOS_UPDATE_HOST}"
         if [[ -n "${EXTRA_RPM_REPOS}" ]]; then
             EXTRA_RPM_REPOS+="|"

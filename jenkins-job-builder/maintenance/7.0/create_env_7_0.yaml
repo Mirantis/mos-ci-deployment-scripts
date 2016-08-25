@@ -1,10 +1,12 @@
 - job:
-    name: maintenance_tempest_all_ceph_tun_7_0_ubuntu_on_node
     parameters:
       - string:
           name: MAGNET_LINK
           default: 'magnet:?xt=urn:btih:21b4d46c9f1cec02e336b1f9771d4f7c27ec724b&dn=MirantisOpenStack-7.0.iso&tr=http%3A%2F%2Ftracker01-bud.infra.mirantis.net%3A8080%2Fannounce&tr=http%3A%2F%2Ftracker01-scc.infra.mirantis.net%3A8080%2Fannounce&tr=http%3A%2F%2Ftracker01-msk.infra.mirantis.net%3A8080%2Fannounce&ws=http%3A%2F%2Fvault.infra.mirantis.net%2FMirantisOpenStack-7.0.iso'
           description: 'ISO magnet link'
+      - string:
+          name: ENV_NAME
+          default: maintenance_env_7.0
       - string:
           name: UPGRADE_TARBALL_MAGNET_LINK
           default: 'magnet:?xt=urn:btih:e4521941a159cbbf345884c7c7ec6a484a139d3b&dn=MirantisOpenStack-7.0-upgrade.tar.lrz&tr=http%3A%2F%2Ftracker01-bud.infra.mirantis.net%3A8080%2Fannounce&tr=http%3A%2F%2Ftracker01-scc.infra.mirantis.net%3A8080%2Fannounce&tr=http%3A%2F%2Ftracker01-msk.infra.mirantis.net%3A8080%2Fannounce&ws=http%3A%2F%2Fvault.infra.mirantis.net%2FMirantisOpenStack-7.0-upgrade.tar.lrz'
@@ -19,9 +21,6 @@
       - string:
           name: UBUNTU_MIRROR_ID
           default: 'latest'
-      - string:
-          name: CUSTOM_VERSION
-          default: 'MU'
       - bool:
           name: ENABLE_PROPOSED
           default: false
@@ -32,53 +31,60 @@
           name: ENABLE_UPDATES
           default: true
       - bool:
+          name: ENABLE_UPDATE_CENTOS
+          default: false
+      - bool:
+          name: ENABLE_CENTOS_SECURITY
+          default: false
+      - bool:
           name: ERASE_PREV_ENV
           default: true
+      - bool:
+          name: DISABLE_SSL
+          default: false
+      - string:
+          name: FUEL_QA_VER
+          default: "stable/7.0"
+      - string:
+          name: FILE
+      - string:
+          name: GROUP
       - bool:
           name: SKIP_INSTALL_ENV
           default: false
       - bool:
-          name: DISABLE_SSL
-          default: true
-      - choice:
-          name: RALLY_TEMPEST
-          choices:
-            - 'rally_run'
-            - 'run_tempest'
-      - node:
-          name: NODE_LABELS
-          description: |
-            Specify where this job and tested job should be ran on.
-          default: maintenance
+          name: BONDING
+          default: false
+      - string:
+          name: VENV_PATH
+          default: "/home/jenkins/qa-venv-7.0"
+      - string:
+          name: OPENSTACK_RELEASE
+    name: create_env_7_0
     builders:
-      - trigger-builds:
-        - project: 'maintenance_tempest_all_ceph_tun_7_0_ubuntu'
-          same-node: true
-          block: true
-          predefined-parameters: |
-            MAGNET_LINK=$MAGNET_LINK
-            UPGRADE_TARBALL_MAGNET_LINK=$UPGRADE_TARBALL_MAGNET_LINK
-            DEB_LATEST=$DEB_LATEST
-            RPM_LATEST=$RPM_LATEST
-            UBUNTU_MIRROR_ID=$UBUNTU_MIRROR_ID
-            ENABLE_PROPOSED=$ENABLE_PROPOSED
-            ENABLE_SECURITY=$ENABLE_SECURITY
-            ENABLE_UPDATES=$ENABLE_UPDATES
-            ERASE_PREV_ENV=$ERASE_PREV_ENV
-            SKIP_INSTALL_ENV=$SKIP_INSTALL_ENV
-            DISABLE_SSL=$DISABLE_SSL
-            RALLY_TEMPEST=$RALLY_TEMPEST
-            CUSTOM_VERSION=$CUSTOM_VERSION
+      - shell:
+          !include-raw: 'builders/create_env_7_0.sh'
     project-type: freestyle
+    node: maintenance
     defaults: global
-    description: 'TUN+CEPH+SERVICES_RADOS_MONGO UBUNTU TEMPEST tests (7.0 maintenance) on node'
+    scm:
+      - openstack-git:
+          reponame: 'fuel-qa'
+          repobranch: "$FUEL_QA_VER"
+          basedir: ''
+      - mirantis-git:
+          reponame: 'mos-ci-deployment-scripts'
+          repobranch: 'origin/master'
+          basedir: 'mos-ci-deployment-scripts'
+    description: 'Create environment with parameters, specified by PARAM string.'
     disabled: false
-    display-name: 'TUN+CEPH+SERVICES_RADOS_MONGO UBUNTU TEMPEST tests (7.0 maintenance) on node'
-    concurrent: false
+    display-name: 'Create Parameterized Environment (7.0 maintenance)'
+    concurrent: true
+    browser: githubweb
     retry-count: 3
     logrotate:
-      daysToKeep: 5
-      numToKeep: 20
+      daysToKeep: 14
+      numToKeep: 50
       artifactDaysToKeep: -1
       artifactNumToKeep: -1
     publishers:
