@@ -63,6 +63,7 @@ fi
 ###################### Get MIRROR_UBUNTU ###############
 
 MIRROR_HOST="http://mirror.seed-cz1.fuel-infra.org/"
+CENTOS_UPDATE_HOST="http://pkg-updates.fuel-infra.org/centos7/"
 
 if [[ ! "${MIRROR_UBUNTU}" ]]; then
 
@@ -111,6 +112,15 @@ if [[ -n "${RPM_LATEST}" ]]; then
         fi
         EXTRA_RPM_REPOS+="${RPM_SECURITY}"
         UPDATE_FUEL_MIRROR+="${RPM_MIRROR}security-${RPM_LATEST}/x86_64"
+    fi
+    if [[ "${ENABLE_UPDATE_CENTOS}" == "true" ]]; then
+        RPM_UPDATE_CENTOS="centos-security,${CENTOS_UPDATE_HOST}"
+        if [[ -n "${EXTRA_RPM_REPOS}" ]]; then
+            EXTRA_RPM_REPOS+="|"
+            UPDATE_FUEL_MIRROR+=" "
+        fi
+        EXTRA_RPM_REPOS+="${RPM_UPDATE_CENTOS}"
+        UPDATE_FUEL_MIRROR+="${CENTOS_UPDATE_HOST}"
     fi
     export EXTRA_RPM_REPOS
     export UPDATE_FUEL_MIRROR

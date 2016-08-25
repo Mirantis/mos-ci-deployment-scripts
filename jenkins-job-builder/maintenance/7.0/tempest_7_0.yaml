@@ -1,46 +1,50 @@
 - project:
-    name: vlan.ceph
+    name: 7.0.vlan.ceph
+    specification: vlan.ceph
     group: tempest_ceph_services_vlan
     test_group: VLAN+ENABLED_CEPH+ENABLED+SERVICES
-    description: VLAN+CEPH+SERVICES UBUNTU TEMPEST tests (8.0 maintenance)
-    display-name: 8.0.tempest.vlan.ceph
+    description: VLAN+CEPH+SERVICES UBUNTU TEMPEST tests (7.0 maintenance)
+    display-name: 7.0.tempest.vlan.ceph
     node: maintenance
     weight: 3
     jobs:
-      - '8.0.tempest.{name}'
+      - '7.0.tempest.{specification}'
 
 - project:
-    name: tun.ceph
+    name: 7.0.tun.ceph
+    specification: tun.ceph
     group: tempest_ceph_services_tun
     test_group: TUN+ENABLED_CEPH+ENABLED+SERVICES
-    description: TUN+CEPH+SERVICES UBUNTU TEMPEST tests (8.0 maintenance)
-    display-name: 8.0.tempest.tun.ceph
+    description: TUN+CEPH+SERVICES UBUNTU TEMPEST tests (7.0 maintenance)
+    display-name: 7.0.tempest.tun.ceph
     node: maintenance
     weight: 3
     jobs:
-      - '8.0.tempest.{name}'
+      - '7.0.tempest.{specification}'
 
 - project:
-    name: vlan.non_ceph
+    name: 7.0.vlan.non_ceph
+    specification: vlan.non_ceph
     group: tempest_cinder_glance_swift_vlan
     test_group: VLAN+DISABLED_CEPH
-    description: VLAN+DISABLED_CEPH UBUNTU TEMPEST tests (8.0 maintenance)
-    display-name: 8.0.tempest.vlan.non_ceph
+    description: VLAN+DISABLED_CEPH UBUNTU TEMPEST tests (7.0 maintenance)
+    display-name: 7.0.tempest.vlan.non_ceph
     node: maintenance
     weight: 3
     jobs:
-      - '8.0.tempest.{name}'
+      - '7.0.tempest.{specification}'
 
 - project:
-    name: tun.non_ceph
+    name: 7.0.tun.non_ceph
+    specification: tun.non_ceph
     group: tempest_cinder_glance_swift_tun
     test_group: TUN+DISABLED_CEPH
-    description: TUN+DISABLED_CEPH UBUNTU TEMPEST tests (8.0 maintenance)
-    display-name: 8.0.tempest.tun.non_ceph
+    description: TUN+DISABLED_CEPH UBUNTU TEMPEST tests (7.0 maintenance)
+    display-name: 7.0.tempest.tun.non_ceph
     node: maintenance
     weight: 3
     jobs:
-      - '8.0.tempest.{name}'
+      - '7.0.tempest.{specification}'
 
 # Run templates
 
@@ -48,7 +52,7 @@
     parameters:
       - string:
           name: TESTRAIL_PLAN_NAME
-          default: 'TEMPEST-TEST-MU'
+          default: 'MU'
       - bool:
           name: ENABLE_PROPOSED
           default: false
@@ -58,6 +62,9 @@
       - bool:
           name: ENABLE_UPDATES
           default: true
+      - bool:
+          name: ENABLE_UPDATE_CENTOS
+          default: false
       - bool:
           name: ERASE_PREV_ENV
           default: true
@@ -77,10 +84,10 @@
             - 'run_tempest'
       - string:
           name: FUEL_QA_VER
-          default: 'origin/stable-mu/8.0'
-    name: 8.0.tempest
+          default: 'origin/stable-mu/7.0'
+    name: 7.0.tempest
     project-type: multijob
-    description: 'Run 8.0 tempest tests'
+    description: 'Run 7.0 tempest tests'
     concurrent: false
     node: 'master'
     properties:
@@ -88,26 +95,26 @@
           weight: 1
     builders:
       - multijob:
-          name: 'Run 8.0 tempest'
+          name: 'Run 7.0 tempest'
           condition: COMPLETED
           projects:
-            - name: '8.0.tempest.vlan.ceph'
+            - name: '7.0.tempest.vlan.ceph'
               current-parameters: true
               kill-phase-on: NEVER
-            - name: '8.0.tempest.tun.ceph'
+            - name: '7.0.tempest.tun.ceph'
               current-parameters: true
               kill-phase-on: NEVER
-            - name: '8.0.tempest.vlan.non_ceph'
+            - name: '7.0.tempest.vlan.non_ceph'
               current-parameters: true
               kill-phase-on: NEVER
-            - name: '8.0.tempest.tun.non_ceph'
+            - name: '7.0.tempest.tun.non_ceph'
               current-parameters: true
               kill-phase-on: NEVER
 
 - job:
-    name: 8.0.tempest.on_node
+    name: 7.0.tempest.on_node
     concurrent: true
-    description: 'Run 8.0 tempest job on specified node'
+    description: 'Run 7.0 tempest job on specified node'
     parameters:
       - node:
           name: NODE_LABELS
@@ -116,10 +123,10 @@
       - choice:
           name: JOB_NAME
           choices:
-            - '8.0.tempest.vlan.ceph'
-            - '8.0.tempest.tun.ceph'
-            - '8.0.tempest.vlan.non_ceph'
-            - '8.0.tempest.tun.non_ceph'
+            - '7.0.tempest.vlan.ceph'
+            - '7.0.tempest.tun.ceph'
+            - '7.0.tempest.vlan.non_ceph'
+            - '7.0.tempest.tun.non_ceph'
       - string:
           name: TESTRAIL_PLAN_NAME
           default: 'TEMPEST-TEST-MU'
@@ -151,7 +158,7 @@
             - 'run_tempest'
       - string:
           name: FUEL_QA_VER
-          default: 'origin/stable-mu/8.0'
+          default: 'origin/stable-mu/7.0'
     builders:
       - trigger-builds:
         - project: $JOB_NAME
@@ -162,6 +169,7 @@
             ENABLE_PROPOSED=$ENABLE_PROPOSED
             ENABLE_SECURITY=$ENABLE_SECURITY
             ENABLE_UPDATES=$ENABLE_UPDATES
+            ENABLE_UPDATE_CENTOS=$ENABLE_UPDATE_CENTOS
             ERASE_PREV_ENV=$ERASE_PREV_ENV
             SKIP_INSTALL_ENV=$SKIP_INSTALL_ENV
             DISABLE_SSL=$DISABLE_SSL
@@ -173,7 +181,7 @@
 # Run projects
 
 - project:
-    name: 8.0.tempest_helper
+    name: 7.0.tempest_helper
     email-recipients: vrovachev@mirantis.com
     jobs:
-      - '8.0.tempest'
+      - '7.0.tempest'

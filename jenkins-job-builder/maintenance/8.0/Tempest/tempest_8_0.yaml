@@ -1,0 +1,187 @@
+- project:
+    name: 8.0.vlan.ceph
+    specification: vlan.veph
+    group: tempest_ceph_services_vlan
+    test_group: VLAN+ENABLED_CEPH+ENABLED+SERVICES
+    description: VLAN+CEPH+SERVICES UBUNTU TEMPEST tests (8.0 maintenance)
+    display-name: 8.0.tempest.vlan.ceph
+    node: maintenance
+    weight: 3
+    jobs:
+      - '8.0.tempest.{specification}'
+
+- project:
+    name: 8.0.tun.ceph
+    specification: tun.ceph
+    group: tempest_ceph_services_tun
+    test_group: TUN+ENABLED_CEPH+ENABLED+SERVICES
+    description: TUN+CEPH+SERVICES UBUNTU TEMPEST tests (8.0 maintenance)
+    display-name: 8.0.tempest.tun.ceph
+    node: maintenance
+    weight: 3
+    jobs:
+      - '8.0.tempest.{specification}'
+
+- project:
+    name: 8.0.vlan.non_ceph
+    specification: vlan.non_ceph
+    group: tempest_cinder_glance_swift_vlan
+    test_group: VLAN+DISABLED_CEPH
+    description: VLAN+DISABLED_CEPH UBUNTU TEMPEST tests (8.0 maintenance)
+    display-name: 8.0.tempest.vlan.non_ceph
+    node: maintenance
+    weight: 3
+    jobs:
+      - '8.0.tempest.{specification}'
+
+- project:
+    name: 8.0.tun.non_ceph
+    specification: tun.non_ceph
+    group: tempest_cinder_glance_swift_tun
+    test_group: TUN+DISABLED_CEPH
+    description: TUN+DISABLED_CEPH UBUNTU TEMPEST tests (8.0 maintenance)
+    display-name: 8.0.tempest.tun.non_ceph
+    node: maintenance
+    weight: 3
+    jobs:
+      - '8.0.tempest.{specification}'
+
+# Run templates
+
+- job-template:
+    parameters:
+      - string:
+          name: TESTRAIL_PLAN_NAME
+          default: 'MU'
+      - bool:
+          name: ENABLE_PROPOSED
+          default: false
+      - bool:
+          name: ENABLE_SECURITY
+          default: true
+      - bool:
+          name: ENABLE_UPDATES
+          default: true
+      - bool:
+          name: ENABLE_UPDATE_CENTOS
+          default: false
+      - bool:
+          name: ERASE_PREV_ENV
+          default: true
+      - bool:
+          name: SKIP_INSTALL_ENV
+          default: false
+      - bool:
+          name: DISABLE_SSL
+          default: true
+      - bool:
+          name: ADD_TIMESTAMP
+          default: true
+      - choice:
+          name: RALLY_TEMPEST
+          choices:
+            - 'rally_run'
+            - 'run_tempest'
+      - string:
+          name: FUEL_QA_VER
+          default: 'origin/stable-mu/8.0'
+    name: 8.0.tempest
+    project-type: multijob
+    description: 'Run 8.0 tempest tests'
+    concurrent: false
+    node: 'master'
+    properties:
+      - heavy-job:
+          weight: 1
+    builders:
+      - multijob:
+          name: 'Run 8.0 tempest'
+          condition: COMPLETED
+          projects:
+            - name: '8.0.tempest.vlan.ceph'
+              current-parameters: true
+              kill-phase-on: NEVER
+            - name: '8.0.tempest.tun.ceph'
+              current-parameters: true
+              kill-phase-on: NEVER
+            - name: '8.0.tempest.vlan.non_ceph'
+              current-parameters: true
+              kill-phase-on: NEVER
+            - name: '8.0.tempest.tun.non_ceph'
+              current-parameters: true
+              kill-phase-on: NEVER
+
+- job:
+    name: 8.0.tempest.on_node
+    concurrent: true
+    description: 'Run 8.0 tempest job on specified node'
+    parameters:
+      - node:
+          name: NODE_LABELS
+          description: Specify where this job and tested job should be ran on.
+          allowed-multiselect: true
+      - choice:
+          name: JOB_NAME
+          choices:
+            - '8.0.tempest.vlan.ceph'
+            - '8.0.tempest.tun.ceph'
+            - '8.0.tempest.vlan.non_ceph'
+            - '8.0.tempest.tun.non_ceph'
+      - string:
+          name: TESTRAIL_PLAN_NAME
+          default: 'TEMPEST-TEST-MU'
+      - bool:
+          name: ENABLE_PROPOSED
+          default: false
+      - bool:
+          name: ENABLE_SECURITY
+          default: true
+      - bool:
+          name: ENABLE_UPDATES
+          default: true
+      - bool:
+          name: ERASE_PREV_ENV
+          default: true
+      - bool:
+          name: SKIP_INSTALL_ENV
+          default: false
+      - bool:
+          name: DISABLE_SSL
+          default: true
+      - bool:
+          name: ADD_TIMESTAMP
+          default: true
+      - choice:
+          name: RALLY_TEMPEST
+          choices:
+            - 'rally_run'
+            - 'run_tempest'
+      - string:
+          name: FUEL_QA_VER
+          default: 'origin/stable-mu/8.0'
+    builders:
+      - trigger-builds:
+        - project: $JOB_NAME
+          same-node: true
+          block: false
+          predefined-parameters: |
+            TESTRAIL_PLAN_NAME=$TESTRAIL_PLAN_NAME
+            ENABLE_PROPOSED=$ENABLE_PROPOSED
+            ENABLE_SECURITY=$ENABLE_SECURITY
+            ENABLE_UPDATES=$ENABLE_UPDATES
+            ENABLE_UPDATE_CENTOS=$ENABLE_UPDATE_CENTOS
+            ERASE_PREV_ENV=$ERASE_PREV_ENV
+            SKIP_INSTALL_ENV=$SKIP_INSTALL_ENV
+            DISABLE_SSL=$DISABLE_SSL
+            ADD_TIMESTAMP=$ADD_TIMESTAMP
+            RALLY_TEMPEST=$RALLY_TEMPEST
+            FUEL_QA_VER=$FUEL_QA_VER
+
+
+# Run projects
+
+- project:
+    name: 8.0.tempest_helper
+    email-recipients: vrovachev@mirantis.com
+    jobs:
+      - '8.0.tempest'

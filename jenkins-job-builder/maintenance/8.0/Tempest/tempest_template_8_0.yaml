@@ -1,5 +1,5 @@
 - job-template:
-    name: 8.0.tempest.{name}
+    name: 8.0.tempest.{specification}
     builders:
       - trigger-builds:
         - project: 'create_env_8_0'
@@ -10,6 +10,7 @@
             ENABLE_PROPOSED=$ENABLE_PROPOSED
             ENABLE_SECURITY=$ENABLE_SECURITY
             ENABLE_UPDATES=$ENABLE_UPDATES
+            ENABLE_CENTOS_SECURITY=$ENABLE_CENTOS_SECURITY
             ERASE_PREV_ENV=$ERASE_PREV_ENV
             SKIP_INSTALL_ENV=$SKIP_INSTALL_ENV
             DISABLE_SSL=$DISABLE_SSL
