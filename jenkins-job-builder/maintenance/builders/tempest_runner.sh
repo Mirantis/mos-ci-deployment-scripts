@@ -135,7 +135,7 @@ wait_up_env
 if [ "$RALLY_TEMPEST" == "run_tempest" ];then
     env_id=$(ssh_to_fuel_master "fuel env" | tail -1 | awk '{print $1}')
     ssh_to_fuel_master "fuel --env ${env_id} settings --download"
-    objects_ceph=$(ssh_to_fuel_master "cat settings_${env_id}.yaml" | grep -A 7 "objects_ceph:" | awk '/value:/{print $2}')
+    objects_ceph=$(ssh_to_fuel_master "cat settings_${env_id}.yaml" | grep -A 7 "ceilometer:" | awk '/value:/{print $2}')
     echo "Download and install mos-tempest-runner project"
     git clone https://github.com/Mirantis/mos-tempest-runner.git -b stable/${MILESTONE}
     rm -rf mos-tempest-runner/.git*
