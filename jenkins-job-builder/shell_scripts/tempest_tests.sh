@@ -47,7 +47,9 @@ sudo docker rmi rally-tempest
 ###################################################################
 
 ##### For Ironic ##### https://bugs.launchpad.net/mos/+bug/1570864
-echo 'source /root/openrc && ironic node-create -d fake' > ssh_scr.sh
+echo 'set +e' > ssh_scr.sh 
+echo 'source /root/openrc && ironic node-create -d fake' >> ssh_scr.sh
+echo 'set -e' >> ssh_scr.sh
 
 echo 'wget -qO- https://get.docker.com/ | sh' >> ssh_scr.sh
 
