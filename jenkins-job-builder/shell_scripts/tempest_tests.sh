@@ -92,7 +92,6 @@ echo 'sed -e $cfe_n"s/^/nova_cert = True\n/" -i $file' >> ssh_scr.sh
 echo 'sed -e $cfe_n"s/^/personality = True\n/" -i $file' >> ssh_scr.sh
 
 echo 'sed -i "s|live_migration = False|live_migration = True|g" $file' >> ssh_scr.sh
-echo 'sed -i "s|attach_encrypted_volume = False|attach_encrypted_volume = True|g" $file' >> ssh_scr.sh
 
 #echo 'test_vm=$(source /root/openrc && glance image-list |grep TestVM | awk {'print $2'})' >> ssh_scr.sh
 #echo 'sed -i "s|image_ref_alt = |image_ref_alt = $test_vm|g" $file' >> ssh_scr.sh
