@@ -8,6 +8,9 @@
           name: REPORT_PREFIX
           default: ' /srv/jenkins/{name}'
       - string:
+          name: TESTRAIL_FILE
+          default: "/home/jenkins/testrail.sh"
+      - string:
           name: REPORT_FILE
           default: 'report.xml'
       - string:
