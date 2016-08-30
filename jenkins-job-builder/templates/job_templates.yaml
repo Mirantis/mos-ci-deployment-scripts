@@ -345,6 +345,9 @@
         - string:
             name: USE_IPMI
             default: "{use_ipmi}"
+        - string:
+            name: LDAP_CONFIG_FILE
+            default: "{ldap_config_file}"
 
     builders:
         - shell:
@@ -355,6 +358,8 @@
             properties-file: "$ENV_INJECT_PATH"
         - shell:
             !include-raw-escape: ../shell_scripts/get_plugins.sh
+        - shell: |
+            git checkout stable/9.0 -- $LDAP_CONFIG_FILE
         - inject:
             properties-file: "$ENV_INJECT_PATH"
         - shell:
