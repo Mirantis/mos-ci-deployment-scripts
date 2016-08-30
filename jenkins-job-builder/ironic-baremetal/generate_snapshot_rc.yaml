@@ -1,0 +1,43 @@
+- job-template:
+    name: generate_snapshot_rc
+
+    project-type: freestyle
+    node: 'cz5443.bud.mirantis.net'
+    triggers:
+        - timed: "0 21 * * *"
+
+    description: 'Generate snapshot.rc (with snapshot information)'
+    display-name: 'Generate snapshot.rc'
+    concurrent: true
+    retry-count: 3
+    logrotate:
+      daysToKeep: 1
+
+    snapshot_rc_file: snapshot.rc
+
+
+    wrappers:
+      - inject:
+          properties-content: |
+              ENV_INJECT_PATH={snapshot_rc_file}
+
+    builders:
+        - shell:
+            !include-raw-escape: ../shell_scripts/get_snapshots.sh
+        - shell: |
+            cp fuel-qa/{snapshot_rc_file} {snapshot_rc_file}
+
+    publishers:
+      - archive:
+            artifacts: '{snapshot_rc_file}'
+            allow-empty: true
+            fingerprint: true
+      - workspace-cleanup:
+          fail-build: false
+      - email:
+          recipients: gdyuldin@mirantis.com
+
+- project:
+    name: generate_snapshot_rc
+    jobs:
+      - generate_snapshot_rc
