@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 export PLUGINS_PATH=$(pwd)/fuel_plugins
 
 PLUGINS_ARCHIVE=${PLUGINS_ARCHIVE:-"http://cz7776.bud.mirantis.net:8080/jenkins/job/build_plugins/lastSuccessfulBuild/artifact/*zip*/archive.zip"}
