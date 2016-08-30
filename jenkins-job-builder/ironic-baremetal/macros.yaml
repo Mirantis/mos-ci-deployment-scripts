@@ -1,0 +1,117 @@
+# Base builders
+
+- builder:
+    name: venv_builder
+    builders:
+      - inject:
+          properties-file: "$ENV_INJECT_PATH"
+      - shell: |
+          #!/usr/bin/env bash
+          if [ ! -d "{venv_name}" ]; then
+              virtualenv --clear {venv_name}
+          fi
+          . {venv_name}/bin/activate
+
+          set -x
+
+          {command}
+
+          env > "$ENV_INJECT_PATH"
+
+- builder:
+    name: ironic_venv
+    builders:
+      - venv_builder:
+          venv_name: 'ironic_venv'
+          command: '{command}'
+
+# Steps
+
+- builder:
+    name: get_snapshot_rc
+    builders:
+      - copyartifact:
+          project: generate_snapshot_rc
+          filter: "snapshot.rc"
+          which-build: last-successful
+
+- builder:
+    name: prepare_venv
+    builders:
+      - ironic_venv:
+          command: |
+            pip install -U pip
+            pip install tox \
+                        dpath \
+                        git+git://github.com/openstack/fuel-devops.git@2.9.23 \
+                        git+https://github.com/gdyuldin/testrail_reporter.git@stable
+
+
+
+- builder:
+    name: set_base_env_variables
+    builders:
+      - get_snapshot_rc
+      - ironic_venv:
+          command:
+            !include-raw: scripts/set_env_variables.sh
+
+
+- builder:
+    name: deploy_env
+    builders:
+      - inject:
+          properties-file: "$ENV_INJECT_PATH"
+      - conditional-step:
+          condition-kind: boolean-expression
+          condition-expression: ${ENV,var="REDEPLOY"}
+          steps:
+            - ironic_venv:
+                command:
+                  !include-raw:
+                      - scripts/erase_ci_envs.sh
+                      - scripts/download_fuel_plugins.sh
+                      - scripts/deploy_env_from_template.sh
+
+- builder:
+    name: setup_baremetal_bridge
+    builders:
+      - ironic_venv:
+          command: |
+            export BAREMETAL_IFACE=em2
+            IRONIC_NET=${ENV_NAME}_ironic
+            export IRONIC_BRIDGE=$(virsh net-dumpxml $IRONIC_NET | xmllint --xpath 'string(//bridge/@name)' - )
+
+            sudo brctl addif $IRONIC_BRIDGE $BAREMETAL_IFACE
+            sudo brctl stp $IRONIC_BRIDGE off
+
+- builder:
+    name: teardown_baremetal_bridge
+    builders:
+      - ironic_venv:
+          command: |
+            sudo brctl delif $IRONIC_BRIDGE $BAREMETAL_IFACE
+
+- builder:
+    name: run_tox_tests
+    builders:
+      - ironic_venv:
+          command: |
+            tox -e {tox_test_name} -- -v -E "$ENV_NAME" -S "$SNAPSHOT_NAME"  $TOX_ARGS || true
+            export REPORT_FILE=$(pwd)/report.xml
+            dos.py destroy "$ENV_NAME"
+
+- builder:
+    name: report_to_testrail
+    builders:
+      - ironic_venv:
+          command: |
+              report -v \
+              --testrail-plan-name "$TESTRAIL_MILESTONE snapshot $SNAPSHOT_ID" \
+              --env-description "$TESTRAIL_RUN_DESCRIPTION" \
+              --testrail-url  "$TESTRAIL_URL" \
+              --testrail-project "$TESTRAIL_PROJECT" \
+              --testrail-milestone "$TESTRAIL_MILESTONE" \
+              --testrail-suite "$TESTRAIL_SUITE" \
+              --test-results-link "$BUILD_URL" \
+              "$REPORT_FILE"

@@ -1,0 +1,106 @@
+# Job template
+
+- job-template:
+    name: '9.x_ironic_{deploy_template}'
+    display_name: '{obj:name}'
+
+    defaults: common_job_settings
+    weight: 1
+
+    scm:
+      - git:
+          url: https://github.com/Mirantis/mos-integration-tests.git
+          branches:
+            - origin/master
+          skip-tag: true
+
+    wrappers:
+      - ansicolor
+      - inject-passwords:
+          global: true
+          mask-password-params: true
+      - inject:
+          properties-file: /home/jenkins/env_inject.properties
+          properties-content: |
+              ENV_INJECT_PATH=env_inject_{name}.properties
+              ENV_PREFIX=MOS_CI_
+              ENV_SUFFIX={env_suffix}
+              ISO_DIR=/home/jenkins/iso/mos_9.0
+              CONFIG_PATH={config_path}
+              SNAPSHOT_RC_FILE=snapshot.rc
+              TESTRAIL_RUN_DESCRIPTION={testrail_run_description}
+              IRONIC_NODES_CONFIG=/home/jenkins/src/ironic_nodes_{baremetal_node_group}.yaml
+              IRONIC_IMAGE_URL=/home/jenkins/images/dib-user-image-dkms-grub.raw
+              TESTRAIL_URL=https://mirantis.testrail.com
+              TESTRAIL_PROJECT=Mirantis OpenStack
+              TESTRAIL_SUITE=[9.1][MOSQA] Automated Cloud Testing
+              TESTRAIL_MILESTONE=9.1
+          script-content: |
+              touch $ENV_INJECT_PATH
+      - exclusion:
+          resources:
+              - BAREMETAL_NODES_GROUP_{baremetal_node_group}
+      - credentials-binding:
+          - username-password-separated:
+              credential-id: 27559fa0-6ba2-4b69-8b50-ea0176aec5c6
+              username: TESTRAIL_USER
+              password: TESTRAIL_PASSWORD
+
+
+
+    builders:
+        - prepare_venv
+        - set_base_env_variables
+        - deploy_env
+        - critical-block-start
+        - setup_baremetal_bridge
+        - run_tox_tests:
+            tox_test_name: ironic
+        - teardown_baremetal_bridge
+        - critical-block-end
+        - report_to_testrail
+
+    publishers:
+        - email:
+            recipients: 'gdyuldin@mirantis.com'
+        - base_publisher
+        - archive:
+            artifacts: 'mos-integration-tests/snapshots/*'
+            allow-empty: 'true'
+            fingerprint: true
+
+    parameters:
+      - bool:
+          name: REDEPLOY
+          default: true
+          description: "Erase and deploy new environment"
+
+      - string:
+          name: TOX_ARGS
+          default: ''
+          description: Additional tox arguments
+
+
+# Ironic tests
+
+- project:
+    name: ironic-tests
+    description: 'Ironic tests with baremetal nodes'
+    node: 'cz5443.bud.mirantis.net'
+    deploy_template:
+      - Ceph_DVR_Sahara_Ceilometer:
+          config_path: 'templates/tempest/ironic_ceph.yaml'
+          start_timer: '5 21 * * *'
+          env_suffix: '_ceph'
+          baremetal_node_group: 1
+
+      - LVM_Cinder_DVR_Sahara_Ceilometer:
+          config_path: 'templates/tempest/ironic_cinder.yaml'
+          start_timer: '10 21 * * *'
+          env_suffix: '_cinder'
+          baremetal_node_group: 2
+
+    display_name: 'Ironic_9.x_{deploy_template}'
+    testrail_run_description: 'Ironic baremetal {deploy_template}'
+    jobs:
+      - 9.x_ironic_{deploy_template}

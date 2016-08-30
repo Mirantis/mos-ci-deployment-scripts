@@ -42,11 +42,8 @@
         - timed: '{start_timer}'
 
 - publisher:
-    name: 'common_publisher'
+    name: base_publisher
     publishers:
-      - email:
-          recipients: 'ogubanov@mirantis.com'
-
       - postbuildscript:
           script-only-if-succeeded: False
 
@@ -65,6 +62,15 @@
 
       - workspace-cleanup:
           fail-build: false
+
+
+- publisher:
+    name: 'common_publisher'
+    publishers:
+      - email:
+          recipients: 'ogubanov@mirantis.com'
+      - base_publisher
+
 
 
 - job-template:
