@@ -250,6 +250,25 @@
     <<: *common_parameters
 
 - project:
+    name: Fuel_LDAP_no_proxy
+    weight: 2
+    env_changer: _ldap_no_proxy
+    env_inject_file: env_inject.properties
+    config_path: templates/ldap/default.yaml
+    test_group: Fuel_LDAP_plugin_no_proxy
+    start_timer: "10 21 * * *"
+    node: single_template
+    description: LDAP plugin tests wo proxy
+    display_name: '{milestone}_{name}'
+    tox_test_name: fuel-ldap
+    nova_quotas: "FALSE"
+    ldap_config_file: plugins_config/ldap_without_proxy.yaml
+    jobs:
+      - '9.x_{name}'
+    <<: *common_parameters
+
+
+- project:
     name: SR-IOV_Cinder
     weight: 1
     env_changer: _nfv
