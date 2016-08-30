@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 ISO_NAME=$(ls "$ISO_DIR")
 ENV_NAME=MOS_CI_"${{ISO_NAME}}${{ENV_CHANGER}}"
 ISO_ID=$(echo "$ISO_NAME" | cut -f4 -d-)
