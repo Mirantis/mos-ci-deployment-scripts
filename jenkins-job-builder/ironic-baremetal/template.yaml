@@ -1,0 +1,159 @@
+# Macros
+- builder:
+    name: erase_environments
+    builders:
+      - conditional-step:
+          condition-kind: boolean-expression
+          condition-expression: ${{ENV,var="REDEPLOY"}}
+          steps:
+            - shell:
+                !include-raw: ../shell_scripts/template_scripts/erase_ci_envs.sh
+
+- builder:
+    name: set_base_env_variables
+    builders:
+      - shell:
+          !include-raw: ../shell_scripts/template_scripts/env_variables_export.sh
+
+- builder:
+    name: get_plugins
+    builders:
+      - inject:
+          properties-file: "$ENV_INJECT_PATH"
+      - shell:
+          !include-raw: ../shell_scripts/get_plugins.sh
+
+- builder:
+    name: deploy_env
+    builders:
+      - conditional-step:
+          condition-kind: boolean-expression
+          condition-expression: ${ENV,var="REDEPLOY"}
+          steps:
+            - inject:
+                properties-file: "$ENV_INJECT_PATH"
+            - shell:
+                !include-raw: ../shell_scripts/deploy_env_from_template.sh
+
+- builder:
+    name: setup_baremetal_bridge
+    builders:
+      - inject:
+          properties-file: "$ENV_INJECT_PATH"
+      - shell: |
+          #!/usr/bin/env bash
+          BAREMETAL_IFACE=em2
+          IRONIC_NET=${ENV_NAME}_ironic
+          IRONIC_BRIDGE=$(virsh net-dumpxml $IRONIC_NET | xmllint --xpath 'string(//bridge/@name)' - )
+
+          sudo brctl addif $IRONIC_BRIDGE $BAREMETAL_IFACE
+          sudo brctl stp $IRONIC_BRIDGE off
+
+          env > "$ENV_INJECT_PATH"
+
+
+- builder:
+    name: teardown_baremetal_bridge
+    builders:
+      - inject:
+          properties-file: "$ENV_INJECT_PATH"
+      - shell: |
+          #!/usr/bin/env bash
+          sudo brctl delif $IRONIC_BRIDGE $BAREMETAL_IFACE
+
+- builder:
+    name: run_tox_tests
+    builders:
+      - inject:
+          properties-file: "$ENV_INJECT_PATH"
+      - shell:
+          !include-raw: ../shell_scripts/template_scripts/tox_based_test_runner.sh
+
+- builder:
+    name: report_to_testrail
+    builders:
+      - shell:
+          !include-raw: ../shell_scripts/template_scripts/testrail_reporter.sh
+
+
+# Job template
+
+- job-template:
+    name: '9.x_ironic_{deploy_template}'
+    display_name: '{obj:name}'
+
+    defaults: common_job_settings
+    weight: 1
+
+    builders:
+        - erase_environments:
+            dump: # just for escaping {{}}
+        - set_base_env_variables:
+            dump: # just for escaping {{}}
+        - get_plugins
+        - deploy_env
+        - critical-block-start
+        - setup_baremetal_bridge
+        - run_tox_tests:
+            tox_test_name: ironic
+        - teardown_baremetal_bridge
+        - critical-block-end
+        - report_to_testrail:
+            dump: # just for escaping {{}}
+
+    wrappers:
+      - ansicolor
+      - inject-passwords:
+          global: true
+          mask-password-params: true
+      - inject:
+          properties-content: |
+              ENV_CHANGER={env_changer}
+              CONFIG_PATH={config_path}
+              TEST_GROUP={testrail_env_description}
+              ISO_DIR=/home/jenkins/iso/mos_9.0
+              ENV_INJECT_PATH=env_inject_{name}.properties
+              IRONIC_NODES_CONFIG=/home/jenkins/src/ironic_nodes_{baremetal_node_group}.yaml
+              IRONIC_IMAGE_URL=/home/jenkins/images/dib-user-image-dkms-grub.raw
+      - exclusion:
+          resources:
+              - BAREMETAL_NODES_GROUP_{baremetal_node_group}
+
+
+    publishers:
+        - common_publisher
+        - archive:
+            artifacts: 'mos-integration-tests/snapshots/*'
+            allow-empty: 'true'
+            fingerprint: true
+
+    parameters:
+      - bool:
+          name: REDEPLOY
+          default: true
+          description: "Erase and deploy new environment"
+
+
+# Ironic tests
+
+- project:
+    name: ironic-tests
+    description: 'Ironic tests with baremetal nodes'
+    node: 'cz5443.bud.mirantis.net'
+    deploy_template:
+      - Ceph_DVR_Sahara_Ceilometer:
+          config_path: 'templates/tempest/ironic_ceph.yaml'
+          start_timer: '5 21 * * *'
+          env_changer: '_ceph'
+          baremetal_node_group: 1
+
+      - LVM_Cinder_DVR_Sahara_Ceilometer:
+          config_path: 'templates/tempest/ironic_cinder.yaml'
+          start_timer: '10 21 * * *'
+          env_changer: '_cinder'
+          baremetal_node_group: 2
+
+    display_name: 'Ironic_9.x_{deploy_template}'
+    testrail_env_description: 'Ironic_baremetal_{deploy_template}'
+    jobs:
+      - 9.x_ironic_{deploy_template}
