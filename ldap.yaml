@@ -1,0 +1,163 @@
+additional_domains: |
+    domain=keystone2.tld
+    user=cn=Administrator,cn=Users,dc=keystone2,dc=tld
+    group_id_attribute=cn
+    group_objectclass=group
+    user_objectclass=person
+    user_name_attribute=cn
+    password=qwerty123!!
+    user_allow_delete=False
+    group_allow_create=False
+    user_tree_dn=dc=keystone2,dc=tld
+    user_pass_attribute=userPassword
+    user_enabled_attribute=enabled
+    user_allow_create=False
+    user_allow_update=False
+    group_tree_dn=dc=keystone2,dc=tld
+    group_desc_attribute=description
+    user_filter=
+    group_allow_update=False
+    group_filter=
+    url=ldap://172.16.56.26
+    suffix=dc=keystone2,dc=tld
+    group_member_attribute=member
+    group_allow_delete=False
+    use_tls=False
+    query_scope=sub
+    group_name_attribute=cn
+    user_id_attribute=cn
+    ldap_proxy=true
+
+    domain=mirantis.tld
+    url=ldap://172.18.196.224
+    suffix=dc=mirantis,dc=tld
+    user=cn=admin,dc=mirantis,dc=tld
+    password=1111
+    query_scope=sub
+    user_tree_dn=dc=mirantis,dc=tld
+    user_objectclass=inetOrgPerson
+    user_id_attribute=cn
+    user_name_attribute=sn
+    user_pass_attribute=userPassword
+    user_enabled_attribute=enabled
+    user_allow_create=False
+    user_allow_update=False
+    user_allow_delete=False
+    user_filter=
+    group_tree_dn=dc=mirantis,dc=tld
+    group_objectclass=groupOfNames
+    group_id_attribute=cn
+    group_name_attribute=cn
+    group_desc_attribute=description
+    group_member_attribute=member
+    group_allow_create=False
+    group_allow_update=False
+    group_allow_delete=False
+    group_filter=
+    use_tls=True
+    ca_chain=-----BEGIN CERTIFICATE-----
+    MIIDRzCCAf+gAwIBAgIEVuklzDANBgkqhkiG9w0BAQsFADATMREwDwYDVQQDEwht
+    aXJhbnRpczAeFw0xNjAzMTYwOTIyMjBaFw0yNjAzMTQwOTIyMjBaMBMxETAPBgNV
+    BAMTCG1pcmFudGlzMIIBUjANBgkqhkiG9w0BAQEFAAOCAT8AMIIBOgKCATEAtvHJ
+    m7qJqoTp8XtUNYin1sQQK12bUTCKGo2Qdq8KCVFodnX8trAW7YNpMyyZ/eaKmkAJ
+    1Ta/SJl5j6KDJh2v2JwmwVZLYz6hXZraaNEZvaSe/N0a71s6C3io2oVyKPXSePgO
+    Agmv5DOYQLyGV8ccVHVQj0s//Q3Q88+KuMykGQO0l2LBo2z6cBrjDEkds+W34YeP
+    2ZQ2iFwT1GBcuog4CysFHdi0CYO40JUDNim+UP5EXOP+4f0T1JKbNGP7YnXyxm9d
+    /RPbiN8PDcgloa3F4mFKW3kkWMtbfcggM8HkPcNHbLerXYQ3vqUmIKC0PH27x7K9
+    Bn0THo8hTalDhMfpjgFfruyvtn0yXMwfAaxXxtvCjz8AiF5dLZlF/QFr/+j81PM6
+    R6IKmQpIn/UDWG1SAQIDAQABo0MwQTAPBgNVHRMBAf8EBTADAQH/MA8GA1UdDwEB
+    /wQFAwMHBAAwHQYDVR0OBBYEFH5Q4yw2+u170/e1+lZScOZ4WPaJMA0GCSqGSIb3
+    DQEBCwUAA4IBMQCRPexLKa5nQV02VbGEr5iRlk9WMD9yJ7ygbKZvKH8QM2d48tnf
+    1/1tgqIPwP5HbI1zCLXdVwQgFjaz+fIuGINZ5sqz+AB+av9KXoxVVwTp1b7vo34u
+    bfKP42ECzAAmBlqsS/RW2F2697oQlgdy8koeFsMxFL/DHHm/pEK7AZrJUi5ANCgQ
+    rpQ5ngdk6UYCcRAet5ccc6pkzewnxixVy4JHcmdHc0CpBGdCzD++QbTIruz8sSq0
+    Q7A4gCbJNx/FApqhrCeDS6tRiV81qONwy4GsPzo/6QuDHdKzUBsz19yRmJMiXCBU
+    KivmZtsndZ5Ce/1KV9OCjfJZ6MpDE+OCegAsiD1MGeiBU9nKT3g2PpZBMHBP95EK
+    smMYTjyC1AGUSMThafp9nllfnRNurZSeU5GK
+    -----END CERTIFICATE-----
+ca_chain: |
+    -----BEGIN CERTIFICATE-----
+    MIIDNzCCAZ+gAwIBAgIMV2wFCgCodNwbbGRwMA0GCSqGSIb3DQEBCwUAMBQxEjAQ
+    BgNVBAMTCW9wZW5sZGFwMTAeFw0xNjA2MjMxNTQ5MzBaFw00MzExMDgxNTQ5MzBa
+    MCsxFTATBgNVBAMTDDE3Mi4xNi41Ni4yNzESMBAGA1UEChMJb3BlbmxkYXAxMIGf
+    MA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDEIkRtXY/fGinlvrO01IQQFDENKtYh
+    zxzHdFxnb/fUuU/UCns82JwJJ0Ra7XojY2O/X2eQoEP5UDSqYXirTQRDmq2MDswX
+    MsCB50JV2uWMFGoNIlsWhX6Ius+dM/jAJtXuPIi+09em+6zociCssSBtiGBfwwZe
+    l+LaaCsO79t+ZwIDAQABo3YwdDAMBgNVHRMBAf8EAjAAMBMGA1UdJQQMMAoGCCsG
+    AQUFBwMBMA8GA1UdDwEB/wQFAwMHoAAwHQYDVR0OBBYEFF7LYi8IMQXQJWZg1Wc7
+    Y/+tWsNCMB8GA1UdIwQYMBaAFGpx2fdW6TSYycKPIE/sGf3L3EN3MA0GCSqGSIb3
+    DQEBCwUAA4IBgQBo2IqcUOAUt2agGYrXZPAuwhy6xJhJdGrFgBQ2025mkuUR1LgS
+    t+0RfD90D7jHE2VoeZD6IomTn6KaIbgM1/dkgwZQ0IdKrapQ4QbPzvuNJD8bnHYj
+    ou5l7PK6cwAOAPzOcmjrHLZuZHlbQw1XnmHjkZ4lc3IElXPWWu8KlUck5/JPWAqW
+    vn9QrIFoI5p+wsTBWAmtDrRIplvPX/fjy6l3Mfz6P53w3Y3+DWZJ24wuaIQweR6j
+    iI/UGNgu66/OFd8iRmzAs19CHhfQTPY4xCZ0sBjCxOJ5efGbT/AIdg1A0Tb9UyCT
+    Z8no8/dk7O0n+vEXVtgtGj/+mfSSj9nOOZ4QoOHVZycTRUX0yBG/UllHchWYhEc9
+    pz+Fz7QyurmHVNg7zSt/5V1biTiSTwOXIWFXFHQ+2fDT0oKewfbBiYhhpqfNMRkj
+    8zcBLeEVIgDqUYroLLDP7Ul5bBjb6jonoLorFJNwjqUte9WPZn+h4yrXNqqVNL7a
+    mUWq4Agp+yIYt/0=
+    -----END CERTIFICATE-----
+chase_referrals: 'False'
+domain: openldap1.tld
+group_desc_attribute: description
+group_filter: ''
+group_id_attribute: cn
+group_member_attribute: member
+group_name_attribute: cn
+group_objectclass: groupOfNames
+group_tree_dn: dc=openldap1,dc=tld
+ldap_proxy: false
+ldap_proxy_custom_conf: |
+  config_for=base_config
+  include         /etc/ldap/schema/core.schema
+  include         /etc/ldap/schema/cosine.schema
+  include         /etc/ldap/schema/inetorgperson.schema
+  include         /etc/ldap/schema/nis.schema
+  modulepath /usr/lib/ldap
+  moduleload back_ldap
+  pidfile /var/run/slapd/slapd.pid
+  argsfile /var/run/slapd/slapd.args
+  #rebind-as-user
+  #loglevel 0
+  loglevel -1
+
+  config_for=keystone2.tld
+  database#         ldap
+  #its custom config
+  suffix "dc=keystone2,dc=tld"
+  readonly yes
+  # protocol-version 3
+  uri "ldap://172.16.56.26"
+  rootdn "dc=keystone2,dc=tld"#
+  idassert-bind   bindmethod=simple
+                  binddn="CN=Administrator,CN=Users,DC=keystone2,DC=tld"#
+                  credentials="qwerty123!!"
+                  mode=none
+  #               idassert-authzFrom "*"
+
+  config_for=mirantis.tld
+  database ldap
+  #its custom# config
+  suffix "dc=mirantis,dc=tld"
+  readonly yes
+  protocol-version 3
+  # uri "ldap://172.18.196.224"
+  rootdn "dc=mirantis,dc=tld"
+  idassert-bind#  bindmethod=simple
+                  binddn="cn=admin,dc=mirantis,dc=tld"#
+                  credentials="1111"
+                  mode=none
+  idassert-authzFrom#
+page_size: '0'
+password: qwerty123!
+query_scope: sub
+suffix: dc=openldap1,dc=tld
+url: ldap://172.16.56.27
+use_tls: true
+user: cn=admin,dc=openldap1,dc=tld
+user_enabled_attribute: enabled
+user_filter: ''
+user_id_attribute: cn
+user_name_attribute: sn
+user_objectclass: inetOrgPerson
+user_pass_attribute: userPassword
+user_tree_dn: dc=openldap1,dc=tld

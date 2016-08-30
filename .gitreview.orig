@@ -1,0 +1,12 @@
+<<<<<<< 87f3442e5693e00ad0ff253812c019dd1a0b205e
++[gerrit]
++host=review.gerrithub.io
++port=29418
++project=Mirantis/mos-ci-deployment-scripts.git
++defaultbranch=stable/9.0
+=======
+[gerrit]
+host=review.gerrithub.io
+port=29418
+project=Mirantis/mos-ci-deployment-scripts.git
+>>>>>>> Add .gitreview config file
