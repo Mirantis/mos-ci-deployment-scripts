@@ -262,7 +262,7 @@
     display_name: '{milestone}_{name}'
     tox_test_name: fuel-ldap
     nova_quotas: "FALSE"
-    ldap_config_file: plugins_config/ldap_without_proxy.yaml
+    ldap_config_file: ../plugins_config/ldap_without_proxy.yaml
     jobs:
       - '9.x_{name}'
     <<: *common_parameters

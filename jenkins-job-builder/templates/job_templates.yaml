@@ -312,7 +312,7 @@
     name: '9.x_{name}'
 
     defaults: common_job_settings
-    ldap_config_file: plugins_config/ldap_multidomains.yaml
+    ldap_config_file: ../plugins_config/ldap_multidomains.yaml
 
     parameters:
         - common_parameters
