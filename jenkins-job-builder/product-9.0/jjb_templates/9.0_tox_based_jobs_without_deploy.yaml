@@ -4,6 +4,8 @@
     tox_properties: ''
     milestone: '9.1'
     suite: '[{milestone}][MOSQA] Automated Cloud Testing'
+    jobs:
+      - '9.x_wo_deploy_{name}'
 
 - project:
     name: keystone
@@ -17,6 +19,8 @@
     description: Keystone tests
     display_name: 9.0_Keystone_VLAN
     tox_test_name: keystone
+    jobs:
+      - '9.x_wo_deploy_{name}'
     <<: *common_parameters
 
 - project:
@@ -31,6 +35,8 @@
     description: Object Storage tests for Swift
     display_name: 9.0_Object_Storage(Swift)
     tox_test_name: object_storage
+    jobs:
+      - '9.x_wo_deploy_{name}'
     <<: *common_parameters
 
 - project:
@@ -45,6 +51,8 @@
     description: Object Storage tests for RadosGW
     display_name: 9.0_Object_Storage(RadosGW)
     tox_test_name: object_storage
+    jobs:
+      - '9.x_wo_deploy_{name}'
     <<: *common_parameters
 
 - project:
@@ -60,6 +68,8 @@
     display_name: 9.0_Cinder_Swift
     test_path: mos_tests/cinder
     tox_test_name: cinder
+    jobs:
+      - '9.x_wo_deploy_{name}'
     <<: *common_parameters
 
 - project:
@@ -75,6 +85,8 @@
     display_name: 9.0_Cinder_Ceph
     test_path: mos_tests/cinder
     tox_test_name: cinder
+    jobs:
+      - '9.x_wo_deploy_{name}'
     <<: *common_parameters
 
 - project:
@@ -93,6 +105,8 @@
       - email:
           recipients: agalkin@mirantis.com ogubanov@mirantis.com
           notify-every-unstable-build: true
+    jobs:
+      - '9.x_wo_deploy_{name}'
     <<: *common_parameters
 
 - project:
@@ -107,6 +121,8 @@
     description: Glare tests
     display_name: '9.0_{name}'
     tox_test_name: glare
+    jobs:
+      - '9.x_wo_deploy_{name}'
     <<: *common_parameters
 
 - project:
@@ -121,6 +137,8 @@
     description: Glare tests
     display_name: '9.0_{name}'
     tox_test_name: glare
+    jobs:
+      - '9.x_wo_deploy_{name}'
     <<: *common_parameters
 
 - project:
@@ -135,6 +153,8 @@
     description: Failover tests
     display_name: 9.0_Failover_VLAN
     tox_test_name: failover
+    jobs:
+      - '9.x_wo_deploy_{name}'
     <<: *common_parameters
 
 - project:
@@ -149,6 +169,8 @@
     description: Heat tests
     display_name: 9.0_Heat
     tox_test_name: heat
+    jobs:
+      - '9.x_wo_deploy_{name}'
     <<: *common_parameters
 
 - project:
@@ -163,4 +185,6 @@
     description: Heat tests
     display_name: 9.0_Heat_Ceph
     tox_test_name: heat
+    jobs:
+      - '9.x_wo_deploy_{name}'
     <<: *common_parameters
