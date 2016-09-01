@@ -181,3 +181,7 @@ template:
 plugins:
   - ldap:
       config_file: !os_env LDAP_CONFIG_FILE, plugins_config/ldap.yaml
+
+overrides:
+  attributes:
+    '**/propagate_task_deploy/value': True

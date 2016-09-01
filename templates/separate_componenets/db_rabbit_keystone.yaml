@@ -166,3 +166,7 @@ plugins:
   - detach-database:
   - detach-keystone:
   - detach-rabbitmq:
+
+overrides:
+  attributes:
+    '**/propagate_task_deploy/value': True
