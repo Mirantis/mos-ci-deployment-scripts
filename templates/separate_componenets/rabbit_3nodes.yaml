@@ -155,3 +155,7 @@ template:
 
 plugins:
   - detach-rabbitmq:
+
+overrides:
+  attributes:
+    '**/propagate_task_deploy/value': True
