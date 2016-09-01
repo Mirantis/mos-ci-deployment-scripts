@@ -127,7 +127,7 @@ class DeployEnv(ActionTest, BaseActions):
         for glob, value in replacements_dict.items():
             path = self._get_settings_path(dict_values, glob)
             logger.info('Set `{path}` to `{value}`'.format(path=path,
-                                                           value=dict_values))
+                                                           value=value))
             dpath.util.set(dict_values, path, value)
         return dict_values
 
