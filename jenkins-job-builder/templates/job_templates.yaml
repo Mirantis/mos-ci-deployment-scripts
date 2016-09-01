@@ -341,12 +341,6 @@
             name: TESTRAIL_TEMPEST
             default: "FALSE"
         - string:
-            name: FUEL_DEVOPS_VER
-            default: "{fuel_devops_ver}"
-        - string:
-            name: USE_IPMI
-            default: "{use_ipmi}"
-        - string:
             name: LDAP_CONFIG_FILE
             default: "{obj:ldap_config_file}"
 
@@ -367,6 +361,88 @@
             properties-file: "$ENV_INJECT_PATH"
         - shell:
             !include-raw: ../shell_scripts/template_scripts/tox_based_test_runner.sh
+        - inject:
+            properties-file: "$ENV_INJECT_PATH"
+        - shell:
+            !include-raw: ../shell_scripts/template_scripts/testrail_reporter.sh
+
+    wrappers:
+      - ansicolor
+      - inject-passwords:
+          global: true
+          mask-password-params: true
+
+
+    publishers:
+        - common_publisher
+        - archive:
+            artifacts: 'mos-integration-tests/snapshots/*'
+            allow-empty: 'true'
+            fingerprint: true
+
+- job-template:
+    name: '9.x_{name}_baremetal'
+
+    defaults: common_job_settings
+
+    disabled_var:
+
+    disabled: '{obj:disabled_var}'
+
+    parameters:
+        - common_parameters
+        - string:
+            name: ISO_DIR
+            default: "{iso_dir}"
+        - string:
+            name: ENV_CHANGER
+            default: '{env_changer}'
+        - string:
+            name: CONFIG_PATH
+            default: '{config_path}'
+        - string:
+            name: TEST_GROUP
+            default: '{test_group}'
+        - string:
+            name: SUITE
+            default: "{suite}"
+        - string:
+            name: MILESTONE
+            default: "{milestone}"
+        - string:
+            name: NOVA_QUOTAS_ENABLED
+            default: "{nova_quotas}"
+        - string:
+            name: TESTRAIL_TEMPEST
+            default: "FALSE"
+        - string:
+            name: FUEL_DEVOPS_VER
+            default: "{fuel_devops_ver}"
+        - string:
+            name: USE_IPMI
+            default: "{use_ipmi}"
+
+    builders:
+        - shell:
+            !include-raw: ../shell_scripts/template_scripts/erase_ci_envs.sh
+        - shell:
+            !include-raw: ../shell_scripts/template_scripts/env_variables_export.sh
+        - inject:
+            properties-file: "$ENV_INJECT_PATH"
+        - shell:
+            !include-raw-escape: ../shell_scripts/get_plugins.sh
+        - inject:
+            properties-file: "$ENV_INJECT_PATH"
+        - shell:
+            !include-raw: ../shell_scripts/deploy_env_from_template.sh
+        - inject:
+            properties-file: "$ENV_INJECT_PATH"
+        - shell:
+            !include-raw-escape: ../shell_scripts/template_scripts/get_fuel_master_ip.sh
+        - inject:
+            properties-file: "$ENV_INJECT_PATH"
+        - shell:
+            !include-raw: ../shell_scripts/template_scripts/tox_based_baremetal_test_runner.sh
         - inject:
             properties-file: "$ENV_INJECT_PATH"
         - shell:
