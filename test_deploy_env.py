@@ -118,7 +118,7 @@ class DeployEnv(ActionTest, BaseActions):
                     configs['{0}/**/{1}/value'.format(plugin_path_prefix,
                                                       k)] = v
             # Enable propagate_task_deploy for `ldap` plugin
-            if plugin_name == 'ldap':
+            if plugin_name in ('ldap', 'detach-rabbitmq'):
                 configs['**/propagate_task_deploy/value'] = True
             logger.info("{} plugin has been enabled.".format(plugin_name))
         self._update_cluster_attributes(configs)
