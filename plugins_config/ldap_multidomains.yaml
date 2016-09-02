@@ -1,44 +1,40 @@
 domain: openldap1
 suffix: dc=openldap1,dc=tld
-url: ldap://172.16.56.27
+url: ldap://176.74.221.80
 ca_chain: '-----BEGIN CERTIFICATE-----
 
-    MIIDNzCCAZ+gAwIBAgIMV2wFCgCodNwbbGRwMA0GCSqGSIb3DQEBCwUAMBQxEjAQ
+    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
 
-    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
+    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
 
-    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
+    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
 
-    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
+    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
 
-    zxzHdFxnb/fUuU/UCns82JwJJ0Ra7XojY2O/X2eQoEP5UDSqYXirTQRDmq2MDswX
+    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
 
-    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
+    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
 
-    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
+    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
 
-    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
+    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
 
-    Y/+tWsNCMB8GA1UdIwQYMBaAFGpx2fdW6TSYycKPIE/sGf3L3EN3MA0GCSqGSIb3
+    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
 
-    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
+    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
 
-    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
+    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
 
-    ou5l7PK6cwAOAPzOcmjrHLZuZHlbQw1XnmHjkZ4lc3IElXPWWu8KlUck5/JPWAqW
+    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
 
-    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
+    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
 
-    iI/UGNgu66/OFd8iRmzAs19CHhfQTPY4xCZ0sBjCxOJ5efGbT/AIdg1A0Tb9UyCT
-
-    Z8no8/dk7O0n+vEXVtgtGj/+mfSSj9nOOZ4QoOHVZycTRUX0yBG/UllHchWYhEc9
-
-    pz+Fz7QyurmHVNg7zSt/5V1biTiSTwOXIWFXFHQ+2fDT0oKewfbBiYhhpqfNMRkj
-
-    8zcBLeEVIgDqUYroLLDP7Ul5bBjb6jonoLorFJNwjqUte9WPZn+h4yrXNqqVNL7a
-
-    mUWq4Agp+yIYt/0=
-
+    boL7Eier+HCVpAPYGXovRkDX
+    
     -----END CERTIFICATE-----'
 chase_referrals: 'False'
 group_desc_attribute: description
@@ -51,7 +47,7 @@ group_tree_dn: dc=openldap1,dc=tld
 ldap_proxy: true
 ldap_proxy_custom_conf: ''
 page_size: '0'
-password: qwerty123!
+password: 1111
 query_scope: sub
 use_tls: true
 user: cn=admin,dc=openldap1,dc=tld
@@ -64,7 +60,7 @@ user_pass_attribute: userPassword
 user_tree_dn: dc=openldap1,dc=tld
 additional_domains: 'domain=openldap2
 
-    url=ldap://172.18.191.75
+    url=ldap://176.74.221.81
 
     suffix=dc=openldap2,dc=tld
 
@@ -121,9 +117,9 @@ additional_domains: 'domain=openldap2
 
     domain=AD2
 
-    url=ldap://172.16.56.26
+    url=ldap://176.74.221.85
 
-    user=cn=Administrator,cn=Users,dc=keystone2,dc=tld
+    user=cn=admin,cn=Users,dc=keystone2,dc=tld
 
     group_id_attribute=cn
 
@@ -133,7 +129,7 @@ additional_domains: 'domain=openldap2
 
     user_name_attribute=cn
 
-    password=qwerty123!!
+    password=qwerty123!
 
     user_allow_delete=False
 
