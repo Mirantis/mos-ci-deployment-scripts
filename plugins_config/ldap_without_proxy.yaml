@@ -47,7 +47,7 @@ group_tree_dn: dc=openldap1,dc=tld
 ldap_proxy: false
 ldap_proxy_custom_conf: ''
 page_size: '0'
-password: 1111
+password: '1111'
 query_scope: sub
 use_tls: true
 user: cn=admin,dc=openldap1,dc=tld
