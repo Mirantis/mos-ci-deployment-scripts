@@ -78,11 +78,18 @@
     builders:
       - ironic_venv:
           command: |
-            export BAREMETAL_IFACE=em2
-            IRONIC_NET=${ENV_NAME}_ironic
+            export BAREMETAL_HW_BRIDGE=br-hw
+            export BAREMETAL_LINK_1=fuelv_{baremetal_node_group}_1
+            export BAREMETAL_LINK_2=fuelv_{baremetal_node_group}_2
+            IRONIC_NET=${{ENV_NAME}}_ironic
             export IRONIC_BRIDGE=$(virsh net-dumpxml $IRONIC_NET | xmllint --xpath 'string(//bridge/@name)' - )
 
-            sudo brctl addif $IRONIC_BRIDGE $BAREMETAL_IFACE
+            sudo ip link add $BAREMETAL_LINK_1 type veth peer name $BAREMETAL_LINK_2
+            sudo ip link set dev $BAREMETAL_LINK_1 up
+            sudo ip link set dev $BAREMETAL_LINK_2 up
+            sudo brctl addif $BAREMETAL_HW_BRIDGE $BAREMETAL_LINK_1
+            sudo brctl addif $IRONIC_BRIDGE $BAREMETAL_LINK_2
+
             sudo brctl stp $IRONIC_BRIDGE off
 
 - builder:
@@ -90,7 +97,7 @@
     builders:
       - ironic_venv:
           command: |
-            sudo brctl delif $IRONIC_BRIDGE $BAREMETAL_IFACE
+            sudo ip link del dev $BAREMETAL_LINK_1
 
 - builder:
     name: run_tox_tests
