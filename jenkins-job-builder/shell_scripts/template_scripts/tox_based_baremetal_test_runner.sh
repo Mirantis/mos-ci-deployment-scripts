@@ -14,6 +14,9 @@ printenv || true
 # workaround for bug
 export UBUNTU_QCOW2_URL=https://cloud-images.ubuntu.com/trusty/current/trusty-server-cloudimg-amd64-disk1.img
 
+FUEL_MASTER_MAC=$(virsh domiflist ${ENV_NAME}_admin | grep -m1 network | awk '{ print $5 }')
+FUEL_MASTER_IP=$(ip neigh | grep ${FUEL_MASTER_MAC} | awk '{ print $1 }')
+
 tox -e {tox_test_name} -- -v -E "$ENV_NAME" -I "$FUEL_MASTER_IP"
 deactivate
 
