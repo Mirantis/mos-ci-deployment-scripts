@@ -20,7 +20,7 @@
     ceph_skip_tests: 'FALSE'
     ceph_rados: 'FALSE'
     destroy_env: 'FALSE'
-    node: Slave-srv137
+    node: Slave-srv79
     <<: *common_parameters
 
 - project:
@@ -35,7 +35,7 @@
     ceph_skip_tests: 'TRUE'
     ceph_rados: 'TRUE'
     destroy_env: 'FALSE'
-    node: Slave-srv139
+    node: Slave-srv97
     <<: *common_parameters
 
 - project:
@@ -50,7 +50,7 @@
     ceph_skip_tests: 'FALSE'
     ceph_rados: 'FALSE'
     destroy_env: 'FALSE'
-    node: Slave-srv138
+    node: Slave-srv148
     <<: *common_parameters
 
 - project:
