@@ -1,0 +1,8 @@
+Code-Review+1: Alexander Petrov <apetrov@mirantis.com>
+Code-Review+2: Alexander Gubanov <greatehop@gmail.com>
+Verified+1: Alexander Gubanov <greatehop@gmail.com>
+Submitted-by: Alexander Gubanov <greatehop@gmail.com>
+Submitted-at: Tue, 06 Sep 2016 06:34:15 -0400
+Reviewed-on: https://review.gerrithub.io/290278
+Project: Mirantis/mos-ci-deployment-scripts
+Branch: refs/heads/stable/9.0
