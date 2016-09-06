@@ -53,7 +53,8 @@
         - set_base_env_variables
         - deploy_env
         - critical-block-start
-        - setup_baremetal_bridge
+        - setup_baremetal_bridge:
+            baremetal_node_group: '{baremetal_node_group}'
         - run_tox_tests:
             tox_test_name: ironic
         - teardown_baremetal_bridge
