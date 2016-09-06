@@ -64,3 +64,23 @@
     jobs:
       - '9.x_{name}_baremetal'
     <<: *common_parameters
+
+- project:
+    name: 9.0_murano_baremetal_application_tests
+    weight: 1
+    env_changer: _murano_baremetal
+    env_inject_file: env_inject_murano_baremetal.properties
+    config_path: templates/murano_baremetal/default.yaml
+    test_group: Murano(application,baremetal)
+    start_timer: "5 21 * * *"
+    node: Slave-srv140
+    description: Murano application baremetal tests
+    display_name: 9.0_murano_baremetal_application_tests
+    tox_test_name: murano-docker_k8s
+    nova_quotas: "TRUE"
+    milestone: '9.0'
+    suite: '[{milestone}][MOSQA] Automated Cloud Testing'
+
+    jobs:
+      - '9.0_murano_baremetal_application_tests'
+    <<: *common_parameters

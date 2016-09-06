@@ -27,10 +27,17 @@ then
     export TESTRAIL_MILESTONE="$MILESTONE"
 fi
 
+if [[ -z "$TESTRAIL_PLAN_NAME" ]];
+then
+    TESTRAIL_PLAN_NAME="$MILESTONE snapshot $SNAPSHOT_ID"
+else
+    TESTRAIL_PLAN_NAME="$TESTRAIL_PLAN_NAME $(date +%m/%d/%Y)"
+fi
+
 if [[ "$TESTRAIL_TEMPEST" == 'TRUE' ]] ;
 then
     report -v \
-    --testrail-plan-name "$MILESTONE snapshot $SNAPSHOT_ID" \
+    --testrail-plan-name "$TESTRAIL_PLAN_NAME" \
     --env-description "$TEST_GROUP" \
     --testrail-url  "$TESTRAIL_URL" \
     --testrail-user  "$TESTRAIL_USER" \
@@ -46,7 +53,7 @@ then
 elif [[ "$HORIZON_UI_TESTS" == 'TRUE' ]] ;
 then
     report -v \
-    --testrail-plan-name "$MILESTONE snapshot $SNAPSHOT_ID" \
+    --testrail-plan-name "$TESTRAIL_PLAN_NAME" \
     --env-description "$TEST_GROUP" \
     --testrail-url  "$TESTRAIL_URL" \
     --testrail-user  "$TESTRAIL_USER" \
@@ -60,7 +67,7 @@ then
     "$REPORT_FILE"
 else
     report -v \
-    --testrail-plan-name "$MILESTONE snapshot $SNAPSHOT_ID" \
+    --testrail-plan-name "$TESTRAIL_PLAN_NAME" \
     --env-description "$TEST_GROUP" \
     --testrail-url  "$TESTRAIL_URL" \
     --testrail-user  "$TESTRAIL_USER" \
