@@ -1,0 +1,79 @@
+- test_run_defaults: &test_run_defaults
+    name: test_run_defaults
+    current-parameters: true
+    kill-phase-on: NEVER
+    property-file: "$ENV_INJECT_PATH"
+
+#
+# Template used to define the tests validating the StackLight plugins at
+# periodic intervals (eg daily)
+#
+- job-template:
+    name: '{version}.stacklight.{plugin_branch}.runner'
+    node: '{node_label}'
+    project-type: multijob
+
+    triggers:
+      - timed: '{timer}'
+
+    description: "Run all required StackLight tests"
+
+    builders:
+      - multijob:
+          name: 'Prepare all slaves'
+          condition: SUCCESSFUL
+          projects:
+            - name: '9.x.stacklight.master.prepare.all_slaves'
+              current-parameters: true
+              property-file: "$ENV_INJECT_PATH"
+      - update-snapshot-variables
+      - save-start-date
+      - multijob:
+          name: 'Run the system tests'
+          condition: COMPLETED
+          timeout: '480'
+
+          projects:
+            - name: '{version}.stacklight.{plugin_branch}.prepare_slaves_3_single_tests'
+              <<: *test_run_defaults
+
+            - name: '{version}.stacklight.{plugin_branch}.prepare_slaves_5_single_tests'
+              <<: *test_run_defaults
+
+            - name: '{version}.stacklight.{plugin_branch}.prepare_slaves_9_single_tests'
+              <<: *test_run_defaults
+
+            - name: '{version}.stacklight.{plugin_branch}.dedicated_environment'
+              <<: *test_run_defaults
+
+            - name: '{version}.stacklight.{plugin_branch}.detached_plugins'
+              <<: *test_run_defaults
+
+            - name: '{version}.stacklight.{plugin_branch}.network_templates'
+              <<: *test_run_defaults
+
+            - name: '{version}.stacklight.{plugin_branch}.ldap'
+              <<: *test_run_defaults
+
+            - name: '{version}.stacklight.{plugin_branch}.failover'
+              <<: *test_run_defaults
+
+    parameters:
+      - string:
+          name: ENV_PREFIX
+          default: '{version}.stacklight.{plugin_branch}'
+          description: 'Environment prefix used for systest'
+      - string:
+          name: ENV_INJECT_PATH
+          default: '{env_inject_path}'
+          description: 'File with common vars to inject for some jobs'
+      - string:
+          name: PLUGINS_DIR
+          default: '{plugins_dir}'
+          description: 'The directory where the plugins have been checked out'
+
+    wrappers:
+      - timeout:
+          fail: false
+          timeout: 360
+          write-description: false

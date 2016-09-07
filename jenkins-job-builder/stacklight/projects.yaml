@@ -1,0 +1,85 @@
+- project:
+    name: 9.x.stacklight.runner
+    node_label: Slave-srv69
+    defaults: stacklight_global
+
+    version:
+      - 9.x:
+          timer: '5 21 * * 1,5'
+
+    plugin_branch:
+      - master
+
+    plugin_owner: 'StackLight team'
+
+    jobs:
+      - '{version}.stacklight.{plugin_branch}.runner'
+
+    fuel_qa_branch: 'stable/mitaka'
+
+- project:
+    name: 9.x.stacklight.tests
+    node_label: Slave-srv69
+    defaults: stacklight_global
+
+    version:
+      - 9.x:
+          fuel_qa_branch: '{fuel-branch-9_0}'
+
+    plugin_branch:
+      - master
+
+    jobs:
+      - '{version}.stacklight.{plugin_branch}.{test_group_name}':
+          test_group_name: 'prepare_slaves_3_single_tests'
+          tests:
+              - "deploy_toolchain_with_reduced_footprint"
+              - "deploy_toolchain_with_https"
+              - "deploy_toolchain_neutron_vxlan_l2pop_dvr"
+              # - "toolchain_createmirror_setup_repos"
+              # - "check_toolchain_after_maintenance_update"
+
+      - '{version}.stacklight.{plugin_branch}.{test_group_name}':
+          test_group_name: 'prepare_slaves_5_single_tests'
+          tests: "deploy_toolchain_neutron_vxlan_l3ha"
+
+      - '{version}.stacklight.{plugin_branch}.{test_group_name}':
+          test_group_name: "prepare_slaves_9_single_tests"
+          tests:
+              - "deploy_toolchain_ha_ceph_backend"
+              - "deploy_toolchain_ha_platform_components"
+              - "add_remove_toolchain_node"
+
+      - '{version}.stacklight.{plugin_branch}.{test_group_name}':
+          test_group_name: 'dedicated_environment'
+          tests: 'dedicated_environment'
+      - '{version}.stacklight.{plugin_branch}.{test_group_name}':
+          test_group_name: 'detached_plugins'
+          tests: 'detached_plugins'
+      - '{version}.stacklight.{plugin_branch}.{test_group_name}':
+          test_group_name: 'network_templates'
+          tests: 'network_templates'
+      - '{version}.stacklight.{plugin_branch}.{test_group_name}':
+          test_group_name: 'ldap'
+          tests: 'ldap'
+      - '{version}.stacklight.{plugin_branch}.{test_group_name}':
+          test_group_name: 'failover'
+          tests:
+              - "shutdown_influxdb_grafana_node_in_toolchain"
+              - "shutdown_elasticsearch_kibana_node_in_toolchain"
+              - "shutdown_infrastructure_alerting_node_in_toolchain"
+
+- project:
+    name: 9.x.stacklight.master.prepare.all_slaves
+    node_label: Slave-srv69
+    defaults: stacklight_global
+
+    version:
+      - 9.x:
+          iso_magnet_link: release-9.0
+          detached_plugin_branch: '{fuel-branch-9_0}'
+    plugin_branch: master
+    detached_plugin_branch: master
+
+    jobs:
+      - '{version}.stacklight.{plugin_branch}.prepare.all_slaves'

@@ -1,0 +1,47 @@
+- defaults:
+    name: stacklight_global
+    description: 'Do not edit this job through the web!'
+    project-type: freestyle
+
+    fuel-branch-8_0: 'stable/8.0'
+    fuel-branch-9_0: 'stable/mitaka'
+    fuel-branch-10_0: 'master'
+
+    # Default refspec fetched from fuel-plugins
+    fuel_plugins_refspec: refs/heads/master
+
+    # Use fuel-qa as standard test framework
+    test_framework_url: 'https://github.com/openstack/fuel-qa'
+
+    # Default framework branch
+    test_framework_branch: master
+
+    # Default additional properties used in deployment tests
+    test_properties: ''
+
+    # Default directory inside git repository with plugin code
+    plugin_dir: 'plugin'
+
+    # Additional ENV variables for injecting
+    plugin_custom_variables: ''
+
+    # Override default plugin release version, with current date
+    # timestamp
+    plugin_release_timestamp: false
+
+    env_inject_path: '/home/jenkins/workspace/stacklight-build.jenkins-injectfile'
+
+    plugins_dir: '/home/jenkins/workspace/plugins'
+
+    # Global branch definitions, these variables should be used
+    # in place of direct branch names
+
+    timer: ''
+    # plugin-deploy-test default timeout
+    timeout: 360
+
+    logrotate:
+      daysToKeep: -1
+      numToKeep: 10
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
