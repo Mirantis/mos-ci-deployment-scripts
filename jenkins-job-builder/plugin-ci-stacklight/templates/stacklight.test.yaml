@@ -1,0 +1,80 @@
+#
+# Template used to test the deployment of the StackLight toolchain
+#
+- job-template:
+    name: '{version}.stacklight.{plugin_branch}.{test_group}'
+    node: '{node_label}'
+
+    builders:
+      - iso-download
+      - inject:
+          # Define the default variables used for systest
+          properties-content: |
+            VENV_PATH=$WORKSPACE/venv_test
+            OPENSTACK_RELEASE=ubuntu
+            POOL_DEFAULT=10.109.0.0/16:24
+            CONNECTION_STRING=qemu+tcp://127.0.0.1:16509/system
+      - inject: # Overrides
+          properties-content: '{properties}'
+      - run-stacklight-tests
+      - report-to-testrail
+
+    description: "Run StackLight test(s) {tests}"
+
+    parameters:
+      - string:
+          description: Source for ISO
+          name: MAGNET_LINK
+          default: '{iso_magnet_link}'
+      - string:
+          name: FUELQA_GITREF
+          default: '{fuel_qa_branch}'
+          description: 'Git reference to the fuel-qa repository'
+      - string:
+          name: REPORT_FILE
+          default: 'nosetests.xml'
+      - string:
+          name: TEST_GROUP
+          description: 'Test group used in systest'
+          default: '{tests}'
+
+    properties:
+      - throttle:
+          max-per-node: 1
+          option: project
+      - heavy-job:
+          weight: 1
+
+    publishers:
+      - archive:
+          allow-empty: true
+          artifacts: '**/nosetests.xml,logs/*'
+          latest-only: false
+      - post-destroy-vms
+      - description-setter:
+          regexp: "'Description string: (.*)'"
+          regexp-for-failed: "'Description string: (.*)'"
+
+    scm:
+      - git:
+          basedir: ''
+          branches:
+            - 'master'
+          clean:
+            before: true
+          url: 'https://github.com/openstack/stacklight-integration-tests'
+
+    wrappers:
+      - inject-passwords:
+          global: true
+          mask-password-params: true
+      - timeout:
+          fail: false
+          timeout: 360
+          write-description: false
+
+    logrotate:
+      daysToKeep: 3
+      numToKeep: 60
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1

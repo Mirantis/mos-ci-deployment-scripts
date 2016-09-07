@@ -1,0 +1,64 @@
+- job-template:
+    name: '{version}.build_stacklight.{plugin_branch}.all_slaves'
+    description: 'Build StackLight plugins for all salves'
+    project-type: freestyle
+    node: Slave-srv69_agromov
+
+    parameters:
+      - node:
+          name: all_nodes
+          description: "Build StackLight plugins on all slaves"
+          default-slaves:
+              - Slave-srv69_agromov
+          allowed-slaves:
+              - Slave-srv69_agromov
+          ignore-offline-nodes: true
+          allowed-multiselect: true
+      - string:
+          name: PLUGINS_DIR
+          default: '{plugins_dir}'
+          description: 'The directory where the plugins have been checked out'
+
+    builders:
+        - build-stacklight-plugins
+
+    concurrent: true
+    retry-count: 2
+
+    logrotate:
+      daysToKeep: 2
+      numToKeep: 10
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+
+    publishers:
+      - workspace-cleanup:
+          fail-build: false
+
+    scm:
+      - fuel-plugins:
+          project-refspec: refs/heads/master
+      - fuel-plugin-repository:
+          project-basedir: "${{PLUGINS_DIR}}/fuel-plugin-elasticsearch-kibana"
+          project-name: 'elasticsearch-kibana'
+          project-branch: '{plugin_branch}'
+      - fuel-plugin-repository:
+          project-basedir: "${{PLUGINS_DIR}}/fuel-plugin-influxdb-grafana"
+          project-name: 'influxdb-grafana'
+          project-branch: '{plugin_branch}'
+      - fuel-plugin-repository:
+          project-basedir: "${{PLUGINS_DIR}}/fuel-plugin-lma-infrastructure-alerting"
+          project-name: 'lma-infrastructure-alerting'
+          project-branch: '{plugin_branch}'
+      - fuel-plugin-repository:
+          project-basedir: "${{PLUGINS_DIR}}/fuel-plugin-lma-collector"
+          project-name: 'lma-collector'
+          project-branch: '{plugin_branch}'
+      - fuel-plugin-repository:
+          project-basedir: "${{PLUGINS_DIR}}/fuel-plugin-detach-database"
+          project-name: 'detach-database'
+          project-branch: '{detached_plugin_branch}'
+      - fuel-plugin-repository:
+          project-basedir: "${{PLUGINS_DIR}}/fuel-plugin-detach-rabbitmq"
+          project-name: 'detach-rabbitmq'
+          project-branch: '{detached_plugin_branch}'

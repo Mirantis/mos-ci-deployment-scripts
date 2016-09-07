@@ -1,0 +1,29 @@
+- job:
+    name: 'erase_old_envs.stacklight.all_slaves'
+    project-type: freestyle
+    node: Slave-srv69_agromov
+    parameters:
+      - node:
+          name: all_nodes
+          description: "Erase old envs on all slaves"
+          default-slaves:
+              - Slave-srv69_agromov
+          allowed-slaves:
+              - Slave-srv69_agromov
+          ignore-offline-nodes: true
+          allowed-multiselect: true
+
+    builders:
+        - erase-old-envs
+
+    description: 'Erase old envs on all salves'
+    disabled: false
+    concurrent: true
+    browser: githubweb
+    retry-count: 3
+    logrotate:
+      daysToKeep: 1
+
+    publishers:
+      - workspace-cleanup:
+          fail-build: false

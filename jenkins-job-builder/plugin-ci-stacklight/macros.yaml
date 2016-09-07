@@ -1,0 +1,117 @@
+########################################################################
+# GIT sources and triggers
+########################################################################
+- scm:
+    name: fuel-plugins
+    scm:
+      - git:
+          basedir: 'fuel-plugins'
+          branches:
+            - master
+          url: 'https://github.com/openstack/fuel-plugins'
+          refspec: '{project-refspec}'
+
+- scm:
+    name: fuel-qa
+    scm:
+      - git:
+          basedir: 'fuel-qa'
+          branches:
+            - master
+          url: 'https://github.com/openstack/fuel-qa'
+
+- scm:
+    name: fuel-plugin-repository
+    scm:
+      - git:
+          basedir: '{project-basedir}'
+          branches:
+            - '{project-branch}'
+          url: 'https://github.com/openstack/fuel-plugin-{project-name}'
+
+# post-destroy-vms
+- publisher:
+    name: post-destroy-vms
+    publishers:
+    - post-tasks:
+      - matches:
+        - log-text: 'Build timed out'
+          operator: AND
+        script: |
+          #!/bin/bash
+
+          set -ex
+
+          source "${WORKSPACE}/${DOS_ENV_NAME_PROPS_FILE:=.dos_environment_name}"
+          source "${VENV_PATH}/bin/activate"
+          dos.py destroy "${ENV_NAME}"
+
+########################################################################
+# Builder used to download ISO
+#
+# This builder require additional variables described in script header
+#
+########################################################################
+
+# Copied from common/macros.yaml
+- builder:
+    name: iso-download
+    builders:
+      - shell:
+          !include-raw: builders/iso_download.sh
+      - inject:
+          properties-file: iso.setenvfile
+
+########################################################################
+# Builders used to prepare environment
+########################################################################
+
+- builder:
+    name: clear-property-file
+    builders:
+      - shell: |
+          #!/bin/bash
+          # clean up propery-file
+          > "${ENV_INJECT_PATH}"
+- builder:
+    name: erase-old-envs
+    builders:
+      - shell:
+          !include-raw: builders/erase_old_envs.sh
+
+- builder:
+    name: build-stacklight-plugins
+    builders:
+      - shell:
+          !include-raw: ./builders/build-stacklight-plugins.sh
+
+# Inject env variables to use MOS 9.x
+- builder:
+    name: update-snapshot-variables
+    builders:
+      - shell:
+          !include-raw: builders/get_snapshot_params.sh
+      - inject:
+          properties-file: ${ENV_INJECT_PATH}
+
+- builder:
+    name: run-stacklight-tests
+    builders:
+      - shell: |
+            #!/bin/bash
+            ./utils/fuel-qa-builder/prepare_env.sh
+      - shell:
+          !include-raw: ./builders/deploy-test-stacklight.sh
+
+- builder:
+    name: report-to-testrail
+    builders:
+      - inject:
+          # Define the default variables used for systest
+          properties-content: |
+            TESTRAIL_SUITE=StackLight V 1.0 Tool Chain
+            TESTRAIL_MILESTONE=StackLight 1.0
+            TESTRAIL_PROJECT=StackLight
+            TESTRAIL_URL=https://mirantis.testrail.com
+      - shell:
+          !include-raw: ./builders/testrail_reporter.sh

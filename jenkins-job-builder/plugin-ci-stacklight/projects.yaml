@@ -1,0 +1,119 @@
+- defaults:
+    name: plugins-defaults
+
+    # Redefine variables from global defaults
+    fuel-branch-8_0: '{fuel-branch-8_0}'
+    fuel-branch-9_0: '{fuel-branch-9_0}'
+    fuel-branch-10_0: '{fuel-branch-10_0}'
+
+    # Default refspec fetched from fuel-plugins
+    fuel_plugins_refspec: refs/heads/master
+
+    # Default node label
+    node_label: plugin-build
+
+    # Use fuel-qa as standard test framework
+    test_framework_url: 'https://github.com/openstack/fuel-qa'
+
+    # Default framework branch
+    test_framework_branch: master
+
+    # Default additional properties used in deployment tests
+    test_properties: ''
+
+    # Default directory inside git repository with plugin code
+    plugin_dir: 'plugin'
+
+    # Additional ENV variables for injecting
+    plugin_custom_variables: ''
+
+    # Override default plugin release version, with current date
+    # timestamp
+    plugin_release_timestamp: false
+
+    env_inject_path: '/home/jenkins/workspace/stacklight-build.jenkins-injectfile'
+
+    plugins_dir: '/home/jenkins/workspace/plugins'
+
+- project:
+    name: 9.x.stacklight.runner
+    node_label: Slave-srv69_agromov
+    defaults: plugins-defaults
+
+    version:
+      - 9.x:
+          iso_magnet_link: release-9.0
+          # timer: '5 21 * * *'
+          detached_plugin_branch: '{fuel-branch-9_0}'
+
+    plugin_branch:
+      - master
+
+    plugin_owner: 'StackLight team'
+
+    jobs:
+      - '{version}.stacklight.{plugin_branch}.runner'
+
+    fuel_qa_branch: 'stable/mitaka'
+
+- project:
+    name: 9.x.stacklight.tests
+    node_label: Slave-srv69_agromov
+    defaults: plugins-defaults
+
+    version:
+      - 9.x:
+          iso_magnet_link: release-9.0
+          fuel_qa_branch: '{fuel-branch-9_0}'
+
+    plugin_branch:
+      - master
+
+    jobs:
+      - '{version}.stacklight.{plugin_branch}.{test_group}':
+          test_group: 'prepare_slaves_3_single_tests'
+          tests:
+              - "deploy_toolchain_ha_ceph_backend"
+              - "deploy_toolchain_ha_platform_components"
+              - "add_remove_toolchain_node"
+
+      - '{version}.stacklight.{plugin_branch}.{test_group}':
+          test_group: 'prepare_slaves_5_single_tests'
+          tests: "deploy_toolchain_neutron_vxlan_l3ha"
+
+      - '{version}.stacklight.{plugin_branch}.{test_group}':
+          test_group: "prepare_slaves_9_single_tests"
+          tests:
+              - "deploy_toolchain_with_reduced_footprint"
+              - "deploy_toolchain_with_https"
+              - "deploy_toolchain_neutron_vxlan_l2pop_dvr"
+              - "toolchain_createmirror_setup_repos"
+              - "check_toolchain_after_maintenance_update"
+
+      - '{version}.stacklight.{plugin_branch}.{test_group}':
+          test_group: 'deploy_standalone_backends'
+          tests: 'deploy_standalone_backends'
+      - '{version}.stacklight.{plugin_branch}.{test_group}':
+          test_group: 'detached_plugins'
+          tests: 'detached_plugins'
+      - '{version}.stacklight.{plugin_branch}.{test_group}':
+          test_group: 'network_templates'
+          tests: 'network_templates'
+      - '{version}.stacklight.{plugin_branch}.{test_group}':
+          test_group: 'ldap'
+          tests: 'ldap'
+      - '{version}.stacklight.{plugin_branch}.{test_group}':
+          test_group: 'failover'
+          tests: 'failover'
+
+- project:
+    name: build_stacklight.all_slaves
+    node_label: Slave-srv69_agromov
+    defaults: plugins-defaults
+
+    version: 9.x
+    plugin_branch: master
+    detached_plugin_branch: master
+
+    jobs:
+      - '{version}.build_stacklight.{plugin_branch}.all_slaves'
