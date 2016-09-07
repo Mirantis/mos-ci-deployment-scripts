@@ -74,34 +74,42 @@ template:
     # Network pools used by the environment
       fuelweb_admin-pool01:
         net: *pool_default
-        params: {tag: 100}
+        params: {vlan_start: 100}
       public-pool01:
-        net: *pool_default
-        params: {tag: 823}
+        net: 172.16.176.0/27:27
+        params:
+          vlan_start: 823
+          ip_reserved:
+            gateway: +1
+            l2_network_device: +1  # l2_network_device will get this IP address
+          ip_ranges:
+            default: [+4, +8]  # public IP range for 'default' nodegroup name
+            floating: [+9, +30]
+
       management-pool01:
         net: *pool_default
-        params: {tag: 101}
+        params: {vlan_start: 101}
       storage-pool01:
         net: *pool_default
-        params: {tag: 102}
+        params: {vlan_start: 102}
       private-pool01:
         net: *pool_default
-        params: {tag: 103}
+        params: {vlan_start: 103}
       fuelweb_admin-pool02:
         net: *pool_default
-        params: {tag: 100}
+        params: {vlan_start: 100}
       public-pool02:
         net: *pool_default
-        params: {tag: 823}
+        params: {vlan_start: 823}
       management-pool02:
         net: *pool_default
-        params: {tag: 101}
+        params: {vlan_start: 101}
       storage-pool02:
         net: *pool_default
-        params: {tag: 102}
+        params: {vlan_start: 102}
       private-pool02:
         net: *pool_default
-        params: {tag: 103}
+        params: {vlan_start: 103}
 
     groups:
      - name: default
@@ -189,7 +197,7 @@ template:
                capacity: !os_env ADMIN_NODE_VOLUME_SIZE, 80
                format: qcow2
              - name: iso
-               source_image: !os_env ISO_PATH    # if 'source_image' set, then volume capacity is calculated from it's size
+               source_image: !os_env ISO_PATH
                format: raw
                device: cdrom   # for boot from usb - 'disk'
                bus: ide        # for boot from usb - 'usb'
