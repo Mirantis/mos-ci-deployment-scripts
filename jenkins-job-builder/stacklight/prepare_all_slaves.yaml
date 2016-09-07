@@ -1,0 +1,107 @@
+- job-template:
+    name: '{version}.stacklight.{plugin_branch}.prepare.all_slaves'
+    project-type: freestyle
+
+    parameters:
+      - node:
+          name: all_nodes
+          description: "Erase old envs on all slaves"
+          default-slaves:
+              - Slave-srv69
+              - Slave-srv148
+          allowed-slaves:
+              - Slave-srv69
+              - Slave-srv148
+          ignore-offline-nodes: true
+          allowed-multiselect: true
+      - string:
+          name: ENV_PREFIX
+          default: '{version}.stacklight.{plugin_branch}'
+          description: 'Used for ENV_NAME'
+      - string:
+          name: ENV_INJECT_PATH
+          default: '{env_inject_path}'
+          description: 'The file with common shell variables'
+      - string:
+          name: MAGNET_LINK
+          default: '{iso_magnet_link}'
+          description: Source for ISO
+      - string:
+          name: PLUGINS_DIR
+          default: '{plugins_dir}'
+          description: 'The directory where the plugins have been checked out'
+      - string:
+          name: PLUGINS_BRANCH
+          default: '{plugin_branch}'
+          description: 'The branch for all plugins except for detach'
+      - string:
+          name: ELASTICSEARCH_KIBANA_PATH
+          default: ''
+      - string:
+          name: INFLUXDB_GRAFANA_PATH
+          default: ''
+      - string:
+          name: LMA_INFRA_ALERTING_PATH
+          default: ''
+      - string:
+          name: LMA_COLLECTOR_PATH
+          default: ''
+      - string:
+          name: DETACH_DATABASE_PATH
+          default: ''
+      - string:
+          name: DETACH_RABBITMQ_PATH
+          default: ''
+
+    builders:
+        - erase-old-envs
+        - build-stacklight-plugins
+        - iso-download
+        - update-common-variables
+
+    description: 'Erase old envs on all salves'
+    disabled: false
+    concurrent: true
+    browser: githubweb
+    retry-count: 3
+
+    logrotate:
+      daysToKeep: 7
+      numToKeep: 20
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
+
+    publishers:
+      - save-openrc
+      - workspace-cleanup:
+          clean-if:
+            - success: false
+            - failure : false
+
+    scm:
+      - fuel-plugins:
+          project-refspec: refs/heads/master
+      - fuel-plugin-repository:
+          project-basedir: "${{PLUGINS_DIR}}/fuel-plugin-elasticsearch-kibana"
+          project-name: 'elasticsearch-kibana'
+          project-branch: "${{PLUGINS_BRANCH}}"
+      - fuel-plugin-repository:
+          project-basedir: "${{PLUGINS_DIR}}/fuel-plugin-influxdb-grafana"
+          project-name: 'influxdb-grafana'
+          project-branch: "${{PLUGINS_BRANCH}}"
+      - fuel-plugin-repository:
+          project-basedir: "${{PLUGINS_DIR}}/fuel-plugin-lma-infrastructure-alerting"
+          project-name: 'lma-infrastructure-alerting'
+          project-branch: "${{PLUGINS_BRANCH}}"
+      - fuel-plugin-repository:
+          project-basedir: "${{PLUGINS_DIR}}/fuel-plugin-lma-collector"
+          project-name: 'lma-collector'
+          project-branch: "${{PLUGINS_BRANCH}}"
+      - fuel-plugin-repository:
+          project-basedir: "${{PLUGINS_DIR}}/fuel-plugin-detach-database"
+          project-name: 'detach-database'
+          project-branch: '{detached_plugin_branch}'
+      - fuel-plugin-repository:
+          project-basedir: "${{PLUGINS_DIR}}/fuel-plugin-detach-rabbitmq"
+          project-name: 'detach-rabbitmq'
+          project-branch: '{detached_plugin_branch}'

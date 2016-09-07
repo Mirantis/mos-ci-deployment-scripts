@@ -1,0 +1,156 @@
+########################################################################
+# GIT sources and triggers
+########################################################################
+- scm:
+    name: fuel-plugins
+    scm:
+      - git:
+          basedir: 'fuel-plugins'
+          branches:
+            - master
+          url: 'https://github.com/openstack/fuel-plugins'
+          refspec: '{project-refspec}'
+
+- scm:
+    name: fuel-plugin-repository
+    scm:
+      - git:
+          basedir: '{project-basedir}'
+          branches:
+            - '{project-branch}'
+          url: 'https://github.com/openstack/fuel-plugin-{project-name}'
+
+
+- scm:
+    name: fuel-qa
+    scm:
+      - git:
+          basedir: 'fuel-qa'
+          branches:
+            - master
+          url: 'https://github.com/openstack/fuel-qa'
+
+
+# post-destroy-vms
+- publisher:
+    name: post-destroy-vms
+    publishers:
+    - post-tasks:
+      - matches:
+        - log-text: 'Build timed out'
+          operator: AND
+        script: |
+          #!/bin/bash
+
+          set -ex
+
+          source "${WORKSPACE}/${DOS_ENV_NAME_PROPS_FILE:=.dos_environment_name}"
+          source "${VENV_PATH}/bin/activate"
+          dos.py destroy "${ENV_NAME}"
+
+- publisher:
+    name: save-openrc
+    publishers:
+      - postbuildscript:
+          builders:
+            - shell: |
+                #!/bin/bash
+                OPENRC_FILE=/home/jenkins/workspace/openrc_stacklight
+                sed 's/^/export /' "${ENV_INJECT_PATH}" > "$OPENRC_FILE"
+                chmod 755 "$OPENRC_FILE"
+                echo "Use source $OPENRC_FILE command to export variables for tests."
+
+          script-only-if-succeeded: false
+          script-only-if-failed: false
+
+- publisher:
+    name: report-to-testrail
+    publishers:
+      - postbuildscript:
+          builders:
+            - shell:
+                !include-raw: ./builders/testrail_reporter.sh
+          script-only-if-succeeded: false
+          script-only-if-failed: false
+
+- publisher:
+    name: stacklight-results-send-email
+    publishers:
+      - email-ext:
+          recipients: agromov@mirantis.com, rpromyshlennikov@mirantis.com, vgusev@mirantis.com, musichenko@mirantis.com, stacklight@mirantis.com
+          send-to:
+            - recipients
+          unstable: true
+          first-failure: true
+          regression: true
+          failure: true
+          second-failure: true
+          still-failing: true
+          success: true
+          still-unstable: true
+
+          subject: '[Jenkins] $PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS'
+          body: |
+            $PROJECT_NAME - Build $BUILD_NUMBER - $BUILD_STATUS.
+            Check console output at $BUILD_URL to view the results.
+
+
+########################################################################
+# Builder used to download ISO
+#
+# This builder require additional variables described in script header
+#
+########################################################################
+
+# Copied from common/macros.yaml
+- builder:
+    name: iso-download
+    builders:
+      - shell:
+          !include-raw: builders/iso_download.sh
+      - inject:
+          properties-file: ${ENV_INJECT_PATH}
+
+########################################################################
+# Builders used to prepare environment
+########################################################################
+
+- builder:
+    name: save-start-date
+    builders:
+      - shell:
+          echo "START_DATE=$(date '+%m/%d/%Y %H:%M')" > ${ENV_INJECT_PATH}
+      - inject:
+          properties-file: ${ENV_INJECT_PATH}
+
+- builder:
+    name: erase-old-envs
+    builders:
+      - shell:
+          !include-raw: builders/erase_old_envs.sh
+
+- builder:
+    name: build-stacklight-plugins
+    builders:
+      - shell:
+          !include-raw: ./builders/build-stacklight-plugins.sh
+      - inject:
+          properties-file: ${ENV_INJECT_PATH}
+
+# Inject env variables to use MOS 9.x
+- builder:
+    name: update-common-variables
+    builders:
+      - shell:
+          !include-raw: builders/update_common_params.sh
+      - inject:
+          properties-file: ${ENV_INJECT_PATH}
+
+- builder:
+    name: run-stacklight-tests
+    builders:
+      - shell: |
+          #!/bin/bash
+          ./utils/fuel-qa-builder/prepare_env.sh
+      - shell:
+          !include-raw: ./builders/deploy-test-stacklight.sh

@@ -1,0 +1,92 @@
+#
+# Template used to test the deployment of the StackLight toolchain
+#
+- job-template:
+    name: '{version}.stacklight.{plugin_branch}.{test_group_name}'
+    node: '{node_label}'
+    description: "Run StackLight test(s) {tests}"
+    concurrent: true
+
+    parameters:
+      - string:
+          name: FUELQA_GITREF
+          default: '{fuel_qa_branch}'
+          description: 'Git reference to the fuel-qa repository'
+      - string:
+          name: TEST_GROUP
+          description: 'Test group used in systest'
+          default: '{tests}'
+      - string:
+          name: ENV_INJECT_PATH
+          default: '{env_inject_path}'
+          description: 'The file with common shell variables'
+      - string:
+          name: ENV_PREFIX
+          default: '{version}.stacklight.{plugin_branch}'
+          description: 'Used for ENV_NAME'
+      - string:
+          name: REPORT_POSTFIX
+          default: ''
+          description: 'The end of testrail test plan name'
+
+    builders:
+      - inject:
+          # Define the default variables used for systest
+          properties-file: "$ENV_INJECT_PATH"
+          properties-content: |
+            # TESTRAIL VARIABLES
+            TESTRAIL_SUITE=V 1.0 Tool Chain
+            TESTRAIL_MILESTONE=StackLight 1.0
+            TESTRAIL_PROJECT=StackLight
+            TESTRAIL_URL=https://mirantis.testrail.com
+            TESTRAIL_PLAN_NAME=StackLight plugin 1.0
+            REPORT_FILE=nosetests.xml
+            # TESTRAIL_ENV_DESCRIPTION var is different for each test
+            TESTRAIL_ENV_DESCRIPTION={test_group_name}
+      - inject: # Overrides
+          properties-content: '{properties}'
+      - run-stacklight-tests
+
+    properties:
+      - throttle:
+          max-per-node: 1
+          option: project
+      - heavy-job:
+          weight: 1
+
+    publishers:
+      - archive:
+          allow-empty: true
+          artifacts: '**/nosetests.xml,logs/*'
+          latest-only: false
+      - junit:
+          results: '**/nosetests.xml'
+      - post-destroy-vms
+      - report-to-testrail
+      - description-setter:
+            regexp: '^.*\[TestRun URL\] \s*(.*)'
+            description: '<a href="\1">TestRail Report URL</a>'
+
+    scm:
+      - git:
+          basedir: ''
+          branches:
+            - 'master'
+          clean:
+            before: true
+          url: 'https://github.com/openstack/stacklight-integration-tests'
+
+    wrappers:
+      - inject-passwords:
+          global: true
+          mask-password-params: true
+      - timeout:
+          fail: false
+          timeout: 360
+          write-description: false
+
+    logrotate:
+      daysToKeep: 7
+      numToKeep: 60
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
