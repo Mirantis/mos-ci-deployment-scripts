@@ -1,0 +1,91 @@
+#
+# Template used to test the deployment of the StackLight toolchain
+#
+- job-template:
+    name: '{version}.stacklight.{plugin_branch}.{test_group_name}'
+    node: '{node_label}'
+
+    builders:
+      - inject:
+          # Define the default variables used for systest
+          properties-content: |
+            VENV_PATH=$WORKSPACE/venv_test
+            OPENSTACK_RELEASE=ubuntu
+            POOL_DEFAULT=10.109.0.0/16:24
+            CONNECTION_STRING=qemu+tcp://127.0.0.1:16509/system
+            TESTRAIL_ENV_DESCRIPTION={test_group_name}
+      - inject: # Overrides
+          properties-content: '{properties}'
+      - inject:
+          property-file: "$ENV_INJECT_PATH"
+      - run-stacklight-tests
+
+    description: "Run StackLight test(s) {tests}"
+
+    parameters:
+      - string:
+          name: FUELQA_GITREF
+          default: '{fuel_qa_branch}'
+          description: 'Git reference to the fuel-qa repository'
+      - string:
+          name: REPORT_FILE
+          default: 'nosetests.xml'
+      - string:
+          name: TEST_GROUP
+          description: 'Test group used in systest'
+          default: '{tests}'
+
+    properties:
+      - throttle:
+          max-per-node: 1
+          option: project
+      - heavy-job:
+          weight: 1
+
+    publishers:
+      - archive:
+          allow-empty: true
+          artifacts: '**/nosetests.xml,logs/*'
+          latest-only: false
+      - report-to-testrail
+      - post-destroy-vms
+      - description-setter:
+          regexp: "'Description string: (.*)'"
+          regexp-for-failed: "'Description string: (.*)'"
+
+    scm:
+      - git:
+          basedir: ''
+          branches:
+            - 'master'
+          clean:
+            before: true
+          url: 'https://github.com/openstack/stacklight-integration-tests'
+
+    wrappers:
+      - inject:
+          properties-content: |
+              ADMIN_NODE_MEMORY=4096
+              ADMIN_NODE_CPU=2
+              SLAVE_NODE_MEMORY=5120
+              SELENIUM_HEADLESS=True
+
+              # TESTRAIL_ENV_DESCRIPTION var is generated in staclight.test.yaml as it is different for each test
+              TESTRAIL_SUITE=V 1.0 Tool Chain
+              TESTRAIL_MILESTONE=StackLight 1.0
+              TESTRAIL_PROJECT=StackLight
+              TESTRAIL_URL=https://mirantis.testrail.com
+              TESTRAIL_PLAN_NAME=StackLight [plugin-ci] <[9.1][StackLight] V 1.0 Tool Chain>
+      - inject-passwords:
+          global: true
+          mask-password-params: true
+      - timeout:
+          fail: false
+          timeout: 360
+          write-description: false
+
+    logrotate:
+      daysToKeep: 3
+      numToKeep: 60
+      artifactDaysToKeep: -1
+      artifactNumToKeep: -1
