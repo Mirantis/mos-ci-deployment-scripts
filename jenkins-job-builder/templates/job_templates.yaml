@@ -469,7 +469,7 @@
             fingerprint: true
 
 - job-template:
-    name: '9.0_murano_baremetal_application_tests'
+    name: '9.0_murano_baremetal_{name}_tests'
 
     defaults: common_job_settings
 
@@ -505,6 +505,15 @@
         - string:
             name: USE_IPMI
             default: "{use_ipmi}"
+        - string:
+            name: APPS_FROM_CATALOG
+            default: '{apps_from_catalog}'
+        - string:
+            name: DOCKER_IMAGE_URL
+            default: "http://storage.apps.openstack.org/images/debian-8-docker.qcow2"
+        - string:
+            name: K8S_IMAGE_URL
+            default: "http://storage.apps.openstack.org/images/debian8-x64-kubernetes.qcow2"
 
     builders:
         - shell:
