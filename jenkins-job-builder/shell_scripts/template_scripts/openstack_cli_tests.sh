@@ -1,5 +1,7 @@
 set +e
 
+dos.py revert-resume $ENV_NAME $SNAPSHOT_NAME
+
 FUEL_KEY=fuel.key
 SSH_OPTIONS='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
 BASE_DIR=$(pwd)
