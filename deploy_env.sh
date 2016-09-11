@@ -316,7 +316,7 @@ else
     popd
 fi
 
-pip install git+git://github.com/openstack/fuel-devops.git@2.9.20 --upgrade
+pip install git+git://github.com/openstack/fuel-devops.git@2.9.23 --upgrade
 pip install -r fuel-qa/fuelweb_test/requirements.txt --upgrade
 
 django-admin.py syncdb --settings=devops.settings
