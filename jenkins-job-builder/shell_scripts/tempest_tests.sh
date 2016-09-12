@@ -5,6 +5,9 @@
 # to avoid the 'sed' operations below
 rm -rf dockerfiles
 git clone https://review.fuel-infra.org/fuel-infra/dockerfiles
+cd dockerfiles/
+git checkout 74aa173da4f5155940a48d4ae0e244c854084edb
+cd ..
 
 ##### Define SSH Opts #####
 SSH_OPTS='-o UserKnownHostsFile=/dev/null \
