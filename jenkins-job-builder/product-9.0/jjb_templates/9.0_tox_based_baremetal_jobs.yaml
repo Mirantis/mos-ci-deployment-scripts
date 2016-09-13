@@ -66,21 +66,47 @@
     <<: *common_parameters
 
 - project:
-    name: 9.0_murano_baremetal_application_tests
+    name: apps_from_catalog
     weight: 1
     env_changer: _murano_baremetal
-    env_inject_file: env_inject_murano_baremetal.properties
     config_path: templates/murano_baremetal/default.yaml
-    test_group: Murano(application,baremetal)
-    start_timer: "5 21 * * *"
+    start_timer: "0 5 * * 3,7"
     node: Slave-srv140
-    description: Murano application baremetal tests
-    display_name: 9.0_murano_baremetal_application_tests
+    description: |
+      Murano K8S and Docker applications deployment tests.
+      All apps will be uploaded from the apps.openstack.org
+    display_name: 9.0_murano_baremetal_apps_from_catalog
     tox_test_name: murano-docker_k8s
     nova_quotas: "TRUE"
+    apps_from_catalog: "TRUE"
+
     milestone: '9.0'
     suite: '[{milestone}][MOSQA] Automated Cloud Testing'
+    test_group: Murano(apps from catalog, baremetal)
 
     jobs:
-      - '9.0_murano_baremetal_application_tests'
+      - '9.0_murano_baremetal_{name}'
+    <<: *common_parameters
+
+- project:
+    name: apps_from_repo
+    weight: 1
+    env_changer: _murano_baremetal
+    config_path: templates/murano_baremetal/default.yaml
+    start_timer: "0 17 * * *"
+    node: Slave-srv140
+    description: |
+      Murano K8S and Docker applications deployment tests.
+      All apps will be uploaded from https://github.com/openstack/k8s-docker-suite-app-murano
+    display_name: 9.0_murano_baremetal_apps_from_repo
+    tox_test_name: murano-docker_k8s
+    nova_quotas: "TRUE"
+    apps_from_catalog: "FALSE"
+
+    milestone: '9.0'
+    suite: '[{milestone}][MOSQA] Automated Cloud Testing'
+    test_group: Murano(apps from upstream repo, baremetal)
+
+    jobs:
+      - '9.0_murano_baremetal_{name}'
     <<: *common_parameters
