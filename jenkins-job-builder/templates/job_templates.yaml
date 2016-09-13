@@ -514,6 +514,9 @@
         - string:
             name: K8S_IMAGE_URL
             default: "http://storage.apps.openstack.org/images/debian8-x64-kubernetes.qcow2"
+        - string:
+            name: K8S_IMAGE_USER
+            default: "debian"
 
     builders:
         - shell:

@@ -26,6 +26,7 @@ printenv || true
 
 export MURANO_DOCKER_IMAGE_URL="$DOCKER_IMAGE_URL"
 export MURANO_KUBERNETES_IMAGE_URL="$K8S_IMAGE_URL"
+export MURANO_KUBERNETES_IMAGE_USER="$K8S_IMAGE_USER"
 
 tox -r -e {tox_test_name} -- -ra -v -E "$ENV_NAME" -I "$FUEL_MASTER_IP"
 deactivate
