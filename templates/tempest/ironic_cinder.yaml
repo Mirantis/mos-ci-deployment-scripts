@@ -13,7 +13,7 @@ template:
         roles: [controller, mongo]
       - count: 2
         roles: [compute, cinder]
-      - count: 2
+      - count: 1
         roles: [ironic]
     release: ubuntu
     settings:
@@ -58,11 +58,11 @@ template:
        - label: eth1
          l2_network_device: public
        - label: eth2
-         l2_network_device: management
-       - label: eth3
-         l2_network_device: private
-       - label: eth4
          l2_network_device: storage
+       - label: eth3
+         l2_network_device: management
+       - label: eth4
+         l2_network_device: private
        - label: eth5
          l2_network_device: ironic
 
@@ -75,13 +75,13 @@ template:
            - public
         eth2:
           networks:
-           - management
+           - storage
         eth3:
           networks:
-           - private
+           - management
         eth4:
           networks:
-           - storage
+           - private
         eth5:
           networks:
            - baremetal
@@ -153,8 +153,5 @@ template:
       - name: slave-06
         params: *node-params
         role: fuel_slave
-      - name: slave-07
-        params: *node-params
-        role: fuel_slave
-  name: 3 Controller + Mongo, 2 Compute+Cinder, 2 Ironic, Neutron, VLAN
-  slaves: 7
+  name: 3 Controller + Mongo, 2 Compute+Cinder, 1 Ironic, Neutron, VLAN
+  slaves: 6
