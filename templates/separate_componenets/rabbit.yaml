@@ -11,15 +11,17 @@ template:
     nodes:
       - count: 3
         roles: [controller, mongo]
-      - count: 2
-        roles: [compute, cinder]
       - count: 1
+        roles: [compute, cinder]
+      - count: 3
         roles: [standalone-rabbitmq]
+      - count: 2
+        roles: [ironic]
     release: ubuntu
     settings:
       components:
         ceilometer: true
-        ironic: false
+        ironic: true
         murano: true
         sahara: true
       storages:
@@ -153,8 +155,17 @@ template:
       - name: slave-06
         params: *node-params
         role: fuel_slave
-  name: 3 Controller+Mongo, 2 Compute+Cinder, 1 Standalone RabbitMQ, Neutron, VLAN
-  slaves: 6
+      - name: slave-07
+        params: *node-params
+        role: fuel_slave
+      - name: slave-08
+        params: *node-params
+        role: fuel_slave
+      - name: slave-09
+        params: *node-params
+        role: fuel_slave
+  name: 3 Controller+Mongo, 1 Compute+Cinder, 3 Standalone RabbitMQ, 2 Ironic, Neutron, VLAN
+  slaves: 9
 
 plugins:
   - detach-rabbitmq:
