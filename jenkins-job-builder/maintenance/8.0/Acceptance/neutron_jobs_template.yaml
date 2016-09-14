@@ -38,6 +38,7 @@
             REPORT_PREFIX=/srv/jenkins/neutron
             MILESTONE=8.0
             SUITE=[8.0][MOSQA] Automated Cloud Testing
+            USE_TEMPLATE=false
 
     project-type: freestyle
     defaults: global

@@ -29,6 +29,9 @@
       - bool:
           name: ADD_TIMESTAMP
           default: true
+      - bool:
+          name: USE_TEMPLATE
+          default: true
       - node:
           name: NODE_LABELS
           description: |
