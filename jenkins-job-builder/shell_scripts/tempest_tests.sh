@@ -5,9 +5,14 @@
 # to avoid the 'sed' operations below
 rm -rf dockerfiles
 git clone https://review.fuel-infra.org/fuel-infra/dockerfiles
-cd dockerfiles/
-git checkout 74aa173da4f5155940a48d4ae0e244c854084edb
-cd ..
+### TEST ###
+sed -i 's|rally verify install --source /var/lib/tempest --system-wide|rally verify install --source /var/lib/tempest|g' \
+       dockerfiles/rally-tempest/latest/setup_tempest.sh
+sed -i 's|git clone https://git.openstack.org/openstack/tempest && \|git clone https://git.openstack.org/openstack/tempest|g' \
+       dockerfiles/rally-tempest/latest/Dockerfile
+sed -i '/pip install tempest/d' \
+       dockerfiles/rally-tempest/latest/Dockerfile
+########################################################################
 
 ##### Define SSH Opts #####
 SSH_OPTS='-o UserKnownHostsFile=/dev/null \
@@ -23,7 +28,7 @@ SNAPSHOT=$(echo $SNAPSHOT_NAME | sed 's/ha_deploy_//')
 echo "$ISO_ID"_CONF:"$SNAPSHOT" > build-name-setter.info
 
 ##### Workaround for rally docker files #####
-sed -i 's|FROM rallyforge/rally:latest|FROM rallyforge/rally:0.5.0|g' \
+sed -i 's|FROM rallyforge/rally:latest|FROM rallyforge/rally:0.6.0|g' \
        dockerfiles/rally-tempest/latest/Dockerfile
 
 ##### Get ID of controller via SSH to admin node #####
