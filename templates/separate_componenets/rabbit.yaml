@@ -11,7 +11,7 @@ template:
     nodes:
       - count: 3
         roles: [controller, mongo]
-      - count: 1
+      - count: 2
         roles: [compute, cinder]
       - count: 3
         roles: [standalone-rabbitmq]
@@ -99,6 +99,18 @@ template:
         - {capacity: 55, format: qcow2, name: cinder}
         - {capacity: 55, format: qcow2, name: swift}
 
+      rack-01-compute-node-params: &compute-node-params
+        boot: [network, hd]
+        interfaces: *rack-01-slave-interfaces
+        memory: 8192
+        network_config: *rack-01-slave-network_config
+        vcpu: 4
+        volumes:
+        - {capacity: 100, format: qcow2, name: system}
+        - {capacity: 100, format: qcow2, name: cinder}
+        - {capacity: 100, format: qcow2, name: swift}
+
+
     env_name: !os_env ENV_NAME
     groups:
     - driver:
@@ -147,10 +159,10 @@ template:
         params: *node-params
         role: fuel_slave
       - name: slave-04
-        params: *node-params
+        params: *compute-node-params
         role: fuel_slave
       - name: slave-05
-        params: *node-params
+        params: *compute-node-params
         role: fuel_slave
       - name: slave-06
         params: *node-params
@@ -164,8 +176,11 @@ template:
       - name: slave-09
         params: *node-params
         role: fuel_slave
-  name: 3 Controller+Mongo, 1 Compute+Cinder, 3 Standalone RabbitMQ, 2 Ironic, Neutron, VLAN
-  slaves: 9
+      - name: slave-10
+        params: *node-params
+        role: fuel_slave
+  name: 3 Controller+Mongo, 2 Compute+Cinder, 3 Standalone RabbitMQ, 2 Ironic, Neutron, VLAN
+  slaves: 10
 
 plugins:
   - detach-rabbitmq:
