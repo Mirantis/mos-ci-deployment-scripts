@@ -29,6 +29,11 @@ if ${ADD_TIMESTAMP}; then
     TESTRAIL_PLAN_NAME+="-$(date +%Y/%m/%d)"
 fi
 
+TEMPLATE=""
+if ${USE_TEMPLATE}; then
+    TEMPLATE="--testrail-name-template '{custom_test_group}.{title}' --xunit-name-template '{classname}.{methodname}'"
+fi
+
 virtualenv venv
 source venv/bin/activate
 python setup.py install
@@ -40,5 +45,4 @@ report -v --testrail-plan-name "$TESTRAIL_PLAN_NAME" \
           --testrail-milestone "${TESTRAIL_MILESTONE}" \
           --testrail-suite "${TESTRAIL_SUITE}" \
           --test-results-link "$BUILD" "$REPORT_XML" \
-          --testrail-name-template '{custom_test_group}.{title}' \
-          --xunit-name-template '{classname}.{methodname}'
+          ${TEMPLATE}
