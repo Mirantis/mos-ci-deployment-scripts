@@ -1,6 +1,6 @@
 #!/bin/bash -xe
 apt-get install -y git
-git clone https://github.com/openstack/rally.git -t
+git clone https://github.com/openstack/rally.git
 cd rally
 git checkout tags/0.6.0
 CDIR=$(pwd)
