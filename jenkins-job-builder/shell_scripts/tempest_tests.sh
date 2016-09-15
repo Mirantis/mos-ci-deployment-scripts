@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 # Get the docker config.
 # TBD need to prepare config with all needed settings
 # to avoid the 'sed' operations below
@@ -13,7 +12,6 @@ sed -i 's|git clone https://git.openstack.org/openstack/tempest && \\|git clone 
 sed -i '/pip install tempest/d' \
        dockerfiles/rally-tempest/latest/Dockerfile
 ########################################################################
-
 ##### Define SSH Opts #####
 SSH_OPTS='-o UserKnownHostsFile=/dev/null \
           -o StrictHostKeyChecking=no'
@@ -55,11 +53,11 @@ sudo docker rmi rally-tempest
 ###################################################################
 
 ##### For Ironic ##### https://bugs.launchpad.net/mos/+bug/1570864
-echo 'set +e' > ssh_scr.sh 
+echo 'set +e' > ssh_scr.sh
 echo 'source /root/openrc && ironic node-create -d fake' >> ssh_scr.sh
 echo 'set -e' >> ssh_scr.sh
 
-echo 'wget -qO- https://get.docker.com/ | sh' >> ssh_scr.sh
+echo 'apt-get install -y docker.io cgroup-bin' >> ssh_scr.sh
 
 wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/prepare_controller.sh
 cat prepare_controller.sh >> ssh_scr.sh
@@ -71,12 +69,17 @@ echo 'docker images | grep rally > temp.txt' >> ssh_scr.sh
 echo 'awk '\''{print $3}'\'' temp.txt > ans' >> ssh_scr.sh
 echo 'ID=$(cat ans)' >> ssh_scr.sh
 echo 'echo $ID' >> ssh_scr.sh
+echo 'docker run --net host -v /var/lib/rally-tempest-container-home-dir:/home/rally -i -u root "$ID"' >> ssh_scr.sh
 
-echo 'docker run -tid -v /var/lib/rally-tempest-container-home-dir:/home/rally --net host "$ID" > dock.id' >> ssh_scr.sh
+echo 'docker ps -a |grep latest > temp1.txt' >> ssh_scr.sh
+echo 'awk '\''{print $1}'\'' temp1.txt > dock.id' >> ssh_scr.sh
 echo 'DOCK_ID=$(cat dock.id)' >> ssh_scr.sh
+echo 'echo $DOCK_ID' >> ssh_scr.sh
+echo 'docker start $DOCK_ID' >> ssh_scr.sh
 echo 'sed -i "s|:5000|:5000/v2.0|g" /var/lib/rally-tempest-container-home-dir/openrc' >> ssh_scr.sh
-echo 'docker exec -u root "$DOCK_ID" sed -i "s|\#swift_operator_role = Member|swift_operator_role=SwiftOperator|g" /etc/rally/rally.conf' >> ssh_scr.sh
-echo 'docker exec "$DOCK_ID" setup-tempest' >> ssh_scr.sh
+echo 'docker exec "$DOCK_ID" bash -c "apt-get install -y iputils-ping"' >> ssh_scr.sh
+echo 'docker exec "$DOCK_ID" bash -c "sed -i 's|\#swift_operator_role = Member|swift_operator_role=SwiftOperator|g' /etc/rally/rally.conf"' >> ssh_scr.sh
+echo 'docker exec "$DOCK_ID" bash -c "setup-tempest"' >> ssh_scr.sh
 
 echo 'file=$(find / -name tempest.conf)' >> ssh_scr.sh
 
