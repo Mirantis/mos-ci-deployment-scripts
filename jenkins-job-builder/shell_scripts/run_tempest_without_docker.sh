@@ -1,5 +1,6 @@
 #!/bin/bash -xe
 apt-get install -y git
+rm -rf rally
 git clone https://github.com/openstack/rally.git
 cd rally
 git checkout tags/0.6.0
@@ -30,7 +31,7 @@ rally verify showconfig
 
 if [ $storage_protocol == 'ceph' ]; then
     wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/skip.list
-    source $CDIR/openrc && rally verify start --skip-list skip.list
+    source $CDIR/openrc && rally verify start --regex tempest.api.baremetal --skip-list skip.list
 else
     source $CDIR/openrc && rally verify start
 fi
