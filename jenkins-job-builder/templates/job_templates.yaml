@@ -556,3 +556,6 @@
             artifacts: 'mos-integration-tests/snapshots/*'
             allow-empty: 'true'
             fingerprint: true
+        - description-setter:
+            regexp: '^.*\[TestRun URL\] \s*(.*)'
+            description: '<a href="\1">TestRail Report URL</a>'

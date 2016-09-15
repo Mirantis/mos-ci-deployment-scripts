@@ -70,7 +70,7 @@
     weight: 1
     env_changer: _murano_baremetal
     config_path: templates/murano_baremetal/default.yaml
-    start_timer: "0 5 * * 3,7"
+    start_timer: "0 17 * * 7"
     node: Slave-srv140
     description: |
       Murano K8S and Docker applications deployment tests.
@@ -93,7 +93,7 @@
     weight: 1
     env_changer: _murano_baremetal
     config_path: templates/murano_baremetal/default.yaml
-    start_timer: "0 17 * * *"
+    start_timer: "0 17 * * 1-6"
     node: Slave-srv140
     description: |
       Murano K8S and Docker applications deployment tests.
