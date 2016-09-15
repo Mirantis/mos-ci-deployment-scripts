@@ -127,8 +127,8 @@ fi
 
 # ballot stuffing for tempest test results
 if [[ "$CEPH_RADOS" == 'TRUE' ]]; then
-    echo 'docker exec "$DOCK_ID" bash -c "wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/tests.list"' >> ssh_scr.sh
-    echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start --tests-file tests.list"' >> ssh_scr.sh
+    echo 'docker exec "$DOCK_ID" bash -c "wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/skip.list"' >> ssh_scr.sh
+    echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start --skip-list skip.list"' >> ssh_scr.sh
 else
     echo 'docker exec "$DOCK_ID" bash -c "source /home/rally/openrc && rally verify start"' >> ssh_scr.sh
 fi
