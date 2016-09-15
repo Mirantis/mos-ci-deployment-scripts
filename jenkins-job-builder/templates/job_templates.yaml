@@ -334,7 +334,7 @@
         - inject:
             properties-file: "$ENV_INJECT_PATH"
         - shell:
-            !include-raw-escape: ../shell_scripts/tempest_tests.sh
+            !include-raw-escape: ../shell_scripts/run_tempest_new.sh
         - inject:
             properties-file: "$ENV_INJECT_PATH"
         - shell:
