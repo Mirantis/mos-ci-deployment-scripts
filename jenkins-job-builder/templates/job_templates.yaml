@@ -248,12 +248,12 @@
             !include-raw-escape: ../shell_scripts/template_scripts/get_fuel_master_ip.sh
         - inject:
             properties-file: "$ENV_INJECT_PATH"
-        #- shell:
-        #    !include-raw-escape: ../shell_scripts/tempest_tests.sh
-        #- inject:
-        #    properties-file: "$ENV_INJECT_PATH"
-        #- shell:
-        #    !include-raw: ../shell_scripts/template_scripts/testrail_reporter.sh
+        - shell:
+            !include-raw-escape: ../shell_scripts/tempest_tests.sh
+        - inject:
+            properties-file: "$ENV_INJECT_PATH"
+        - shell:
+            !include-raw: ../shell_scripts/template_scripts/testrail_reporter.sh
 
     publishers:
         - common_publisher
