@@ -69,6 +69,10 @@ echo 'docker exec "$DOCK_ID" setup-tempest' >> ssh_scr.sh
 
 echo 'file=$(find / -name tempest.conf)' >> ssh_scr.sh
 
+###Taking a list of available scheduler filters from controller's nova.conf to resolve the bug: https://bugs.launchpad.net/mos/+bug/1623862
+NOVA_FLTR=$(sshpass -p 'r00tme' ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -T root@"$FUEL_MASTER_IP" ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no node-"$CONTROLLER_ID" 'sed -n '/scheduler_default_filters=/p' /etc/nova/nova.conf | cut -f2 -d=')
+echo 'FILTERS='$NOVA_FLTR >> ssh_scr.sh
+
 echo 'o_n=$(grep -n "\[orchestration\]" $file | cut -d':' -f1)' >> ssh_scr.sh
 echo 'o_n=$(($o_n+1))' >> ssh_scr.sh
 echo 'sed -e $o_n"s/^/max_json_body_size = 10880000\n/" -i  $file' >> ssh_scr.sh
@@ -84,6 +88,7 @@ echo 'sed -e $c_n"s/^/min_compute_nodes = 2\n/" -i $file' >> ssh_scr.sh
 
 echo 'cfe_n=$(grep -n "\[compute-feature-enabled\]" $file | cut -d':' -f1)' >> ssh_scr.sh
 echo 'cfe_n=$(($cfe_n+1))' >> ssh_scr.sh
+echo 'sed -e $cfe_n"s/^/scheduler_available_filters = $FILTERS\n/" -i $file' >> ssh_scr.sh
 echo 'sed -e $cfe_n"s/^/block_migration_for_live_migration = True\n/" -i $file' >> ssh_scr.sh
 
 echo 'sed -i "s|live_migration = False|live_migration = True|g" $file' >> ssh_scr.sh
