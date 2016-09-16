@@ -26,8 +26,8 @@ fi
 
 NOVA_FLTR=$(sed -n '/scheduler_default_filters=/p' /etc/nova/nova.conf | cut -f2 -d=)
 
-echo $NOVA_FLTR >> lvm
-echo $NOVA_FLTR >> ceph
+echo 'FILTERS='$NOVA_FLTR >> lvm
+echo 'FILTERS='$NOVA_FLTR >> ceph
 rally-manage db recreate
 rally deployment create --fromenv --name=tempest 
 rally verify install
