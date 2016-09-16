@@ -349,6 +349,84 @@
 
 
 - job-template:
+    # empty value causes disabled_var to be ignored internally
+    disabled_var:
+
+    disabled: '{obj:disabled_var}'
+
+    name: 'Run_Tempest_{name}'
+
+    defaults: common_job_settings
+
+    parameters:
+        - common_parameters
+        - string:
+            name: ISO_DIR
+            default: "{iso_dir}"
+        - string:
+            name: ENV_NAME
+            default: ''
+        - node:
+            name: nodes_list
+            possible: 'ALL'
+        - string:
+            name: DISABLE_SSL
+            default: "{is_ssl_disabled}"
+        - string:
+            name: CEPH_SKIP_TESTS
+            default: "{ceph_skip_tests}"
+        - string:
+            name: CEPH_RADOS
+            default: "{ceph_rados}"
+        - string:
+            name: TEST_GROUP
+            default: '{test_group}'
+        - string:
+            name: SUITE
+            default: "{suite}"
+        - string:
+            name: MILESTONE
+            default: "{milestone}"
+        - string:
+            name: DESTROY_ENV_AFTER_TESTS
+            default: "{destroy_env}"
+        - string:
+            name: NOVA_QUOTAS_ENABLED
+            default: "TRUE"
+        - string:
+            name: TESTRAIL_TEMPEST
+            default: "TRUE"
+        - string:
+            name: TEMPEST
+            default: "FALSE"
+
+    builders:
+        - shell:
+            !include-raw: ../shell_scripts/template_scripts/env_variables_export.sh
+        - inject:
+            properties-file: "$ENV_INJECT_PATH"
+        - shell:
+            !include-raw-escape: ../shell_scripts/revert_last_snapshot.sh
+        - shell:
+            !include-raw-escape: ../shell_scripts/template_scripts/get_fuel_master_ip.sh
+        - inject:
+            properties-file: "$ENV_INJECT_PATH"
+        - shell:
+            !include-raw-escape: ../shell_scripts/run_tempest_new.sh
+        - inject:
+            properties-file: "$ENV_INJECT_PATH"
+        - shell:
+            !include-raw: ../shell_scripts/template_scripts/testrail_reporter.sh
+
+    publishers:
+        - common_publisher
+        - archive:
+            artifacts: 'mos-integration-tests/snapshots/*'
+            allow-empty: 'true'
+            fingerprint: true
+
+
+- job-template:
     name: '9.x_wo_deploy_{name}'
 
     defaults: common_job_settings
