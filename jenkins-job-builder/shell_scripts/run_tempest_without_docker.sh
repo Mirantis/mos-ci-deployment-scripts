@@ -34,8 +34,9 @@ rally verify install
 rally verify genconfig --add-options $storage_protocol 
 rally verify showconfig
 
+wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/skip_ceph.list
+wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/skip_lvm.list
 if [ $storage_protocol == 'ceph' ]; then
-    wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/skip.list
     source $CDIR/openrc && rally verify start --skip-list skip_ceph.list
 else
     source $CDIR/openrc && rally verify start --skip-list skip_lvm.list
