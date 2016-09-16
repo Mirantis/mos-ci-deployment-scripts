@@ -23,6 +23,11 @@ check_ceph=$(cat /etc/cinder/cinder.conf |grep '\[RBD-backend\]' | wc -l)
 if [ ${check_ceph} == '1' ]; then
     storage_protocol="ceph"
 fi
+
+NOVA_FLTR=$(sed -n '/scheduler_default_filters=/p' /etc/nova/nova.conf | cut -f2 -d=)
+
+echo $NOVA_FLTR >> lvm
+echo $NOVA_FLTR >> ceph
 rally-manage db recreate
 rally deployment create --fromenv --name=tempest 
 rally verify install
@@ -31,9 +36,9 @@ rally verify showconfig
 
 if [ $storage_protocol == 'ceph' ]; then
     wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/skip.list
-    source $CDIR/openrc && rally verify start --skip-list skip.list
+    source $CDIR/openrc && rally verify start --skip-list skip_ceph.list
 else
-    source $CDIR/openrc && rally verify start
+    source $CDIR/openrc && rally verify start --skip-list skip_lvm.list
 fi
 
 rally verify results --json --output-file output.json

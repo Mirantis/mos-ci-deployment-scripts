@@ -9,12 +9,12 @@ min_microversion = 2.1
 max_microversion = latest
 min_compute_nodes = 2
 
+[volume]
+build_timeout = 300
+storage_protocol = iSCSI
+
 [compute-feature-enabled]
 nova_cert = True
 personality = True
 block_migration_for_live_migration = True
 live_migration = True
-
-[volume]
-build_timeout = 300
-storage_protocol = iSCSI
