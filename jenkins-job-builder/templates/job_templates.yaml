@@ -370,15 +370,6 @@
             name: nodes_list
             possible: 'ALL'
         - string:
-            name: DISABLE_SSL
-            default: "{is_ssl_disabled}"
-        - string:
-            name: CEPH_SKIP_TESTS
-            default: "{ceph_skip_tests}"
-        - string:
-            name: CEPH_RADOS
-            default: "{ceph_rados}"
-        - string:
             name: TEST_GROUP
             default: '{test_group}'
         - string:
@@ -387,9 +378,6 @@
         - string:
             name: MILESTONE
             default: "{milestone}"
-        - string:
-            name: DESTROY_ENV_AFTER_TESTS
-            default: "{destroy_env}"
         - string:
             name: NOVA_QUOTAS_ENABLED
             default: "TRUE"
@@ -401,10 +389,6 @@
             default: "FALSE"
 
     builders:
-        - shell:
-            !include-raw: ../shell_scripts/template_scripts/env_variables_export.sh
-        - inject:
-            properties-file: "$ENV_INJECT_PATH"
         - shell:
             !include-raw-escape: ../shell_scripts/revert_last_snapshot.sh
         - shell:

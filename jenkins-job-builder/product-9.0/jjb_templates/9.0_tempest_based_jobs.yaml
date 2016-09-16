@@ -170,8 +170,5 @@
     display_name: 'Run Tempest on slave stated'
     test_group: 'RENAME ME'
     start_timer: ''
-    is_ssl_disabled: 'FALSE'
-    ceph_skip_tests: 'TRUE'
-    ceph_rados: 'TRUE'
-    destroy_env: 'FALSE'
+    concurrent: true
     <<: *common_parameters3
