@@ -13,11 +13,11 @@ min_compute_nodes = 2
 build_timeout = 300
 storage_protocol = ceph
 
+[object-storage-feature-enabled]
+discoverability = False
+
 [compute-feature-enabled]
 nova_cert = True
 personality = True
 block_migration_for_live_migration = False
 live_migration = True
-
-[object-storage-feature-enabled]
-discoverability = False
