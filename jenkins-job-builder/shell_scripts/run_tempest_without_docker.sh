@@ -1,6 +1,6 @@
 #!/bin/bash -xe
 apt-get install -y git
-rm -rf rally
+rm -rf rally .rally log.log
 git clone https://github.com/openstack/rally.git
 cd rally
 git checkout tags/0.6.0
@@ -34,14 +34,20 @@ rally verify install
 rally verify genconfig --add-options $storage_protocol 
 rally verify showconfig
 
+uuid=$(rally deployment list |grep tempest | awk {'print$2'})
+cd /root/.rally/tempest/for-deployment-$uuid
+git fetch https://git.openstack.org/openstack/tempest refs/changes/18/371418/2 && git checkout FETCH_HEAD
+cd $CDIR
+
 wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/skip_ceph.list
 wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/skip_lvm.list
 if [ $storage_protocol == 'ceph' ]; then
-    source $CDIR/openrc && rally verify start --skip-list skip_ceph.list
+    source $CDIR/openrc && rally verify start --skip-list skip_ceph.list --concurrency 1
 else
-    source $CDIR/openrc && rally verify start --skip-list skip_lvm.list
+    source $CDIR/openrc && rally verify start --skip-list skip_lvm.list  --concurrency 1
 fi
 
 rally verify results --json --output-file output.json
 rally verify results --html --output-file output.html
-git clone https://github.com/greatehop/rally_json2junit && python rally_json2junit/rally_json2junit/results_parser.py output.json
+git clone https://github.com/greatehop/rally_json2junit
+python rally_json2junit/rally_json2junit/results_parser.py output.json
