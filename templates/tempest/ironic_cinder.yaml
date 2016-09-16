@@ -10,7 +10,7 @@ template:
       segment-type: vlan
     nodes:
       - count: 3
-        roles: [controller, mongo]
+        roles: [controller]
       - count: 2
         roles: [compute, cinder]
       - count: 1
@@ -18,7 +18,7 @@ template:
     release: ubuntu
     settings:
       components:
-        ceilometer: true
+        ceilometer: false
         ironic: true
         murano: false
         sahara: true
