@@ -6,7 +6,7 @@ max_template_size = 5440000
 [compute]
 volume_device_name = vdc
 min_microversion = 2.1
-max_microversion = latest
+max_microversion = 2.25
 min_compute_nodes = 2
 
 [volume]
