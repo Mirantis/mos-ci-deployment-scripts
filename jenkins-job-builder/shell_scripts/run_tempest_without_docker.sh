@@ -34,17 +34,12 @@ rally verify install
 rally verify genconfig --add-options $storage_protocol 
 rally verify showconfig
 
-uuid=$(rally deployment list |grep tempest | awk {'print$2'})
-cd /root/.rally/tempest/for-deployment-$uuid
-git fetch https://git.openstack.org/openstack/tempest refs/changes/18/371418/2 && git checkout FETCH_HEAD
-cd $CDIR
-
 wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/skip_ceph.list
 wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/skip_lvm.list
 if [ $storage_protocol == 'ceph' ]; then
-    source $CDIR/openrc && rally verify start --skip-list skip_ceph.list --concurrency 1
+    source $CDIR/openrc && rally verify start --skip-list skip_ceph.list
 else
-    source $CDIR/openrc && rally verify start --skip-list skip_lvm.list  --concurrency 1
+    source $CDIR/openrc && rally verify start --skip-list skip_lvm.list
 fi
 
 rally verify results --json --output-file output.json
