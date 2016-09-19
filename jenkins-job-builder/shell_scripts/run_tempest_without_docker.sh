@@ -39,7 +39,7 @@ wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master
 if [ $storage_protocol == 'ceph' ]; then
     source $CDIR/openrc && rally verify start --skip-list skip_ceph.list > /root/rally/log.log
 else
-    source $CDIR/openrc && rally verify start --skip-list skip_lvm.list > /root/rally/log.log
+    source $CDIR/openrc && rally verify start g--skip-list skip_lvm.list > /root/rally/log.log
 fi
 
 rally verify results --json --output-file output.json
