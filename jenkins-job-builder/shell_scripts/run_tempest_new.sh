@@ -59,9 +59,10 @@ GET_LOG_CMD="scp node-$CONTROLLER_ID:/root/rally/log.log /root/log.log"
 echo "$GET_LOG_CMD" |  sshpass -p 'r00tme' ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -T root@"$FUEL_MASTER_IP"
 sshpass -p 'r00tme' scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@"$FUEL_MASTER_IP":/root/log.log ./
 
-# GET_TEMPEST_CONF="scp node-$CONTROLLER_ID:/root/rally/tempest.conf /root/tempest.conf"
-# echo "$GET_LOG_CMD" |  sshpass -p 'r00tme' ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -T root@"$FUEL_MASTER_IP"
-# sshpass -p 'r00tme' scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@"$FUEL_MASTER_IP":/root/tempest.conf ./
-# GET_TEMPEST_LOG="scp node-$CONTROLLER_ID:/root/rally/tempest.log /root/tempest.log"
-# echo "$GET_LOG_CMD" |  sshpass -p 'r00tme' ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -T root@"$FUEL_MASTER_IP"
-# sshpass -p 'r00tme' scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@"$FUEL_MASTER_IP":/root/tempest.log ./
+GET_TEMPEST_CONF="scp node-$CONTROLLER_ID:/root/rally/tempest.conf /root/tempest.conf"
+echo "$GET_TEMPEST_CONF" |  sshpass -p 'r00tme' ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -T root@"$FUEL_MASTER_IP"
+sshpass -p 'r00tme' scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@"$FUEL_MASTER_IP":/root/tempest.conf ./
+
+GET_TEMPEST_LOG="scp node-$CONTROLLER_ID:/root/rally/tempest.log /root/tempest.log"
+echo "$GET_TEMPEST_LOG" |  sshpass -p 'r00tme' ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -T root@"$FUEL_MASTER_IP"
+sshpass -p 'r00tme' scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@"$FUEL_MASTER_IP":/root/tempest.log ./
