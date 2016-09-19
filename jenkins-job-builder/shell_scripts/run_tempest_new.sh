@@ -18,8 +18,15 @@ CONTROLLER_ID=$(echo 'fuel node | grep controller | awk '\''{print $1}'\'' | \
                      head -1' | sshpass -p 'r00tme' ssh -o UserKnownHostsFile=/dev/null \
                      -o StrictHostKeyChecking=no -T root@"$FUEL_MASTER_IP")
 
-##### Generating docker file and copying it to admin node,#####
-##### and then to controller node                         #####
+
+
+############################ add diff to keystone ########################
+wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/apply_diff
+chmod +x apply_diff
+sshpass -p 'r00tme' scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no apply_diff root@"$FUEL_MASTER_IP":/root/apply_diff
+sshpass -p 'r00tme' ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -T root@"$FUEL_MASTER_IP" "./apply_diff"
+
+##########################################################################
 
 ###################################################################
 ##### Generate ssh file, which will be executed on controller #####

@@ -37,9 +37,9 @@ rally verify showconfig
 wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/skip_ceph.list
 wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/skip_lvm.list
 if [ $storage_protocol == 'ceph' ]; then
-    source $CDIR/openrc && rally verify start --skip-list skip_ceph.list
+    source $CDIR/openrc && rally verify start --skip-list skip_ceph.list >> log.log
 else
-    source $CDIR/openrc && rally verify start --skip-list skip_lvm.list
+    source $CDIR/openrc && rally verify start --skip-list skip_lvm.list >> log.log
 fi
 
 rally verify results --json --output-file output.json
