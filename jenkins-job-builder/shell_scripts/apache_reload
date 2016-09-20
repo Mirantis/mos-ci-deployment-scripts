@@ -1,0 +1,3 @@
+#!/bin/bash -xe
+reload="service apache2 reload"
+for i in $(fuel node |grep controller |awk {'print$1'}); do ssh node-$i $reload; done
