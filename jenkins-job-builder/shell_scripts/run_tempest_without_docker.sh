@@ -1,48 +1,57 @@
 #!/bin/bash -xe
+
+cp /root/openrc /root/openrc_tempest
+sed -i "s/:5000\/'/:5000\/v2.0\/'/" /root/openrc_tempest
+
+### The workaround for Ironic https://bugs.launchpad.net/mos/+bug/1570864 ###
+set +e
+source /root/openrc_tempest && ironic node-create -d fake
+set -e
+
 apt-get install -y git
-rm -rf rally .rally
+rm -rf rally .rally /root/openrc_tempest
 git clone https://github.com/openstack/rally.git
 cd rally
 git checkout tags/0.6.0
 CDIR=$(pwd)
-echo $CDIR
-cp /root/openrc $CDIR
-sed -i 's|:5000|:5000/v2.0|g' openrc
-IS_TLS=$(source /root/openrc; openstack endpoint show identity 2>/dev/null | awk '/https/')
+
+IS_TLS=$(source /root/openrc_tempest; openstack endpoint show identity 2>/dev/null | awk '/https/')
     if [ "${IS_TLS}" ]; then
         cp /var/lib/astute/haproxy/public_haproxy.pem $CDIR
         echo "export OS_CACERT='$CDIR/public_haproxy.pem'" >> $CDIR/openrc
     fi
+
 ./install_rally.sh -d rally-venv/ -y
-source openrc
+
 sed -i 's|#swift_operator_role = Member|swift_operator_role = SwiftOperator|g' /root/rally/rally-venv/etc/rally/rally.conf
-wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/lvm
-wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/ceph
-storage_protocol="lvm"
+
+NOVA_FLTR=$(sed -n '/scheduler_default_filters=/p' /etc/nova/nova.conf | cut -f2 -d=)
 check_ceph=$(cat /etc/cinder/cinder.conf |grep '\[RBD-backend\]' | wc -l)
 if [ ${check_ceph} == '1' ]; then
     storage_protocol="ceph"
+    wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/skip_ceph.list
+    wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/ceph
+    echo 'scheduler_available_filters = '$NOVA_FLTR >> ceph
+else
+    storage_protocol="lvm"
+    wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/skip_lvm.list
+    wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/lvm
+    echo 'scheduler_available_filters = '$NOVA_FLTR >> lvm
 fi
 
-NOVA_FLTR=$(sed -n '/scheduler_default_filters=/p' /etc/nova/nova.conf | cut -f2 -d=)
-
-echo 'scheduler_available_filters = '$NOVA_FLTR >> lvm
-echo 'scheduler_available_filters = '$NOVA_FLTR >> ceph
-
 source /root/rally/rally-venv/bin/activate
+source /root/openrc_tempest
 
 rally-manage db recreate
-rally deployment create --fromenv --name=tempest 
+rally deployment create --fromenv --name=tempest
 rally verify install
-rally verify genconfig --add-options $storage_protocol 
+rally verify genconfig --add-options $storage_protocol
 rally verify showconfig
 
-wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/skip_ceph.list
-wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/skip_lvm.list
 if [ $storage_protocol == 'ceph' ]; then
-    source $CDIR/openrc && rally verify start --skip-list skip_ceph.list > /root/rally/log.log
+    rally verify start --skip-list skip_ceph.list > /root/rally/log.log
 else
-    source $CDIR/openrc && rally verify start --skip-list skip_lvm.list > /root/rally/log.log
+    rally verify start --skip-list skip_lvm.list > /root/rally/log.log
 fi
 
 rally verify results --json --output-file output.json
