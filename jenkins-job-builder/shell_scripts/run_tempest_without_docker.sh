@@ -1,15 +1,13 @@
 #!/bin/bash -xe
 
+rm -rf rally .rally /root/openrc_tempest
 cp /root/openrc /root/openrc_tempest
 sed -i "s/:5000\/'/:5000\/v2.0\/'/" /root/openrc_tempest
 
-### The workaround for Ironic https://bugs.launchpad.net/mos/+bug/1570864 ###
-set +e
 source /root/openrc_tempest && ironic node-create -d fake
-set -e
 
 apt-get install -y git
-rm -rf rally .rally /root/openrc_tempest
+
 git clone https://github.com/openstack/rally.git
 cd rally
 git checkout tags/0.6.0
