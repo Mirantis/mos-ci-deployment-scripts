@@ -264,3 +264,20 @@
     jobs:
       - '9.x_{name}'
     <<: *common_parameters
+
+- project:
+    name: Noop
+    weight: 2
+    env_changer: _noop
+    env_inject_file: env_inject_noop.properties
+    config_path: templates/noop/default.yaml
+    test_group: Noop feature
+    start_timer: "5 21 * * *"
+    node: single_template
+    description: Neutron tests(VxLAN,L2_POP,L3_HA)
+    display_name: 9.0_Noop
+    tox_test_name: noop_run_fuel
+    nova_quotas: "FALSE"
+    jobs:
+      - '9.x_{name}'
+    <<: *common_parameters
