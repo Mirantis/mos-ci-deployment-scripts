@@ -13,9 +13,9 @@ IS_TLS=$(source /root/openrc; openstack endpoint show identity 2>/dev/null | awk
         cp /var/lib/astute/haproxy/public_haproxy.pem $CDIR
         echo "export OS_CACERT='$CDIR/public_haproxy.pem'" >> $CDIR/openrc
     fi
-./install_rally.sh -y
+./install_rally.sh -d rally-venv/ -y
 source openrc
-sed -i 's|#swift_operator_role = Member|swift_operator_role = SwiftOperator|g' /etc/rally/rally.conf
+sed -i 's|#swift_operator_role = Member|swift_operator_role = SwiftOperator|g' /root/rally/rally-venv/etc/rally/rally.conf
 wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/lvm
 wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/ceph
 storage_protocol="lvm"
