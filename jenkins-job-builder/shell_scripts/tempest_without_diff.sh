@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
 ##### Define SSH Opts #####
-SSH_OPTS='-o UserKnownHostsFile=/dev/null \
-          -o StrictHostKeyChecking=no'
+export SSH_OPTS='-o UserKnownHostsFile=/dev/null  -o StrictHostKeyChecking=no'
 
 ##### Definig common job parameters #####
 ISO_NAME=$(basename "$ISO_PATH")
