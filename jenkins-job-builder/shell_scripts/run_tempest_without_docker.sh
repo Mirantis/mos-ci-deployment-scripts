@@ -15,7 +15,7 @@ CDIR=$(pwd)
 
 IS_TLS=$(source /root/openrc_tempest; openstack endpoint show identity 2>/dev/null | awk '/https/')
     if [ "${IS_TLS}" ]; then
-        echo "export OS_CACERT='var/lib/astute/haproxy/public_haproxy.pem'" >> /root/openrc_tempest
+        echo "export OS_CACERT='/var/lib/astute/haproxy/public_haproxy.pem'" >> /root/openrc_tempest
     fi
 
 ./install_rally.sh -d rally-venv/ -y
