@@ -26,8 +26,8 @@ fi
 
 NOVA_FLTR=$(sed -n '/scheduler_default_filters=/p' /etc/nova/nova.conf | cut -f2 -d=)
 
-echo 'FILTERS='$NOVA_FLTR >> lvm
-echo 'FILTERS='$NOVA_FLTR >> ceph
+echo 'scheduler_available_filters = '$NOVA_FLTR >> lvm
+echo 'scheduler_available_filters = '$NOVA_FLTR >> ceph
 
 source /root/rally/rally-venv/bin/activate
 
