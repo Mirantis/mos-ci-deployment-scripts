@@ -1,6 +1,6 @@
 #!/bin/bash -xe
-file='52070ecd.diff'
-get_patch="rm -f /root/$file && apt-get install git unzip -y && wget https://review.openstack.org/changes/372497/revisions/52070ecdaead24b2f677cfc985d316fc3d279539/patch?zip && unzip patch?zip"
+file='8d12d2d3.diff'
+get_patch="rm -f /root/$file && apt-get install git unzip -y && wget https://review.openstack.org/changes/372497/revisions/8d12d2d35f279a267a0eb640078a0b559cca057c/patch?zip && unzip patch?zip"
 for i in $(fuel node |grep controller |awk {'print$1'}); do ssh node-$i $get_patch; done
 packages_dir="/usr/lib/python2.7/dist-packages"
 copy_and_apply="cp $file $packages_dir && cd $packages_dir && git apply $file"
