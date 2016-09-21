@@ -291,11 +291,11 @@
         - inject:
             properties-file: "$ENV_INJECT_PATH"
         - shell:
-            !include-raw-escape: ../shell_scripts/revert_last_snapshot.sh
-        - shell:
             !include-raw: ../shell_scripts/deploy_env_from_template.sh
         - inject:
             properties-file: "$ENV_INJECT_PATH"
+        - shell:
+            !include-raw-escape: ../shell_scripts/revert_last_snapshot.sh
         - shell:
             !include-raw-escape: ../shell_scripts/template_scripts/get_fuel_master_ip.sh
         - inject:
