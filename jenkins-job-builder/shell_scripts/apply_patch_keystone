@@ -1,6 +1,6 @@
 #!/bin/bash -xe
 file='4f95ff0c.diff'
-get_patch="rm -f /root/$file && apt-get install git unzip -y && wget https://review.fuel-infra.org/changes/26664/revisions/4f95ff0c49b4b00d3357f8cb2c7e0278c0ae8603/patch?zip && unzip patch?zip"
+get_patch="rm -f /root/$file && apt-get install git unzip -y && wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/4f95ff0c.diff"
 for i in $(fuel node |grep controller |awk {'print$1'}); do ssh node-$i $get_patch; done
 packages_dir="/usr/lib/python2.7/dist-packages"
 copy_and_apply="cp $file $packages_dir && cd $packages_dir && git apply $file"
