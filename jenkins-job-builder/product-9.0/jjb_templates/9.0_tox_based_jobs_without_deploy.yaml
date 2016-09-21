@@ -64,7 +64,6 @@
     node: Slave-7777
     description: Cinder tests
     display_name: 9.0_Cinder_Swift
-    test_path: mos_tests/cinder
     tox_test_name: cinder
     jobs:
       - '9.x_wo_deploy_{name}'
@@ -73,15 +72,14 @@
 - project:
     name: cinder_ceph
     weight: 2
-    env_changer: _glance_ceph
+    env_changer: _nova_ceph
     env_inject_file: env_inject_cinder.properties
-    config_path: templates/glance/ceph.yaml
+    config_path: templates/nova/ceph.yaml
     test_group: Cinder(Ceph)
     start_timer: "0 23 * * *"
-    node: Slave-srv135
+    node: Slave-7774
     description: Cinder tests
     display_name: 9.0_Cinder_Ceph
-    test_path: mos_tests/cinder
     tox_test_name: cinder
     jobs:
       - '9.x_wo_deploy_{name}'
