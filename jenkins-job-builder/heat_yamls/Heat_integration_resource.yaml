@@ -1,0 +1,48 @@
+heat_template_version: 2015-04-30
+
+resources:
+    the_network:
+        type: OS::Neutron::Net
+        properties:
+          admin_state_up: True
+          name: heat_net
+          port_security_enabled: False
+          shared: True
+          tenant_id: Admin
+    the_resource:
+        type: OS::Neutron::Subnet
+        properties:
+          cidr: 198.51.100.15/24
+          enable_dhcp: True
+          ip_version: 4
+          name: someSub
+          network: {get_resource: the_network}
+    the_project:
+        type: OS::Keystone::Project
+        properties:
+          description: Project for integration tests
+          domain: Default
+          enabled: True
+          name: nonadmin
+    the_user:
+        type: OS::Keystone::User
+        properties:
+          #default_project: nonadmin
+          description: Nonadmin user for tests
+          domain: Default
+          email: nonadmin@mail.com
+          enabled: True
+          name: nonadmin
+          password: nonadmin
+          roles: [{"role": admin, "project": {get_resource: the_project}}, {"role": _member_, "project": admin}]
+    the_image:
+        type: OS::Glance::Image
+        properties:
+          name: Test
+          container_format: bare
+          disk_format: qcow2
+          location: "http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-x86_64-disk.img"
+          min_disk: 1
+          min_ram: 64
+          protected: False
+          is_public: True

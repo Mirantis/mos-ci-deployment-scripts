@@ -71,8 +71,6 @@
           recipients: 'ogubanov@mirantis.com'
       - base_publisher
 
-
-
 - job-template:
     name: '9.x_horizon_integraion_test_{name}'
 
@@ -121,6 +119,53 @@
             allow-empty: 'true'
             fingerprint: true
 
+- job-template:
+    name: '9.x_upstream_heat'
+
+    defaults: common_job_settings
+
+    parameters:
+        - common_parameters
+        - string:
+            name: ISO_DIR
+            default: "{iso_dir}"
+        - string:
+            name: ENV_CHANGER
+            default: '{env_changer}'
+        - string:
+            name: CONFIG_PATH
+            default: '{config_path}'
+        - string:
+            name: TEST_GROUP
+            default: '{test_group}'
+        - string:
+            name: SUITE
+            default: "{suite}"
+        - string:
+            name: MILESTONE
+            default: "{milestone}"
+        - string:
+            name: TESTRAIL_TEMPEST
+            default: "TRUE"
+
+    builders:
+        - shell:
+            !include-raw: ../shell_scripts/template_scripts/env_variables_export.sh
+        - inject:
+            properties-file: "$ENV_INJECT_PATH"
+        - shell:
+            !include-raw-escape: ../shell_scripts/template_scripts/get_fuel_master_ip.sh
+        - inject:
+            properties-file: "$ENV_INJECT_PATH"
+        - shell:
+            !include-raw-escape: ../shell_scripts/template_scripts/upstream_heat_test_runner.sh
+        - inject:
+            properties-file: "$ENV_INJECT_PATH"
+        - shell:
+            !include-raw: ../shell_scripts/template_scripts/testrail_reporter.sh
+
+    publishers:
+        - common_publisher
 
 - job-template:
     name: '9.x_openstack_cli_{name}'
