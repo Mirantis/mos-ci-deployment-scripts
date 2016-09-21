@@ -305,12 +305,12 @@ update_nodes:
   - name: slave-03
     attributes:
       hugepages/nova/value/1048576: 10
-      hugepages/nova/value/2048: 20000
+      hugepages/nova/value/2048: 16000
   - name: slave-04
     attributes:
       cpu_pinning/nova/value: 18
       hugepages/nova/value/1048576: 10
-      hugepages/nova/value/2048: 20000
+      hugepages/nova/value/2048: 16000
     interfaces:
       - number: 4
         params:
@@ -321,7 +321,7 @@ update_nodes:
     attributes:
       cpu_pinning/nova/value: 18
       hugepages/nova/value/1048576: 10
-      hugepages/nova/value/2048: 20000
+      hugepages/nova/value/2048: 16000
     interfaces:
       - number: 4
         params:
