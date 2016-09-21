@@ -1,0 +1,88 @@
+From 4f95ff0c49b4b00d3357f8cb2c7e0278c0ae8603 Mon Sep 17 00:00:00 2001
+From: Lance Bragstad <lbragstad@gmail.com>
+Date: Fri, 09 Sep 2016 22:10:02 +0000
+Subject: [PATCH] Consistently round down timestamps
+
+This is one of the ways we can prevent race conditions with backends that round
+datetime objects or strings before persisting them.
+
+This is a test-only change and it should not be merged. Failing tests
+are expected.
+
+Change-Id: Ib53811fccbfbfb666379992e82b88e870a860a6a
+---
+
+diff --git a/keystone/common/utils.py b/keystone/common/utils.py
+index 5438ad4..b785c34 100644
+--- a/keystone/common/utils.py
++++ b/keystone/common/utils.py
+@@ -522,7 +522,7 @@
+     #    parse correctly most of the time.
+ 
+     if not at:
+-        at = timeutils.utcnow()
++        at = timeutils.utcnow().replace(microsecond=0)
+     st = at.strftime(_ISO8601_TIME_FORMAT
+                      if not subsecond
+                      else _ISO8601_TIME_FORMAT_SUBSECOND)
+diff --git a/keystone/models/revoke_model.py b/keystone/models/revoke_model.py
+index 0fc3e62..c8c1bc3 100644
+--- a/keystone/models/revoke_model.py
++++ b/keystone/models/revoke_model.py
+@@ -90,7 +90,7 @@
+             self.expires_at = self.expires_at.replace(microsecond=0)
+ 
+         if self.revoked_at is None:
+-            self.revoked_at = timeutils.utcnow()
++            self.revoked_at = timeutils.utcnow().replace(microsecond=0)
+         if self.issued_before is None:
+             self.issued_before = self.revoked_at
+ 
+diff --git a/keystone/tests/unit/test_v3_auth.py b/keystone/tests/unit/test_v3_auth.py
+index 698feeb..3856145 100644
+--- a/keystone/tests/unit/test_v3_auth.py
++++ b/keystone/tests/unit/test_v3_auth.py
+@@ -19,6 +19,7 @@
+ import operator
+ import uuid
+ 
++import freezegun
+ from keystoneclient.common import cms
+ import mock
+ from oslo_config import cfg
+diff --git a/keystone/tests/unit/test_v3_os_revoke.py b/keystone/tests/unit/test_v3_os_revoke.py
+index 5fb5387..aa5f14f 100644
+--- a/keystone/tests/unit/test_v3_os_revoke.py
++++ b/keystone/tests/unit/test_v3_os_revoke.py
+@@ -88,7 +88,7 @@
+         project_id = uuid.uuid4().hex
+         sample = dict()
+         sample['project_id'] = six.text_type(project_id)
+-        before_time = timeutils.utcnow()
++        before_time = timeutils.utcnow().replace(microsecond=0)
+         self.revoke_api.revoke(
+             revoke_model.RevokeEvent(project_id=project_id))
+ 
+@@ -101,7 +101,7 @@
+         domain_id = uuid.uuid4().hex
+         sample = dict()
+         sample['domain_id'] = six.text_type(domain_id)
+-        before_time = timeutils.utcnow()
++        before_time = timeutils.utcnow().replace(microsecond=0)
+         self.revoke_api.revoke(
+             revoke_model.RevokeEvent(domain_id=domain_id))
+ 
+diff --git a/keystone/token/provider.py b/keystone/token/provider.py
+index 7c4166f..a92c4ba 100644
+--- a/keystone/token/provider.py
++++ b/keystone/token/provider.py
+@@ -96,7 +96,8 @@
+ 
+     """
+     expire_delta = datetime.timedelta(seconds=CONF.token.expiration)
+-    return timeutils.utcnow() + expire_delta
++    expires_at = timeutils.utcnow() + expire_delta
++    return expires_at.replace(microsecond=0)
+ 
+ 
+ def audit_info(parent_audit_id):
