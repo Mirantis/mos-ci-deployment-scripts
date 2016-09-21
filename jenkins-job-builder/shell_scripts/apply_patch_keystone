@@ -1,0 +1,9 @@
+#!/bin/bash -xe
+file='4f95ff0c.diff'
+get_patch="rm -f /root/$file && apt-get install git unzip -y && wget https://review.fuel-infra.org/changes/26664/revisions/4f95ff0c49b4b00d3357f8cb2c7e0278c0ae8603/patch?zip && unzip patch?zip"
+for i in $(fuel node |grep controller |awk {'print$1'}); do ssh node-$i $get_patch; done
+packages_dir="/usr/lib/python2.7/dist-packages"
+copy_and_apply="cp $file $packages_dir && cd $packages_dir && git apply $file"
+for i in $(fuel node |grep controller |awk {'print$1'}); do ssh node-$i $copy_and_apply; done
+reload="service apache2 reload"
+for i in $(fuel node |grep controller |awk {'print$1'}); do ssh node-$i $reload; done
