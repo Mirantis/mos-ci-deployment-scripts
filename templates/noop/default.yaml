@@ -23,7 +23,7 @@ template:
         ceilometer: true
         ironic: true
         murano: true
-        sahara: true
+        sahara: false
       storages:
         ephemeral-ceph: false
         image-ceph: false
@@ -155,5 +155,5 @@ template:
       - name: slave-06
         params: *controller-node-params
         role: fuel_slave
-  name: 2 Controller, 2 Compute+Cinder, 1 Ironic, 1 Mongo, Neutron, Ceilometer, Murano, Sahara
+  name: 2 Controller, 2 Compute+Cinder, 1 Ironic, 1 Mongo, Neutron, Ceilometer, Murano
   slaves: 6
