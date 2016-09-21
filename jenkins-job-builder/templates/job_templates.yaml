@@ -148,6 +148,12 @@
             name: TESTRAIL_TEMPEST
             default: "TRUE"
 
+    scm:
+        - git:
+            url: https://github.com/openstack/heat.git
+            branches:
+                - origin/stable/mitaka
+
     builders:
         - shell:
             !include-raw: ../shell_scripts/template_scripts/env_variables_export.sh
