@@ -16,12 +16,10 @@ echo "$ISO_ID"_CONF:"$SNAPSHOT" > build-name-setter.info
 CONTROLLER_ID=$(echo 'fuel node | grep controller | awk '\''{print $1}'\'' | \
                       head -1' | sshpass -p 'r00tme' ssh $SSH_OPTS -T root@"$FUEL_MASTER_IP")
 
-############################ apache_reload  ########################
+##### apache_reload #####
 wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/apache_reload
 sshpass -p 'r00tme' scp $SSH_OPTS ./apache_reload root@"$FUEL_MASTER_IP":/root/apache_reload
 sshpass -p 'r00tme' ssh $SSH_OPTS -T root@"$FUEL_MASTER_IP" "bash apache_reload"
-
-##########################################################################
 
 wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/run_tempest_without_docker.sh
 
