@@ -98,7 +98,7 @@
     weight: 4
     display_name: 'TEST_Tempest-9.0_LVM_Cinder_DVR_Sahara_Ceilometer_Ironic'
     env_changer: _ironic_cinder
-    config_path: templates/tempest/ironic_cinder.yaml
+    config_path: templates/tempest/no_ironic_cinder.yaml
     test_group: 'TEST_Tempest (LVM,Cinder,DVR,Sahara,Ceilometer,Ironic)'
     start_timer: '5 21 * * *'
     is_ssl_disabled: 'TRUE'
@@ -113,7 +113,7 @@
     weight: 4
     display_name: 'TEST_Tempest-9.0_Ceph_DVR_Sahara_Ceilometer_Ironic'
     env_changer: _ironic_ceph
-    config_path: templates/tempest/ironic_ceph.yaml
+    config_path: templates/tempest/no_ironic_ceph.yaml
     test_group: 'TEST_Tempest (Ceph,DVR,Sahara,Ceilometer)'
     start_timer: '5 21 * * *'
     is_ssl_disabled: 'TRUE'
@@ -128,7 +128,7 @@
     weight: 4
     display_name: 'TEST_Tempest-9.0_LVM_Cinder_DVR_Sahara_Ceilometer_Ironic_SSL'
     env_changer: _ironic_cinder
-    config_path: templates/tempest/ironic_cinder.yaml
+    config_path: templates/tempest/no_ironic_cinder.yaml
     test_group: 'TEST_Tempest (SSL,LVM,Cinder,DVR,Sahara,Ceilometer,Ironic)'
     start_timer: '5 21 * * *'
     is_ssl_disabled: 'FALSE'
@@ -143,7 +143,7 @@
     weight: 4
     display_name: 'TEST_Tempest-9.0_Ceph_DVR_Sahara_Ceilometer_Ironic_SSL'
     env_changer: _ironic_ceph
-    config_path: templates/tempest/ironic_ceph.yaml
+    config_path: templates/tempest/no_ironic_ceph.yaml
     test_group: 'TEST_Tempest (Ceph,SSL,DVR,Sahara,Ceilometer)'
     start_timer: '5 21 * * *'
     is_ssl_disabled: 'FALSE'
