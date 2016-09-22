@@ -12,7 +12,7 @@ pip install tox
 
 printenv || true
 
-wget https://github.com/Mirantis/mos-ci-deployment-scripts/blob/master/heat_yamls/Heat_integration_resource.yaml
+wget https://github.com/Mirantis/mos-ci-deployment-scripts/blob/master/jenkins-job-builder/heat_yamls/Heat_integration_resource.yaml
 
 pip install -r requirements.txt
 pip install python-heatclient
