@@ -135,7 +135,7 @@
 
 - project:
     name: heat
-    weight: 4
+    weight: 2
     env_changer: _glance_swift
     env_inject_file: env_inject_heat.properties
     config_path: templates/glance/swift.yaml
@@ -151,7 +151,7 @@
 
 - project:
     name: heat_ceph
-    weight: 4
+    weight: 2
     env_changer: _glance_ceph
     env_inject_file: env_inject_heat.properties
     config_path: templates/glance/ceph.yaml
@@ -167,7 +167,7 @@
 
 - project:
     name: heat_upstream
-    weight: 4
+    weight: 2
     env_changer: _glance_swift
     env_inject_file: env_inject_heat.properties
     config_path: templates/glance/swift.yaml
