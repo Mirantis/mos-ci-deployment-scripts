@@ -281,3 +281,45 @@
     jobs:
       - '9.x_{name}'
     <<: *common_parameters
+
+- project:
+    name: rabbitmq_oslo
+    weight: 2
+    env_changer: _glance_swift
+    env_inject_file: env_inject_vlan_rabbitmq_oslo.properties
+    config_path: templates/glance/swift.yaml
+    test_group: RabbitMQ_OSLO
+    start_timer: "0 22 * * *"
+    node: single_template
+    description: RabbitMQ_OSLO tests
+    display_name: 9.0_RabbitMQ_OSLO_VLAN
+    tox_test_name: rabbitmq_oslo
+    publishers:
+      - email:
+          recipients: agalkin@mirantis.com ogubanov@mirantis.com
+          notify-every-unstable-build: true
+    nova_quotas: "FALSE"
+    jobs:
+      - '9.x_{name}'
+    <<: *common_parameters
+
+- project:
+    name: rabbit_oslo_detached
+    weight: 2
+    env_changer: _rabbit
+    env_inject_file: env_inject_vlan_rabbitmq_oslo.properties
+    config_path: templates/separate_componenets/rabbit_3_nodes.yaml
+    test_group: RabbitMQ_OSLO
+    start_timer: "0 1 * * *"
+    node: single_template
+    description: RabbitMQ_OSLO tests
+    display_name: 9.0_RabbitMQ_OSLO_Detached
+    tox_test_name: rabbitmq_oslo-detach
+    publishers:
+      - email:
+          recipients: agalkin@mirantis.com ogubanov@mirantis.com
+          notify-every-unstable-build: true
+    nova_quotas: "FALSE"
+    jobs:
+      - '9.x_{name}'
+    <<: *common_parameters

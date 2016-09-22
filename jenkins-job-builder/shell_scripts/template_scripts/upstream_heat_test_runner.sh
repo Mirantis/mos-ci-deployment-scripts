@@ -12,7 +12,7 @@ pip install tox
 
 printenv || true
 
-wget https://github.com/Mirantis/mos-ci-deployment-scripts/blob/master/jenkins-job-builder/heat_yamls/Heat_integration_resource.yaml
+wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/heat_yamls/Heat_integration_resource.yaml
 
 pip install -r requirements.txt
 pip install python-heatclient
@@ -26,6 +26,11 @@ export OS_PASSWORD='admin'
 export OS_AUTH_URL="http://${MGM_IP}:5000/"
 
 heat stack-create -f Heat_integration_resource.yaml resource
+if [ $? -ne 0 ]
+then
+    echo "Can't create needed resources. Please see logs above."
+    exit 255
+fi
 
 #wating for about 120 seconds for all stack resources to be created
 is_created=1
@@ -43,6 +48,7 @@ done
 if [ $is_created -ne 0 ]
 then
 # Stack creation was failed
+    echo "Can't create needed resources. Please see logs above."
     exit 255
 fi
 

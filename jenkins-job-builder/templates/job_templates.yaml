@@ -31,7 +31,7 @@
     description: '{description}'
     disabled: false
     display-name: '{display_name}'
-    concurrent: false
+    concurrent: true 
     retry-count: 3
     logrotate:
       daysToKeep: 30

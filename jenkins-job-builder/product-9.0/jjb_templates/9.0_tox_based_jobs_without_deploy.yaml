@@ -86,26 +86,6 @@
     <<: *common_parameters
 
 - project:
-    name: rabbitmq_oslo
-    weight: 2
-    env_changer: _glance_swift
-    env_inject_file: env_inject_vlan_rabbitmq_oslo.properties
-    config_path: templates/glance/swift.yaml
-    test_group: RabbitMQ_OSLO
-    start_timer: "0 22 * * *"
-    node: Slave-srv135
-    description: RabbitMQ_OSLO tests
-    display_name: 9.0_RabbitMQ_OSLO_VLAN
-    tox_test_name: rabbitmq_oslo
-    publishers:
-      - email:
-          recipients: agalkin@mirantis.com ogubanov@mirantis.com
-          notify-every-unstable-build: true
-    jobs:
-      - '9.x_wo_deploy_{name}'
-    <<: *common_parameters
-
-- project:
     name: glare_swift
     weight: 2
     env_changer: _glance_swift
@@ -156,12 +136,12 @@
 - project:
     name: heat
     weight: 4
-    env_changer: _nova
+    env_changer: _glance_swift
     env_inject_file: env_inject_heat.properties
-    config_path: templates/nova/default.yaml
+    config_path: templates/glance/swift.yaml
     test_group: Heat(Swift)
     start_timer: "0 22 * * *"
-    node: Slave-7777
+    node: Slave-srv135
     description: Heat tests
     display_name: 9.0_Heat
     tox_test_name: heat
@@ -172,12 +152,12 @@
 - project:
     name: heat_ceph
     weight: 4
-    env_changer: _nova_ceph
+    env_changer: _glance_ceph
     env_inject_file: env_inject_heat.properties
-    config_path: templates/nova/ceph.yaml
+    config_path: templates/glance/ceph.yaml
     test_group: Heat(Ceph)
     start_timer: "0 22 * * *"
-    node: Slave-7774
+    node: Slave-srv135
     description: Heat tests
     display_name: 9.0_Heat_Ceph
     tox_test_name: heat
@@ -188,12 +168,12 @@
 - project:
     name: heat_upstream
     weight: 4
-    env_changer: _nova
+    env_changer: _glance_swift
     env_inject_file: env_inject_heat.properties
-    config_path: templates/nova/default.yaml
+    config_path: templates/glance/swift.yaml
     test_group: Heat upstream integration (Swift)
     start_timer: "0 23 * * *"
-    node: Slave-7777
+    node: Slave-srv135
     description: Heat tests
     display_name: 9.0_Heat_upstream_integration
     tox_test_name: heat
