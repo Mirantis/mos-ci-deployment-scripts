@@ -175,7 +175,25 @@
     node: Slave-srv135
     description: Heat tests
     display_name: 9.0_Heat_upstream_integration
-    tox_test_name: heat
+    git_url: 'https://github.com/openstack/heat.git'
+    git_branch: 'origin/stable/mitaka'
     jobs:
       - '9.x_upstream_heat'
+    <<: *common_parameters
+
+- project:
+    name: sahara
+    weight: 2
+    env_changer: _glance_swift
+    env_inject_file: env_inject_heat.properties
+    config_path: templates/glance/swift.yaml
+    test_group: Sahara upstream integration (Swift)
+    start_timer: "0 24 * * *"
+    node: Slave-srv135
+    description: Heat tests
+    display_name: 9.0_Sahara_upstream_integration
+    git_url: 'https://github.com/openstack/sahara-tests.git'
+    git_branch: 'origin/master'
+    jobs:
+      - '9.x_upstream_sahara'
     <<: *common_parameters
