@@ -71,6 +71,16 @@
           recipients: 'ogubanov@mirantis.com'
       - base_publisher
 
+- publisher:
+    name: report-to-testrail
+    publishers:
+      - postbuildscript:
+          builders:
+            - shell:
+                !include-raw: ../shell_scripts/template_scripts/testrail_reporter.sh
+          script-only-if-succeeded: false
+          script-only-if-failed: false
+
 - job-template:
     name: '9.x_horizon_integraion_test_{name}'
 
@@ -104,12 +114,9 @@
             properties-file: "$ENV_INJECT_PATH"
         - shell:
             !include-raw: ../shell_scripts/template_scripts/horizon_selenium_tests.sh
-        - inject:
-            properties-file: "$ENV_INJECT_PATH"
-        - shell:
-            !include-raw: ../shell_scripts/template_scripts/testrail_reporter.sh
 
     publishers:
+        - report-to-testrail
         - common_publisher
         - archive:
             artifacts: 'mos-horizon/horizon_autotests/tests/test_reports/**'
@@ -140,13 +147,13 @@
             default: "{milestone}"
         - string:
             name: TESTRAIL_TEMPEST
-            default: "TRUE"
+            default: "FALSE"
 
     scm:
         - git:
-            url: https://github.com/openstack/heat.git
+            url: '{git_url}'
             branches:
-                - origin/stable/mitaka
+                - '{git_branch}'
 
     builders:
         - shell:
@@ -159,10 +166,59 @@
                 - ../shell_scripts/template_scripts/get_fuel_master_ip.sh
                 - ../shell_scripts/template_scripts/get_fuel_key_and_openrc.sh
                 - ../shell_scripts/template_scripts/upstream_heat_test_runner.sh
-                - ../shell_scripts/template_scripts/testrail_reporter.sh
+    publishers:
+        - report-to-testrail
+        - common_publisher
+
+
+- job-template:
+    name: '9.x_upstream_sahara'
+
+    defaults: common_job_settings
+
+    parameters:
+        - common_parameters
+        - string:
+            name: ENV_CHANGER
+            default: '{env_changer}'
+        - string:
+            name: CONFIG_PATH
+            default: '{config_path}'
+        - string:
+            name: TEST_GROUP
+            default: '{test_group}'
+        - string:
+            name: SUITE
+            default: "{suite}"
+        - string:
+            name: MILESTONE
+            default: "{milestone}"
+        - string:
+            name: TESTRAIL_TEMPEST
+            default: "FALSE"
+
+    scm:
+        - git:
+            url: '{git_url}'
+            branches:
+                - '{git_branch}'
+
+    builders:
+        - shell:
+            !include-raw: ../shell_scripts/template_scripts/env_variables_export.sh
+        - inject:
+            properties-file: "$ENV_INJECT_PATH"
+        - shell:
+            !include-raw-escape:
+                - ../shell_scripts/revert_last_snapshot.sh
+                - ../shell_scripts/template_scripts/get_fuel_master_ip.sh
+                - ../shell_scripts/template_scripts/get_fuel_key_and_openrc.sh
+                - ../shell_scripts/template_scripts/upstream_sahara_test_runner.sh
 
     publishers:
+        - report-to-testrail
         - common_publisher
+
 
 - job-template:
     name: '9.x_openstack_cli_{name}'
@@ -201,9 +257,9 @@
                 - ../shell_scripts/template_scripts/get_fuel_master_ip.sh
                 - ../shell_scripts/template_scripts/get_fuel_key_and_openrc.sh
                 - ../shell_scripts/template_scripts/openstack_cli_tests.sh
-                - ../shell_scripts/template_scripts/testrail_reporter.sh
 
     publishers:
+        - report-to-testrail
         - common_publisher
 
 
