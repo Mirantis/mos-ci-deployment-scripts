@@ -1,4 +1,0 @@
-#!/bin/bash -xe
-restart="service apache2 restart"
-for i in $(fuel node |grep controller |awk {'print$1'}); do ssh node-$i $restart; done
-sleep 60
