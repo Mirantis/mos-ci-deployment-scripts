@@ -309,7 +309,7 @@
     env_changer: _rabbit
     env_inject_file: env_inject_vlan_rabbitmq_oslo.properties
     config_path: templates/separate_componenets/rabbit_3nodes.yaml
-    test_group: RabbitMQ_OSLO
+    test_group: RabbitMQ_OSLO_Detached
     start_timer: "0 1 * * *"
     node: single_template
     description: RabbitMQ_OSLO tests
