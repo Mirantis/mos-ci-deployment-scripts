@@ -28,6 +28,9 @@ export MURANO_DOCKER_IMAGE_URL="$DOCKER_IMAGE_URL"
 export MURANO_KUBERNETES_IMAGE_URL="$K8S_IMAGE_URL"
 export MURANO_KUBERNETES_IMAGE_USER="$K8S_IMAGE_USER"
 
+# workaround for bug https://bugs.launchpad.net/mos/+bug/1618473
+export UBUNTU_QCOW2_URL=https://cloud-images.ubuntu.com/trusty/current/trusty-server-cloudimg-amd64-disk1.img
+
 tox -r -e {tox_test_name} -- -ra -v -E "$ENV_NAME" -I "$FUEL_MASTER_IP"
 deactivate
 
