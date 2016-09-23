@@ -1,0 +1,34 @@
+- job:
+    name: rally_tempest_docker_build
+    parameters:
+      - node: Slave-7775
+    builders:
+        - shell:
+            !include-raw: ../shell_scripts/rally_tempest_docker/rally_tempest_docker_build.sh
+
+    project-type: freestyle
+    defaults: global
+    node: master
+    triggers:
+        - timed: "0 12 * * *"
+
+    description: 'Build docker image for tempest job'
+    disabled: false
+    display-name: 'rally_tempest_docker_build'
+    concurrent: false
+    browser: githubweb
+    retry-count: 1
+    logrotate:
+      daysToKeep: 1
+
+    publisher:
+      - archive:
+          artifacts: 'dimage'
+          allow-empty: 'false'
+          fingerprint: true
+
+    publishers:
+      - workspace-cleanup:
+          fail-build: false
+      - email:
+          recipients: ogubanov@mirantis.com
