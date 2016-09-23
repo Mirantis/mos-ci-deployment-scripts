@@ -1,0 +1,23 @@
+[orchestration]
+max_json_body_size = 10880000
+max_resources_per_stack = 20000
+max_template_size = 5440000
+
+[compute]
+volume_device_name = vdc
+min_microversion = 2.1
+max_microversion = 2.25
+min_compute_nodes = 2
+
+[volume]
+build_timeout = 300
+storage_protocol = ceph
+
+[object-storage-feature-enabled]
+discoverability = False
+
+[compute-feature-enabled]
+nova_cert = True
+personality = True
+block_migration_for_live_migration = False
+live_migration = True
