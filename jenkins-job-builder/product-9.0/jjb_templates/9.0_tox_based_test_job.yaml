@@ -15,7 +15,7 @@
     test_group: Ceilometer
     tox_propertires: ''
     start_timer: "5 21 * * *"
-    node: single_template
+    node: Slave-srv135
     description: Ceilometer tests
     display_name: 9.0_Ceilometer_t
     tox_test_name: ceilometer
