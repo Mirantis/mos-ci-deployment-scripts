@@ -1,10 +1,5 @@
 set +e
 
-#TBD need to find a way to detect the management ip of the env from the host
-#the suite to be run on the server with one env
-#so the below hardcoded value is fine so far
-export MGM_IP="10.109.1.9"
-
 virtualenv --clear venv
 . venv/bin/activate
 pip install -U pip
@@ -18,12 +13,7 @@ pip install -r requirements.txt
 pip install python-heatclient
 pip install python-swiftclient
 
-export OS_NO_CACHE='true'
-export OS_TENANT_NAME='admin'
-export OS_PROJECT_NAME='admin'
-export OS_USERNAME='admin'
-export OS_PASSWORD='admin'
-export OS_AUTH_URL="http://${MGM_IP}:5000/"
+export KEYSTONE_API="v2.0"
 
 heat stack-create -f Heat_integration_resource.yaml resource
 if [ $? -ne 0 ]
@@ -88,7 +78,7 @@ sighup_timeout = 30
 sighup_config_edit_retries = 10
 heat_config_notify_script = heat-config-notify'>> heat_integrationtests/heat_integrationtests.conf
 
-echo auth_url = "http://${MGM_IP}:5000/v2.0" >> heat_integrationtests/heat_integrationtests.conf
+echo auth_url = "${OS_AUTH_URL}/${KEYSTONE_API}" >> heat_integrationtests/heat_integrationtests.conf
 
 export uc_url=https://git.openstack.org/cgit/openstack/requirements/plain/upper-constraints.txt?h=stable/mitaka
 sed -i~ -e "s,{env:UPPER_CONSTRAINTS_FILE[^ ]*}, $uc_url," tox.ini
