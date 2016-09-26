@@ -1,6 +1,6 @@
 template:
   cluster_template:
-    name: tempest_ironic_ceph
+    name: temptest_ironic_cinder
     network:
       neutron-dvr: true
       neutron-l2-pop: false
@@ -12,7 +12,7 @@ template:
       - count: 1
         roles: [controller, mongo]
       - count: 2
-        roles: [compute, ceph-osd]
+        roles: [compute, cinder]
       - count: 1
         roles: [ironic]
     release: ubuntu
@@ -23,11 +23,11 @@ template:
         murano: false
         sahara: true
       storages:
-        ephemeral-ceph: true
-        image-ceph: true
-        rados-ceph: true
-        volume-ceph: true
-        volume-lvm: false
+        ephemeral-ceph: false
+        image-ceph: false
+        rados-ceph: false
+        volume-ceph: false
+        volume-lvm: true
   devops_settings:
     address_pools:
       baremetal-pool01:
@@ -147,5 +147,5 @@ template:
       - name: slave-04
         params: *node-params
         role: fuel_slave
-  name: 1 Controller+Mongo, 2 Compute+Ceph_osd, 1 Ironic, Neutron, VLAN
+  name: 1 Controller + Mongo, 2 Compute+Cinder, 1 Ironic, Neutron, VLAN
   slaves: 4
