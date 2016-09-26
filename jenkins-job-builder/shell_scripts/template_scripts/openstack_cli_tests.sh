@@ -1,21 +1,6 @@
 set +e
 
-dos.py revert-resume $ENV_NAME $SNAPSHOT_NAME
-
-FUEL_KEY=fuel.key
 SSH_OPTIONS='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
-BASE_DIR=$(pwd)
-
-# Copy fuel key
-sshpass -p r00tme scp $SSH_OPTIONS root@$FUEL_MASTER_IP:.ssh/id_rsa $FUEL_KEY
-
-# Get some information
-CONTROLLER_IP=$(sshpass -p r00tme ssh $SSH_OPTIONS root@$FUEL_MASTER_IP \
-    'fuel node | grep -m1 controller | awk "{ print \$9 }"')
-
-# Copy openrc
-scp -i $FUEL_KEY $SSH_OPTIONS root@$CONTROLLER_IP:openrc .
-. openrc
 
 # Get openstack CLI version
 OPENSTACK_VER=$(ssh -i $FUEL_KEY $SSH_OPTIONS root@$CONTROLLER_IP \
