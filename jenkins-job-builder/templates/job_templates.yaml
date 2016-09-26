@@ -166,6 +166,10 @@
         - inject:
             properties-file: "$ENV_INJECT_PATH"
         - shell:
+            !include-raw-escape: ../shell_scripts/template_scripts/get_fuel_key_and_openrc.sh
+        - inject:
+            properties-file: "$ENV_INJECT_PATH"
+        - shell:
             !include-raw-escape: ../shell_scripts/template_scripts/upstream_heat_test_runner.sh
         - inject:
             properties-file: "$ENV_INJECT_PATH"
@@ -210,7 +214,13 @@
         - inject:
             properties-file: "$ENV_INJECT_PATH"
         - shell:
+            !include-raw-escape: ../shell_scripts/revert_last_snapshot.sh
+        - shell:
             !include-raw-escape: ../shell_scripts/template_scripts/get_fuel_master_ip.sh
+        - inject:
+            properties-file: "$ENV_INJECT_PATH"
+        - shell:
+            !include-raw-escape: ../shell_scripts/template_scripts/get_fuel_key_and_openrc.sh
         - inject:
             properties-file: "$ENV_INJECT_PATH"
         - shell:
@@ -298,6 +308,8 @@
             properties-file: "$ENV_INJECT_PATH"
         - shell:
             !include-raw-escape: ../shell_scripts/revert_last_snapshot.sh
+        - shell:
+            !include-raw-escape: ../shell_scripts/dummy_sleep.sh
         - shell:
             !include-raw-escape: ../shell_scripts/template_scripts/get_fuel_master_ip.sh
         - inject:
@@ -394,6 +406,8 @@
         - shell:
             !include-raw-escape: ../shell_scripts/revert_last_snapshot.sh
         - shell:
+            !include-raw-escape: ../shell_scripts/dummy_sleep.sh
+        - shell:
             !include-raw-escape: ../shell_scripts/template_scripts/get_fuel_master_ip.sh
         - inject:
             properties-file: "$ENV_INJECT_PATH"
@@ -455,6 +469,8 @@
     builders:
         - shell:
             !include-raw-escape: ../shell_scripts/revert_last_snapshot.sh
+        - shell:
+            !include-raw-escape: ../shell_scripts/dummy_sleep.sh
         - shell:
             !include-raw-escape: ../shell_scripts/template_scripts/get_fuel_master_ip.sh
         - inject:
