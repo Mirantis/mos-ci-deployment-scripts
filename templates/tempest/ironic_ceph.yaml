@@ -10,7 +10,7 @@ template:
       segment-type: vlan
     nodes:
       - count: 3
-        roles: [controller]
+        roles: [controller, mongo]
       - count: 2
         roles: [compute, ceph-osd]
       - count: 1
@@ -18,10 +18,10 @@ template:
     release: ubuntu
     settings:
       components:
-        ceilometer: false
+        ceilometer: true
         ironic: true
         murano: false
-        sahara: false
+        sahara: true
       storages:
         ephemeral-ceph: true
         image-ceph: true
