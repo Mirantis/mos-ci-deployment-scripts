@@ -1,6 +1,5 @@
 - common_parameters: &common_parameters
     name: 'common horizon projects parameters'
-    iso_dir: /var/www/fuelweb-iso
     milestone: '9.1'
     suite: '[{milestone}][MOSQA] Automated Cloud Testing'
     jobs:

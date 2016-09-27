@@ -1,6 +1,5 @@
 - common_parameters: &common_parameters
     name: 'common tempest projects parameters'
-    iso_dir: /var/www/fuelweb-iso
     tox_properties: ''
     milestone: '9.1'
     suite: '[{milestone}][MOSQA] Tempest {milestone}'
@@ -17,8 +16,6 @@
     test_group: 'Tempest (LVM,Cinder,DVR,Sahara,Ceilometer,Ironic)'
     start_timer: '5 21 * * *'
     is_ssl_disabled: 'TRUE'
-    ceph_skip_tests: 'FALSE'
-    ceph_rados: 'FALSE'
     destroy_env: 'FALSE'
     node: Slave-srv137
     <<: *common_parameters
@@ -32,8 +29,6 @@
     test_group: 'Tempest (Ceph,DVR,Sahara,Ceilometer)'
     start_timer: '5 21 * * *'
     is_ssl_disabled: 'TRUE'
-    ceph_skip_tests: 'TRUE'
-    ceph_rados: 'TRUE'
     destroy_env: 'FALSE'
     node: Slave-srv138
     <<: *common_parameters
@@ -47,8 +42,6 @@
     test_group: 'Tempest (SSL,LVM,Cinder,DVR,Sahara,Ceilometer,Ironic)'
     start_timer: '5 21 * * *'
     is_ssl_disabled: 'FALSE'
-    ceph_skip_tests: 'FALSE'
-    ceph_rados: 'FALSE'
     destroy_env: 'FALSE'
     node: Slave-srv139
     <<: *common_parameters
@@ -62,8 +55,6 @@
     test_group: 'Tempest (Ceph,SSL,DVR,Sahara,Ceilometer)'
     start_timer: '5 21 * * *'
     is_ssl_disabled: 'FALSE'
-    ceph_skip_tests: 'TRUE'
-    ceph_rados: 'TRUE'
     destroy_env: 'FALSE'
     node: Slave-7775
     <<: *common_parameters
@@ -77,15 +68,12 @@
     test_group: Separated_Components(RabbitMQ)
     start_timer: '5 21 * * *'
     is_ssl_disabled: 'TRUE'
-    ceph_skip_tests: 'FALSE'
-    ceph_rados: 'FALSE'
     destroy_env: 'TRUE'
     node: single_template
     <<: *common_parameters
 
 - common_parameters3: &common_parameters3
     name: 'common tempest projects parameters3'
-    iso_dir: /var/www/fuelweb-iso
     tox_properties: ''
     milestone: '9.1'
     suite: '[{milestone}][MOSQA] Tempest {milestone}'
