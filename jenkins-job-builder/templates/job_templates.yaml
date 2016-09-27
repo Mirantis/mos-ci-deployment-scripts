@@ -204,10 +204,7 @@
                 - ../shell_scripts/template_scripts/get_fuel_master_ip.sh
                 - ../shell_scripts/template_scripts/get_fuel_key_and_openrc.sh
                 - ../shell_scripts/template_scripts/openstack_cli_tests.sh
-        - inject:
-            properties-file: "$ENV_INJECT_PATH"
-        - shell:
-            !include-raw: ../shell_scripts/template_scripts/testrail_reporter.sh
+                - ../shell_scripts/template_scripts/testrail_reporter.sh
 
     publishers:
         - common_publisher

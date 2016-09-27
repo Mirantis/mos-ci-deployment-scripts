@@ -31,11 +31,9 @@ tox \
     -s \
 | subunit2junitxml \
     --forward \
-    --output-to=$BASE_DIR/$REPORT_FILE \
+    --output-to=$REPORT_FILE \
 | subunit2pyunit
 
 deactivate
 
 dos.py destroy "$ENV_NAME"
-
-exit 0

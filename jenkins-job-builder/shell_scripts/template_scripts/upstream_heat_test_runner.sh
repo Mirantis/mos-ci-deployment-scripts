@@ -88,5 +88,3 @@ tox -eintegration
 deactivate
 
 sudo dos.py destroy "$ENV_NAME"
-
-exit 0
