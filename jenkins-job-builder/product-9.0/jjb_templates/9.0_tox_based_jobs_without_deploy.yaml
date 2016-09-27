@@ -1,6 +1,5 @@
 - common_parameters: &common_parameters
     name: 'common tox wo deploy projects parameters'
-    iso_dir: /var/www/fuelweb-iso
     tox_properties: ''
     milestone: '9.1'
     suite: '[{milestone}][MOSQA] Automated Cloud Testing'
@@ -45,7 +44,7 @@
     config_path: templates/glance/ceph.yaml
     test_group: Object Storage(RadosGW)
     start_timer: "0 22 * * *"
-    node: Slave-srv135
+    node: Slave-srv136
     description: Object Storage tests for RadosGW
     display_name: 9.0_Object_Storage(RadosGW)
     tox_test_name: object_storage
@@ -109,7 +108,7 @@
     config_path: templates/glance/ceph.yaml
     test_group: Glare(Ceph)
     start_timer: "0 22 * * *"
-    node: Slave-srv135
+    node: Slave-srv136
     description: Glare tests
     display_name: '9.0_{name}'
     tox_test_name: glare
@@ -157,7 +156,7 @@
     config_path: templates/glance/ceph.yaml
     test_group: Heat(Ceph)
     start_timer: "0 22 * * *"
-    node: Slave-srv135
+    node: Slave-srv136
     description: Heat tests
     display_name: 9.0_Heat_Ceph
     tox_test_name: heat

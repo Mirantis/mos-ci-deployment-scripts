@@ -1,6 +1,5 @@
 - common_parameters: &common_parameters
     name: 'common tox based baremetal projects parameters'
-    iso_dir: /var/www/fuelweb-iso
     tox_properties: ''
     milestone: '9.1'
     suite: '[{milestone}][MOSQA] Automated Cloud Testing'
