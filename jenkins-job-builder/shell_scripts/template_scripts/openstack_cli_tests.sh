@@ -31,7 +31,7 @@ tox \
     -s \
 | subunit2junitxml \
     --forward \
-    --output-to=$REPORT_FILE \
+    --output-to=../$REPORT_FILE \
 | subunit2pyunit
 
 deactivate

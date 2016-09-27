@@ -17,10 +17,4 @@ deactivate
 cp "$REPORT_FILE" ../
 cp *.log ../
 
-sudo mkdir -p "$REPORT_PREFIX"/"$ENV_NAME"_"$SNAPSHOT_NAME" && \
-sudo cp "$REPORT_FILE" "$REPORT_PREFIX"/"$ENV_NAME"_"$SNAPSHOT_NAME" && \
-sudo cp *.log "$REPORT_PREFIX"/"$ENV_NAME"_"$SNAPSHOT_NAME" \
-|| true
-deactivate
-
 sudo dos.py destroy "$ENV_NAME"

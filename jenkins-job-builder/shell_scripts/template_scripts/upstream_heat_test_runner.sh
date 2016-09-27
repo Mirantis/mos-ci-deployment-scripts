@@ -12,6 +12,8 @@ wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master
 pip install -r requirements.txt
 pip install python-heatclient
 pip install python-swiftclient
+# install subunit2junitxml with dependencies
+pip install -U python_subunit junitxml
 
 export KEYSTONE_API="v2.0"
 
@@ -83,8 +85,16 @@ echo auth_url = "${OS_AUTH_URL}/${KEYSTONE_API}" >> heat_integrationtests/heat_i
 export uc_url=https://git.openstack.org/cgit/openstack/requirements/plain/upper-constraints.txt?h=stable/mitaka
 sed -i~ -e "s,{env:UPPER_CONSTRAINTS_FILE[^ ]*}, $uc_url," tox.ini
 
-tox -eintegration
+# Run tests
+tox \
+    -e integration -- \
+    --no-pretty \
+    -s \
+| subunit2junitxml \
+    --forward \
+    --output-to=$REPORT_FILE \
+| subunit2pyunit
 
 deactivate
 
-sudo dos.py destroy "$ENV_NAME"
+dos.py destroy "$ENV_NAME"
