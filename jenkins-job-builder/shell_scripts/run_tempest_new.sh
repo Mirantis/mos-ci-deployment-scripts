@@ -41,3 +41,10 @@ sshpass -p 'r00tme' scp $SSH_OPTS root@"$FUEL_MASTER_IP":/root/tempest.conf ./
 GET_TEMPEST_LOG="scp node-$CONTROLLER_ID:/root/rally/tempest.log /root/tempest.log"
 echo "$GET_TEMPEST_LOG" |  sshpass -p 'r00tme' ssh $SSH_OPTS -T root@"$FUEL_MASTER_IP"
 sshpass -p 'r00tme' scp $SSH_OPTS root@"$FUEL_MASTER_IP":/root/tempest.log ./
+
+if [[ "$DESTROY_ENV_AFTER_TESTS" == 'TRUE' ]]; then
+    # make snapshot for further investigation and disable env
+    dos.py suspend ${ENV_NAME}
+    dos.py snapshot "${ENV_NAME}" "${SNAPSHOT_NAME}_after_test"
+    dos.py destroy "$ENV_NAME"
+fi
