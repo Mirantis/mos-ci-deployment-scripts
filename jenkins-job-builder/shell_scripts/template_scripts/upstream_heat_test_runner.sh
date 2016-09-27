@@ -88,8 +88,6 @@ sed -i~ -e "s,{env:UPPER_CONSTRAINTS_FILE[^ ]*}, $uc_url," tox.ini
 # Run tests
 tox \
     -e integration -- \
-    --no-pretty \
-    -s \
 | subunit2junitxml \
     --forward \
     --output-to=$REPORT_FILE \

@@ -67,7 +67,7 @@
     config_path: templates/glance/ceph.yaml
     test_group: Glance(Ceph)
     start_timer: "5 21 * * *"
-    node:  Slave-srv135
+    node:  Slave-srv136
     description: Glance tests on Ceph
     display_name: 9.0_Glance(Ceph)
     tox_test_name: glance
