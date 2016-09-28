@@ -1,7 +1,7 @@
 - job:
     name: rally_tempest_docker_build
-    parameters:
-      - node: Slave-7775
+    node: Slave-7775
+
     builders:
         - shell:
             !include-raw: ../shell_scripts/rally_tempest_docker/rally_tempest_docker_build.sh
