@@ -47,30 +47,34 @@ template:
         net: *pool_default
       public-pool01:
         net: *pool_default
-        params: {tag: 200}
+        params: {vlan_start: 200}
       storage-pool01:
         net: *pool_default
-        params: {tag: 201}
+        params: {vlan_start: 201}
       management-pool01:
         net: *pool_default
-        params: {tag: 202}
+        params: {vlan_start: 202}
       private-pool01:
         net: *pool_default
-        params: {tag: 203}
+        params:
+          vlan_start: 960
+          vlan_end: 1000
       fuelweb_admin-pool02:
         net: *pool_default
       public-pool02:
         net: *pool_default
-        params: {tag: 200}
+        params: {vlan_start: 200}
       storage-pool02:
         net: *pool_default
-        params: {tag: 201}
+        params: {vlan_start: 201}
       management-pool02:
         net: *pool_default
-        params: {tag: 202}
+        params: {vlan_start: 202}
       private-pool02:
         net: *pool_default
-        params: {tag: 203}
+        params:
+          vlan_start: 960
+          vlan_end: 1000
 
     groups:
      - name: default
@@ -328,8 +332,3 @@ update_nodes:
           interface_properties/sriov/enabled: true
           interface_properties/sriov/sriov_numvfs: 8
           interface_properties/sriov/sriov_totalvfs: 63
-
-overrides:
-  networks:
-    networking_parameters:
-      vlan_range: [960, 1000]

@@ -94,7 +94,9 @@ template:
         params: {vlan_start: 102}
       private-pool01:
         net: *pool_default
-        params: {vlan_start: 103}
+        params:
+          vlan_start: 103
+          vlan_end: 104
       fuelweb_admin-pool02:
         net: *pool_default
         params: {vlan_start: 100}
@@ -109,7 +111,9 @@ template:
         params: {vlan_start: 102}
       private-pool02:
         net: *pool_default
-        params: {vlan_start: 103}
+        params:
+          vlan_start: 103
+          vlan_end: 104
 
     groups:
      - name: default
