@@ -580,7 +580,7 @@
             default: "http://storage.apps.openstack.org/images/debian-8-docker.qcow2"
         - string:
             name: K8S_IMAGE_URL
-            default: "http://storage.apps.openstack.org/images/debian8-x64-kubernetes.qcow2"
+            default: "http://murano-files.mirantis.com/debian8-x64-kubernetes-1.4beta10_calico-0.21.0_cni-1.4.2.qcow2"
         - string:
             name: K8S_IMAGE_USER
             default: "debian"
@@ -600,6 +600,10 @@
             !include-raw-escape: ../shell_scripts/template_scripts/get_fuel_master_ip.sh
         - inject:
             properties-file: "$ENV_INJECT_PATH"
+        - shell:
+            # TODO(agromov): temporariry step for 9.0
+            # delete it when we will start to use 9.x for murano jobs
+            !include-raw-escape: ../shell_scripts/template_scripts/patch_script_for_murano.sh
         - shell:
             !include-raw: ../shell_scripts/template_scripts/tox_based_murano_test_runner.sh
         - inject:
