@@ -378,6 +378,12 @@
     wrappers:
       - ansicolor
 
+    scm:
+        - git:
+            url: https://github.com/Mirantis/mos-integration-tests.git
+            branches:
+                - origin/master
+
     builders:
         - shell:
             !include-raw: ../shell_scripts/template_scripts/env_variables_export.sh
@@ -428,9 +434,18 @@
             name: LDAP_CONFIG_FILE
             default: "{obj:ldap_config_file}"
 
+    wrappers:
+      - ansicolor
+      - inject-passwords:
+          global: true
+          mask-password-params: true
+
+    scm:
+        - git:
+            url: https://github.com/Mirantis/mos-integration-tests.git
+            branches:
+                - origin/master
     builders:
-        - shell:
-            !include-raw: ../shell_scripts/template_scripts/erase_ci_envs.sh
         - shell:
             !include-raw: ../shell_scripts/template_scripts/env_variables_export.sh
         - inject:
@@ -441,16 +456,10 @@
             properties-file: "$ENV_INJECT_PATH"
         - shell:
             !include-raw:
+                - ../shell_scripts/template_scripts/erase_ci_envs.sh
                 - ../shell_scripts/deploy_env_from_template.sh
                 - ../shell_scripts/template_scripts/tox_based_test_runner.sh
                 - ../shell_scripts/template_scripts/testrail_reporter.sh
-
-    wrappers:
-      - ansicolor
-      - inject-passwords:
-          global: true
-          mask-password-params: true
-
 
     publishers:
         - common_publisher
