@@ -15,13 +15,15 @@ template:
         roles: [compute, cinder]
       - count: 1
         roles: [mongo]
+      - count: 1
+        roles: [ironic]
     release: ubuntu
     settings:
       components:
         ceilometer: true
         ironic: false
         murano: false
-        sahara: false
+        sahara: true
       storages:
         ephemeral-ceph: false
         image-ceph: false
@@ -144,5 +146,8 @@ template:
       - name: slave-03
         params: *controller-node-params
         role: fuel_slave
-  name: 1 Controller, 1 Compute + Cinder, 1 Mongo, Neutron, VLAN, Ceilometer
-  slaves: 3
+      - name: slave-04
+        params: *controller-node-params
+        role: fuel_slave
+  name: 1 Controller, 1 Compute + Cinder, 1 Mongo, 1 Ironic, Neutron, VLAN, Ceilometer
+  slaves: 4
