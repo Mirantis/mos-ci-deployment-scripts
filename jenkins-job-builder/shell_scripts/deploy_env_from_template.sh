@@ -24,3 +24,6 @@ fi
 # Not exiting from shell if error happens
 set +e
 ./deploy_template.sh $CONFIG_PATH
+
+# Exit from the repo folder
+cd ..

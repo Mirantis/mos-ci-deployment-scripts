@@ -18,3 +18,6 @@ cp "$REPORT_FILE" ../
 cp *.log ../
 
 sudo dos.py destroy "$ENV_NAME"
+
+# Exit from the repo folder
+cd ..
