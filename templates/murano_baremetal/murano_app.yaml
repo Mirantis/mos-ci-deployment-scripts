@@ -9,6 +9,7 @@ template:
       provider: neutron
       pubip-to-all: false
       segment-type: tun
+      dns_list: [172.18.176.6]
     nodes:
       - count: 3
         roles: [controller]
@@ -81,10 +82,10 @@ template:
           vlan_start: 823
           ip_reserved:
             gateway: +1
-            l2_network_device: +1  # l2_network_device will get this IP address
+            l2_network_device: -2  # l2_network_device will get this IP address
           ip_ranges:
             default: [+4, +8]  # public IP range for 'default' nodegroup name
-            floating: [+9, +30]
+            floating: [+9, +29]
 
       management-pool01:
         net: *pool_default
@@ -138,15 +139,6 @@ template:
          private: private-pool01
 
        l2_network_devices:  # Libvirt bridges. It is *NOT* Nailgun networks
-         admin:
-           address_pool: fuelweb_admin-pool01
-           dhcp: false
-           forward:
-             mode: nat
-           parent_iface:
-             l2_net_dev: openstack_br
-             tag: 100
-
          openstack_br:
            vlan_ifaces:
              - 100
@@ -156,6 +148,15 @@ template:
              - 103
            parent_iface:
              phys_dev: !os_env BAREMETAL_ADMIN_IFACE, eth1
+
+         admin:
+           address_pool: fuelweb_admin-pool01
+           dhcp: false
+           forward:
+             mode: nat
+           parent_iface:
+             l2_net_dev: openstack_br
+             tag: 100
 
          public:
            address_pool: public-pool01

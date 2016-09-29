@@ -94,6 +94,7 @@ else
 fi
 
 patch_fuel_qa qos.patch
+patch_fuel_qa dns_list.patch
 
 pip install -r conf/deploy_requirements.txt --upgrade
 
