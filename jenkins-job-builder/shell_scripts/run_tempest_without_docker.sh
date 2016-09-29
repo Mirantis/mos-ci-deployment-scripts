@@ -2,7 +2,6 @@
 
 rm -rf rally .rally /root/openrc_tempest
 cp /root/openrc /root/openrc_tempest
-sed -i "s/:5000\/'/:5000\/v2.0\/'/" /root/openrc_tempest
 
 source /root/openrc_tempest && ironic node-create -d fake
 
@@ -17,6 +16,12 @@ IS_TLS=$(source /root/openrc_tempest; openstack endpoint show identity 2>/dev/nu
     if [ "${IS_TLS}" ]; then
         echo "export OS_CACERT='/var/lib/astute/haproxy/public_haproxy.pem'" >> /root/openrc_tempest
     fi
+
+sed -i "s/:5000\/'/:5000\/v3\/'/" /root/openrc_tempest
+echo "export OS_PROJECT_DOMAIN_NAME='Default'" >> /root/openrc_tempest
+echo "export OS_USER_DOMAIN_NAME='Default'" >> /root/openrc_tempest
+echo "export OS_USER_DOMAIN_NAME='Default'" >> /root/openrc_tempest
+echo "export OS_IDENTITY_API_VERSION='3'" >> /root/openrc_tempest
 
 ./install_rally.sh -d rally-venv/ -y
 
