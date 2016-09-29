@@ -1,0 +1,27 @@
+From e2a53d9df2725eb048e2d68b2d6bbc489d6041c0 Mon Sep 17 00:00:00 2001
+From: Alexander Gromov <agromov@mirantis.com>
+Date: Tue, 11 Oct 2016 18:33:32 +0300
+Subject: [PATCH] Added dns_list parameter for deploy with templates
+
+Change-Id: I73261ece19af285449f86a5eaed68a2ec4da5adc
+---
+ system_test/actions/base.py | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/system_test/actions/base.py b/system_test/actions/base.py
+index ab058a1..0758182 100644
+--- a/system_test/actions/base.py
++++ b/system_test/actions/base.py
+@@ -306,6 +306,9 @@ class BaseActions(PrepareActions, HealthCheckActions, PluginsActions,
+             "neutron_qos": self.env_config['network'].get(
+                 'neutron-qos', False),
+         }
++        if self.env_config['network'].get('dns_list'):
++            cluster_settings['dns_list'] = self.env_config['network'].get(
++                'dns_list')
+
+         self.cluster_id = self.fuel_web.create_cluster(
+             name=self.env_config['name'],
+--
+1.9.1
+
