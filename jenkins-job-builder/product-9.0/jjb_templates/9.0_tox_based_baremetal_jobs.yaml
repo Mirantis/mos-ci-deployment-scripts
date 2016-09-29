@@ -68,7 +68,7 @@
     name: apps_from_catalog
     weight: 1
     env_changer: _murano_baremetal
-    config_path: templates/murano_baremetal/default.yaml
+    config_path: templates/murano_baremetal/murano_app.yaml
     start_timer: "0 17 * * 7"
     node: Slave-srv140
     description: |
@@ -93,7 +93,7 @@
     name: apps_from_repo
     weight: 1
     env_changer: _murano_baremetal
-    config_path: templates/murano_baremetal/default.yaml
+    config_path: templates/murano_baremetal/murano_app.yaml
     start_timer: "0 17 * * 1-6"
     node: Slave-srv140
     description: |

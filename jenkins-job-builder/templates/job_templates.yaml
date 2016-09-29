@@ -570,10 +570,6 @@
         - inject:
             properties-file: "$ENV_INJECT_PATH"
         - shell:
-            !include-raw-escape: ../shell_scripts/get_plugins.sh
-        - inject:
-            properties-file: "$ENV_INJECT_PATH"
-        - shell:
             !include-raw: ../shell_scripts/deploy_env_from_template.sh
         - inject:
             properties-file: "$ENV_INJECT_PATH"
@@ -654,6 +650,10 @@
             !include-raw: ../shell_scripts/template_scripts/erase_ci_envs.sh
         - shell:
             !include-raw: ../shell_scripts/template_scripts/env_variables_export.sh
+        - inject:
+            properties-file: "$ENV_INJECT_PATH"
+        - shell:
+            !include-raw-escape: ../shell_scripts/get_murano_release_plugin.sh
         - inject:
             properties-file: "$ENV_INJECT_PATH"
         - shell:
