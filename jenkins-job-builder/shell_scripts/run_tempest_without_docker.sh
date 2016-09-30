@@ -20,7 +20,6 @@ IS_TLS=$(source /root/openrc_tempest; openstack endpoint show identity 2>/dev/nu
 sed -i "s/:5000\/'/:5000\/v3\/'/" /root/openrc_tempest
 echo "export OS_PROJECT_DOMAIN_NAME='Default'" >> /root/openrc_tempest
 echo "export OS_USER_DOMAIN_NAME='Default'" >> /root/openrc_tempest
-echo "export OS_USER_DOMAIN_NAME='Default'" >> /root/openrc_tempest
 echo "export OS_IDENTITY_API_VERSION='3'" >> /root/openrc_tempest
 
 ./install_rally.sh -d rally-venv/ -y
