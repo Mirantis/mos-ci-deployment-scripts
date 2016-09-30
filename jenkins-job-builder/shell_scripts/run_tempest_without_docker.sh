@@ -25,17 +25,17 @@ echo "export OS_IDENTITY_API_VERSION='3'" >> /root/openrc_tempest
 
 ./install_rally.sh -d rally-venv/ -y
 
-sed -i 's|#swift_operator_role = Member|swift_operator_role = SwiftOperator|g' /root/rally/rally-venv/etc/rally/rally.conf
-
 NOVA_FLTR=$(sed -n '/scheduler_default_filters=/p' /etc/nova/nova.conf | cut -f2 -d=)
 check_ceph=$(cat /etc/cinder/cinder.conf |grep '\[RBD-backend\]' | wc -l)
 if [ ${check_ceph} == '1' ]; then
     storage_protocol="ceph"
+    sed -i 's|#swift_operator_role = Member|swift_operator_role = swiftoperator|g' /root/rally/rally-venv/etc/rally/rally.conf
     wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/skip_ceph.list
     wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/ceph
     echo 'scheduler_available_filters = '$NOVA_FLTR >> ceph
 else
     storage_protocol="lvm"
+    sed -i 's|#swift_operator_role = Member|swift_operator_role = SwiftOperator|g' /root/rally/rally-venv/etc/rally/rally.conf
     wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/skip_lvm.list
     wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/lvm
     echo 'scheduler_available_filters = '$NOVA_FLTR >> lvm
