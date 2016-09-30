@@ -3,7 +3,9 @@
 rm -rf rally .rally /root/openrc_tempest
 cp /root/openrc /root/openrc_tempest
 
+set +e
 source /root/openrc_tempest && ironic node-create -d fake
+set -e
 
 apt-get install -y git
 
