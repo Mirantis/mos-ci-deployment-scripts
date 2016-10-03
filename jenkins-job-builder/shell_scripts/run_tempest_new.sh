@@ -16,7 +16,7 @@ echo "$ISO_ID"_CONF:"$SNAPSHOT" > build-name-setter.info
 CONTROLLER_ID=$(echo 'fuel node | grep controller | awk '\''{print $1}'\'' | \
                       head -1' | sshpass -p 'r00tme' ssh $SSH_OPTS -T root@"$FUEL_MASTER_IP")
 
-wget https://raw.githubusercontent.com/obutenko/rally-tempest/master/run_tempest_without_docker.sh
+wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/run_tempest_without_docker.sh
 
 ##### Copying script to master node, then to controller #####
 sshpass -p 'r00tme' scp $SSH_OPTS run_tempest_without_docker.sh root@"$FUEL_MASTER_IP":/root/ssh_scr.sh
