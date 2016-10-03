@@ -78,6 +78,8 @@
     tox_test_name: murano-docker_k8s
     nova_quotas: "TRUE"
     apps_from_catalog: "TRUE"
+    docker_image_url: http://storage.apps.openstack.org/images/debian-8-docker.qcow2
+    k8s_image_url: http://storage.apps.openstack.org/images/debian8-x64-kubernetes.qcow2
 
     milestone: '9.0'
     suite: '[{milestone}][MOSQA] Automated Cloud Testing'
@@ -101,6 +103,8 @@
     tox_test_name: murano-docker_k8s
     nova_quotas: "TRUE"
     apps_from_catalog: "FALSE"
+    docker_image_url: http://murano-files.mirantis.com/debian8-x64-kubernetes-1.4beta10_calico-0.21.0_cni-1.4.2.qcow2
+    k8s_image_url: http://murano-files.mirantis.com/debian8-x64-kubernetes-1.4beta10_calico-0.21.0_cni-1.4.2.qcow2
 
     milestone: '9.0'
     suite: '[{milestone}][MOSQA] Automated Cloud Testing'

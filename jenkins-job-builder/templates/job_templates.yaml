@@ -586,10 +586,10 @@
             default: '{apps_from_catalog}'
         - string:
             name: DOCKER_IMAGE_URL
-            default: "http://storage.apps.openstack.org/images/debian-8-docker.qcow2"
+            default: "{docker_image_url}"
         - string:
             name: K8S_IMAGE_URL
-            default: "http://murano-files.mirantis.com/debian8-x64-kubernetes-1.4beta10_calico-0.21.0_cni-1.4.2.qcow2"
+            default: "{k8s_image_url}"
         - string:
             name: K8S_IMAGE_USER
             default: "debian"
