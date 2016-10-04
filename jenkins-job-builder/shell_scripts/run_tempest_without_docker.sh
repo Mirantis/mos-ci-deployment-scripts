@@ -47,7 +47,7 @@ source /root/openrc_tempest
 
 rally-manage db recreate
 rally deployment create --fromenv --name=tempest
-rally verify install
+rally verify install --version 4db514cc0178662163e337bc0cddbdc7357c2220
 rally verify genconfig --add-options $storage_protocol
 rally verify showconfig
 
