@@ -8,7 +8,7 @@
 
     project-type: freestyle
     defaults: global
-    node: master
+    node: Slave-7775
     triggers:
         - timed: "0 12 * * *"
 
@@ -23,7 +23,7 @@
 
     publisher:
       - archive:
-          artifacts: 'dimage'
+          artifacts: 'rally_tempest_image'
           allow-empty: 'false'
           fingerprint: true
 
