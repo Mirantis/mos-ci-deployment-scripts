@@ -23,7 +23,7 @@ template:
         ceilometer: true
         ironic: true
         murano: true
-        sahara: false
+        sahara: true
       storages:
         ephemeral-ceph: false
         image-ceph: false
