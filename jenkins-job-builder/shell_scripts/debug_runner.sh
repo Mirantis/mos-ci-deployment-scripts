@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-
+### need fix
+FUEL_MASTER_IP='10.109.2.2'
 ##### Define SSH Opts #####
 export SSH_OPTS='-o UserKnownHostsFile=/dev/null  -o StrictHostKeyChecking=no'
 
