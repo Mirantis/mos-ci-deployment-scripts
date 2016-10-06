@@ -34,8 +34,8 @@ rally verify showconfig
 
 for i in {1..3}; do
     mkdir /root/run-$i && \
-    rally verify start --regex tempest.api.identity > /root/run-$i/log-$i.log && \
-    rally verify results --html --output-file result-$i.html
+    rally verify start --regex tempest.api.identity > /root/run-$i/tests.log && \
+    rally verify results --html --output-file /root/run-$i/result.html
 done
 
 deactivate
