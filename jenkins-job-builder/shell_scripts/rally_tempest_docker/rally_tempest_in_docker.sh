@@ -16,7 +16,8 @@ mkdir /home/mount_dir
 cp /root/openrc /home/mount_dir/openrc
 IS_TLS=$(source /root/openrc; openstack endpoint show identity 2>/dev/null | awk '/https/')
     if [ "${IS_TLS}" ]; then
-        echo "export OS_CACERT='/var/lib/astute/haproxy/public_haproxy.pem'" >> /home/mount_dir/openrc
+        cp /var/lib/astute/haproxy/public_haproxy.pem /home/mount_dir/
+        echo "export OS_CACERT='/home/rally/public_haproxy.pem'" >> /home/mount_dir/openrc
     fi
 
 sed -i "s/:5000\/'/:5000\/v3\/'/" /home/mount_dir/openrc
