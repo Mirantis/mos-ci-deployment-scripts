@@ -32,9 +32,10 @@ rally verify install --version 4db514cc0178662163e337bc0cddbdc7357c2220
 rally verify genconfig
 rally verify showconfig
 
-for i in range(20):
-    mkdir /root/run-$i
-    rally verify start --skip-list skip_ceph.list > /root/run-$i/log-$i.log
+for i in {1..3}; do
+    mkdir /root/run-$i && \
+    rally verify start --regex tempest.api.identity > /root/run-$i/log-$i.log && \
     rally verify results --html --output-file result-$i.html
+done
 
 deactivate
