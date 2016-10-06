@@ -338,8 +338,7 @@
         - shell:
             !include-raw-escape:
                 - ../shell_scripts/template_scripts/get_fuel_master_ip.sh
-                - ../shell_scripts/run_tempest_new.sh
-                - ../shell_scripts/template_scripts/testrail_reporter.sh
+                - ../shell_scripts/debug_runner.sh
 
     publishers:
         - common_publisher
