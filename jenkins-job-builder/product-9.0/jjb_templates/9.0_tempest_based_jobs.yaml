@@ -72,37 +72,6 @@
     node: single_template
     <<: *common_parameters
 
-- project:
-    name: debug_one_controller_ceph
-    weight: 2
-    display_name: 'Tempest-9.0_{name}'
-    env_changer: _rabbit
-    config_path: templates/tempest/ironic_ceph_one_controller.yaml
-    config_path: templates/tempest/ironic_cinder_one_controller.yaml
-    test_group: 'TEST Tempest (Ceph,SSL,DVR,Ceilometer)'
-    start_timer: ''
-    is_ssl_disabled: 'FALSE'
-    ceph_skip_tests: 'FALSE'
-    ceph_rados: 'FALSE'
-    destroy_env: 'TRUE'
-    node: single_template
-    <<: *common_parameters
-
-- project:
-    name: debug_one_controller_cinder
-    weight: 2
-    display_name: 'Tempest-9.0_{name}'
-    env_changer: _rabbit
-    config_path: templates/tempest/ironic_cinder_one_controller.yaml
-    test_group: 'TEST Tempest (LVM,SSL,DVR,Ceilometer)'
-    start_timer: ''
-    is_ssl_disabled: 'FALSE'
-    ceph_skip_tests: 'FALSE'
-    ceph_rados: 'FALSE'
-    destroy_env: 'TRUE'
-    node: single_template
-    <<: *common_parameters
-
 - common_parameters3: &common_parameters3
     name: 'common tempest projects parameters3'
     tox_properties: ''
