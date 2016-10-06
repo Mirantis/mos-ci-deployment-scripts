@@ -5,7 +5,7 @@ source /root/openrc && ironic node-create -d fake
 rm -rf rally_tempest_image /home/mount_dir
 set -e
 
-wget http://cz7776.bud.mirantis.net:8080/jenkins/view/System%20Jobs/job/rally_tempest_docker_build/lastSuccessfulBuild/artifact/
+wget http://cz7776.bud.mirantis.net:8080/jenkins/view/System%20Jobs/job/rally_tempest_docker_build/lastSuccessfulBuild/artifact/rally_tempest_image
 
 apt-get install -y docker.io
 apt-get install -y cgroup-bin
