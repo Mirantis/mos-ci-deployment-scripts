@@ -21,13 +21,11 @@
     logrotate:
       daysToKeep: 1
 
-    publisher:
+    publishers:
       - archive:
           artifacts: 'rally_tempest_image'
           allow-empty: 'false'
           fingerprint: true
-
-    publishers:
       - workspace-cleanup:
           fail-build: false
       - email:
