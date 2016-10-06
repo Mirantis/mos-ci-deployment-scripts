@@ -61,4 +61,4 @@ docker exec -ti $docker_id bash -c "rally verify start --skip-list skip.list --s
 docker exec -ti $docker_id bash -c "rally verify results --json --output-file output.json"
 docker exec -ti $docker_id bash -c "git clone https://github.com/greatehop/rally_json2junit && python rally_json2junit/rally_json2junit/results_parser.py output.json"
 docker exec -ti $docker_id bash -c "rally verify showconfig > /home/rally/tempest.conf"
-docker exec -ti $docker_id bash -c "cp $(find / -name tempest.log) /home/rally/"
+cp $(find /home/mount_dir/.rally/tempest/ -name tempest.log) /home/mount_dir/
