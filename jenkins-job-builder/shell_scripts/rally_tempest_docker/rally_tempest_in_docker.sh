@@ -3,6 +3,10 @@
 set +e
 source /root/openrc && ironic node-create -d fake
 rm -rf rally_tempest_image /home/mount_dir
+image_id=$(docker images |grep rally-tempest| awk {'print$3'})
+docker_id=$(docker ps | grep $image_id | awk '{print $1}'| head -1)
+docker rm -f $docker_id
+docker rmi $image_id
 set -e
 
 wget http://cz7776.bud.mirantis.net:8080/jenkins/view/System%20Jobs/job/rally_tempest_docker_build/lastSuccessfulBuild/artifact/rally_tempest_image
@@ -53,6 +57,8 @@ echo 'scheduler_available_filters = '$NOVA_FLTR >> tempest_config
 docker exec -ti $docker_id bash -c "apt-get install -y iputils-ping"
 docker exec -ti $docker_id bash -c "setup-tempest"
 docker exec -ti $docker_id bash -c "rally verify showconfig"
-docker exec -ti $docker_id bash -c "rally verify start --skip-list skip.list --system-wide > log.log"
+docker exec -ti $docker_id bash -c "rally verify start --skip-list skip.list --system-wide > tests.log"
 docker exec -ti $docker_id bash -c "rally verify results --json --output-file output.json"
 docker exec -ti $docker_id bash -c "git clone https://github.com/greatehop/rally_json2junit && python rally_json2junit/rally_json2junit/results_parser.py output.json"
+docker exec -ti $docker_id bash -c "rally verify showconfig > /home/rally/tempest.conf"
+docker exec -ti $docker_id bash -c "cp $(find / -name tempest.log) /home/rally/"
