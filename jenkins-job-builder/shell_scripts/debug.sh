@@ -32,9 +32,9 @@ rally verify install --version 4db514cc0178662163e337bc0cddbdc7357c2220
 rally verify genconfig
 rally verify showconfig
 
-for i in {1..3}; do
+for i in {1..20}; do
     mkdir /root/run-$i && \
-    rally verify start --regex tempest.api.identity > /root/run-$i/tests.log && \
+    rally verify start --regex tempest.api.identity --concurrency 4 > /root/run-$i/tests.log && \
     rally verify results --html --output-file /root/run-$i/result.html
 done
 
