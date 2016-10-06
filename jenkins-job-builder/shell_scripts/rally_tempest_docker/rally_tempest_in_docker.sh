@@ -2,16 +2,17 @@
 
 set +e
 source /root/openrc && ironic node-create -d fake
+rm -rf rally_tempest_image /home/mount_dir
 set -e
 
-### need fix ###
-wget http://cz7776.bud.mirantis.net/rally_tempest_image
-###
+http://cz7776.bud.mirantis.net:8080/jenkins/view/System%20Jobs/job/rally_tempest_docker_build/lastSuccessfulBuild/artifact/
+
 apt-get install -y docker.io
 apt-get install -y cgroup-bin
 docker load -i rally_tempest_image
 
 mkdir /home/mount_dir
+
 cp /root/openrc /home/mount_dir/openrc
 IS_TLS=$(source /root/openrc; openstack endpoint show identity 2>/dev/null | awk '/https/')
     if [ "${IS_TLS}" ]; then
@@ -34,15 +35,15 @@ NOVA_FLTR=$(sed -n '/scheduler_default_filters=/p' /etc/nova/nova.conf | cut -f2
 check_ceph=$(cat /etc/cinder/cinder.conf |grep '\[RBD-backend\]' | wc -l)
 if [ ${check_ceph} == '1' ]; then
     docker exec -ti $docker_id bash -c "sed -i 's|#swift_operator_role = Member|swift_operator_role = swiftoperator|g' /etc/rally/rally.conf"
-    wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/skip_ceph.list
+    wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/rally_tempest_docker/skip_ceph.list
     cp skip_ceph.list skip.list
-    wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/ceph
+    wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/rally_tempest_docker/ceph
     cp ceph tempest_config
 else
     docker exec -ti $docker_id bash -c "sed -i 's|#swift_operator_role = Member|swift_operator_role = SwiftOperator|g' /etc/rally/rally.conf"
-    wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/skip_lvm.list
+    wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/rally_tempest_docker/skip_lvm.list
     cp skip_lvm.list skip.list
-    wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/lvm
+    wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/rally_tempest_docker/lvm
     cp lvm tempest_config
 fi
 
