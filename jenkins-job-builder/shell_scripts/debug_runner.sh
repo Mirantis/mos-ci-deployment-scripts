@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 ### need fix
-FUEL_MASTER_IP='10.109.2.2'
 ##### Define SSH Opts #####
 export SSH_OPTS='-o UserKnownHostsFile=/dev/null  -o StrictHostKeyChecking=no'
 
@@ -16,7 +15,6 @@ echo "$ISO_ID"_CONF:"$SNAPSHOT" > build-name-setter.info
 ##### Get ID of controller via SSH to admin node #####
 CONTROLLER_ID=$(echo 'fuel node | grep controller | awk '\''{print $1}'\'' | \
                       head -1' | sshpass -p 'r00tme' ssh $SSH_OPTS -T root@"$FUEL_MASTER_IP")
-
 
 ############################ add diff to keystone ########################
 wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/apply_diff
