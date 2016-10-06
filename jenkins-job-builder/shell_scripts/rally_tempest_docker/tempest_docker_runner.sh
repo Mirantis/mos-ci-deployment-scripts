@@ -19,14 +19,15 @@ CONTROLLER_ID=$(echo 'fuel node | grep controller | awk '\''{print $1}'\'' | \
 wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/rally_tempest_docker/rally_tempest_in_docker.sh
 
 ##### Copying script to master node, then to controller #####
-sshpass -p 'r00tme' scp $SSH_OPTS run_tempest_in_docker.sh root@"$FUEL_MASTER_IP":/root/job_runner.sh
-echo "scp /root/job_runner.sh node-$CONTROLLER_ID:/root/job_runner.sh" | sshpass -p 'r00tme' ssh $SSH_OPTS -T root@"$FUEL_MASTER_IP"
+sshpass -p 'r00tme' scp $SSH_OPTS run_tempest_in_docker.sh root@"$FUEL_MASTER_IP":/root/ssh_scr.sh
+echo "scp /root/ssh_scr.sh node-$CONTROLLER_ID:/root/ssh_scr.sh" | sshpass -p 'r00tme' ssh $SSH_OPTS -T root@"$FUEL_MASTER_IP"
 
 ##### Executing script from admin node on controller node: #####
-EXEC_CMD="echo 'bash -xe /root/job_runner.sh' | ssh -T node-$CONTROLLER_ID"
+EXEC_CMD="echo 'bash -xe /root/ssh_scr.sh' | ssh -T node-$CONTROLLER_ID"
 echo "$EXEC_CMD" | sshpass -p 'r00tme' ssh $SSH_OPTS -T root@"$FUEL_MASTER_IP"
+
 ##### Artifacts #####
-GET_RES_CMD="scp node-$CONTROLLER_ID:/home/mount_dir/verification.xml /root/verification.xml"
+GET_RES_CMD="scp node-$CONTROLLER_ID:/home/mount_dir/verification.xml /root/verification.xml"i
 echo "$GET_RES_CMD" |  sshpass -p 'r00tme' ssh $SSH_OPTS -T root@"$FUEL_MASTER_IP"
 sshpass -p 'r00tme' scp $SSH_OPTS root@"$FUEL_MASTER_IP":/root/verification.xml $REPORT_FILE
 

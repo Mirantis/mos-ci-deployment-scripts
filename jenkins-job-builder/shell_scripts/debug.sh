@@ -34,7 +34,7 @@ rally verify showconfig
 
 for i in range(20):
     mkdir /root/run-$i
-    rally verify start --skip-list skip_ceph.list > /root/run-$i/log-$i.log
+    rally verify start > /root/run-$i/log-$i.log
     rally verify results --html --output-file result-$i.html
 
 deactivate
