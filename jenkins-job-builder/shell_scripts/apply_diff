@@ -1,0 +1,9 @@
+#!/bin/bash -xe
+file='1bf5c22f.diff'
+get_patch="rm -f /root/$file wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/1bf5c22f.diff"
+for i in $(fuel node |grep controller |awk {'print$1'}); do ssh node-$i $get_patch; done
+packages_dir="/usr/lib/python2.7/dist-packages"
+copy_and_apply="cp $file $packages_dir && cd $packages_dir && git apply $file"
+for i in $(fuel node |grep controller |awk {'print$1'}); do ssh node-$i $copy_and_apply; done
+reload="service apache2 reload"
+for i in $(fuel node |grep controller |awk {'print$1'}); do ssh node-$i $reload; done
