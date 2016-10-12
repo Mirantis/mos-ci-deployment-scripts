@@ -71,12 +71,12 @@
 - project:
     name: cinder_ceph
     weight: 2
-    env_changer: _nova_ceph
+    env_changer: _glance_ceph
     env_inject_file: env_inject_cinder.properties
-    config_path: templates/nova/ceph.yaml
+    config_path: templates/glance/ceph.yaml
     test_group: Cinder(Ceph)
-    start_timer: "0 23 * * *"
-    node: Slave-7774
+    start_timer: "0 24 * * *"
+    node: Slave-srv136
     description: Cinder tests
     display_name: 9.0_Cinder_Ceph
     tox_test_name: cinder
@@ -184,9 +184,9 @@
 - project:
     name: sahara
     weight: 2
-    env_changer: _glance_swift
-    env_inject_file: env_inject_heat.properties
-    config_path: templates/glance/swift.yaml
+    env_changer: _ceilometer
+    env_inject_file: env_inject_ceilometer.properties
+    config_path: templates/ceilometer/default.yaml
     test_group: Sahara upstream integration (Swift)
     start_timer: "0 24 * * *"
     node: Slave-srv135

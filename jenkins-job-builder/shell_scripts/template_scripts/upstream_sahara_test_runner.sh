@@ -43,19 +43,19 @@ rm -rf ${images_folder}
 
 cluster_name=$(echo ${ENV_CHANGER} | sed "s/_//")
 
-echo '[DEFAULT]' > sahara-conf
-echo 'network_type: neutron' >> sahara-conf
-echo 'network_private_name: admin_internal_net' >> sahara-conf
-echo 'network_public_name: admin_floating_net' >> sahara-conf
-echo 'image_username: ubuntu' >> sahara-conf
-echo 'cluster_name: ${cluster_name}' >> sahara-conf
-echo 'vanilla_two_seven_one_image: sahara-mitaka-vanilla-hadoop-2.7.1-ubuntu' >> sahara-conf
-echo 'ambari_2_1_image: sahara-mitaka-ambari-2.2-centos-6.7' >> sahara-conf
-echo 'mapr_500mrv2_image: sahara-mitaka-mapr-5.1.0-ubuntu' >> sahara-conf
-echo 'mapr_510mrv2_image: sahara-mitaka-mapr-5.1.0-ubuntu' >> sahara-conf
-echo 'spark_1_3_image: sahara-mitaka-spark-1.3.1-ubuntu' >> sahara-conf
-echo 'spark_1_6_image: sahara-mitaka-spark-1.6.0-ubuntu' >> sahara-conf
-echo 'cdh_5_5_0_image: sahara-liberty-cdh-5.4.0-ubuntu-12.04' >> sahara-conf
+echo "[DEFAULT]" > sahara-conf
+echo "network_type: neutron" >> sahara-conf
+echo "network_private_name: admin_internal_net" >> sahara-conf
+echo "network_public_name: admin_floating_net" >> sahara-conf
+echo "image_username: ubuntu" >> sahara-conf
+echo "cluster_name: ${cluster_name}" >> sahara-conf
+echo "vanilla_two_seven_one_image: sahara-mitaka-vanilla-hadoop-2.7.1-ubuntu" >> sahara-conf
+echo "ambari_2_1_image: sahara-mitaka-ambari-2.2-centos-6.7" >> sahara-conf
+echo "mapr_500mrv2_image: sahara-mitaka-mapr-5.1.0-ubuntu" >> sahara-conf
+echo "mapr_510mrv2_image: sahara-mitaka-mapr-5.1.0-ubuntu" >> sahara-conf
+echo "spark_1_3_image: sahara-mitaka-spark-1.3.1-ubuntu" >> sahara-conf
+echo "spark_1_6_image: sahara-mitaka-spark-1.6.0-ubuntu" >> sahara-conf
+echo "cdh_5_5_0_image: sahara-liberty-cdh-5.4.0-ubuntu-12.04" >> sahara-conf
 
 echo 'ci_flavor_id: '\''2'\'' ' >> sahara-conf
 echo 'medium_flavor_id: '\''3'\'' ' >> sahara-conf
