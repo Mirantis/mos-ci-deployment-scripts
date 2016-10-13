@@ -1,0 +1,8 @@
+Code-Review+1: Mirantis Jenkins <qa-stepler-ci@mirantis.com>
+Code-Review+2: Timur Nurlygayanov <tnurlygayanov@mirantis.com>
+Verified+1: Timur Nurlygayanov <tnurlygayanov@mirantis.com>
+Submitted-by: Timur Nurlygayanov <tnurlygayanov@mirantis.com>
+Submitted-at: Thu, 13 Oct 2016 11:36:23 -0400
+Reviewed-on: https://review.gerrithub.io/298124
+Project: Mirantis/mos-ci-deployment-scripts
+Branch: refs/heads/master
