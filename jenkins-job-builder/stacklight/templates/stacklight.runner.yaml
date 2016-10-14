@@ -125,7 +125,7 @@
           description: 'The directory where the plugins have been checked out'
       - string:
           name: PLUGINS_BRANCH
-          default: '{plugin_branch}'
+          default: 'stable/1.0'
           description: 'The branch for all plugins except for detach'
       - string:
           name: ENV_INJECT_PATH
@@ -224,7 +224,7 @@
           description: 'The directory where the plugins have been checked out'
       - string:
           name: PLUGINS_BRANCH
-          default: '{plugin_branch}'
+          default: 'stable/1.0'
           description: 'The branch for all plugins except for detach'
       - string:
           name: ENV_INJECT_PATH
