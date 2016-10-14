@@ -1,0 +1,236 @@
+- parameter:
+    name: 'common_runner_parameters'
+    parameters:
+      - string:
+          name: ELASTICSEARCH_KIBANA_PATH
+          default: ''
+      - string:
+          name: INFLUXDB_GRAFANA_PATH
+          default: ''
+      - string:
+          name: LMA_INFRA_ALERTING_PATH
+          default: ''
+      - string:
+          name: LMA_COLLECTOR_PATH
+          default: ''
+      - string:
+          name: DETACH_DATABASE_PATH
+          default: ''
+      - string:
+          name: DETACH_RABBITMQ_PATH
+          default: ''
+      - string:
+          name: USE_9_0
+          default: 'FALSE'
+
+- defaults:
+    name: 'common_runner_defaults'
+
+    wrappers:
+      - timeout:
+          fail: false
+          timeout: 360
+          write-description: false
+
+    properties:
+      - heavy-job:
+          weight: 1
+
+    publishers:
+      - stacklight-results-send-email
+
+    defaults: stacklight_global
+    project-type: multijob
+
+
+- tests_defaults: &tests_defaults
+    name: tests_defaults
+    node-label-name: '{node_label}'
+    node-label: '{node_label}'
+    current-parameters: true
+    kill-phase-on: NEVER
+    property-file: "$ENV_INJECT_PATH"
+
+
+- full_tests_defaults: &full_tests_defaults
+    name: full_tests_defaults
+    current-parameters: true
+    kill-phase-on: NEVER
+    property-file: "$ENV_INJECT_PATH"
+
+#
+# Template used to define the tests validating the StackLight plugins at
+# periodic intervals (eg daily)
+#
+- job-template:
+    name: '{version}.stacklight.{plugin_branch}.runner'
+    node: '{node_label}'
+
+    triggers:
+      - timed: '{timer}'
+
+    description: "Run required StackLight tests"
+    defaults: common_runner_defaults
+
+    builders:
+      - save-start-date
+      - multijob:
+          name: 'Prepare all slaves'
+          condition: SUCCESSFUL
+          projects:
+            - name: '9.x.stacklight.master.prepare.all_slaves'
+              current-parameters: true
+              property-file: "$ENV_INJECT_PATH"
+              kill-phase-on: FAILURE
+              abort-all-job: true
+      - multijob:
+          name: 'Run the system tests'
+          condition: COMPLETED
+          timeout: '480'
+
+          projects:
+            - name: '{version}.stacklight.{plugin_branch}.prepare_slaves_3_single_tests'
+              <<: *tests_defaults
+
+            - name: '{version}.stacklight.{plugin_branch}.prepare_slaves_5_single_tests'
+              <<: *tests_defaults
+
+            - name: '{version}.stacklight.{plugin_branch}.prepare_slaves_9_single_tests'
+              <<: *tests_defaults
+
+            - name: '{version}.stacklight.{plugin_branch}.dedicated_environment'
+              <<: *tests_defaults
+
+            - name: '{version}.stacklight.{plugin_branch}.detached_plugins'
+              <<: *tests_defaults
+
+            - name: '{version}.stacklight.{plugin_branch}.network_templates'
+              <<: *tests_defaults
+
+            - name: '{version}.stacklight.{plugin_branch}.ldap'
+              <<: *tests_defaults
+
+            - name: '{version}.stacklight.{plugin_branch}.failover'
+              <<: *tests_defaults
+
+    parameters:
+      - common_runner_parameters
+      - string:
+          name: MAGNET_LINK
+          default: '{iso_magnet_link}'
+          description: Source for ISO
+      - string:
+          name: PLUGINS_DIR
+          default: '{plugins_dir}'
+          description: 'The directory where the plugins have been checked out'
+      - string:
+          name: PLUGINS_BRANCH
+          default: '{plugin_branch}'
+          description: 'The branch for all plugins except for detach'
+      - string:
+          name: ENV_INJECT_PATH
+          default: '{env_inject_path}'
+          description: 'The file with common shell variables'
+      - string:
+          name: ENV_PREFIX
+          default: '{version}.stacklight.{plugin_branch}'
+          description: 'Used for ENV_NAME'
+
+
+- job-template:
+    name: '{version}.stacklight.{plugin_branch}.full_runner'
+    node: '{node_label}'
+
+    triggers:
+      - timed: '{timer}'
+
+    description: "Run all required StackLight tests"
+    defaults: common_runner_defaults
+
+    builders:
+      - save-start-date
+      - multijob:
+          name: 'Prepare all slaves'
+          condition: SUCCESSFUL
+          projects:
+            - name: '9.x.stacklight.master.prepare.all_slaves'
+              current-parameters: true
+              property-file: "$ENV_INJECT_PATH"
+      - multijob:
+          name: 'Run the system tests'
+          condition: COMPLETED
+          timeout: '480'
+
+          projects:
+            - name: '{version}.stacklight.{plugin_branch}.prepare_slaves_3_single_tests_full_run'
+              node-label-name: Slave-srv69
+              node-label: Slave-srv69
+              <<: *full_tests_defaults
+
+            - name: '{version}.stacklight.{plugin_branch}.prepare_slaves_9_single_tests_full_run'
+              node-label-name: Slave-srv69
+              node-label: Slave-srv69
+              <<: *full_tests_defaults
+
+            - name: '{version}.stacklight.{plugin_branch}.failover'
+              node-label-name: Slave-srv69
+              node-label: Slave-srv69
+              <<: *full_tests_defaults
+
+            - name: '{version}.stacklight.{plugin_branch}.dedicated_environment'
+              node-label-name: Slave-srv148
+              node-label: Slave-srv148
+              <<: *full_tests_defaults
+
+            - name: '{version}.stacklight.{plugin_branch}.detached_plugins'
+              node-label-name: Slave-srv148
+              node-label: Slave-srv148
+              <<: *full_tests_defaults
+
+            - name: '{version}.stacklight.{plugin_branch}.network_templates'
+              node-label-name: Slave-srv148
+              node-label: Slave-srv148
+              <<: *full_tests_defaults
+
+            - name: '{version}.stacklight.{plugin_branch}.ldap'
+              node-label-name: Slave-srv69
+              node-label: Slave-srv69
+              <<: *full_tests_defaults
+
+            - name: '{version}.stacklight.{plugin_branch}.network_configuration'
+              node-label-name: Slave-srv148
+              node-label: Slave-srv148
+              <<: *full_tests_defaults
+
+            - name: '{version}.stacklight.{plugin_branch}.alarms'
+              node-label-name: Slave-srv69
+              node-label: Slave-srv69
+              <<: *full_tests_defaults
+
+            - name: '{version}.stacklight.{plugin_branch}.functional'
+              node-label-name: Slave-srv69
+              node-label: Slave-srv69
+              <<: *full_tests_defaults
+
+    parameters:
+      - common_runner_parameters
+      - string:
+          name: MAGNET_LINK
+          default: '{iso_magnet_link}'
+          description: Source for ISO
+      - string:
+          name: PLUGINS_DIR
+          default: '{plugins_dir}'
+          description: 'The directory where the plugins have been checked out'
+      - string:
+          name: PLUGINS_BRANCH
+          default: '{plugin_branch}'
+          description: 'The branch for all plugins except for detach'
+      - string:
+          name: ENV_INJECT_PATH
+          default: '{env_inject_path}'
+          description: 'The file with common shell variables'
+      - string:
+          name: ENV_PREFIX
+          default: '{version}.stacklight.{plugin_branch}'
+          description: 'Used for ENV_NAME'

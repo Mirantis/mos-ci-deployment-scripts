@@ -1,0 +1,123 @@
+- 9.x.common_parameters: &9_x_common_parameters
+    name: '9.x common projects parameters'
+    defaults: stacklight_global
+
+    version: 9.x
+    iso_magnet_link: release-9.0
+    plugin_branch: master
+    detached_plugin_branch: '{fuel-branch-9_0}'
+    fuel_qa_branch: '{fuel-branch-9_0}'
+    plugin_owner: 'StackLight team'
+
+
+- project:
+    name: 9.x.stacklight.master.prepare.all_slaves
+
+    <<: *9_x_common_parameters
+
+    jobs:
+      - '{version}.stacklight.{plugin_branch}.prepare.all_slaves'
+
+
+- project:
+    name: 9.x.stacklight.runner
+    node_label: Slave-srv69
+
+    <<: *9_x_common_parameters
+
+    jobs:
+      - '{version}.stacklight.{plugin_branch}.runner':
+          timer: '5 21 * * 1'
+      - '{version}.stacklight.{plugin_branch}.full_runner':
+          timer: '5 21 * * 5'
+
+
+- project:
+    name: 9.x.stacklight.tests
+    node_label: stacklight
+
+    <<: *9_x_common_parameters
+
+    jobs:
+      - '{version}.stacklight.{plugin_branch}.{test_group_name}':
+          test_group_name: 'prepare_slaves_3_single_tests'
+          tests:
+              - "deploy_toolchain_with_reduced_footprint"
+              - "deploy_toolchain_with_https"
+              - "deploy_toolchain_neutron_vxlan_l2pop_dvr"
+
+      - '{version}.stacklight.{plugin_branch}.{test_group_name}':
+          test_group_name: 'prepare_slaves_5_single_tests'
+          tests: "deploy_toolchain_neutron_vxlan_l3ha"
+
+      - '{version}.stacklight.{plugin_branch}.{test_group_name}':
+          test_group_name: "prepare_slaves_9_single_tests"
+          tests:
+              - "deploy_toolchain_ha_ceph_backend"
+              - "deploy_toolchain_ha_platform_components"
+              - "add_remove_toolchain_node"
+
+      - '{version}.stacklight.{plugin_branch}.{test_group_name}':
+          test_group_name: 'dedicated_environment'
+          tests: 'dedicated_environment'
+      - '{version}.stacklight.{plugin_branch}.{test_group_name}':
+          test_group_name: 'detached_plugins'
+          tests: 'detached_plugins'
+      - '{version}.stacklight.{plugin_branch}.{test_group_name}':
+          test_group_name: 'network_templates'
+          tests: 'network_templates'
+      - '{version}.stacklight.{plugin_branch}.{test_group_name}':
+          test_group_name: 'ldap'
+          tests: 'ldap'
+      - '{version}.stacklight.{plugin_branch}.{test_group_name}':
+          test_group_name: 'failover'
+          tests:
+              - "shutdown_influxdb_grafana_node_in_toolchain"
+              - "shutdown_elasticsearch_kibana_node_in_toolchain"
+              - "shutdown_infrastructure_alerting_node_in_toolchain"
+
+      # tests for full run
+      - '{version}.stacklight.{plugin_branch}.{test_group_name}':
+          test_group_name: 'network_configuration'
+          tests: 'network_configuration'
+
+      - '{version}.stacklight.{plugin_branch}.{test_group_name}':
+          test_group_name: 'alarms'
+          tests: 'alarms'
+
+      - '{version}.stacklight.{plugin_branch}.{test_group_name}':
+          test_group_name: 'functional'
+          tests:
+              - "check_nova_logs_in_elasticsearch"
+              - "check_nova_notifications_toolchain"
+              - "check_glance_notifications_toolchain"
+              - "check_cinder_notifications_toolchain"
+              - "check_heat_notifications_toolchain"
+              - "check_neutron_notifications_toolchain"
+              - "check_keystone_notifications_toolchain"
+              - "check_display_grafana_dashboards_toolchain"
+              - "check_nova_metrics_toolchain"
+              - "toolchain_warning_alert_service"
+              - "toolchain_critical_alert_service"
+              - "toolchain_warning_alert_node"
+              - "toolchain_critical_alert_node"
+
+      - '{version}.stacklight.{plugin_branch}.{test_group_name}':
+          test_group_name: 'prepare_slaves_3_single_tests_full_run'
+          tests:
+              - "deploy_toolchain_with_reduced_footprint"
+              - "deploy_toolchain_with_https"
+              - "install_toolchain"
+              - "uninstall_deployed_toolchain"
+              - "uninstall_toolchain"
+              - "check_node_outage_toolchain"
+
+      - '{version}.stacklight.{plugin_branch}.{test_group_name}':
+          test_group_name: "prepare_slaves_9_single_tests_full_run"
+          tests:
+              - "add_remove_toolchain_node"
+              - "deploy_toolchain_ha_ceph_backend"
+              - "deploy_toolchain_ha_platform_components"
+              - "add_remove_controller_toolchain"
+              - "add_remove_compute_toolchain"
+              - "check_cluster_outage_toolchain"
