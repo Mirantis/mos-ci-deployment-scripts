@@ -32,12 +32,12 @@
     weight: 1
     env_changer: _nfv
     env_inject_file: env_inject_nova_ceph.properties
-    config_path: templates/nfv/sr-iov_ceph_vxlan.yaml
-    test_group: NFV(SR-IOV_Ceph)
+    config_path: templates/nfv/sr-iov_vxlan_ceph.yaml
+    test_group: NFV(SR-IOV_Ceph_VxLAN)
     start_timer: "5 21 * * 1"
     node: Slave-srv155
     description: NFV SR-IOV_Ceph tests
-    display_name: 9.x_NFV_SR-IOV_Ceph
+    display_name: 9.x_NFV_SR-IOV_Ceph_VxLAN
     tox_test_name: nfv
     nova_quotas: "TRUE"
 
