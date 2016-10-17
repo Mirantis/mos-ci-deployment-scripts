@@ -20,7 +20,11 @@ if [[ "$USE_9_0" != 'TRUE' ]]; then
     rm snapshots.params
     rm conv_snapshot_file.py
 
-    wget https://product-ci.infra.mirantis.net/job/9.x.snapshot/lastSuccessfulBuild/artifact/snapshots.params
+    #wget https://product-ci.infra.mirantis.net/job/9.x.snapshot/lastSuccessfulBuild/artifact/snapshots.params
+    #Freeze the 9.1 snapshot for accepatance testing
+    #TODO(ytregubov) remove the line below and uncomment the one above after
+    #the acepatance is over.
+    wget https://product-ci.infra.mirantis.net/job/9.x.snapshot/343/artifact/snapshots.params
     wget https://raw.githubusercontent.com/openstack/fuel-qa/stable/mitaka/utils/jenkins/conv_snapshot_file.py
     set -e
 
