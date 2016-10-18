@@ -1,0 +1,19 @@
+- stepler_parameters: &stepler_parameters
+    name: 'common tox based projects parameters'
+    tox_properties: ''
+    milestone: '9.1'
+    suite: '[{milestone}][MOSQA] Automated Cloud Testing'
+    jobs1:
+      - '9.x_Stepler_{name}'
+
+- project:
+    name: Stepler_Tempest_LVM_no_ssl
+    weight: 4
+    display_name: '{name}'
+    env_changer: _ironic_cinder
+    config_path: templates/tempest/ironic_cinder.yaml
+    test_group: 'Stepler {name}'
+    start_timer: '5 6 * * *'
+    is_ssl_disabled: 'TRUE'
+    node: single_template
+    <<: *stepler_parameters

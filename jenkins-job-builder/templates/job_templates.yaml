@@ -81,6 +81,22 @@
           script-only-if-succeeded: false
           script-only-if-failed: false
 
+- builder:
+    name: env_variables_export
+    builders:
+      - shell:
+          !include-raw: ../shell_scripts/template_scripts/env_variables_export.sh
+      - inject:
+          properties-file: "$ENV_INJECT_PATH"
+
+- builder:
+    name: get_plugins
+    builders:
+      - shell:
+          !include-raw-escape: ../shell_scripts/get_plugins.sh
+      - inject:
+          properties-file: "$ENV_INJECT_PATH"
+
 - job-template:
     name: '9.x_horizon_integraion_test_{name}'
 
@@ -108,10 +124,7 @@
             default: "TRUE"
 
     builders:
-        - shell:
-            !include-raw: ../shell_scripts/template_scripts/env_variables_export.sh
-        - inject:
-            properties-file: "$ENV_INJECT_PATH"
+        - env_variables_export
         - shell:
             !include-raw: ../shell_scripts/template_scripts/horizon_selenium_tests.sh
 
@@ -156,10 +169,7 @@
                 - '{git_branch}'
 
     builders:
-        - shell:
-            !include-raw: ../shell_scripts/template_scripts/env_variables_export.sh
-        - inject:
-            properties-file: "$ENV_INJECT_PATH"
+        - env_variables_export
         - shell:
             !include-raw-escape:
                 - ../shell_scripts/revert_last_snapshot.sh
@@ -204,10 +214,7 @@
                 - '{git_branch}'
 
     builders:
-        - shell:
-            !include-raw: ../shell_scripts/template_scripts/env_variables_export.sh
-        - inject:
-            properties-file: "$ENV_INJECT_PATH"
+        - env_variables_export
         - shell:
             !include-raw-escape:
                 - ../shell_scripts/revert_last_snapshot.sh
@@ -247,10 +254,7 @@
             default: "TRUE"
 
     builders:
-        - shell:
-            !include-raw: ../shell_scripts/template_scripts/env_variables_export.sh
-        - inject:
-            properties-file: "$ENV_INJECT_PATH"
+        - env_variables_export
         - shell:
             !include-raw-escape:
                 - ../shell_scripts/revert_last_snapshot.sh
@@ -315,14 +319,8 @@
     builders:
         - shell:
             !include-raw: ../shell_scripts/template_scripts/erase_ci_envs.sh
-        - shell:
-            !include-raw: ../shell_scripts/template_scripts/env_variables_export.sh
-        - inject:
-            properties-file: "$ENV_INJECT_PATH"
-        - shell:
-            !include-raw-escape: ../shell_scripts/get_plugins.sh
-        - inject:
-            properties-file: "$ENV_INJECT_PATH"
+        - env_variables_export
+        - get_plugins
         - shell:
             !include-raw: ../shell_scripts/deploy_env_from_template.sh
         - inject:
@@ -440,16 +438,12 @@
                 - origin/master
 
     builders:
+        - env_variables_export
         - shell:
-            !include-raw: ../shell_scripts/template_scripts/env_variables_export.sh
-        - inject:
-            properties-file: "$ENV_INJECT_PATH"
-        - shell:
-            !include-raw:
-                - ../shell_scripts/template_scripts/tox_based_test_runner.sh
-                - ../shell_scripts/template_scripts/testrail_reporter.sh
+            !include-raw: ../shell_scripts/template_scripts/tox_based_test_runner.sh
 
     publishers:
+        - report-to-testrail
         - common_publisher
         - archive:
             artifacts: 'mos-integration-tests/snapshots/*'
@@ -501,22 +495,16 @@
             branches:
                 - origin/master
     builders:
-        - shell:
-            !include-raw: ../shell_scripts/template_scripts/env_variables_export.sh
-        - inject:
-            properties-file: "$ENV_INJECT_PATH"
-        - shell:
-            !include-raw-escape: ../shell_scripts/get_plugins.sh
-        - inject:
-            properties-file: "$ENV_INJECT_PATH"
+        - env_variables_export
+        - get_plugins
         - shell:
             !include-raw:
                 - ../shell_scripts/template_scripts/erase_ci_envs.sh
                 - ../shell_scripts/deploy_env_from_template.sh
                 - ../shell_scripts/template_scripts/tox_based_test_runner.sh
-                - ../shell_scripts/template_scripts/testrail_reporter.sh
 
     publishers:
+        - report-to-testrail
         - common_publisher
         - archive:
             artifacts: 'mos-integration-tests/snapshots/*'
@@ -565,10 +553,7 @@
     builders:
         - shell:
             !include-raw: ../shell_scripts/template_scripts/erase_ci_envs.sh
-        - shell:
-            !include-raw: ../shell_scripts/template_scripts/env_variables_export.sh
-        - inject:
-            properties-file: "$ENV_INJECT_PATH"
+        - env_variables_export
         - shell:
             !include-raw: ../shell_scripts/deploy_env_from_template.sh
         - inject:
@@ -648,10 +633,7 @@
     builders:
         - shell:
             !include-raw: ../shell_scripts/template_scripts/erase_ci_envs.sh
-        - shell:
-            !include-raw: ../shell_scripts/template_scripts/env_variables_export.sh
-        - inject:
-            properties-file: "$ENV_INJECT_PATH"
+        - env_variables_export
         - shell:
             !include-raw-escape: ../shell_scripts/get_murano_release_plugin.sh
         - inject:
@@ -694,3 +676,62 @@
         - description-setter:
             regexp: '^.*\[TestRun URL\] \s*(.*)'
             description: '<a href="\1">TestRail Report URL</a>'
+
+- job-template:
+    # empty value causes disabled_var to be ignored internally
+    disabled_var:
+
+    disabled: '{obj:disabled_var}'
+
+    name: '9.x_Stepler_{name}'
+
+    defaults: common_job_settings
+
+    parameters:
+        - common_parameters
+        - string:
+            name: ENV_CHANGER
+            default: '{env_changer}'
+        - string:
+            name: CONFIG_PATH
+            default: '{config_path}'
+        - string:
+            name: TEST_GROUP
+            default: '{test_group}'
+        - string:
+            name: SUITE
+            default: "{suite}"
+        - string:
+            name: MILESTONE
+            default: "{milestone}"
+        - string:
+            name: NOVA_QUOTAS_ENABLED
+            default: "{nova_quotas}"
+        - string:
+            name: TESTRAIL_TEMPEST
+            default: "FALSE"
+
+    wrappers:
+      - ansicolor
+
+    scm:
+        - git:
+            url: https://github.com/Mirantis/stepler.git
+            branches:
+                - origin/master
+
+    builders:
+        - env_variables_export
+        - get_plugins
+        - shell:
+            !include-raw:
+                - ../shell_scripts/template_scripts/erase_ci_envs.sh
+                - ../shell_scripts/deploy_env_from_template.sh
+                - ../shell_scripts/revert_last_snapshot.sh
+                - ../shell_scripts/template_scripts/get_fuel_master_ip.sh
+                - ../shell_scripts/template_scripts/get_fuel_key_and_openrc.sh
+                - ../shell_scripts/template_scripts/stepler_test_runner.sh
+
+    publishers:
+        - report-to-testrail
+        - common_publisher
