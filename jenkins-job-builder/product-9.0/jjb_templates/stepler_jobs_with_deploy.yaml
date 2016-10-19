@@ -3,7 +3,7 @@
     tox_properties: ''
     milestone: '9.1'
     suite: '[{milestone}][MOSQA] Automated Cloud Testing'
-    start_timer: '5 24 * * *'
+    start_timer: '5 0 * * *'
     stepler_args: 'stepler -v --ignore=stepler/horizon'
     nova_quotas: 'TRUE'
     jobs:

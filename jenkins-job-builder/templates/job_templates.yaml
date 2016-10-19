@@ -731,5 +731,4 @@
                 - ../shell_scripts/revert_last_snapshot.sh
                 - ../shell_scripts/template_scripts/get_fuel_master_ip.sh
                 - ../shell_scripts/template_scripts/get_fuel_key_and_openrc.sh
-        - shell:
-            !include-raw: ../shell_scripts/template_scripts/stepler_test_runner.sh
+                - ../shell_scripts/template_scripts/stepler_test_runner.sh
