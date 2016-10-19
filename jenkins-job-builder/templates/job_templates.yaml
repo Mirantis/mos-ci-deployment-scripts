@@ -93,7 +93,7 @@
     name: get_plugins
     builders:
       - shell:
-          !include-raw-escape: ../shell_scripts/get_plugins.sh
+          !include-raw: ../shell_scripts/get_plugins.sh
       - inject:
           properties-file: "$ENV_INJECT_PATH"
 
@@ -721,11 +721,12 @@
                 - origin/master
 
     builders:
+        - shell:
+            !include-raw: ../shell_scripts/template_scripts/erase_ci_envs.sh
         - env_variables_export
         - get_plugins
         - shell:
-            !include-raw:
-                - ../shell_scripts/template_scripts/erase_ci_envs.sh
+            !include-raw-escape:
                 - ../shell_scripts/deploy_env_from_template.sh
                 - ../shell_scripts/revert_last_snapshot.sh
                 - ../shell_scripts/template_scripts/get_fuel_master_ip.sh
