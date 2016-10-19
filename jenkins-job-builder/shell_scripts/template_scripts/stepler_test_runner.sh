@@ -5,9 +5,9 @@ virtualenv --clear venv
 pip install -U pip
 pip install -r requirements.txt -r c-requirements.txt
 
-OS_AUTH_URL=$(echo OS_AUTH_URL | sed 's/\/v2.*/\/v3/')
+OS_AUTH_URL="${{OS_AUTH_URL}}v3"
 
-py.test stepler -v
+py.test {stepler_args}
 deactivate
 
 sudo dos.py destroy "$ENV_NAME"

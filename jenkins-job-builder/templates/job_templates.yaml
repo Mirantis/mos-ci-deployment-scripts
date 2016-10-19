@@ -731,8 +731,5 @@
                 - ../shell_scripts/revert_last_snapshot.sh
                 - ../shell_scripts/template_scripts/get_fuel_master_ip.sh
                 - ../shell_scripts/template_scripts/get_fuel_key_and_openrc.sh
-                - ../shell_scripts/template_scripts/stepler_test_runner.sh
-
-    publishers:
-        - report-to-testrail
-        - common_publisher
+        - shell:
+            !include-raw: ../shell_scripts/template_scripts/stepler_test_runner.sh
