@@ -34,7 +34,7 @@
               TESTRAIL_URL=https://mirantis.testrail.com
               TESTRAIL_PROJECT=Mirantis OpenStack
               TESTRAIL_SUITE=[9.1][MOSQA] Automated Cloud Testing
-              TESTRAIL_MILESTONE=9.1
+              TESTRAIL_MILESTONE=9.2
           script-content: |
               touch $ENV_INJECT_PATH
       - exclusion:

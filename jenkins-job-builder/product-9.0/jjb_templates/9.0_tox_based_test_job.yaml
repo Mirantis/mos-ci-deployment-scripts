@@ -1,8 +1,8 @@
 - common_parameters: &common_parameters
     name: 'common tox based projects parameters'
     tox_properties: ''
-    milestone: '9.1'
-    suite: '[{milestone}][MOSQA] Automated Cloud Testing'
+    milestone: '9.2'
+    suite: '[9.1][MOSQA] Automated Cloud Testing'
     jobs:
       - '9.x_{name}'
 
