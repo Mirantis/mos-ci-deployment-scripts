@@ -7,7 +7,7 @@ pip install -r requirements.txt -r c-requirements.txt
 
 OS_AUTH_URL="${OS_AUTH_URL}v3"
 
-py.test stepler -v --ignore=stepler/horizon
+py.test stepler -v --ignore=stepler/horizon --junit-xml=report.xml
 deactivate
 
 sudo dos.py destroy "$ENV_NAME"

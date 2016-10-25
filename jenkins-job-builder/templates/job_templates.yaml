@@ -1,102 +1,3 @@
-- parameter:
-    name: 'common_parameters'
-    parameters:
-      - string:
-          name: DEPLOYMENT_TIMEOUT
-          default: "10000"
-      - string:
-          name: TESTRAIL_FILE
-          default: "/home/jenkins/testrail.sh"
-      - string:
-          name: REPORT_FILE
-          default: 'report.xml'
-      - string:
-          name: ENV_INJECT_PATH
-          default: 'env_inject{name}.properties'
-      - string:
-          name: ISO_DIR
-          default: "/var/www/fuelweb-iso"
-
-- defaults:
-    name: 'common_job_settings'
-    wrappers:
-      - build-name:
-          name: ${{BUILD_NUMBER}}.${{FILE,path="build-name-setter.info"}}
-
-    properties:
-      - heavy-job:
-          weight: '{weight}'
-    defaults: global
-    node: '{node}'
-    description: '{description}'
-    disabled: false
-    display-name: '{display_name}'
-    concurrent: true
-    retry-count: 3
-    logrotate:
-      daysToKeep: 30
-      artifactDaysToKeep: -1
-      artifactNumToKeep: -1
-
-    triggers:
-        - timed: '{start_timer}'
-
-- publisher:
-    name: base_publisher
-    publishers:
-      - postbuildscript:
-          script-only-if-succeeded: False
-
-      - archive:
-          artifacts: 'report.xml'
-          allow-empty: 'true'
-          fingerprint: true
-
-      - archive:
-          artifacts: '*.log'
-          allow-empty: 'true'
-          fingerprint: true
-
-      - junit:
-          results: report.xml
-
-      - workspace-cleanup:
-          fail-build: false
-
-
-- publisher:
-    name: 'common_publisher'
-    publishers:
-      - email:
-          recipients: 'ogubanov@mirantis.com'
-      - base_publisher
-
-- publisher:
-    name: report-to-testrail
-    publishers:
-      - postbuildscript:
-          builders:
-            - shell:
-                !include-raw: ../shell_scripts/template_scripts/testrail_reporter.sh
-          script-only-if-succeeded: false
-          script-only-if-failed: false
-
-- builder:
-    name: env_variables_export
-    builders:
-      - shell:
-          !include-raw: ../shell_scripts/template_scripts/env_variables_export.sh
-      - inject:
-          properties-file: "$ENV_INJECT_PATH"
-
-- builder:
-    name: get_plugins
-    builders:
-      - shell:
-          !include-raw: ../shell_scripts/get_plugins.sh
-      - inject:
-          properties-file: "$ENV_INJECT_PATH"
-
 - job-template:
     name: '9.x_horizon_integraion_test_{name}'
 
@@ -129,7 +30,7 @@
             !include-raw: ../shell_scripts/template_scripts/horizon_selenium_tests.sh
 
     publishers:
-        - report-to-testrail
+        - report_to_testrail
         - common_publisher
         - archive:
             artifacts: 'mos-horizon/horizon_autotests/tests/test_reports/**'
@@ -176,10 +77,6 @@
                 - ../shell_scripts/template_scripts/get_fuel_master_ip.sh
                 - ../shell_scripts/template_scripts/get_fuel_key_and_openrc.sh
                 - ../shell_scripts/template_scripts/upstream_heat_test_runner.sh
-    publishers:
-        - report-to-testrail
-        - common_publisher
-
 
 - job-template:
     name: '9.x_upstream_sahara'
@@ -222,11 +119,6 @@
                 - ../shell_scripts/template_scripts/get_fuel_key_and_openrc.sh
                 - ../shell_scripts/template_scripts/upstream_sahara_test_runner.sh
 
-    publishers:
-        - report-to-testrail
-        - common_publisher
-
-
 - job-template:
     name: '9.x_openstack_cli_{name}'
 
@@ -253,6 +145,9 @@
             name: TESTRAIL_TEMPEST
             default: "TRUE"
 
+    wrappers:
+        - add_testrail_credentials
+
     builders:
         - env_variables_export
         - shell:
@@ -263,7 +158,7 @@
                 - ../shell_scripts/template_scripts/openstack_cli_tests.sh
 
     publishers:
-        - report-to-testrail
+        - report_to_testrail
         - common_publisher
 
 
@@ -341,11 +236,7 @@
 
     publishers:
         - common_publisher
-        - archive:
-            artifacts: 'mos-integration-tests/snapshots/*'
-            allow-empty: 'true'
-            fingerprint: true
-
+        - archive_mos_int_snapshots
 
 - job-template:
     # empty value causes disabled_var to be ignored internally
@@ -396,11 +287,7 @@
 
     publishers:
         - common_publisher
-        - archive:
-            artifacts: 'mos-integration-tests/snapshots/*'
-            allow-empty: 'true'
-            fingerprint: true
-
+        - archive_mos_int_snapshots
 
 - job-template:
     name: '9.x_wo_deploy_{name}'
@@ -443,12 +330,9 @@
             !include-raw: ../shell_scripts/template_scripts/tox_based_test_runner.sh
 
     publishers:
-        - report-to-testrail
+        - report_to_testrail
         - common_publisher
-        - archive:
-            artifacts: 'mos-integration-tests/snapshots/*'
-            allow-empty: 'true'
-            fingerprint: true
+        - archive_mos_int_snapshots
 
 - job-template:
     name: '9.x_{name}'
@@ -504,12 +388,9 @@
                 - ../shell_scripts/template_scripts/tox_based_test_runner.sh
 
     publishers:
-        - report-to-testrail
+        - report_to_testrail
         - common_publisher
-        - archive:
-            artifacts: 'mos-integration-tests/snapshots/*'
-            allow-empty: 'true'
-            fingerprint: true
+        - archive_mos_int_snapshots
 
 - job-template:
     name: '9.x_{name}_baremetal'
@@ -575,13 +456,9 @@
           global: true
           mask-password-params: true
 
-
     publishers:
         - common_publisher
-        - archive:
-            artifacts: 'mos-integration-tests/snapshots/*'
-            allow-empty: 'true'
-            fingerprint: true
+        - archive_mos_int_snapshots
 
 - job-template:
     name: '9.0_murano_baremetal_{name}'
@@ -669,10 +546,7 @@
 
     publishers:
         - common_publisher
-        - archive:
-            artifacts: 'mos-integration-tests/snapshots/*'
-            allow-empty: 'true'
-            fingerprint: true
+        - archive_mos_int_snapshots
         - description-setter:
             regexp: '^.*\[TestRun URL\] \s*(.*)'
             description: '<a href="\1">TestRail Report URL</a>'
@@ -732,3 +606,5 @@
                 - ../shell_scripts/template_scripts/get_fuel_master_ip.sh
                 - ../shell_scripts/template_scripts/get_fuel_key_and_openrc.sh
                 - ../shell_scripts/template_scripts/stepler_test_runner.sh
+    publishers:
+        - base_publisher

@@ -2,7 +2,7 @@
     name: 'common tempest projects parameters'
     tox_properties: ''
     milestone: '9.2'
-    suite: '[9.1][MOSQA] Tempest {milestone}'
+    suite: '[9.1][MOSQA] Tempest 9.1'
     jobs:
       - '9.x_Tempest_{name}'
     nova_quotas: 'TRUE'

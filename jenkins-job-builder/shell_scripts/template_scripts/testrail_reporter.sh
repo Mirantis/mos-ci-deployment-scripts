@@ -11,7 +11,9 @@ export SNAPSHOT_ID
 # NEED FIX! (move scripts from custom repo to Mirantis repo)
 pip install git+https://github.com/gdyuldin/testrail_reporter.git@stable
 
-source "$TESTRAIL_FILE"
+if [[ (-z $TESTRAIL_USER) || (-z $TESTRAIL_PASSWORD) ]]; then
+    source "$TESTRAIL_FILE"
+fi
 
 # if we need to change SUITE
 if [ -n "$SUITE" ];
