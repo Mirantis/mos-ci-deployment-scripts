@@ -11,7 +11,6 @@ apt-get install -y git
 
 git clone https://github.com/openstack/rally.git
 cd rally
-git checkout tags/0.6.0
 CDIR=$(pwd)
 
 IS_TLS=$(source /root/openrc_tempest; openstack endpoint show identity 2>/dev/null | awk '/https/')
@@ -47,7 +46,7 @@ source /root/openrc_tempest
 
 rally-manage db recreate
 rally deployment create --fromenv --name=tempest
-rally verify install --version 4db514cc0178662163e337bc0cddbdc7357c2220
+rally verify install
 rally verify genconfig --add-options $storage_protocol
 rally verify showconfig
 
