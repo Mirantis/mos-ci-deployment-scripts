@@ -5,9 +5,6 @@
           name: DEPLOYMENT_TIMEOUT
           default: "10000"
       - string:
-          name: TESTRAIL_FILE
-          default: "/home/jenkins/testrail.sh"
-      - string:
           name: REPORT_FILE
           default: 'report.xml'
       - string:
@@ -16,6 +13,12 @@
       - string:
           name: ISO_DIR
           default: "/var/www/fuelweb-iso"
+      - string:
+          name: TESTRAIL_URL
+          default: 'https://mirantis.testrail.com'
+      - string:
+          name: TESTRAIL_PROJECT
+          default: 'Mirantis OpenStack'
 
 - defaults:
     name: 'common_job_settings'

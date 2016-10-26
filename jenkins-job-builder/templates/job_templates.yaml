@@ -24,6 +24,9 @@
             name: HORIZON_UI_TESTS
             default: "TRUE"
 
+    wrappers:
+        - add_testrail_credentials
+
     builders:
         - env_variables_export
         - shell:
@@ -211,6 +214,9 @@
             name: TEMPEST
             default: "FALSE"
 
+    wrappers:
+        - add_testrail_credentials
+
     builders:
         - shell:
             !include-raw: ../shell_scripts/template_scripts/erase_ci_envs.sh
@@ -229,13 +235,10 @@
             properties-file: "$ENV_INJECT_PATH"
         - shell:
             !include-raw-escape: ../shell_scripts/run_tempest_new.sh
-        - inject:
-            properties-file: "$ENV_INJECT_PATH"
-        - shell:
-            !include-raw: ../shell_scripts/template_scripts/testrail_reporter.sh
 
     publishers:
         - common_publisher
+        - report_to_testrail
         - archive_mos_int_snapshots
 
 - job-template:
@@ -317,6 +320,7 @@
 
     wrappers:
       - ansicolor
+      - add_testrail_credentials
 
     scm:
         - git:
@@ -369,9 +373,7 @@
 
     wrappers:
       - ansicolor
-      - inject-passwords:
-          global: true
-          mask-password-params: true
+      - add_testrail_credentials
 
     scm:
         - git:
@@ -431,6 +433,9 @@
             name: USE_IPMI
             default: "{use_ipmi}"
 
+    wrappers:
+      - add_testrail_credentials
+
     builders:
         - shell:
             !include-raw: ../shell_scripts/template_scripts/erase_ci_envs.sh
@@ -445,10 +450,6 @@
             properties-file: "$ENV_INJECT_PATH"
         - shell:
             !include-raw: ../shell_scripts/template_scripts/tox_based_baremetal_test_runner.sh
-        - inject:
-            properties-file: "$ENV_INJECT_PATH"
-        - shell:
-            !include-raw: ../shell_scripts/template_scripts/testrail_reporter.sh
 
     wrappers:
       - ansicolor
@@ -458,6 +459,7 @@
 
     publishers:
         - common_publisher
+        - report_to_testrail
         - archive_mos_int_snapshots
 
 - job-template:
@@ -529,10 +531,6 @@
             !include-raw-escape: ../shell_scripts/template_scripts/patch_script_for_murano.sh
         - shell:
             !include-raw: ../shell_scripts/template_scripts/tox_based_murano_test_runner.sh
-        - inject:
-            properties-file: "$ENV_INJECT_PATH"
-        - shell:
-            !include-raw: ../shell_scripts/template_scripts/testrail_reporter.sh
 
     wrappers:
       - ansicolor
@@ -540,13 +538,12 @@
           properties-content: |
               USE_9_0=TRUE
               TESTRAIL_PLAN_NAME=9.0 Murano
-      - inject-passwords:
-          global: true
-          mask-password-params: true
+      - add_testrail_credentials
 
     publishers:
         - common_publisher
         - archive_mos_int_snapshots
+        - report_to_testrail
         - description-setter:
             regexp: '^.*\[TestRun URL\] \s*(.*)'
             description: '<a href="\1">TestRail Report URL</a>'
