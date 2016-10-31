@@ -226,8 +226,7 @@
             !include-raw: ../shell_scripts/deploy_env_from_template.sh
         - inject:
             properties-file: "$ENV_INJECT_PATH"
-        - shell:
-            !include-raw-escape: ../shell_scripts/revert_last_snapshot.sh
+        - shell: "dos.py revert-resume $ENV_NAME $SNAPSHOT_NAME"
         - shell: sleep 300
         - shell:
             !include-raw-escape: ../shell_scripts/template_scripts/get_fuel_master_ip.sh
@@ -331,6 +330,8 @@
     builders:
         - env_variables_export
         - shell:
+            !include-raw-escape: ../shell_scripts/revert_last_snapshot.sh
+        - shell:
             !include-raw: ../shell_scripts/template_scripts/tox_based_test_runner.sh
 
     publishers:
@@ -384,10 +385,13 @@
         - env_variables_export
         - get_plugins
         - shell:
-            !include-raw:
-                - ../shell_scripts/template_scripts/erase_ci_envs.sh
+            !include-raw: ../shell_scripts/template_scripts/erase_ci_envs.sh
+        - shell:
+            !include-raw-escape:
+                - ../shell_scripts/revert_last_snapshot.sh
                 - ../shell_scripts/deploy_env_from_template.sh
-                - ../shell_scripts/template_scripts/tox_based_test_runner.sh
+        - shell:
+            !include-raw: ../shell_scripts/template_scripts/tox_based_test_runner.sh
 
     publishers:
         - report_to_testrail
