@@ -17,7 +17,7 @@
     config_path: templates/stepler_tempest/ironic_cinder.yaml
     test_group: '{name}'
     is_ssl_disabled: 'TRUE'
-    node: single_template
+    node: Slave-srv144
     <<: *stepler_parameters
 
 - project:
@@ -28,7 +28,7 @@
     config_path: templates/stepler_tempest/ironic_ceph.yaml
     test_group: '{name}'
     is_ssl_disabled: 'TRUE'
-    node: single_template
+    node: Slave-srv134
     <<: *stepler_parameters
 
 - project:
@@ -39,7 +39,7 @@
     config_path: templates/stepler_tempest/ironic_cinder.yaml
     test_group: '{name}'
     is_ssl_disabled: 'FALSE'
-    node: single_template
+    node: Slave-srv150
     <<: *stepler_parameters
 
 - project:
@@ -50,7 +50,7 @@
     config_path: templates/stepler_tempest/ironic_ceph.yaml
     test_group: '{name}'
     is_ssl_disabled: 'FALSE'
-    node: single_template
+    node: Slave-srv128
     <<: *stepler_parameters
 
 - project:
@@ -61,5 +61,5 @@
     config_path: templates/separate_componenets/rabbit.yaml
     test_group: '{name}'
     is_ssl_disabled: 'TRUE'
-    node: single_template
+    node: Slave-srv131
     <<: *stepler_parameters
