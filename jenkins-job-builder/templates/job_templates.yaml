@@ -29,6 +29,7 @@
 
     builders:
         - env_variables_export
+        - revert_last_snapshot
         - shell:
             !include-raw: ../shell_scripts/template_scripts/horizon_selenium_tests.sh
 
@@ -74,12 +75,10 @@
 
     builders:
         - env_variables_export
+        - revert_last_snapshot
+        - get_fuel_creds
         - shell:
-            !include-raw-escape:
-                - ../shell_scripts/revert_last_snapshot.sh
-                - ../shell_scripts/template_scripts/get_fuel_master_ip.sh
-                - ../shell_scripts/template_scripts/get_fuel_key_and_openrc.sh
-                - ../shell_scripts/template_scripts/upstream_heat_test_runner.sh
+            !include-raw-escape: ../shell_scripts/template_scripts/upstream_heat_test_runner.sh
 
 - job-template:
     name: '9.x_upstream_sahara'
@@ -115,12 +114,10 @@
 
     builders:
         - env_variables_export
+        - revert_last_snapshot
+        - get_fuel_creds
         - shell:
-            !include-raw-escape:
-                - ../shell_scripts/revert_last_snapshot.sh
-                - ../shell_scripts/template_scripts/get_fuel_master_ip.sh
-                - ../shell_scripts/template_scripts/get_fuel_key_and_openrc.sh
-                - ../shell_scripts/template_scripts/upstream_sahara_test_runner.sh
+            !include-raw-escape: ../shell_scripts/template_scripts/upstream_sahara_test_runner.sh
 
 - job-template:
     name: '9.x_openstack_cli_{name}'
@@ -153,12 +150,10 @@
 
     builders:
         - env_variables_export
+        - revert_last_snapshot
+        - get_fuel_creds
         - shell:
-            !include-raw-escape:
-                - ../shell_scripts/revert_last_snapshot.sh
-                - ../shell_scripts/template_scripts/get_fuel_master_ip.sh
-                - ../shell_scripts/template_scripts/get_fuel_key_and_openrc.sh
-                - ../shell_scripts/template_scripts/openstack_cli_tests.sh
+            !include-raw-escape: ../shell_scripts/template_scripts/openstack_cli_tests.sh
 
     publishers:
         - report_to_testrail
@@ -219,7 +214,7 @@
 
     builders:
         - shell:
-            !include-raw: ../shell_scripts/template_scripts/erase_ci_envs.sh
+            !include-raw-escape: ../shell_scripts/template_scripts/erase_ci_envs.sh
         - env_variables_export
         - get_plugins
         - shell:
@@ -278,9 +273,7 @@
             default: "FALSE"
 
     builders:
-        - shell:
-            !include-raw-escape:
-                - ../shell_scripts/revert_last_snapshot.sh
+        - revert_last_snapshot
         - shell: sleep 300
         - shell:
             !include-raw-escape:
@@ -329,8 +322,7 @@
 
     builders:
         - env_variables_export
-        - shell:
-            !include-raw-escape: ../shell_scripts/revert_last_snapshot.sh
+        - get_last_snapshot
         - shell:
             !include-raw: ../shell_scripts/template_scripts/tox_based_test_runner.sh
 
@@ -371,6 +363,11 @@
         - string:
             name: LDAP_CONFIG_FILE
             default: "{obj:ldap_config_file}"
+        - bool:
+            name: DEPLOY
+            default: true
+            description: "Erase and deploy new environment"
+  
 
     wrappers:
       - ansicolor
@@ -384,12 +381,8 @@
     builders:
         - env_variables_export
         - get_plugins
-        - shell:
-            !include-raw: ../shell_scripts/template_scripts/erase_ci_envs.sh
-        - shell:
-            !include-raw-escape:
-                - ../shell_scripts/revert_last_snapshot.sh
-                - ../shell_scripts/deploy_env_from_template.sh
+        - erase_and_deploy_env
+        - get_last_snapshot
         - shell:
             !include-raw: ../shell_scripts/template_scripts/tox_based_test_runner.sh
 
@@ -442,7 +435,7 @@
 
     builders:
         - shell:
-            !include-raw: ../shell_scripts/template_scripts/erase_ci_envs.sh
+            !include-raw-escape: ../shell_scripts/template_scripts/erase_ci_envs.sh
         - env_variables_export
         - shell:
             !include-raw: ../shell_scripts/deploy_env_from_template.sh
@@ -515,7 +508,7 @@
 
     builders:
         - shell:
-            !include-raw: ../shell_scripts/template_scripts/erase_ci_envs.sh
+            !include-raw-escape: ../shell_scripts/template_scripts/erase_ci_envs.sh
         - env_variables_export
         - shell:
             !include-raw-escape: ../shell_scripts/get_murano_release_plugin.sh
@@ -585,6 +578,10 @@
         - string:
             name: TESTRAIL_TEMPEST
             default: "FALSE"
+        - bool:
+            name: DEPLOY
+            default: true
+            description: "Erase and deploy new environment"
 
     wrappers:
       - ansicolor
@@ -596,16 +593,11 @@
                 - origin/master
 
     builders:
-        - shell:
-            !include-raw: ../shell_scripts/template_scripts/erase_ci_envs.sh
         - env_variables_export
-        - get_plugins
+        - erase_and_deploy_env
+        - revert_last_snapshot
+        - get_fuel_creds
         - shell:
-            !include-raw-escape:
-                - ../shell_scripts/deploy_env_from_template.sh
-                - ../shell_scripts/revert_last_snapshot.sh
-                - ../shell_scripts/template_scripts/get_fuel_master_ip.sh
-                - ../shell_scripts/template_scripts/get_fuel_key_and_openrc.sh
-                - ../shell_scripts/template_scripts/stepler_test_runner.sh
+            !include-raw: ../shell_scripts/template_scripts/stepler_test_runner.sh
     publishers:
         - base_publisher

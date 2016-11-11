@@ -1,7 +1,5 @@
 set +e
 
-dos.py revert-resume "$ENV_NAME" "$SNAPSHOT_NAME"
-
 sudo apt-get update
 #TBD need to remove firefox updaed since after FF 47.0 selenium tests are
 #failed so far @schipiga will investigate on how to made that update

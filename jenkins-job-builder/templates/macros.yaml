@@ -104,6 +104,45 @@
       - inject:
           properties-file: "$ENV_INJECT_PATH"
 
+- builder:
+    name: erase_and_deploy_env
+    builders:
+      - conditional-step:
+          condition-kind: boolean-expression
+          condition-expression: ${ENV,var="DEPLOY"}
+          steps:
+            - shell:
+                !include-raw:
+                    - ../shell_scripts/template_scripts/erase_ci_envs.sh
+                    - ../shell_scripts/get_plugins.sh
+                    - ../shell_scripts/deploy_env_from_template.sh
+      - inject:
+          properties-file: "$ENV_INJECT_PATH"
+
+- builder:
+    name: get_last_snapshot
+    builders:
+        - shell:
+            !include-raw: ../shell_scripts/get_last_snapshot.sh
+        - inject:
+            properties-file: "$ENV_INJECT_PATH"
+
+- builder:
+    name: revert_last_snapshot
+    builders:
+        - get_last_snapshot
+        - shell: "dos.py revert-resume $ENV_NAME $SNAPSHOT_NAME"
+
+- builder:
+    name: get_fuel_creds
+    builders:
+        - shell:
+            !include-raw:
+                - ../shell_scripts/template_scripts/get_fuel_master_ip.sh
+                - ../shell_scripts/template_scripts/get_fuel_key_and_openrc.sh
+        - inject:
+            properties-file: "$ENV_INJECT_PATH"
+
 - wrapper:
     name: add_testrail_credentials
     wrappers:
