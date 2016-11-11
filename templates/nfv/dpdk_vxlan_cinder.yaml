@@ -1,6 +1,6 @@
 template:
   cluster_template:
-    name: dpdk_vxnlan_cinder
+    name: dpdk_vxlan_cinder
     network:
       neutron-dvr: false
       neutron-l2-pop: false
@@ -268,6 +268,8 @@ template:
                 networks:
                  - storage  ## OpenStack network, NOT switch name
                  - management  ## OpenStack network, NOT switch name
+              iface4:
+                networks:
                  - private  ## OpenStack network, NOT switch name
 
         - name: slave-05  # Custom name of baremetal for Fuel slave node
@@ -298,9 +300,11 @@ template:
                 networks:
                  - storage  ## OpenStack network, NOT switch name
                  - management  ## OpenStack network, NOT switch name
+              iface4:
+                networks:
                  - private  ## OpenStack network, NOT switch name
 
-  name: 3 Controller, 2 Compute DPDK + Cinder, Neutron, VxLAN
+  name: 3 Controller, 2 Compute DPDK + Cinder, Neutron, VLAN
   slaves: 5
 
 update_nodes:
@@ -308,7 +312,8 @@ update_nodes:
     attributes:
       cpu_pinning/nova/value: 18
       hugepages/nova/value/1048576: 10
-      hugepages/nova/value/4096: 16000
+      hugepages/nova/value/2048: 16000
+      hugepages/dpdk/value: 1024
     interfaces:
       - number: 4
         params:
@@ -317,7 +322,8 @@ update_nodes:
     attributes:
       cpu_pinning/nova/value: 18
       hugepages/nova/value/1048576: 10
-      hugepages/nova/value/4096: 16000
+      hugepages/nova/value/2048: 16000
+      hugepages/dpdk/value: 1024
     interfaces:
       - number: 4
         params:
