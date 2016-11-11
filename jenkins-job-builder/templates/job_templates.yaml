@@ -580,7 +580,7 @@
             default: "FALSE"
         - bool:
             name: DEPLOY
-            default: true
+            default: "{deploy}"
             description: "Erase and deploy new environment"
 
     wrappers:

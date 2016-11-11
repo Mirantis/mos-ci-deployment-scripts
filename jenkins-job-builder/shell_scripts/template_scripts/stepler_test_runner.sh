@@ -25,7 +25,7 @@ export ANSIBLE_HOST_KEY_CHECKING=False
 export OS_FAULTS_CONFIG="${{PWD}}/os_faults_config.yaml"
 cat $OS_FAULTS_CONFIG
 
-py.test stepler -v --ignore=stepler/horizon --junit-xml=report.xml
+py.test {stepler_args}
 deactivate
 
 sudo dos.py destroy "${{ENV_NAME}}"
