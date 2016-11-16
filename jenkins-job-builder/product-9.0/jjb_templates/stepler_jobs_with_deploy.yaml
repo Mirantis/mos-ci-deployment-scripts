@@ -4,7 +4,7 @@
     milestone: '9.2'
     suite: '[9.1][MOSQA] Automated Cloud Testing'
     start_timer: '5 0 * * *'
-    stepler_args: 'stepler -v --ignore=stepler/horizon --ignore=stepler/cinder --junit-xml=report.xml'
+    stepler_cmd: 'py.test stepler -v --ignore=stepler/horizon --ignore=stepler/cinder --ignore=stepler/nova --junit-xml=report.xml'
     nova_quotas: 'TRUE'
     deploy: 'TRUE'
     jobs:
@@ -32,7 +32,21 @@
     deploy: 'FALSE'
     start_timer: '15 5 * * *'
     node: Slave-srv144
-    stepler_args: 'stepler/cinder -v --junit-xml=report.xml'
+    stepler_cmd: 'tox -e cinder'
+    <<: *stepler_parameters
+
+- project:
+    name: Nova_LVM_SSL
+    weight: 2
+    display_name: '{name}'
+    env_changer: _ironic_cinder
+    config_path: templates/stepler_tempest/ironic_cinder.yaml
+    test_group: '{name}'
+    is_ssl_disabled: 'TRUE'
+    deploy: 'FALSE'
+    start_timer: '15 5 * * *'
+    node: Slave-srv150
+    stepler_cmd: 'tox -e nova'
     <<: *stepler_parameters
 
 - project:

@@ -3,7 +3,6 @@ set +e
 virtualenv --clear venv
 . venv/bin/activate
 pip install -U pip
-pip install -r requirements.txt -r c-requirements.txt
 
 OS_AUTH_URL="${{OS_AUTH_URL}}/v3"
 
@@ -25,7 +24,7 @@ export ANSIBLE_HOST_KEY_CHECKING=False
 export OS_FAULTS_CONFIG="${{PWD}}/os_faults_config.yaml"
 cat $OS_FAULTS_CONFIG
 
-py.test {stepler_args}
+{stepler_cmd}
 deactivate
 
 sudo dos.py destroy "${{ENV_NAME}}"
