@@ -1,0 +1,28 @@
+- job-template:
+    name: 'deploy_mk22'
+    node-label: 'Slave-srv149'
+
+    defaults: common_mk22_defaults
+
+    parameters:
+        - common_parameters
+
+    scm:
+        - git:
+            url: https://github.com/Mirantis/stepler.git
+            branches:
+                - origin/master
+    
+    builders:
+        - env_variables_export
+        - shell:
+            !include-raw-escape: ../shell_scripts/deploy_mk22.sh
+
+- defaults:
+    name: 'common_mk22_defaults'
+
+    properties:
+      - heavy-job:
+          weight: 4
+
+    defaults: common_job_settings
