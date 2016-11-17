@@ -1,6 +1,5 @@
 - job-template:
     name: 'deploy_mk22'
-    node-label: 'cloud_TCP_cloud'
 
     defaults: common_mk22_defaults
 
@@ -14,7 +13,6 @@
                 - origin/master
 
     builders:
-        - env_variables_export
         - shell:
             !include-raw-escape: ../shell_scripts/deploy_mk22.sh
 
@@ -29,7 +27,7 @@
 
 - project:
     name: deploy-mk22
-    node: Slave-srv149
+    node: cloud_TCP_cloud
     display_name: 'Deploy of MK22'
     jobs:
       - deploy_mk22
