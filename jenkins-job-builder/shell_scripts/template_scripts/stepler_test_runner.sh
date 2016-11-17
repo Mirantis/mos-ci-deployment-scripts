@@ -3,6 +3,7 @@ set +e
 virtualenv --clear venv
 . venv/bin/activate
 pip install -U pip
+pip install -U tox
 
 OS_AUTH_URL="${{OS_AUTH_URL}}/v3"
 

@@ -4,7 +4,8 @@
     milestone: '9.2'
     suite: '[9.1][MOSQA] Automated Cloud Testing'
     start_timer: '5 0 * * *'
-    stepler_cmd: 'py.test stepler -v --ignore=stepler/horizon --ignore=stepler/cinder --ignore=stepler/nova --junit-xml=report.xml'
+    stepler_cmd: 'pip install -r requirements.txt -r c-requirements.txt ;
+                  py.test stepler -v --ignore=stepler/horizon --ignore=stepler/cinder --ignore=stepler/nova --junit-xml=report.xml'
     nova_quotas: 'TRUE'
     deploy: 'TRUE'
     jobs:
