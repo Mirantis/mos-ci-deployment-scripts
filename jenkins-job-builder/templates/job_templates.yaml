@@ -434,13 +434,9 @@
       - add_testrail_credentials
 
     builders:
-        - shell:
-            !include-raw-escape: ../shell_scripts/template_scripts/erase_ci_envs.sh
         - env_variables_export
-        - shell:
-            !include-raw: ../shell_scripts/deploy_env_from_template.sh
-        - inject:
-            properties-file: "$ENV_INJECT_PATH"
+        - erase_and_deploy_env
+        - revert_last_snapshot
         - shell:
             !include-raw-escape: ../shell_scripts/template_scripts/get_fuel_master_ip.sh
         - inject:

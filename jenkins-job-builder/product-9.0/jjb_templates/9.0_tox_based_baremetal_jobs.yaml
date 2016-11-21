@@ -5,6 +5,9 @@
     suite: '[9.1][MOSQA] Automated Cloud Testing'
     fuel_devops_ver: 3.0.1
     use_ipmi: "TRUE"
+    deploy: 'TRUE'
+    tox_test_name: nfv
+    nova_quotas: "TRUE"
 
     jobs:
       - '9.x_{name}_baremetal'
@@ -20,11 +23,6 @@
     node: Slave-srv155
     description: NFV SR-IOV_Ceph tests
     display_name: 9.x_NFV_SR-IOV_Ceph
-    tox_test_name: nfv
-    nova_quotas: "TRUE"
-
-    jobs:
-      - '9.x_{name}_baremetal'
     <<: *common_parameters
 
 - project:
@@ -34,15 +32,10 @@
     env_inject_file: env_inject_nova_ceph.properties
     config_path: templates/nfv/sr-iov_vxlan_ceph.yaml
     test_group: NFV(SR-IOV_Ceph_VxLAN)
-    start_timer: "5 21 * * 1"
+    start_timer: "5 21 * * 0,2,4"
     node: Slave-srv155
     description: NFV SR-IOV_Ceph tests
     display_name: 9.x_NFV_SR-IOV_Ceph_VxLAN
-    tox_test_name: nfv
-    nova_quotas: "TRUE"
-
-    jobs:
-      - '9.x_{name}_baremetal'
     <<: *common_parameters
 
 - project:
@@ -56,11 +49,6 @@
     node: Slave-srv155
     description: NFV SR-IOV_Cinder tests
     display_name: 9.x_NFV_SR-IOV_Cinder
-    tox_test_name: nfv
-    nova_quotas: "TRUE"
-
-    jobs:
-      - '9.x_{name}_baremetal'
     <<: *common_parameters
 
 - project:
@@ -74,11 +62,58 @@
     node: Slave-srv155
     description: NFV SR-IOV_DVR tests
     display_name: 9.x_NFV_SR-IOV_DVR
-    tox_test_name: nfv
-    nova_quotas: "TRUE"
+    <<: *common_parameters
 
-    jobs:
-      - '9.x_{name}_baremetal'
+- project:
+    name: DPDK_VLAN_cinder_0_1G
+    weight: 1
+    env_changer: _nfv
+    env_inject_file: env_inject_dpdk.properties
+    config_path: templates/nfv/dpdk_cinder_0_1G_pages.yaml
+    test_group: 'NFV({name})'
+    start_timer: "5 21 * * 0,2,4"
+    node: Slave-srv155
+    description: 'NFV {name} tests'
+    display_name: '9.x_{name}'
+    <<: *common_parameters
+
+- project:
+    name: DPDK_VXLAN_cinder_0_1G
+    weight: 1
+    env_changer: _nfv
+    env_inject_file: env_inject_dpdk.properties
+    config_path: templates/nfv/dpdk_vxlan_cinder_0_1G_pages.yaml
+    test_group: 'NFV({name})'
+    start_timer: "5 21 * * 0,2,4"
+    node: Slave-srv155
+    description: 'NFV {name} tests'
+    display_name: '9.x_{name}'
+    <<: *common_parameters
+
+- project:
+    name: DPDK_VLAN_cinder_0_2M
+    weight: 1
+    env_changer: _nfv
+    env_inject_file: env_inject_dpdk.properties
+    config_path: templates/nfv/dpdk_cinder_0_2M_pages.yaml
+    test_group: 'NFV({name})'
+    start_timer: "5 21 * * 0,2,4"
+    node: Slave-srv155
+    description: 'NFV {name} tests'
+    display_name: '9.x_{name}'
+    <<: *common_parameters
+
+- project:
+    name: DPDK_VXLAN_cinder_0_2M
+    weight: 1
+    env_changer: _nfv
+    env_inject_file: env_inject_dpdk.properties
+    config_path: templates/nfv/dpdk_vxlan_cinder_0_2M_pages.yaml
+    test_group: 'NFV({name})'
+    start_timer: "5 21 * * 0,2,4"
+    node: Slave-srv155
+    description: 'NFV {name} tests'
+    display_name: '9.x_{name}'
     <<: *common_parameters
 
 - project:
