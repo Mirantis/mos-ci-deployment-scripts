@@ -1,0 +1,29 @@
+- job-template:
+    name: 'deploy_mk22'
+
+    defaults: common_job_settings
+
+    parameters:
+        - common_parameters
+
+    scm:
+        - git:
+            url: https://github.com/Mirantis/tcp-qa.git
+            branches:
+                - origin/master
+
+    builders:
+        - shell:
+            !include-raw-escape: ../shell_scripts/deploy_mk22.sh
+
+    properties:
+      - heavy-job:
+          weight: 4
+
+- project:
+    name: deploy-mk22
+    node: 'cloud_TCP_cloud'
+    start_timer: ''
+    display_name: '{name}'
+    jobs:
+      - deploy_mk22
