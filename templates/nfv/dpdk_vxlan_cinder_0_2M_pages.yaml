@@ -1,6 +1,6 @@
 template:
   cluster_template:
-    name: dpdk_vxlan_cinder
+    name: dpdk_vxnlan_cinder_0_2M_pages
     network:
       neutron-dvr: false
       neutron-l2-pop: false
@@ -310,9 +310,9 @@ template:
 update_nodes:
   - name: slave-04
     attributes:
-      cpu_pinning/nova/value: 18
-      hugepages/nova/value/1048576: 10
-      hugepages/nova/value/2048: 16000
+      cpu_pinning/nova/value: 0
+      hugepages/nova/value/1048576: 12
+      hugepages/nova/value/2048: 0
       hugepages/dpdk/value: 1024
     interfaces:
       - number: 4
@@ -320,9 +320,9 @@ update_nodes:
           interface_properties/dpdk/enabled: true
   - name: slave-05
     attributes:
-      cpu_pinning/nova/value: 18
-      hugepages/nova/value/1048576: 10
-      hugepages/nova/value/2048: 16000
+      cpu_pinning/nova/value: 0
+      hugepages/nova/value/1048576: 12
+      hugepages/nova/value/2048: 0
       hugepages/dpdk/value: 1024
     interfaces:
       - number: 4
