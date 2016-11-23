@@ -1,26 +1,12 @@
 - stepler_parameters: &stepler_parameters
     name: 'common tox based projects parameters'
-    tox_properties: ''
     milestone: '9.2'
     suite: '[9.1][MOSQA] Automated Cloud Testing'
-    start_timer: '5 0 * * *'
-    stepler_cmd: 'pip install -r requirements.txt -r c-requirements.txt ;
-                  py.test stepler -v --ignore=stepler/horizon --ignore=stepler/cinder --ignore=stepler/heat --ignore=stepler/nova --junit-xml=report.xml'
+    start_timer: '5 21 * * *'
     nova_quotas: 'TRUE'
     deploy: 'TRUE'
     jobs:
       - '9.x_Stepler_{name}'
-
-- project:
-    name: Stepler_Tempest_LVM_no_ssl
-    weight: 2
-    display_name: '{name}'
-    env_changer: _ironic_cinder
-    config_path: templates/stepler_tempest/ironic_cinder.yaml
-    test_group: '{name}'
-    is_ssl_disabled: 'TRUE'
-    node: Slave-srv144
-    <<: *stepler_parameters
 
 - project:
     name: Cinder_LVM
@@ -30,10 +16,8 @@
     config_path: templates/stepler_tempest/ironic_cinder.yaml
     test_group: '{name}'
     is_ssl_disabled: 'TRUE'
-    deploy: 'FALSE'
-    start_timer: '15 5 * * *'
     node: Slave-srv144
-    stepler_cmd: 'tox -e cinder'
+    stepler_args: 'stepler/cinder'
     <<: *stepler_parameters
 
 - project:
@@ -44,10 +28,8 @@
     config_path: templates/stepler_tempest/ironic_cinder.yaml
     test_group: '{name}'
     is_ssl_disabled: 'TRUE'
-    deploy: 'FALSE'
-    start_timer: '15 5 * * *'
     node: Slave-srv150
-    stepler_cmd: 'tox -e nova'
+    stepler_args: 'stepler/nova'
     <<: *stepler_parameters
 
 - project:
@@ -58,43 +40,19 @@
     config_path: templates/stepler_tempest/ironic_cinder.yaml
     test_group: '{name}'
     is_ssl_disabled: 'TRUE'
-    deploy: 'FALSE'
-    start_timer: '15 5 * * *'
     node: Slave-srv134
-    stepler_cmd: 'tox -e heat'
-    <<: *stepler_parameters
-
-
-- project:
-    name: Stepler_Tempest_Ceph_no_ssl
-    weight: 2
-    display_name: '{name}'
-    env_changer: _ironic_ceph
-    config_path: templates/stepler_tempest/ironic_ceph.yaml
-    test_group: '{name}'
-    is_ssl_disabled: 'TRUE'
-    node: Slave-srv134
+    stepler_args: 'stepler/heat'
     <<: *stepler_parameters
 
 - project:
-    name: Stepler_Tempest_LVM_SSL
-    weight: 2
-    display_name: '{name}'
-    env_changer: _ironic_cinder
-    config_path: templates/stepler_tempest/ironic_cinder.yaml
-    test_group: '{name}'
-    is_ssl_disabled: 'FALSE'
-    node: Slave-srv150
-    <<: *stepler_parameters
-
-- project:
-    name: Stepler_Tempest_Ceph_SSL
+    name: Horizon
     weight: 2
     display_name: '{name}'
     env_changer: _ironic_ceph
     config_path: templates/stepler_tempest/ironic_ceph.yaml
     test_group: '{name}'
     is_ssl_disabled: 'FALSE'
+    stepler_args: 'stepler/horizon'
     node: Slave-srv128
     <<: *stepler_parameters
 
@@ -106,5 +64,6 @@
     config_path: templates/separate_componenets/rabbit.yaml
     test_group: '{name}'
     is_ssl_disabled: 'TRUE'
+    stepler_args: 'stepler --ignore=stepler/horizon --ignore=stepler/cinder --ignore=stepler/heat --ignore=stepler/nova'
     node: Slave-srv131
     <<: *stepler_parameters

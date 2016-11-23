@@ -62,6 +62,22 @@ then
     --testrail-name-template "{title}" \
     --xunit-name-template "{methodname}" \
     "$REPORT_FILE"
+
+elif [[ "$STEPLER_TESTS" == 'TRUE' ]] ;
+then
+    report -v \
+    --testrail-plan-name "$TESTRAIL_PLAN_NAME" \
+    --env-description "$TEST_GROUP" \
+    --testrail-url  "$TESTRAIL_URL" \
+    --testrail-user  "$TESTRAIL_USER" \
+    --testrail-password "$TESTRAIL_PASSWORD" \
+    --testrail-project "$TESTRAIL_PROJECT" \
+    --testrail-milestone "$TESTRAIL_MILESTONE" \
+    --testrail-suite "$TESTRAIL_SUITE" \
+    --test-results-link "$BUILD_URL" \
+    --xunit-name-template "{uuid}" \
+    "$REPORT_FILE"
+
 else
     report -v \
     --testrail-plan-name "$TESTRAIL_PLAN_NAME" \

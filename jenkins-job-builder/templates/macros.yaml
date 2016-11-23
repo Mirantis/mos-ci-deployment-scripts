@@ -71,6 +71,15 @@
       - base_publisher
 
 - publisher:
+    name: stepler_publisher
+    publishers:
+      - archive:
+          artifacts: 'reports/**'
+          allow-empty: 'true'
+          fingerprint: true
+      - base_publisher
+
+- publisher:
     name: report_to_testrail
     publishers:
       - postbuildscript:

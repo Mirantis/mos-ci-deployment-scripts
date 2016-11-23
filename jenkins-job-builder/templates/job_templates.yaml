@@ -572,8 +572,8 @@
             name: NOVA_QUOTAS_ENABLED
             default: "{nova_quotas}"
         - string:
-            name: TESTRAIL_TEMPEST
-            default: "FALSE"
+            name: STEPLER_TESTS
+            default: "TRUE"
         - bool:
             name: DEPLOY
             default: "{deploy}"
@@ -581,12 +581,7 @@
 
     wrappers:
       - ansicolor
-
-    scm:
-        - git:
-            url: https://github.com/Mirantis/stepler.git
-            branches:
-                - origin/master
+      - timestamps
 
     builders:
         - env_variables_export
@@ -596,4 +591,4 @@
         - shell:
             !include-raw: ../shell_scripts/template_scripts/stepler_test_runner.sh
     publishers:
-        - base_publisher
+        - stepler_publisher
