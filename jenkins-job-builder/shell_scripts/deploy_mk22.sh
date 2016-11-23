@@ -3,7 +3,10 @@ set +e
 virtualenv --clear venv
 . venv/bin/activate
 pip install -U pip
+cp ../requirements.txt tcp_tests/requirements.txt
 pip install -r ./tcp_tests/requirements.txt
+pip install ../fuel-devops
+pip install psycopg2
 
 wget http://172.18.173.8:8080/jenkins/view/System%20Jobs/job/get_ubuntu_image/lastSuccessfulBuild/artifact/trusty-server-cloudimg-amd64-disk1.img -O trusty-server-cloudimg-amd64.qcow2
 wget http://172.18.173.8:8080/jenkins/view/System%20Jobs/job/get_ubuntu_image/lastSuccessfulBuild/artifact/xenial-server-cloudimg-amd64-disk1.img -O xenial-server-cloudimg-amd64.qcow2
