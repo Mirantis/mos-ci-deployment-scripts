@@ -456,6 +456,11 @@
         - archive_mos_int_snapshots
 
 - job-template:
+    # empty value causes disabled_var to be ignored internally
+    disabled_var:
+
+    disabled: '{obj:disabled_var}'
+
     name: '9.0_murano_baremetal_{name}'
 
     defaults: common_job_settings
