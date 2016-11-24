@@ -1,0 +1,24 @@
+- job-template:
+    name: 'stepler_mk22'
+
+    defaults: common_job_settings
+
+    parameters:
+        - common_parameters
+
+    builders:
+        - get_mk22_creds
+        - shell:
+            !include-raw-escape: ../shell_scripts/run_stepler.sh
+
+    properties:
+      - heavy-job:
+          weight: 4
+
+- project:
+    name: stepler-mk22
+    node: 'cloud_TCP_cloud'
+    start_timer: ''
+    display_name: 'Run stepler on MK22'
+    jobs:
+      - stepler_mk22
