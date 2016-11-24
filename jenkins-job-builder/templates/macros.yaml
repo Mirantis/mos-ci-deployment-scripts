@@ -152,6 +152,16 @@
         - inject:
             properties-file: "$ENV_INJECT_PATH"
 
+- builder:
+    name: get_mk22_creds
+    builders:
+        - shell:
+            !include-raw:
+                - ../shell_scripts/template_scripts/get_mk22_cfg01_ip.sh
+                - ../shell_scripts/template_scripts/get_mk22_key_and_keystonercv3.sh
+        - inject:
+            properties-file: "$ENV_INJECT_PATH"
+
 - wrapper:
     name: add_testrail_credentials
     wrappers:
