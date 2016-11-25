@@ -1,7 +1,7 @@
 - stepler_parameters: &stepler_parameters
     name: 'common tox based projects parameters'
     milestone: '9.2'
-    suite: '[9.1][MOSQA] Automated Cloud Testing'
+    suite: '[9.2][MOSQA] Stepler Testing 9.2'
     start_timer: '5 21 * * *'
     nova_quotas: 'TRUE'
     deploy: 'TRUE'
