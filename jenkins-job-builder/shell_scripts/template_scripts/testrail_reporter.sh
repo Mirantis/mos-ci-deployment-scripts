@@ -65,6 +65,7 @@ then
 
 elif [[ "$STEPLER_TESTS" == 'TRUE' ]] ;
 then
+    TESTRAIL_PLAN_NAME="$MILESTONE stepler runs $SNAPSHOT_ID"
     report -v \
     --testrail-plan-name "$TESTRAIL_PLAN_NAME" \
     --env-description "$TEST_GROUP" \
@@ -75,7 +76,8 @@ then
     --testrail-milestone "$TESTRAIL_MILESTONE" \
     --testrail-suite "$TESTRAIL_SUITE" \
     --test-results-link "$BUILD_URL" \
-    --xunit-name-template "{uuid}" \
+    --xunit-name-template "{methodname}" \
+    --testrail-name-template "{title}" \
     "$REPORT_FILE"
 
 else

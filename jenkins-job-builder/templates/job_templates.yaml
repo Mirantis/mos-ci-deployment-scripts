@@ -592,3 +592,4 @@
             !include-raw: ../shell_scripts/template_scripts/stepler_test_runner.sh
     publishers:
         - stepler_publisher
+        - report_to_testrail
