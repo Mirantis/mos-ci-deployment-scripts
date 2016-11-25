@@ -33,7 +33,11 @@ if [[ -n ${{container}} ]]; then
 fi
 
 # Clean old images
-sudo docker rmi -f $(sudo docker images -f "dangling=true" -q)
+image=$(sudo docker images -f "dangling=true" -q)
+if [[ -n ${{image}} ]]; then
+	sudo docker rmi -f ${{image}}
+fi
+
 
 sudo docker run \
   --rm \

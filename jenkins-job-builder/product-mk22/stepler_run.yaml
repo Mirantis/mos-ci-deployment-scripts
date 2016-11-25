@@ -5,11 +5,14 @@
 
     parameters:
         - common_parameters
+        - string:
+            name: ENV_NAME
+            default: 'tcpcloud-mk22'
 
     builders:
         - get_mk22_creds
         - shell:
-            !include-raw-escape: ../shell_scripts/run_stepler.sh
+            !include-raw: ../shell_scripts/run_stepler.sh
 
     properties:
       - heavy-job:
