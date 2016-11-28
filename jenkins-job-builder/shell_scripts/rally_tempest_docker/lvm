@@ -1,3 +1,6 @@
+[auth]
+tempest_roles = _member_
+
 [orchestration]
 max_json_body_size = 10880000
 max_resources_per_stack = 20000
