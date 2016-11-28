@@ -367,7 +367,7 @@
             name: DEPLOY
             default: true
             description: "Erase and deploy new environment"
-  
+
 
     wrappers:
       - ansicolor
@@ -582,6 +582,7 @@
     wrappers:
       - ansicolor
       - timestamps
+      - add_testrail_credentials
 
     builders:
         - env_variables_export
