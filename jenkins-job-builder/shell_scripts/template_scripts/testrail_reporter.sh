@@ -65,7 +65,6 @@ then
 
 elif [[ "$STEPLER_TESTS" == 'TRUE' ]] ;
 then
-    TESTRAIL_PLAN_NAME="$MILESTONE stepler runs $SNAPSHOT_ID"
     report -v \
     --testrail-plan-name "$TESTRAIL_PLAN_NAME" \
     --env-description "$TEST_GROUP" \
