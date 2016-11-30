@@ -429,6 +429,10 @@
         - string:
             name: USE_IPMI
             default: "{use_ipmi}"
+        - bool:
+            name: DEPLOY
+            default: true
+            description: "Erase and deploy new environment"
 
     wrappers:
       - add_testrail_credentials
