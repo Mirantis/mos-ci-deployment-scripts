@@ -104,3 +104,4 @@ tempest.api.object_storage.test_container_services_negative.ContainerNegativeTes
 tempest.api.object_storage.test_container_services_negative.ContainerNegativeTest.test_get_metadata_headers_with_invalid_container_name[id-1a95ab2e-b712-4a98-8a4d-8ce21b7557d6,negative]
 tempest.api.object_storage.test_container_services_negative.ContainerNegativeTest.test_update_metadata_with_nonexistent_container_name[id-125a24fa-90a7-4cfc-b604-44e49d788390,negative]
 tempest.api.object_storage.test_account_services.AccountTest.test_list_containers_with_prefix[id-365e6fc7-1cfe-463b-a37c-8bd08d47b6aa]
+tempest.scenario.test_server_multinode.TestServerMultinode.test_schedule_to_all_nodes[compute,id-9cecbe35-b9d4-48da-a37e-7ce70aa43d30,network,smoke]

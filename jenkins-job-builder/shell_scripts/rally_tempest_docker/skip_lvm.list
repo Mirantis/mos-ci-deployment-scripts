@@ -1,1 +1,2 @@
 tempest.api.network.admin.test_l3_agent_scheduler.L3AgentSchedulerTestJSON.test_add_list_remove_router_on_l3_agent[id-9464e5e7-8625-49c3-8fd1-89c52be59d66]
+tempest.scenario.test_server_multinode.TestServerMultinode.test_schedule_to_all_nodes[compute,id-9cecbe35-b9d4-48da-a37e-7ce70aa43d30,network,smoke]
