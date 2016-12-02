@@ -2,7 +2,7 @@ set +e
 
 source keystonercv3
 
-MK22_KEY_PATH=${{PWD}}/${{MK22_KEY}}
+MK22_KEY_PATH=${PWD}/${{MK22_KEY}}
 
 cat > "os_faults_config.yaml" << EOF
 cloud_management:
@@ -16,7 +16,6 @@ cloud_management:
 EOF
 
 OS_FAULTS_CONFIG="${{PWD}}/os_faults_config.yaml"
-export ANSIBLE_HOST_KEY_CHECKING=False
 
 mkdir reports
 
@@ -45,11 +44,13 @@ sudo docker run \
   --net=host \
   -e OS_AUTH_URL="${{OS_AUTH_URL}}" \
   -e OS_FAULTS_CONFIG=/opt/app/os-faults-config \
-  -e ENV OS_PASSWORD=${{OS_PASSWORD}} \
+  -e OS_PASSWORD=${{OS_PASSWORD}} \
+  -e ANSIBLE_HOST_KEY_CHECKING=False \
   -v $(pwd)/reports:/opt/app/test_reports \
   -v $OS_FAULTS_CONFIG:/opt/app/os-faults-config \
   -v ${{MK22_KEY_PATH}}:/opt/app/mk22.key \
-  mostestci/stepler stepler --ignore=stepler/cinder --ignore=stepler/horizon
+  mostestci/stepler stepler --ignore=stepler/cinder --ignore=stepler/horizon \
+  --ignore=stepler/baremetal -k "not destructive"
 
 # Need to move report.xml in the root of workdir
 mv reports/report.xml .
