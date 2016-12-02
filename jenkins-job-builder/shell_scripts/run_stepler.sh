@@ -2,7 +2,7 @@ set +e
 
 source keystonercv3
 
-MK22_KEY_PATH=${PWD}/${{MK22_KEY}}
+MK22_KEY_PATH=${{PWD}}/${{MK22_KEY}}
 
 cat > "os_faults_config.yaml" << EOF
 cloud_management:
