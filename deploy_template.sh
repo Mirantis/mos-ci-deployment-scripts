@@ -93,6 +93,12 @@ else
     popd
 fi
 
+if [ ! -z "${FUEL_QA_COMMIT}" ]; then
+    pushd fuel-qa
+    git checkout ${FUEL_QA_COMMIT}
+    popd
+fi
+
 patch_fuel_qa qos.patch
 patch_fuel_qa dns_list.patch
 
@@ -127,9 +133,6 @@ if [ "${INTERFACE_MODEL}" == 'virtio' ]; then
     done
 fi
 
-if [ ! -z "${FUEL_QA_COMMIT}" ]; then
-    git checkout ${FUEL_QA_COMMIT}
-fi
 
 # create new environment
 ./run_system_test.py run 'system_test.deploy_env' --with-config $CONFIG_NAME
