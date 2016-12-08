@@ -208,6 +208,9 @@
         - string:
             name: TEMPEST
             default: "FALSE"
+        - string:
+            name: FUEL_QA_COMMIT
+            default: "a9d37168cd1036ae36158a313c289383905815f3"
 
     wrappers:
         - add_testrail_credentials
@@ -367,7 +370,9 @@
             name: DEPLOY
             default: true
             description: "Erase and deploy new environment"
-
+        - string:
+            name: FUEL_QA_COMMIT
+            default: "a9d37168cd1036ae36158a313c289383905815f3"
 
     wrappers:
       - ansicolor
