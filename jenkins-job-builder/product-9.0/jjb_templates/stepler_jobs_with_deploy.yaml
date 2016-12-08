@@ -17,7 +17,7 @@
     test_group: '{name}'
     is_ssl_disabled: 'TRUE'
     node: Slave-srv144
-    stepler_args: 'stepler/cinder'
+    stepler_args: 'stepler/cinder -S $SNAPSHOT_NAME'
     <<: *stepler_parameters
 
 - project:
