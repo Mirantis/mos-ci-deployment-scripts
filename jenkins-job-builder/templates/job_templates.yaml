@@ -434,6 +434,9 @@
         - string:
             name: USE_IPMI
             default: "{use_ipmi}"
+        - string:
+            name: UBUNTU_QCOW2_URL
+            default: "https://cloud-images.ubuntu.com/trusty/current/trusty-server-cloudimg-amd64-disk1.img"
         - bool:
             name: DEPLOY
             default: true
