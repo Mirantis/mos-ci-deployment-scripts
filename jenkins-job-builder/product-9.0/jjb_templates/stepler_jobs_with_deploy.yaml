@@ -67,3 +67,27 @@
     stepler_args: 'stepler --ignore=stepler/horizon --ignore=stepler/cinder --ignore=stepler/heat --ignore=stepler/nova'
     node: Slave-srv131
     <<: *stepler_parameters
+
+- project:
+    name: Neutron
+    weight: 2
+    display_name: '{name}'
+    env_changer: _ironic_cinder
+    config_path: templates/stepler_tempest/ironic_cinder.yaml
+    test_group: '{name}'
+    is_ssl_disabled: 'FALSE'
+    stepler_args: 'stepler/neutron'
+    node: Slave-srv131
+    <<: *stepler_parameters
+
+- project:
+    name: Cli_clients
+    weight: 2
+    display_name: '{name}'
+    env_changer: _ironic_cinder
+    config_path: templates/stepler_tempest/ironic_cinder.yaml
+    test_group: '{name}'
+    is_ssl_disabled: 'FALSE'
+    stepler_args: 'stepler/cli_clients'
+    node: Slave-srv130
+    <<: *stepler_parameters
