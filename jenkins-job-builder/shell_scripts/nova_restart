@@ -1,0 +1,4 @@
+#!/bin/bash -xe
+nova_restart="service nova-api restart"
+for i in $(fuel node |grep controller |awk {'print$1'}); do ssh node-$i $nova_restart; done
+packages_dir="/usr/lib/python2.7/dist-packages"
