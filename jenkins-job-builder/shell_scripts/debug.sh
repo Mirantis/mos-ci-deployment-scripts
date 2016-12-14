@@ -11,6 +11,8 @@ apt-get install -y git
 
 git clone https://github.com/openstack/rally.git
 cd rally
+CDIR=$(pwd)
+
 IS_TLS=$(source /root/openrc_tempest; openstack endpoint show identity 2>/dev/null | awk '/https/')
     if [ "${IS_TLS}" ]; then
         echo "export OS_CACERT='/var/lib/astute/haproxy/public_haproxy.pem'" >> /root/openrc_tempest
@@ -21,21 +23,43 @@ echo "export OS_PROJECT_DOMAIN_NAME='Default'" >> /root/openrc_tempest
 echo "export OS_USER_DOMAIN_NAME='Default'" >> /root/openrc_tempest
 echo "export OS_IDENTITY_API_VERSION='3'" >> /root/openrc_tempest
 
-./install_rally.sh -d rally-venv/ -y
+./install_rally.sh --branch 0.7.0 -d rally-venv/ -y
+
+NOVA_FLTR=$(sed -n '/scheduler_default_filters=/p' /etc/nova/nova.conf | cut -f2 -d=)
+check_ceph=$(cat /etc/cinder/cinder.conf |grep '\[RBD-backend\]' | wc -l)
+if [ ${check_ceph} == '1' ]; then
+    storage_protocol="ceph"
+    sed -i 's|#swift_operator_role = Member|swift_operator_role = swiftoperator|g' /root/rally/rally-venv/etc/rally/rally.conf
+    wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/skip_ceph.list
+    wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/ceph
+    echo 'scheduler_available_filters = '$NOVA_FLTR >> ceph
+else
+    storage_protocol="lvm"
+    sed -i 's|#swift_operator_role = Member|swift_operator_role = SwiftOperator|g' /root/rally/rally-venv/etc/rally/rally.conf
+    wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/skip_lvm.list
+    wget https://raw.githubusercontent.com/Mirantis/mos-ci-deployment-scripts/master/jenkins-job-builder/shell_scripts/lvm
+    echo 'scheduler_available_filters = '$NOVA_FLTR >> lvm
+fi
 
 source /root/rally/rally-venv/bin/activate
 source /root/openrc_tempest
 
 rally-manage db recreate
 rally deployment create --fromenv --name=tempest
-rally verify install --version 4db514cc0178662163e337bc0cddbdc7357c2220
-rally verify genconfig
+rally verify install --version 2e7d0f026ec81540deef5fe2e4ddf84f484aaa37
+rally verify genconfig --add-options $storage_protocol
 rally verify showconfig
 
-for i in {1..20}; do
-    mkdir /root/run-$i && \
-    rally verify start --regex tempest.api.identity --concurrency 4 > /root/run-$i/tests.log && \
-    rally verify results --html --output-file /root/run-$i/result.html
-done
+if [ $storage_protocol == 'ceph' ]; then
+    rally verify start --skip-list skip_ceph.list > /root/rally/log.log
+else
+    rally verify start --skip-list skip_lvm.list > /root/rally/log.log
+fi
+
+rally verify results --json --output-file output.json
+rally verify showconfig > /root/rally/tempest.conf
+cp $(find / -name tempest.log) /root/rally/tempest.log
+git clone https://github.com/greatehop/rally_json2junit
+python rally_json2junit/rally_json2junit/results_parser.py output.json
 
 deactivate
