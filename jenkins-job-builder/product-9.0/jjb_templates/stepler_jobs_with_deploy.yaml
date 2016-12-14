@@ -57,18 +57,6 @@
     <<: *stepler_parameters
 
 - project:
-    name: Stepler_Tempest_Detached_RabbitMQ
-    weight: 2
-    display_name: '{name}'
-    env_changer: _rabbit
-    config_path: templates/separate_componenets/rabbit.yaml
-    test_group: '{name}'
-    is_ssl_disabled: 'TRUE'
-    stepler_args: 'stepler --ignore=stepler/horizon --ignore=stepler/cinder --ignore=stepler/heat --ignore=stepler/nova'
-    node: Slave-srv131
-    <<: *stepler_parameters
-
-- project:
     name: Neutron
     weight: 2
     display_name: '{name}'
@@ -91,3 +79,16 @@
     stepler_args: 'stepler/cli_clients'
     node: Slave-srv130
     <<: *stepler_parameters
+
+- project:
+    name: Stepler_Tempest_Detached_RabbitMQ
+    weight: 2
+    display_name: '{name}'
+    env_changer: _rabbit
+    config_path: templates/separate_componenets/rabbit.yaml
+    test_group: '{name}'
+    is_ssl_disabled: 'TRUE'
+    stepler_args: 'stepler --ignore=stepler/horizon --ignore=stepler/cinder --ignore=stepler/heat --ignore=stepler/nova --ignore=stepler/neutron --ignore=stepler/cli_clients'
+    node: Slave-srv131
+    <<: *stepler_parameters
+
