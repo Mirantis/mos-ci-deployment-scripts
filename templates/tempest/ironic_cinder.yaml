@@ -13,8 +13,6 @@ template:
         roles: [controller, mongo]
       - count: 2
         roles: [compute, cinder]
-      - count: 1
-        roles: [ironic]
     release: ubuntu
     settings:
       components:
@@ -30,9 +28,6 @@ template:
         volume-lvm: true
   devops_settings:
     address_pools:
-      baremetal-pool01:
-        net: 10.109.0.0/16:24
-        params: {tag: 0}
       fuelweb_admin-pool01:
         net: 10.109.0.0/16:24
         params: {tag: 0}
@@ -63,8 +58,6 @@ template:
          l2_network_device: management
        - label: eth4
          l2_network_device: private
-       - label: eth5
-         l2_network_device: ironic
 
       rack-01-slave-network_config: &rack-01-slave-network_config
         eth0:
@@ -82,9 +75,6 @@ template:
         eth4:
           networks:
            - private
-        eth5:
-          networks:
-           - baremetal
 
       rack-01-controller-node-params: &node-params
         boot: [network, hd]
@@ -108,7 +98,6 @@ template:
           address_pool: fuelweb_admin-pool01
           dhcp: false
           forward: {mode: nat}
-        ironic: {address_pool: baremetal-pool01, dhcp: false}
         management: {address_pool: management-pool01, dhcp: false}
         private: {address_pool: private-pool01, dhcp: false}
         public:
@@ -117,7 +106,7 @@ template:
           forward: {mode: nat}
         storage: {address_pool: storage-pool01, dhcp: false}
       name: rack-01
-      network_pools: {baremetal: baremetal-pool01, fuelweb_admin: fuelweb_admin-pool01,
+      network_pools: {fuelweb_admin: fuelweb_admin-pool01,
         management: management-pool01, private: private-pool01, public: public-pool01,
         storage: storage-pool01}
       nodes:
@@ -150,8 +139,5 @@ template:
       - name: slave-05
         params: *node-params
         role: fuel_slave
-      - name: slave-06
-        params: *node-params
-        role: fuel_slave
-  name: 3 Controller + Mongo, 2 Compute+Cinder, 1 Ironic, Neutron, VLAN
-  slaves: 6
+  name: 3 Controller + Mongo, 2 Compute+Cinder, Neutron, VLAN
+  slaves: 5
