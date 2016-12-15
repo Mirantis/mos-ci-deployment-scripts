@@ -59,6 +59,6 @@ docker exec -i $docker_id bash -c "setup-tempest"
 docker exec -i $docker_id bash -c "rally verify showconfig"
 docker exec -i $docker_id bash -c "rally verify start --skip-list skip.list --system-wide > tests.log"
 docker exec -i $docker_id bash -c "rally verify results --json --output-file output.json"
-docker exec -i $docker_id bash -c "git clone https://github.com/greatehop/rally_json2junit && python rally_json2junit/rally_json2junit/results_parser.py output.json"
+docker exec -i $docker_id bash -c "git clone https://github.com/EduardFazliev/rally_json2junit && python rally_json2junit/rally_json2junit/results_parser.py output.json"
 docker exec -i $docker_id bash -c "rally verify showconfig > /home/rally/tempest.conf"
 cp $(find /home/mount_dir/.rally/tempest/ -name tempest.log) /home/mount_dir/
