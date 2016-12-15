@@ -45,6 +45,7 @@ sudo docker run \
   -v $(pwd)/reports:/opt/app/test_reports \
   -v $OS_FAULTS_CONFIG:/opt/app/os-faults-config \
   -v ${{PWD}}/${{FUEL_KEY}}:/opt/app/fuel.key \
+  -v /var/run/libvirt/libvirt-sock:/var/run/libvirt/libvirt-sock
   mostestci/stepler {stepler_args}
 
 # Need to move report.xml in the root of workdir
