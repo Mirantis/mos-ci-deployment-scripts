@@ -57,6 +57,54 @@
     <<: *stepler_parameters
 
 - project:
+    name: Neutron_VLAN
+    weight: 2
+    display_name: '{name}'
+    env_changer: _neutron_vlan
+    config_path: templates/neutron/vlan_qos.yaml
+    test_group: '{name}'
+    is_ssl_disabled: 'TRUE'
+    stepler_args: 'stepler/neutron'
+    node: single_template
+    <<: *stepler_parameters
+
+- project:
+    name: Neutron_VxLAN
+    weight: 2
+    display_name: '{name}'
+    env_changer: _neutron_vxlan
+    config_path: templates/neutron/vxlan_qos.yaml
+    test_group: '{name}'
+    is_ssl_disabled: 'TRUE'
+    stepler_args: 'stepler/neutron'
+    node: single_template
+    <<: *stepler_parameters
+
+- project:
+    name: Neutron_VLAN_DVR
+    weight: 2
+    display_name: '{name}'
+    env_changer: _neutron_vlan_dvr
+    config_path: templates/neutron/vlan_dvr.yaml
+    test_group: '{name}'
+    is_ssl_disabled: 'TRUE'
+    stepler_args: 'stepler/neutron'
+    node: single_template
+    <<: *stepler_parameters
+
+- project:
+    name: Neutron_VxLAN_DVR
+    weight: 2
+    display_name: '{name}'
+    env_changer: _neutron_vlan
+    config_path: templates/neutron/vxlan_dvr.yaml
+    test_group: '{name}'
+    is_ssl_disabled: 'TRUE'
+    stepler_args: 'stepler/neutron'
+    node: single_template
+    <<: *stepler_parameters
+
+- project:
     name: Stepler_Tempest_Detached_RabbitMQ
     weight: 2
     display_name: '{name}'
