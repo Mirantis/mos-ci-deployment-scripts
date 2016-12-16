@@ -19,9 +19,9 @@ template:
     settings:
       components:
         ceilometer: true
-        ironic: false
+        ironic: true
         murano: false
-        sahara: false
+        sahara: true
       storages:
         ephemeral-ceph: true
         image-ceph: true
@@ -153,5 +153,6 @@ template:
       - name: slave-06
         params: *node-params
         role: fuel_slave
+        
   name: 3 Controller+Mongo, 2 Compute+Ceph_osd, 1 Ironic, Neutron, VLAN
   slaves: 6
