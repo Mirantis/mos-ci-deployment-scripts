@@ -19,7 +19,7 @@ template:
     settings:
       components:
         ceilometer: true
-        ironic: false
+        ironic: true
         murano: false
         sahara: false
       storages:
