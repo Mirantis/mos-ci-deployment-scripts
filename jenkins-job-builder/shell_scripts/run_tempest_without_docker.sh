@@ -56,10 +56,12 @@ else
     rally verify start --skip-list skip_lvm.list > /root/rally/log.log
 fi
 
+set +e
 rally verify results --json --output-file output.json
 rally verify showconfig > /root/rally/tempest.conf
 cp $(find / -name tempest.log) /root/rally/tempest.log
 git clone https://github.com/EduardFazliev/rally_json2junit
 python rally_json2junit/rally_json2junit/results_parser.py output.json
+set -e
 
 deactivate
