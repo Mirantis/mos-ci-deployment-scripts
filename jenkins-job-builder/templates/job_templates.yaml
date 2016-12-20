@@ -210,7 +210,7 @@
             default: "FALSE"
         - string:
             name: FUEL_QA_COMMIT
-            default: "a9d37168cd1036ae36158a313c289383905815f3"
+            default: ""
 
     wrappers:
         - add_testrail_credentials
