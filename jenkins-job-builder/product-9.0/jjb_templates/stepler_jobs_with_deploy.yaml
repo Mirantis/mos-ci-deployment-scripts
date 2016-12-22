@@ -9,9 +9,9 @@
       - '9.x_Stepler_{name}'
 
 - project:
-    name: Cinder_LVM+Keystone+Heat+Cli_Clients
+    name: Cinder_LVM
+    display_name: Cinder_LVM + Keystone + Heat + Cli_Clients
     weight: 2
-    display_name: '{name}'
     env_changer: _ironic_cinder
     config_path: templates/stepler_tempest/ironic_cinder.yaml
     test_group: '{name}'
