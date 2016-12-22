@@ -14,7 +14,7 @@
     weight: 2
     env_changer: _ironic_cinder
     config_path: templates/stepler_tempest/ironic_cinder.yaml
-    test_group: '{name}'
+    test_group: '{display_name}'
     is_ssl_disabled: 'TRUE'
     node: Slave-srv144
     stepler_args: 'stepler/cinder stepler/cli_clients stepler/heat stepler/keystone -S $SNAPSHOT_NAME'
