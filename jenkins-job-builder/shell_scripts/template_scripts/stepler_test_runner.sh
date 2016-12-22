@@ -21,7 +21,7 @@ export ANSIBLE_HOST_KEY_CHECKING=False
 mkdir reports
 
 ### Docker part
-export CONTAINER_NAME_PREFIX=stepler
+export CONTAINER_NAME_PREFIX=${{JOB_NAME}}
 
 # Pull fresh image
 sudo docker pull mostestci/stepler
