@@ -14,6 +14,9 @@
           name: ISO_DIR
           default: "/var/www/fuelweb-iso"
       - string:
+          name: ISO_URL
+          default: ''
+      - string:
           name: TESTRAIL_URL
           default: 'https://mirantis.testrail.com'
       - string:

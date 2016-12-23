@@ -20,6 +20,16 @@ if [[ "$USE_9_0" != 'TRUE' ]]; then
     export UPDATE_MASTER
 fi
 
+if [[ -n $ISO_URL ]]; then
+    #Download provided iso into tmp folder
+    pushd $(mktemp -d)
+    aria2c --seed-time=0 $ISO_URL
+    ISO_BASENAME=$(ls | grep .*iso$)
+    ISO_PATH=$PWD/$ISO_BASENAME
+    ISO_ID=$(echo "$ISO_BASENAME" | cut -f4 -d-)
+    echo "ISO_ID=$ISO_ID" >> "$ENV_INJECT_PATH"
+fi
+
 # Not exiting from shell if error happens
 set +e
 ./deploy_template.sh $CONFIG_PATH

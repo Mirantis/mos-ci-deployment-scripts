@@ -159,14 +159,13 @@
         - report_to_testrail
         - common_publisher
 
-
 - job-template:
     # empty value causes disabled_var to be ignored internally
     disabled_var:
 
     disabled: '{obj:disabled_var}'
 
-    name: '9.x_Tempest_{name}'
+    name: 'Tempest_{name}'
 
     defaults: common_job_settings
 
@@ -211,6 +210,9 @@
         - string:
             name: FUEL_QA_COMMIT
             default: ""
+        - string:
+            name: INTERFACE_MODEL
+            default: "{iface_model}"
 
     wrappers:
         - add_testrail_credentials
@@ -237,6 +239,7 @@
         - common_publisher
         - report_to_testrail
         - archive_mos_int_snapshots
+
 
 - job-template:
     # empty value causes disabled_var to be ignored internally

@@ -4,69 +4,68 @@
     milestone: '9.2'
     suite: '[9.2][MOSQA] Tempest 9.2'
     jobs:
-      - '9.x_Tempest_{name}'
+      - 'Tempest_{name}'
     nova_quotas: 'TRUE'
+    iface_model: ''
+    #TBD remove 9.2 runs on Wednesdays after initial debugging of 10.0 jobs
+    #start_timer: '5 21 * * 0-2,4-6'
+    start_timer: '5 21 * * *'
 
 - project:
-    name: LVM_no_ssl
+    name: 9.x_LVM_no_ssl
     weight: 4
     display_name: 'Tempest-{milestone}_LVM_Cinder_DVR_Sahara_Ceilometer_Ironic'
     env_changer: _ironic_cinder
     config_path: templates/tempest/ironic_cinder.yaml
     test_group: 'Tempest (LVM,Cinder,DVR,Sahara,Ceilometer,Ironic)'
-    start_timer: '5 21 * * *'
     is_ssl_disabled: 'TRUE'
     destroy_env: 'FALSE'
     node: Slave-srv137
     <<: *common_parameters
 
 - project:
-    name: Ceph_no_ssl
+    name: 9.x_Ceph_no_ssl
     weight: 4
     display_name: 'Tempest-{milestone}_Ceph_DVR_Sahara_Ceilometer_Ironic'
     env_changer: _ironic_ceph
     config_path: templates/tempest/ironic_ceph.yaml
     test_group: 'Tempest (Ceph,DVR,Sahara,Ceilometer)'
-    start_timer: '5 21 * * *'
     is_ssl_disabled: 'TRUE'
     destroy_env: 'FALSE'
     node: Slave-srv138
     <<: *common_parameters
 
 - project:
-    name: LVM_SSL
+    name: 9.x_LVM_SSL
     weight: 4
     display_name: 'Tempest-{milestone}_LVM_Cinder_DVR_Sahara_Ceilometer_Ironic_SSL'
     env_changer: _ironic_cinder
     config_path: templates/tempest/ironic_cinder.yaml
     test_group: 'Tempest (SSL,LVM,Cinder,DVR,Sahara,Ceilometer,Ironic)'
-    start_timer: '5 21 * * *'
     is_ssl_disabled: 'FALSE'
     destroy_env: 'FALSE'
     node: Slave-srv139
     <<: *common_parameters
 
 - project:
-    name: Ceph_SSL
+    name: 9.x_Ceph_SSL
     weight: 4
     display_name: 'Tempest-{milestone}_Ceph_DVR_Sahara_Ceilometer_Ironic_SSL'
     env_changer: _ironic_ceph
     config_path: templates/tempest/ironic_ceph.yaml
     test_group: 'Tempest (Ceph,SSL,DVR,Sahara,Ceilometer)'
-    start_timer: '5 21 * * *'
     is_ssl_disabled: 'FALSE'
     destroy_env: 'FALSE'
     node: Slave-7775
     <<: *common_parameters
 
 - project:
-    name: Detached_RabbitMQ
+    name: 9.x_Detached_RabbitMQ
     weight: 2
     display_name: 'Tempest-{milestone}_{name}'
     env_changer: _rabbit
     config_path: templates/separate_componenets/rabbit.yaml
     test_group: Separated_Components(RabbitMQ)
-    start_timer: '5 21 * * *'
     is_ssl_disabled: 'TRUE'
     destroy_env: 'TRUE'
     node: single_template
@@ -88,3 +87,62 @@
     test_group: 'RENAME ME'
     start_timer: ''
     <<: *common_parameters3
+
+- common_parameters2: &common_parameters2
+    name: 'common tempest projects parameters for s for 10.0'
+    tox_properties: ''
+    milestone: '10.0'
+    suite: '[10.0][MOSQA] Tempest 10.0'
+    jobs:
+      - 'Tempest_{name}'
+    nova_quotas: 'TRUE'
+    iface_model: 'e1000'
+    start_timer: ''
+
+- project:
+    name: 10.0_LVM_no_ssl
+    weight: 4
+    display_name: 'Tempest-{milestone}_LVM_Cinder_DVR_Sahara_Ceilometer_Ironic'
+    env_changer: _ironic_cinder
+    config_path: templates/tempest_10/ironic_cinder.yaml
+    test_group: 'Tempest (LVM,Cinder,DVR,Sahara,Ceilometer,Ironic)'
+    is_ssl_disabled: 'TRUE'
+    destroy_env: 'FALSE'
+    node: Slave-srv137
+    <<: *common_parameters2
+
+- project:
+    name: 10.0_Ceph_no_ssl
+    weight: 4
+    display_name: 'Tempest-{milestone}_Ceph_DVR_Sahara_Ceilometer_Ironic'
+    env_changer: _ironic_ceph
+    config_path: templates/tempest_10/ironic_ceph.yaml
+    test_group: 'Tempest (Ceph,DVR,Sahara,Ceilometer)'
+    is_ssl_disabled: 'TRUE'
+    destroy_env: 'FALSE'
+    node: Slave-srv138
+    <<: *common_parameters2
+
+- project:
+    name: 10.0_LVM_SSL
+    weight: 4
+    display_name: 'Tempest-{milestone}_LVM_Cinder_DVR_Sahara_Ceilometer_Ironic_SSL'
+    env_changer: _ironic_cinder
+    config_path: templates/tempest_10/ironic_cinder.yaml
+    test_group: 'Tempest (SSL,LVM,Cinder,DVR,Sahara,Ceilometer,Ironic)'
+    is_ssl_disabled: 'FALSE'
+    destroy_env: 'FALSE'
+    node: Slave-srv139
+    <<: *common_parameters2
+
+- project:
+    name: 10.0_Ceph_SSL
+    weight: 4
+    display_name: 'Tempest-{milestone}_Ceph_DVR_Sahara_Ceilometer_Ironic_SSL'
+    env_changer: _ironic_ceph
+    config_path: templates/tempest_10/ironic_ceph.yaml
+    test_group: 'Tempest (Ceph,SSL,DVR,Sahara,Ceilometer)'
+    is_ssl_disabled: 'FALSE'
+    destroy_env: 'FALSE'
+    node: Slave-7775
+    <<: *common_parameters2
