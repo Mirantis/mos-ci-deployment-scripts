@@ -176,3 +176,18 @@
               credential-id: a93fcce8-3ba6-413d-88da-0a16c435dcde
               username: TESTRAIL_USER
               password: TESTRAIL_PASSWORD
+
+- wrapper:
+    name: common_properties
+    wrappers:
+      - inject:
+          properties-content: |
+              USE_9_0=FALSE
+              DEPLOYMENT_TIMEOUT=10000
+              REPORT_FILE=report.xml
+              ENV_INJECT_PATH=env_inject{name}.properties
+              ISO_DIR=/var/www/fuelweb-iso
+              ISO_URL=''
+              FUEL_QA_VER=stable/mitaka
+              TESTRAIL_URL=https://mirantis.testrail.com
+              TESTRAIL_PROJECT=Mirantis OpenStack

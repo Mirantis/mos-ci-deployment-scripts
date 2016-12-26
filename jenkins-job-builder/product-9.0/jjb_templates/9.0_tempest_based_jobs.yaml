@@ -10,6 +10,8 @@
     #TBD remove 9.2 runs on Wednesdays after initial debugging of 10.0 jobs
     #start_timer: '5 21 * * 0-2,4-6'
     start_timer: '5 21 * * *'
+    use_9_0: 'FALSE'
+    fuel_qa_ver: 'stable/mitaka'
 
 - project:
     name: 9.x_LVM_no_ssl
@@ -98,6 +100,10 @@
     nova_quotas: 'TRUE'
     iface_model: 'e1000'
     start_timer: ''
+    #TBD the USE_9_0 is used so far to avoid source of the extra repos
+    #Need to refactor code to replace this var with something like USE_9_x
+    use_9_0: 'TRUE'
+    fuel_qa_ver: 'stable/newton'
 
 - project:
     name: 10.0_LVM_no_ssl

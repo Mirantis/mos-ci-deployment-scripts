@@ -125,7 +125,6 @@
     defaults: common_job_settings
 
     parameters:
-        - common_parameters
         - string:
             name: ENV_CHANGER
             default: '{env_changer}'
@@ -146,6 +145,7 @@
             default: "TRUE"
 
     wrappers:
+        - common_properties
         - add_testrail_credentials
 
     builders:
@@ -213,6 +213,12 @@
         - string:
             name: INTERFACE_MODEL
             default: "{iface_model}"
+        - string:
+            name: USE_9_0
+            default: "{use_9_0}"
+        - string:
+            name: FUEL_QA_VER
+            default: '{fuel_qa_ver}'
 
     wrappers:
         - add_testrail_credentials
@@ -277,6 +283,9 @@
         - string:
             name: TEMPEST
             default: "FALSE"
+        - string:
+            name: FUEL_QA_VER
+            default: 'stable/mitaka'
 
     builders:
         - revert_last_snapshot
@@ -375,7 +384,10 @@
             description: "Erase and deploy new environment"
         - string:
             name: FUEL_QA_COMMIT
-            default: "a9d37168cd1036ae36158a313c289383905815f3"
+            default: ""
+        - string:
+            name: FUEL_QA_VER
+            default: 'stable/mitaka'
 
     wrappers:
       - ansicolor
@@ -444,6 +456,9 @@
             name: DEPLOY
             default: true
             description: "Erase and deploy new environment"
+        - string:
+            name: FUEL_QA_VER
+            default: 'stable/mitaka'
 
     wrappers:
       - add_testrail_credentials
@@ -598,6 +613,9 @@
             name: DEPLOY
             default: "{deploy}"
             description: "Erase and deploy new environment"
+        - string:
+            name: FUEL_QA_VER
+            default: 'stable/mitaka'
 
     wrappers:
       - ansicolor

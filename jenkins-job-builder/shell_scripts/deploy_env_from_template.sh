@@ -4,7 +4,6 @@ pushd mos-ci-deployment-scripts
 git checkout stable/9.0
 
 # change fuel-qa version to stable/mitaka
-export FUEL_QA_VER=stable/mitaka
 
 if [[ "$USE_IPMI" == 'TRUE' ]]; then
     export MOSQA_IPMI_USER="$IPMI_USER"
@@ -28,6 +27,7 @@ if [[ -n $ISO_URL ]]; then
     ISO_PATH=$PWD/$ISO_BASENAME
     ISO_ID=$(echo "$ISO_BASENAME" | cut -f4 -d-)
     echo "ISO_ID=$ISO_ID" >> "$ENV_INJECT_PATH"
+    popd
 fi
 
 # Not exiting from shell if error happens
