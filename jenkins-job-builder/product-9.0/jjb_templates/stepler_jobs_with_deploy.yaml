@@ -29,7 +29,7 @@
     test_group: '{name}'
     is_ssl_disabled: 'TRUE'
     node: Slave-srv150
-    stepler_args: 'stepler/nova'
+    stepler_args: 'stepler/nova -S $SNAPSHOT_NAME'
     <<: *stepler_parameters
 
 - project:
