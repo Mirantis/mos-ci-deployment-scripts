@@ -24,7 +24,7 @@ then
     export TESTRAIL_MILESTONE="$MILESTONE"
 fi
 
-if [[ -n $SNAPSHOT_ID ]]; then
+if [[ -n $SNAPSHOT_ID ]];
 then
     REPORT_SUFFIX="snapshot $SNAPSHOT_ID"
 else
