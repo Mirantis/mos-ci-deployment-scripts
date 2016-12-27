@@ -26,14 +26,14 @@ fi
 
 if [[ -n $SNAPSHOT_ID ]]; then
 then
-    $REPORT_SUFFIX = $SNAPSHOT_ID
+    REPORT_SUFFIX="snapshot $SNAPSHOT_ID"
 else
-    $REPORT_SUFFIX = $ISO_ID
+    REPORT_SUFFIX="iso $ISO_ID"
 fi
 
 if [[ -z "$TESTRAIL_PLAN_NAME" ]];
 then
-    TESTRAIL_PLAN_NAME="$MILESTONE snapshot $REPORT_SUFFIX"
+    TESTRAIL_PLAN_NAME="$MILESTONE $REPORT_SUFFIX"
 else
     TESTRAIL_PLAN_NAME="$TESTRAIL_PLAN_NAME $(date +%m/%d/%Y)"
 fi

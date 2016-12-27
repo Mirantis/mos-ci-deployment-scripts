@@ -1,4 +1,10 @@
-ISO_NAME=$(ls "$ISO_DIR")
+if [[ -n $ISO_URL ]];
+then
+    ISO_NAME=$(basename $ISO_URL)
+    ISO_NAME=$(echo $ISO_NAME | sed 's/.torrent//')
+else
+    ISO_NAME=$(ls "$ISO_DIR")
+fi
 ENV_NAME=MOS_CI_"${ISO_NAME}${ENV_CHANGER}"
 ISO_ID=$(echo "$ISO_NAME" | cut -f3 -d-)
 ISO_PATH="$ISO_DIR/$ISO_NAME"
