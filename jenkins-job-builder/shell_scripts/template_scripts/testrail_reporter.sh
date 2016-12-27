@@ -24,9 +24,16 @@ then
     export TESTRAIL_MILESTONE="$MILESTONE"
 fi
 
+if [[ -n $SNAPSHOT_ID ]]; then
+then
+    $REPORT_SUFFIX = $SNAPSHOT_ID
+else
+    $REPORT_SUFFIX = $ISO_ID
+fi
+
 if [[ -z "$TESTRAIL_PLAN_NAME" ]];
 then
-    TESTRAIL_PLAN_NAME="$MILESTONE snapshot $SNAPSHOT_ID"
+    TESTRAIL_PLAN_NAME="$MILESTONE snapshot $REPORT_SUFFIX"
 else
     TESTRAIL_PLAN_NAME="$TESTRAIL_PLAN_NAME $(date +%m/%d/%Y)"
 fi

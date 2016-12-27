@@ -4,8 +4,6 @@
 export SSH_OPTS='-o UserKnownHostsFile=/dev/null  -o StrictHostKeyChecking=no'
 
 ##### Definig common job parameters #####
-ISO_NAME=$(basename "$ISO_PATH")
-ISO_ID=$(echo "$ISO_NAME" | cut -f4 -d-)
 SNAPSHOT_NAME=$(dos.py snapshot-list "$ENV_NAME" | tail -1 | awk '{print $1}')
 SNAPSHOT=$(echo $SNAPSHOT_NAME | sed 's/ha_deploy_//')
 

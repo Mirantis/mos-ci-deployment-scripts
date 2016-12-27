@@ -23,10 +23,7 @@ if [[ -n $ISO_URL ]]; then
     #Download provided iso into tmp folder
     pushd $(mktemp -d)
     aria2c --seed-time=0 $ISO_URL
-    ISO_BASENAME=$(ls | grep .*iso$)
-    ISO_PATH=$PWD/$ISO_BASENAME
-    ISO_ID=$(echo "$ISO_BASENAME" | cut -f4 -d-)
-    echo "ISO_ID=$ISO_ID" >> "$ENV_INJECT_PATH"
+    ISO_PATH=$PWD/$(ls | grep .*iso$)
     popd
 fi
 
