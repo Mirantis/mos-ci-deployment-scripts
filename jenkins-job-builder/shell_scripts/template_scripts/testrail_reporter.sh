@@ -26,9 +26,9 @@ fi
 
 if [[ -n $SNAPSHOT_ID ]]; then
 then
-    $REPORT_SUFFIX = $SNAPSHOT_ID
+    REPORT_SUFFIX="snapshot $SNAPSHOT_ID"
 else
-    $REPORT_SUFFIX = $ISO_ID
+    REPORT_SUFFIX="iso $ISO_ID"
 fi
 
 if [[ -z "$TESTRAIL_PLAN_NAME" ]];
