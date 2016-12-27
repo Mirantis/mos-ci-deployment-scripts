@@ -219,17 +219,17 @@
         - string:
             name: FUEL_QA_VER
             default: '{fuel_qa_ver}'
-
+        - bool:
+            name: DEPLOY
+            default: true
+            description: "Erase and deploy new environment"
     wrappers:
         - add_testrail_credentials
 
     builders:
-        - shell:
-            !include-raw-escape: ../shell_scripts/template_scripts/erase_ci_envs.sh
         - env_variables_export
         - get_plugins
-        - shell:
-            !include-raw: ../shell_scripts/deploy_env_from_template.sh
+        - erase_and_deploy_env
         - inject:
             properties-file: "$ENV_INJECT_PATH"
         - shell: "dos.py revert-resume $ENV_NAME $SNAPSHOT_NAME"
