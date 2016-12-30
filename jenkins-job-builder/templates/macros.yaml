@@ -187,7 +187,6 @@
               REPORT_FILE=report.xml
               ENV_INJECT_PATH=env_inject{name}.properties
               ISO_DIR=/var/www/fuelweb-iso
-              ISO_URL=''
               FUEL_QA_VER=stable/mitaka
               TESTRAIL_URL=https://mirantis.testrail.com
               TESTRAIL_PROJECT=Mirantis OpenStack

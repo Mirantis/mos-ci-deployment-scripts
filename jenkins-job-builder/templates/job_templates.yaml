@@ -143,6 +143,9 @@
         - string:
             name: TESTRAIL_TEMPEST
             default: "TRUE"
+        - string:
+            name: ISO_URL
+            default: ''
 
     wrappers:
         - common_properties
