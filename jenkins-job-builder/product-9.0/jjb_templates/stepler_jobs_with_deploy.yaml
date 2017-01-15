@@ -11,7 +11,7 @@
 - project:
     name: Cinder_LVM
     display_name: Cinder_LVM + Keystone + Heat + Cli_Clients + Swift + Glance
-    weight: 2
+    weight: 4
     env_changer: _ironic_cinder
     config_path: templates/stepler_tempest/ironic_cinder.yaml
     test_group: '{display_name}'
@@ -22,7 +22,7 @@
 
 - project:
     name: Nova_LVM
-    weight: 2
+    weight: 4
     display_name: '{name}'
     env_changer: _ironic_cinder
     config_path: templates/stepler_tempest/ironic_cinder.yaml
@@ -34,7 +34,7 @@
 
 - project:
     name: Horizon
-    weight: 2
+    weight: 4
     display_name: '{name}'
     env_changer: _ironic_ceph
     config_path: templates/stepler_tempest/ironic_ceph.yaml
@@ -46,7 +46,7 @@
 
 - project:
     name: Neutron_VLAN
-    weight: 2
+    weight: 4
     display_name: '{name}'
     env_changer: _neutron_vlan
     config_path: templates/neutron/vlan_qos.yaml
@@ -58,7 +58,7 @@
 
 - project:
     name: Neutron_VxLAN
-    weight: 2
+    weight: 4
     display_name: '{name}'
     env_changer: _neutron_vxlan
     config_path: templates/neutron/vxlan_qos.yaml
@@ -70,7 +70,7 @@
 
 - project:
     name: Neutron_VLAN_DVR
-    weight: 2
+    weight: 4
     display_name: '{name}'
     env_changer: _neutron_vlan_dvr
     config_path: templates/neutron/vlan_dvr.yaml
@@ -82,7 +82,7 @@
 
 - project:
     name: Neutron_VLAN_L3HA
-    weight: 2
+    weight: 4
     display_name: '{name}'
     env_changer: _neutron_vlan_l3ha
     config_path: templates/neutron/vlan_l3ha.yaml
@@ -94,7 +94,7 @@
 
 - project:
     name: Neutron_VxLAN_L2POP
-    weight: 2
+    weight: 4
     display_name: '{name}'
     env_changer: _neutron_vxlan_l2pop
     config_path: templates/neutron/vxlan_l2pop.yaml
@@ -106,7 +106,7 @@
 
 - project:
     name: Neutron_VxLAN_L2POP_DVR
-    weight: 2
+    weight: 4
     display_name: '{name}'
     env_changer: _neutron_vxlan_l2pop_dvr
     config_path: templates/neutron/vxlan_l2pop_dvr.yaml
@@ -118,7 +118,7 @@
 
 - project:
     name: Neutron_VxLAN_L2POP_L3HA
-    weight: 2
+    weight: 4
     display_name: '{name}'
     env_changer: _neutron_vxlan_l2pop_l3ha
     config_path: templates/neutron/vxlan_l2pop_l3ha.yaml
