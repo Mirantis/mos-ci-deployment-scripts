@@ -53,9 +53,9 @@ rally verify genconfig --add-options $storage_protocol
 rally verify showconfig
 
 if [ $storage_protocol == 'ceph' ]; then
-    rally verify start --skip-list skip_ceph.list > /root/rally/log.log
+    rally verify start --skip-list skip_ceph.list --concurrency 2 > /root/rally/log.log
 else
-    rally verify start --skip-list skip_lvm.list > /root/rally/log.log
+    rally verify start --skip-list skip_lvm.list --concurrency 2 > /root/rally/log.log
 fi
 
 set +e
