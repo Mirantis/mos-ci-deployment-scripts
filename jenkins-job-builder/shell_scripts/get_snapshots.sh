@@ -16,5 +16,5 @@ python ./utils/jenkins/conv_snapshot_file.py
 SNAPSHOT_ID=$(awk '/CUSTOM_VERSION/ {print $2}' snapshots.params)
 echo "SNAPSHOT_ID=$SNAPSHOT_ID" >> "$ENV_INJECT_PATH"
 MOS_UBUNTU_MIRROR_ID=$(awk '/MOS_UBUNTU_MIRROR_ID/ {print $1}' snapshots.params)
-echo "$MOS_UBUNTU_MIRROR_ID" >> "$ENV_INJECT_PATH"
+echo "export $MOS_UBUNTU_MIRROR_ID" >> "$ENV_INJECT_PATH"
 cat extra_repos.sh >> "$ENV_INJECT_PATH"
