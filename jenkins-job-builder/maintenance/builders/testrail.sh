@@ -34,6 +34,9 @@ if ${USE_TEMPLATE}; then
     TEMPLATE="--testrail-name-template '{custom_test_group}.{title}' --xunit-name-template '{classname}.{methodname}'"
 fi
 
+# Workaround for bug #1647388
+sed -i "s/setuptools>=17.1/setuptools==30.1.0/g" setup.py
+
 virtualenv venv
 source venv/bin/activate
 python setup.py install
