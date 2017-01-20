@@ -22,7 +22,7 @@
     test_group: 'Tempest (LVM,Cinder,DVR,Sahara,Ceilometer,Ironic)'
     is_ssl_disabled: 'TRUE'
     destroy_env: 'FALSE'
-    node: Slave-srv137
+    node: Slave-srv134
     <<: *common_parameters
 
 - project:
