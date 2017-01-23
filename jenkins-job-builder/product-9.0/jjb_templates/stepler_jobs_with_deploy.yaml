@@ -46,7 +46,7 @@
 
 - project:
     name: Neutron_VLAN
-    weight: 4
+    weight: 2
     display_name: '{name}'
     env_changer: _neutron_vlan
     config_path: templates/neutron/vlan_qos.yaml
@@ -58,7 +58,7 @@
 
 - project:
     name: Neutron_VxLAN
-    weight: 4
+    weight: 2
     display_name: '{name}'
     env_changer: _neutron_vxlan
     config_path: templates/neutron/vxlan_qos.yaml
@@ -70,7 +70,7 @@
 
 - project:
     name: Neutron_VLAN_DVR
-    weight: 4
+    weight: 2
     display_name: '{name}'
     env_changer: _neutron_vlan_dvr
     config_path: templates/neutron/vlan_dvr.yaml
@@ -82,7 +82,7 @@
 
 - project:
     name: Neutron_VLAN_L3HA
-    weight: 4
+    weight: 2
     display_name: '{name}'
     env_changer: _neutron_vlan_l3ha
     config_path: templates/neutron/vlan_l3ha.yaml
@@ -94,7 +94,7 @@
 
 - project:
     name: Neutron_VxLAN_L2POP
-    weight: 4
+    weight: 2
     display_name: '{name}'
     env_changer: _neutron_vxlan_l2pop
     config_path: templates/neutron/vxlan_l2pop.yaml
@@ -106,7 +106,7 @@
 
 - project:
     name: Neutron_VxLAN_L2POP_DVR
-    weight: 4
+    weight: 2
     display_name: '{name}'
     env_changer: _neutron_vxlan_l2pop_dvr
     config_path: templates/neutron/vxlan_l2pop_dvr.yaml
@@ -118,7 +118,7 @@
 
 - project:
     name: Neutron_VxLAN_L2POP_L3HA
-    weight: 4
+    weight: 2
     display_name: '{name}'
     env_changer: _neutron_vxlan_l2pop_l3ha
     config_path: templates/neutron/vxlan_l2pop_l3ha.yaml
