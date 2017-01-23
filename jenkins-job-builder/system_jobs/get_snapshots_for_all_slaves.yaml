@@ -43,4 +43,4 @@
       - workspace-cleanup:
           fail-build: false
       - email:
-          recipients: ogubanov@mirantis.com
+          recipients: vskybin@mirantis.com
