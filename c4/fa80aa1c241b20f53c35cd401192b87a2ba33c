@@ -1,0 +1,8 @@
+Code-Review+1: Mirantis Jenkins <qa-stepler-ci@mirantis.com>
+Code-Review+2: Oleksiy Butenko <obutenko@mirantis.com>
+Verified+1: Oleksiy Butenko <obutenko@mirantis.com>
+Submitted-by: Oleksiy Butenko <obutenko@mirantis.com>
+Submitted-at: Mon, 23 Jan 2017 06:46:16 -0500
+Reviewed-on: https://review.gerrithub.io/344240
+Project: Mirantis/mos-ci-deployment-scripts
+Branch: refs/heads/master
