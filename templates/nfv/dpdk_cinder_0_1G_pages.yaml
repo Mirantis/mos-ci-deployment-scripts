@@ -317,7 +317,7 @@ update_nodes:
     interfaces:
       - number: 4
         params:
-          interface_properties/dpdk/enabled: true
+          attributes/dpdk/enabled/value: true
   - name: slave-05
     attributes:
       cpu_pinning/nova/value: 0
@@ -327,4 +327,4 @@ update_nodes:
     interfaces:
       - number: 4
         params:
-          interface_properties/dpdk/enabled: true
+          attributes/dpdk/enabled/value: true

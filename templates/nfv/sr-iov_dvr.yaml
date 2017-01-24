@@ -312,9 +312,8 @@ update_nodes:
     interfaces:
       - number: 4
         params:
-          interface_properties/sriov/enabled: true
-          interface_properties/sriov/sriov_numvfs: 8
-          interface_properties/sriov/sriov_totalvfs: 63
+          attributes/sriov/enabled/value: true
+          attributes/sriov/numvfs/value: 8
   - name: slave-05
     attributes:
       cpu_pinning/nova/value: 18
@@ -323,6 +322,5 @@ update_nodes:
     interfaces:
       - number: 4
         params:
-          interface_properties/sriov/enabled: true
-          interface_properties/sriov/sriov_numvfs: 8
-          interface_properties/sriov/sriov_totalvfs: 63
+          attributes/sriov/enabled/value: true
+          attributes/sriov/numvfs/value: 8
