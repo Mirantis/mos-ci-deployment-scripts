@@ -7,7 +7,7 @@ set -e
 git clone https://review.fuel-infra.org/fuel-infra/dockerfiles
 
 ##### Change rally version and add option to genconfig ####
-sed -i 's|FROM rallyforge/rally:latest|FROM rallyforge/rally:0.6.0|g' \
+sed -i 's|FROM rallyforge/rally:latest|FROM rallyforge/rally:0.7.0|g' \
        dockerfiles/rally-tempest/latest/Dockerfile
 
 sed -i 's|rally verify genconfig|rally verify genconfig --add-options tempest_config|g' \
