@@ -8,6 +8,7 @@ virtualenv --clear testrail
 source /home/jenkins/env_inject.properties
 export SNAPSHOT_ID
 
+pip install -U pip
 pip install xunit2testrail
 
 # if we need to change SUITE
