@@ -17,7 +17,7 @@
     test_group: '{display_name}'
     is_ssl_disabled: 'TRUE'
     node: Slave-srv144
-    stepler_args: 'stepler/cinder stepler/cli_clients stepler/heat stepler/keystone stepler/swift stepler/glance -S $SNAPSHOT_NAME'
+    stepler_args: 'stepler/cinder stepler/cli_clients stepler/heat stepler/keystone stepler/object_storage stepler/glance -S $SNAPSHOT_NAME'
     <<: *stepler_parameters
 
 - project:
