@@ -16,7 +16,7 @@
     config_path: templates/stepler_tempest/ironic_cinder.yaml
     test_group: '{display_name}'
     is_ssl_disabled: 'TRUE'
-    node: Slave-srv144
+    node: single_template
     stepler_args: 'stepler/cinder stepler/cli_clients stepler/heat stepler/keystone stepler/object_storage stepler/glance -S $SNAPSHOT_NAME'
     <<: *stepler_parameters
 
@@ -28,7 +28,7 @@
     config_path: templates/stepler_tempest/ironic_cinder.yaml
     test_group: '{name}'
     is_ssl_disabled: 'TRUE'
-    node: Slave-srv150
+    node: single_template
     stepler_args: 'stepler/nova -S $SNAPSHOT_NAME'
     <<: *stepler_parameters
 
@@ -41,7 +41,7 @@
     test_group: '{name}'
     is_ssl_disabled: 'FALSE'
     stepler_args: 'stepler/horizon'
-    node: Slave-srv128
+    node: single_template
     <<: *stepler_parameters
 
 - project:
