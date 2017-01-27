@@ -182,11 +182,11 @@
     wrappers:
       - inject:
           properties-content: |
-              USE_9_0=FALSE
               DEPLOYMENT_TIMEOUT=10000
               REPORT_FILE=report.xml
               ENV_INJECT_PATH=env_inject{name}.properties
               ISO_DIR=/var/www/fuelweb-iso
-              FUEL_QA_VER=stable/mitaka
               TESTRAIL_URL=https://mirantis.testrail.com
               TESTRAIL_PROJECT=Mirantis OpenStack
+              PLUGINS_DIR=/var/www/detach-plugins
+              PARSED_PLUGINS_LINK=http://jenkins-product.srt.mirantis.net:8080/view/plugins/job/build-fuel-plugins/

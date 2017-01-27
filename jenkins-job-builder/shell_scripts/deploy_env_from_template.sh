@@ -19,13 +19,28 @@ if [[ "$USE_9_0" != 'TRUE' ]]; then
     export UPDATE_MASTER
 fi
 
+
 if [[ -n $ISO_URL ]]; then
-    #Download provided iso into tmp folder
     pushd $(mktemp -d)
+    #Download provided iso into tmp folder
+    if [[ $ISO_URL == *magnet_link* ]]; then
+        aria2c $ISO_URL
+        export `cat $(ls | grep .*txt$)`
+        ISO_URL=$MAGNET_LINK
+    fi
     aria2c --seed-time=0 $ISO_URL
+    ISO_NAME=$(ls | grep .*iso$)
+    ISO_NAME=$(echo $ISO_NAME | sed 's/.torrent//')
     ISO_PATH=$PWD/$(ls | grep .*iso$)
     popd
+else
+    ISO_NAME=$(ls "$ISO_DIR")
+    ISO_PATH="$ISO_DIR/$ISO_NAME"
 fi
+
+# TBD ISO_ID will be missed for jobs without deploy
+ISO_ID=$(echo "$ISO_NAME" | cut -f3 -d-)
+echo "ISO_ID=$ISO_ID" > "$ENV_INJECT_PATH"
 
 # Not exiting from shell if error happens
 set +e
