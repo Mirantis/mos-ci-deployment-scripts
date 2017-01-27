@@ -10,21 +10,13 @@ if [[ "$USE_IPMI" == 'TRUE' ]]; then
     export MOSQA_IPMI_PASSWORD="$IPMI_PASSWORD"
 fi
 
-if [[ "$USE_9_0" != 'TRUE' ]]; then
+if [[ $MILESTONE == 9.* ]] && [[ $MILESTONE != 9.0 ]]; then
     # export 9.x repos
     source /home/jenkins/env_inject.properties
     export EXTRA_DEB_REPOS
     export EXTRA_RPM_REPOS
     export UPDATE_FUEL_MIRROR
     export UPDATE_MASTER
-fi
-
-if [[ -n $ISO_URL ]]; then
-    #Download provided iso into tmp folder
-    pushd $(mktemp -d)
-    aria2c --seed-time=0 $ISO_URL
-    ISO_PATH=$PWD/$(ls | grep .*iso$)
-    popd
 fi
 
 # Not exiting from shell if error happens
