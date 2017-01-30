@@ -143,9 +143,6 @@
         - string:
             name: TESTRAIL_TEMPEST
             default: "TRUE"
-        - string:
-            name: ISO_URL
-            default: ''
 
     wrappers:
         - common_properties
@@ -173,7 +170,6 @@
     defaults: common_job_settings
 
     parameters:
-        - common_parameters
         - string:
             name: ENV_CHANGER
             default: '{env_changer}'
@@ -199,12 +195,6 @@
             name: NOVA_QUOTAS_ENABLED
             default: "{nova_quotas}"
         - string:
-            name: PARSED_PLUGINS_LINK
-            default: "http://jenkins-product.srt.mirantis.net:8080/view/plugins/job/build-fuel-plugins/"
-        - string:
-            name: PLUGINS_DIR
-            default: "/var/www/detach-plugins"
-        - string:
             name: TESTRAIL_TEMPEST
             default: "TRUE"
         - string:
@@ -217,30 +207,27 @@
             name: INTERFACE_MODEL
             default: "{iface_model}"
         - string:
-            name: USE_9_0
-            default: "{use_9_0}"
-        - string:
             name: FUEL_QA_VER
             default: '{fuel_qa_ver}'
+        - string:
+            name: ISO_URL
+            default: '{iso_url}'
         - bool:
             name: DEPLOY
             default: true
             description: "Erase and deploy new environment"
+
     wrappers:
+        - common_properties
         - add_testrail_credentials
 
     builders:
         - env_variables_export
         - get_plugins
         - erase_and_deploy_env
-        - inject:
-            properties-file: "$ENV_INJECT_PATH"
         - shell: "dos.py revert-resume $ENV_NAME $SNAPSHOT_NAME"
         - shell: sleep 300
-        - shell:
-            !include-raw-escape: ../shell_scripts/template_scripts/get_fuel_master_ip.sh
-        - inject:
-            properties-file: "$ENV_INJECT_PATH"
+        - get_fuel_creds
         - shell:
             !include-raw-escape: ../shell_scripts/run_tempest_new.sh
 
