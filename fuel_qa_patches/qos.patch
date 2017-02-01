@@ -1,0 +1,41 @@
+From eb3827e659b39958aab0e360e93d1b27ea620bd6 Mon Sep 17 00:00:00 2001
+From: Georgy Dyuldin <gdyuldin@mirantis.com>
+Date: Wed, 13 Apr 2016 11:48:30 +0300
+Subject: [PATCH] Add neutron-qos parameter
+
+This patch adds possibility to deploy environment with enabled Neutron
+QoS parameter
+
+Implements: blueprint test-neutron-qos
+
+Change-Id: Ifafbc5ad7fa743e2d3bb581ea2e3cce925aa5450
+---
+
+diff --git a/fuelweb_test/models/fuel_web_client.py b/fuelweb_test/models/fuel_web_client.py
+index 356693b..9db5697 100644
+--- a/fuelweb_test/models/fuel_web_client.py
++++ b/fuelweb_test/models/fuel_web_client.py
+@@ -556,7 +556,7 @@
+                 elif option == 'assign_to_all_nodes':
+                     section = 'public_network_assignment'
+                 elif option in {'neutron_l3_ha', 'neutron_dvr',
+-                                'neutron_l2_pop'}:
++                                'neutron_l2_pop', 'neutron_qos'}:
+                     section = 'neutron_advanced_configuration'
+                 elif option in {'dns_list'}:
+                     section = 'external_dns'
+diff --git a/system_test/actions/base.py b/system_test/actions/base.py
+index 436029e..ac5a883 100644
+--- a/system_test/actions/base.py
++++ b/system_test/actions/base.py
+@@ -344,7 +344,9 @@
+             "neutron_dvr": self.env_config['network'].get(
+                 'neutron-dvr', False),
+             "neutron_l2_pop": self.env_config['network'].get(
+-                'neutron-l2-pop', False)
++                'neutron-l2-pop', False),
++            "neutron_qos": self.env_config['network'].get(
++                'neutron-qos', False),
+         }
+ 
+         self.cluster_id = self.fuel_web.create_cluster(
