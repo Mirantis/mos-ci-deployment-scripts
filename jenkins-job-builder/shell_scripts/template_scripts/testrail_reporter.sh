@@ -29,7 +29,7 @@ if [[ $MILESTONE == 9.* ]] && [[ $MILESTONE != 9.0 ]];
 then
     REPORT_SUFFIX="snapshot $SNAPSHOT_ID"
 else
-    REPORT_SUFFIX="iso $ISO_ID"
+    REPORT_SUFFIX="iso #$ISO_ID"
 fi
 
 if [[ -z "$TESTRAIL_PLAN_NAME" ]];

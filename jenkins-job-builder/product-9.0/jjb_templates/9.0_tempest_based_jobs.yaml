@@ -110,7 +110,6 @@
 
 - project:
     name: 10.0_Ceph_no_ssl
-    start_timer: '5 21 * * *'
     display_name: 'Tempest-{milestone}_Ceph_DVR_Sahara_Ceilometer_Ironic'
     env_changer: _ironic_ceph
     config_path: templates/tempest_10/ironic_ceph.yaml
@@ -121,6 +120,7 @@
 - project:
     name: 10.0_LVM_SSL
     display_name: 'Tempest-{milestone}_LVM_Cinder_DVR_Sahara_Ceilometer_Ironic_SSL'
+    start_timer: '5 21 * * *'
     env_changer: _ironic_cinder
     config_path: templates/tempest_10/ironic_cinder.yaml
     test_group: 'Tempest (SSL,LVM,Cinder,DVR,Sahara,Ceilometer,Ironic)'
