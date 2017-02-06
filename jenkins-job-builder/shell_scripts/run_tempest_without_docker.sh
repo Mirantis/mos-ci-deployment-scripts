@@ -22,7 +22,7 @@ echo "export OS_PROJECT_DOMAIN_NAME='Default'" >> /root/openrc_tempest
 echo "export OS_USER_DOMAIN_NAME='Default'" >> /root/openrc_tempest
 echo "export OS_IDENTITY_API_VERSION='3'" >> /root/openrc_tempest
 
-git checkout 4b869dbb31fea84d7d29f6a37fd0c2939c81f30e
+git checkout 01a1b5fc6e242775d126a0f357ea91c38c783404
 
 ./install_rally.sh --branch 0.7.0 -d rally-venv/ -y
 
