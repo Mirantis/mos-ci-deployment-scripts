@@ -13,17 +13,16 @@ git clone https://github.com/openstack/rally.git
 cd rally
 CDIR=$(pwd)
 
-IS_TLS=$(source /root/openrc_tempest; openstack endpoint show identity 2>/dev/null | awk '/https/')
-    if [ "${IS_TLS}" ]; then
-        echo "export OS_CACERT='/var/lib/astute/haproxy/public_haproxy.pem'" >> /root/openrc_tempest
-    fi
+if [[ -f /var/lib/astute/haproxy/public_haproxy.pem ]]; then
+    echo "export OS_CACERT='/var/lib/astute/haproxy/public_haproxy.pem'" >> /root/openrc_tempest
+fi
 
 sed -i "s/:5000\/'/:5000\/v3\/'/" /root/openrc_tempest
 echo "export OS_PROJECT_DOMAIN_NAME='Default'" >> /root/openrc_tempest
 echo "export OS_USER_DOMAIN_NAME='Default'" >> /root/openrc_tempest
 echo "export OS_IDENTITY_API_VERSION='3'" >> /root/openrc_tempest
 
-git checkout 01a1b5fc6e242775d126a0f357ea91c38c783404
+git checkout 4b869dbb31fea84d7d29f6a37fd0c2939c81f30e
 
 ./install_rally.sh --branch 0.7.0 -d rally-venv/ -y
 
