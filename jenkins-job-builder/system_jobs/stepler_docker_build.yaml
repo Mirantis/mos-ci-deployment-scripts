@@ -1,0 +1,39 @@
+- job:
+    name: stepler_docker_build
+    node: master
+
+    scm:
+        - git:
+            url: https://github.com/Mirantis/stepler.git
+            branches:
+                - origin/master
+
+    wrappers:
+      - ansicolor
+      - inject-passwords:
+          global: true
+          mask-password-params: true
+
+    project-type: freestyle
+    defaults: global
+    triggers:
+        - timed: "0 21 * * *"
+
+    builders:
+      - shell: sudo docker build --pull -t mostestci/stepler:latest .
+      - shell: docker login --password=$DOCKERHUB_PASSWORD --username=$DOCKERHUB_USER --email=mostestci@gmail.com
+      - shell: docker push mostestci/stepler
+      - shell: docker logout
+      - shell: sudo docker rmi $(sudo docker images -f "dangling=true" -q) || true
+
+    display-name: 'stepler_docker_build'
+    concurrent: false
+    browser: githubweb
+    retry-count: 3
+    logrotate:
+      daysToKeep: 10
+
+    publishers:
+      - slack:
+          room: stepler-jobs
+          notify-failure: true

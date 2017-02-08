@@ -2,7 +2,7 @@
 user=my_username
 password=my_secret_password
 url=https://my.jenkins.com/
-query_plugins_info=False
+query_plugins_info=True
 
 [job_builder]
 ignore_cache=True

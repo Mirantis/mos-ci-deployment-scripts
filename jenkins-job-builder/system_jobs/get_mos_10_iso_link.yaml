@@ -1,0 +1,26 @@
+- job:
+    name: get_mos_10_iso_link
+    node: master
+    builders:
+        - shell: wget https://product-ci.infra.mirantis.net/job/10.0.all/lastSuccessfulBuild/artifact/artifacts/magnet_link.txt
+
+    project-type: freestyle
+    defaults: global
+    triggers:
+        - timed: "50 20 * * *"
+
+    disabled: true
+    display-name: 'Get_MOS_10_ISO'
+    concurrent: true
+    browser: githubweb
+    retry-count: 3
+    logrotate:
+      daysToKeep: 1
+
+    publishers:
+      - workspace-cleanup:
+          fail-build: false
+      - archive:
+          artifacts: 'magnet_link.txt'
+          allow-empty: 'true'
+          fingerprint: true
