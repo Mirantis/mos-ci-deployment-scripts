@@ -9,7 +9,6 @@
     triggers:
         - timed: "50 20 * * *"
 
-    disabled: true
     display-name: 'Get_MOS_10_ISO'
     concurrent: true
     browser: githubweb

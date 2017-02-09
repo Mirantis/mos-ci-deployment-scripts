@@ -5,8 +5,13 @@ echo "$ISO_ID.$SNAPSHOT_NAME" > build-name-setter.info
 virtualenv --clear testrail
 . testrail/bin/activate
 
-source /home/jenkins/env_inject.properties
-export SNAPSHOT_ID
+if [[ -f /home/jenkins/env_inject.properties ]];
+then
+    source /home/jenkins/env_inject.properties
+    export SNAPSHOT_ID
+else
+    export SNAPSHOT_ID=''
+fi
 
 pip install -U pip
 pip install xunit2testrail
