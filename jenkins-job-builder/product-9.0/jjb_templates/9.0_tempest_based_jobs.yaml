@@ -84,7 +84,7 @@
 
 - common_parameters_10_0: &common_parameters_10_0
     name: 'common tempest projects parameters for s for 10.0'
-    tox_properties: ''
+    start_timer: '5 21 * * *'
     milestone: '10.0'
     suite: '[10.0][MOSQA] Tempest 10.0'
     jobs:
@@ -100,7 +100,6 @@
 
 - project:
     name: 10.0_LVM_no_ssl
-    start_timer: '5 21 * * *'
     display_name: 'Tempest-{milestone}_LVM_Cinder_DVR_Sahara_Ceilometer_Ironic'
     env_changer: _ironic_cinder
     config_path: templates/tempest_10/ironic_cinder.yaml
@@ -110,7 +109,6 @@
 
 - project:
     name: 10.0_Ceph_no_ssl
-    start_timer: '5 21 * * *'
     display_name: 'Tempest-{milestone}_Ceph_DVR_Sahara_Ceilometer_Ironic'
     env_changer: _ironic_ceph
     config_path: templates/tempest_10/ironic_ceph.yaml
@@ -120,7 +118,6 @@
 
 - project:
     name: 10.0_LVM_SSL
-    start_timer: '5 21 * * *'
     display_name: 'Tempest-{milestone}_LVM_Cinder_DVR_Sahara_Ceilometer_Ironic_SSL'
     env_changer: _ironic_cinder
     config_path: templates/tempest_10/ironic_cinder.yaml

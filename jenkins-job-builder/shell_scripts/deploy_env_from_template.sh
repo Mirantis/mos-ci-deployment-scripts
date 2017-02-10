@@ -1,7 +1,6 @@
 # This script deploy MirantisOpenStak from templates
 git clone https://github.com/Mirantis/mos-ci-deployment-scripts.git
 pushd mos-ci-deployment-scripts
-git checkout stable/9.0
 
 # change fuel-qa version to stable/mitaka
 
