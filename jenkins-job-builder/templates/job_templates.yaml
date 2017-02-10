@@ -225,7 +225,7 @@
         - env_variables_export
         - get_plugins
         - erase_and_deploy_env
-        - shell: "dos.py revert-resume $ENV_NAME $SNAPSHOT_NAME"
+        - revert_last_snapshot
         - shell: sleep 300
         - get_fuel_creds
         - shell:
