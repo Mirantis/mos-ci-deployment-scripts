@@ -383,6 +383,9 @@
             name: LDAP_CONFIG_FILE
             default: "{obj:ldap_config_file}"
         - string:
+            name: INTERFACE_MODEL
+            default: "{iface_model}"
+        - string:
             name: FUEL_QA_COMMIT
             default: ""
         - string:
