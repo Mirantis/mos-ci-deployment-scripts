@@ -16,3 +16,4 @@
     display_name: 9.0 Openstack CLI
     jobs:
       - '9.x_openstack_cli_{name}'
+    disabled_var: true

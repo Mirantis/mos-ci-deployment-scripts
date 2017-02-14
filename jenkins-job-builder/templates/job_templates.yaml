@@ -3,6 +3,9 @@
 
     defaults: common_job_settings
 
+    disabled_var:
+    disabled: '{obj:disabled_var}'
+
     parameters:
         - common_parameters
         - string:
@@ -45,6 +48,9 @@
     name: '9.x_upstream_heat'
 
     defaults: common_job_settings
+
+    disabled_var:
+    disabled: '{obj:disabled_var}'
 
     parameters:
         - common_parameters
@@ -123,6 +129,9 @@
     name: '9.x_openstack_cli_{name}'
 
     defaults: common_job_settings
+
+    disabled_var:
+    disabled: '{obj:disabled_var}'
 
     parameters:
         - string:
@@ -294,6 +303,9 @@
 
     defaults: common_job_settings
 
+    disabled_var:
+    disabled: '{obj:disabled_var}'
+
     parameters:
         - common_parameters
         - string:
@@ -337,9 +349,12 @@
         - archive_mos_int_snapshots
 
 - job-template:
-    name: '{milestone}_{name}'
-
+    name: 'mos_int_{name}'
     defaults: common_job_settings
+
+    disabled_var:
+    disabled: '{obj:disabled_var}'
+
     ldap_config_file: ../plugins_config/ldap_multidomains.yaml
 
     parameters:

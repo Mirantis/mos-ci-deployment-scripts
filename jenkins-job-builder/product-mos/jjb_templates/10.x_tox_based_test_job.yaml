@@ -4,7 +4,7 @@
     milestone: '10.0'
     suite: '[10.0][MOSQA] Tempest 10.0'
     jobs:
-      - '{milestone}_{name}'
+      - 'mos_int_{name}'
     nova_quotas: 'TRUE'
     iface_model: 'virtio'
     fuel_qa_ver: 'stable/newton'
@@ -13,7 +13,7 @@
     start_timer: "5 21 * * *"
     weight: 2
     node: single_template
-    display_name: ''
+    display_name: '{name}'
 
 - project:
     name: 10.x_Ironic
@@ -22,8 +22,6 @@
     test_group: Ironic
     tox_test_name: ironic
     nova_quotas: "FALSE"
-    jobs:
-      - '{milestone}_{name}'
     <<: *common_parameters
 
 - project:
@@ -34,8 +32,6 @@
     node: Slave-srv135
     tox_test_name: glance
     nova_quotas: "TRUE"
-    jobs:
-      - '{milestone}_{name}'
     <<: *common_parameters
 
 - project:
@@ -46,8 +42,6 @@
     node:  Slave-srv136
     tox_test_name: glance
     nova_quotas: "FALSE"
-    jobs:
-      - '{milestone}_{name}'
     <<: *common_parameters
 
 - project:
@@ -58,8 +52,6 @@
     node: Slave-7777
     tox_test_name: nova
     nova_quotas: "FALSE"
-    jobs:
-      - '{milestone}_{name}'
     <<: *common_parameters
 
 - project:
@@ -70,6 +62,4 @@
     node: Slave-7774
     tox_test_name: nova
     nova_quotas: "FALSE"
-    jobs:
-      - '{milestone}_{name}'
     <<: *common_parameters

@@ -3,6 +3,7 @@
     tox_properties: ''
     milestone: '9.2'
     suite: '[9.1][MOSQA] Automated Cloud Testing'
+    disabled_var: true
 
 - project:
     name: keystone
