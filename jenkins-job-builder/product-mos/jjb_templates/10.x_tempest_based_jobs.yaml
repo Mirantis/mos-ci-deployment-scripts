@@ -1,0 +1,50 @@
+- common_parameters_10_0: &common_parameters_10_0
+    name: 'common tempest projects parameters for s for 10.0'
+    start_timer: '5 21 * * *'
+    milestone: '10.0'
+    suite: '[10.0][MOSQA] Tempest 10.0'
+    jobs:
+      - 'Tempest_{name}'
+    nova_quotas: 'TRUE'
+    iface_model: 'e1000'
+    fuel_qa_ver: 'stable/newton'
+    destroy_env: 'TRUE'
+    node: tempest_band
+    iso_url: 'http://172.18.173.8:8080/jenkins/view/System%20Jobs/job/get_mos_10_iso_link/lastSuccessfulBuild/artifact/magnet_link.txt'
+    weight: 4
+
+- project:
+    name: 10.0_LVM_no_ssl
+    display_name: 'Tempest-{milestone}_LVM_Cinder_DVR_Sahara_Ceilometer_Ironic'
+    env_changer: _ironic_cinder
+    config_path: templates/mos_10/tempest/ironic_cinder.yaml
+    test_group: 'Tempest (LVM,Cinder,DVR,Sahara,Ceilometer,Ironic)'
+    is_ssl_disabled: 'TRUE'
+    <<: *common_parameters_10_0
+
+- project:
+    name: 10.0_Ceph_no_ssl
+    display_name: 'Tempest-{milestone}_Ceph_DVR_Sahara_Ceilometer_Ironic'
+    env_changer: _ironic_ceph
+    config_path: templates/mos_10/tempest/ironic_ceph.yaml
+    test_group: 'Tempest (Ceph,DVR,Sahara,Ceilometer)'
+    is_ssl_disabled: 'TRUE'
+    <<: *common_parameters_10_0
+
+- project:
+    name: 10.0_LVM_SSL
+    display_name: 'Tempest-{milestone}_LVM_Cinder_DVR_Sahara_Ceilometer_Ironic_SSL'
+    env_changer: _ironic_cinder
+    config_path: templates/mos_10/tempest/ironic_cinder.yaml
+    test_group: 'Tempest (SSL,LVM,Cinder,DVR,Sahara,Ceilometer,Ironic)'
+    is_ssl_disabled: 'FALSE'
+    <<: *common_parameters_10_0
+
+- project:
+    name: 10.0_Ceph_SSL
+    display_name: 'Tempest-{milestone}_Ceph_DVR_Sahara_Ceilometer_Ironic_SSL'
+    env_changer: _ironic_ceph
+    config_path: templates/mos_10/tempest/ironic_ceph.yaml
+    test_group: 'Tempest (Ceph,SSL,DVR,Sahara,Ceilometer)'
+    is_ssl_disabled: 'FALSE'
+    <<: *common_parameters_10_0

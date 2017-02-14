@@ -4,7 +4,9 @@
     milestone: '9.2'
     suite: '[9.1][MOSQA] Automated Cloud Testing'
     jobs:
-      - '9.x_{name}'
+      - '{milestone}_{name}'
+    disabled: true
+    fuel_qa_ver: 'stable/mitaka'
 
 - project:
     name: Ceilometer
@@ -17,11 +19,9 @@
     start_timer: "5 21 * * *"
     node: Slave-srv135
     description: Ceilometer tests
-    display_name: 9.0_Ceilometer_t
+    display_name: "{milestone}_Ceilometer_t"
     tox_test_name: ceilometer
     nova_quotas: "FALSE"
-    jobs:
-      - '9.x_{name}'
     <<: *common_parameters
 
 - project:
@@ -35,11 +35,9 @@
     start_timer: "5 21 * * *"
     node: single_template
     description: Ironic tests
-    display_name: 9.0_Ironic_t
+    display_name: "{milestone}_Ironic_t"
     tox_test_name: ironic
     nova_quotas: "FALSE"
-    jobs:
-      - '9.x_{name}'
     <<: *common_parameters
 
 - project:
@@ -52,11 +50,9 @@
     start_timer: "5 21 * * *"
     node: Slave-srv135
     description: Glance tests on Swift
-    display_name: 9.0_Glance(Swift)
+    display_name: "{milestone}_Glance(Swift)"
     tox_test_name: glance
     nova_quotas: "TRUE"
-    jobs:
-      - '9.x_{name}'
     <<: *common_parameters
 
 - project:
@@ -69,11 +65,9 @@
     start_timer: "5 21 * * *"
     node:  Slave-srv136
     description: Glance tests on Ceph
-    display_name: 9.0_Glance(Ceph)
+    display_name: "{milestone}_Glance(Ceph)"
     tox_test_name: glance
     nova_quotas: "FALSE"
-    jobs:
-      - '9.x_{name}'
     <<: *common_parameters
 
 - project:
@@ -86,11 +80,9 @@
     start_timer: "5 21 * * *"
     node: single_template
     description: Neutron(VLAN)
-    display_name: 9.0_Neutron_VLAN
+    display_name: "{milestone}_Neutron_VLAN"
     tox_test_name: neutron
     nova_quotas: "FALSE"
-    jobs:
-      - '9.x_{name}'
     <<: *common_parameters
 
 - project:
@@ -103,11 +95,9 @@
     start_timer: "5 21 * * *"
     node: single_template
     description: Neutron(VLAN,L3_HA)
-    display_name: 9.0_Neutron_VLAN_L3_HA
+    display_name: "{milestone}_Neutron_VLAN_L3_HA"
     tox_test_name: neutron
     nova_quotas: "FALSE"
-    jobs:
-      - '9.x_{name}'
     <<: *common_parameters
 
 - project:
@@ -120,11 +110,9 @@
     start_timer: "5 21 * * *"
     node: single_template
     description: Neutron tests(VLAN,DVR)
-    display_name: 9.0_Neutron_VLAN_DVR
+    display_name: "{milestone}_Neutron_VLAN_DVR"
     tox_test_name: neutron
     nova_quotas: "FALSE"
-    jobs:
-      - '9.x_{name}'
     <<: *common_parameters
 
 - project:
@@ -137,11 +125,9 @@
     start_timer: "5 21 * * *"
     node: single_template
     description: Neutron tests(VxLAN)
-    display_name: 9.0_Neutron_VxLAN
+    display_name: "{milestone}_Neutron_VxLAN"
     tox_test_name: neutron
     nova_quotas: "FALSE"
-    jobs:
-      - '9.x_{name}'
     <<: *common_parameters
 
 - project:
@@ -154,11 +140,9 @@
     start_timer: "5 21 * * *"
     node: single_template
     description: Neutron tests(VxLAN,L2_POP)
-    display_name: 9.0_Neutron_VxLAN_L2_POP
+    display_name: "{milestone}_Neutron_VxLAN_L2_POP"
     tox_test_name: neutron
     nova_quotas: "FALSE"
-    jobs:
-      - '9.x_{name}'
     <<: *common_parameters
 
 - project:
@@ -171,11 +155,9 @@
     start_timer: "5 21 * * *"
     node: single_template
     description: Neutron tests(VxLAN,L2_POP,DVR)
-    display_name: 9.0_Neutron_VxLAN_L2_POP_DVR
+    display_name: "{milestone}_Neutron_VxLAN_L2_POP_DVR"
     tox_test_name: neutron
     nova_quotas: "FALSE"
-    jobs:
-      - '9.x_{name}'
     <<: *common_parameters
 
 - project:
@@ -188,11 +170,9 @@
     start_timer: "5 21 * * *"
     node: single_template
     description: Neutron tests(VxLAN,L2_POP,L3_HA)
-    display_name: 9.0_Neutron_VxLAN_L2_POP_L3_HA
+    display_name: "{milestone}_Neutron_VxLAN_L2_POP_L3_HA"
     tox_test_name: neutron
     nova_quotas: "FALSE"
-    jobs:
-      - '9.x_{name}'
     <<: *common_parameters
 
 - project:
@@ -205,11 +185,9 @@
     start_timer: "5 21 * * *"
     node: Slave-7777
     description: Nova tests
-    display_name: 9.0_Nova
+    display_name: "{milestone}_Nova"
     tox_test_name: nova
     nova_quotas: "FALSE"
-    jobs:
-      - '9.x_{name}'
     <<: *common_parameters
 
 - project:
@@ -222,11 +200,9 @@
     start_timer: "5 21 * * *"
     node: Slave-7774
     description: Nova-Ceph tests
-    display_name: 9.0_Nova_Ceph
+    display_name: "{milestone}_Nova_Ceph"
     tox_test_name: nova
     nova_quotas: "FALSE"
-    jobs:
-      - '9.x_{name}'
     <<: *common_parameters
 
 - project:
@@ -242,8 +218,6 @@
     display_name: '{milestone}_{name}'
     tox_test_name: fuel-ldap
     nova_quotas: "FALSE"
-    jobs:
-      - '9.x_{name}'
     <<: *common_parameters
 
 - project:
@@ -260,8 +234,6 @@
     tox_test_name: fuel-ldap
     nova_quotas: "FALSE"
     ldap_config_file: ../plugins_config/ldap_without_proxy.yaml
-    jobs:
-      - '9.x_{name}'
     <<: *common_parameters
 
 - project:
@@ -274,11 +246,9 @@
     start_timer: "5 21 * * *"
     node: single_template
     description: Neutron tests(VxLAN,L2_POP,L3_HA)
-    display_name: 9.0_Noop
+    display_name: "{milestone}_Noop"
     tox_test_name: noop_run_fuel
     nova_quotas: "FALSE"
-    jobs:
-      - '9.x_{name}'
     <<: *common_parameters
 
 - project:
@@ -291,15 +261,13 @@
     start_timer: "0 22 * * *"
     node: single_template
     description: RabbitMQ_OSLO tests
-    display_name: 9.0_RabbitMQ_OSLO_VLAN
+    display_name: "{milestone}_RabbitMQ_OSLO_VLAN"
     tox_test_name: rabbitmq_oslo
     publishers:
       - email:
           recipients: agalkin@mirantis.com ogubanov@mirantis.com
           notify-every-unstable-build: true
     nova_quotas: "FALSE"
-    jobs:
-      - '9.x_{name}'
     <<: *common_parameters
 
 - project:
@@ -312,13 +280,14 @@
     start_timer: "0 1 * * *"
     node: single_template
     description: RabbitMQ_OSLO tests
-    display_name: 9.0_RabbitMQ_OSLO_Detached
+    display_name: "{milestone}_RabbitMQ_OSLO_Detached"
     tox_test_name: rabbitmq_oslo-detach
     publishers:
       - email:
           recipients: agalkin@mirantis.com ogubanov@mirantis.com
           notify-every-unstable-build: true
     nova_quotas: "FALSE"
-    jobs:
-      - '9.x_{name}'
     <<: *common_parameters
+
+
+

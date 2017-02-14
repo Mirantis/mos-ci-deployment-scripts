@@ -337,7 +337,7 @@
         - archive_mos_int_snapshots
 
 - job-template:
-    name: '9.x_{name}'
+    name: '{milestone}_{name}'
 
     defaults: common_job_settings
     ldap_config_file: ../plugins_config/ldap_multidomains.yaml
@@ -377,7 +377,7 @@
             default: ""
         - string:
             name: FUEL_QA_VER
-            default: 'stable/mitaka'
+            default: '{fuel_qa_ver}'
 
     wrappers:
       - ansicolor

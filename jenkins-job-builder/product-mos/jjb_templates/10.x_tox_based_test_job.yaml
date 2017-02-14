@@ -1,0 +1,75 @@
+- common_parameters: &common_parameters
+    name: 'common tempest projects parameters for s for 10.0'
+    start_timer: '5 21 * * *'
+    milestone: '10.0'
+    suite: '[10.0][MOSQA] Tempest 10.0'
+    jobs:
+      - '{milestone}_{name}'
+    nova_quotas: 'TRUE'
+    iface_model: 'virtio'
+    fuel_qa_ver: 'stable/newton'
+    node: tempest_band
+    iso_url: 'http://172.18.173.8:8080/jenkins/view/System%20Jobs/job/get_mos_10_iso_link/lastSuccessfulBuild/artifact/magnet_link.txt'
+    start_timer: "5 21 * * *"
+    weight: 2
+    node: single_template
+    display_name: ''
+
+- project:
+    name: 10.x_Ironic
+    env_changer: _ironic
+    config_path: templates/mos_10/ironic/default.yaml
+    test_group: Ironic
+    tox_test_name: ironic
+    nova_quotas: "FALSE"
+    jobs:
+      - '{milestone}_{name}'
+    <<: *common_parameters
+
+- project:
+    name: 10.x_Glance_Swift
+    env_changer: _glance_swift
+    config_path: templates/mos_10/glance/swift.yaml
+    test_group: Glance(Swift)
+    node: Slave-srv135
+    tox_test_name: glance
+    nova_quotas: "TRUE"
+    jobs:
+      - '{milestone}_{name}'
+    <<: *common_parameters
+
+- project:
+    name: 10.x_Glance_Ceph
+    env_changer: _glance_ceph
+    config_path: templates/mos_10/glance/ceph.yaml
+    test_group: Glance(Ceph)
+    node:  Slave-srv136
+    tox_test_name: glance
+    nova_quotas: "FALSE"
+    jobs:
+      - '{milestone}_{name}'
+    <<: *common_parameters
+
+- project:
+    name: 10.x_Nova
+    env_changer: _nova
+    config_path: templates/mos_10/nova/default.yaml
+    test_group: Nova
+    node: Slave-7777
+    tox_test_name: nova
+    nova_quotas: "FALSE"
+    jobs:
+      - '{milestone}_{name}'
+    <<: *common_parameters
+
+- project:
+    name: 10.x_NovaCeph
+    env_changer: _nova_ceph
+    config_path: templates/mos_10/nova/ceph.yaml
+    test_group: Nova(Ceph)
+    node: Slave-7774
+    tox_test_name: nova
+    nova_quotas: "FALSE"
+    jobs:
+      - '{milestone}_{name}'
+    <<: *common_parameters
