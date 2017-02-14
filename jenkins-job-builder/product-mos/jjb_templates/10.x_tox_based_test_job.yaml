@@ -2,18 +2,20 @@
     name: 'common tempest projects parameters for s for 10.0'
     start_timer: '5 21 * * *'
     milestone: '10.0'
-    suite: '[10.0][MOSQA] Tempest 10.0'
+    suite: '[10.0][MOSQA] Automated Cloud Testing'
     jobs:
       - 'mos_int_{name}'
     nova_quotas: 'TRUE'
-    iface_model: 'virtio'
+    iface_model: 'e1000'
     fuel_qa_ver: 'stable/newton'
     node: tempest_band
     iso_url: 'http://172.18.173.8:8080/jenkins/view/System%20Jobs/job/get_mos_10_iso_link/lastSuccessfulBuild/artifact/magnet_link.txt'
+    deploy: 'true'
     start_timer: "5 21 * * *"
     weight: 2
     node: single_template
     display_name: '{name}'
+    nova_quotas: "FALSE"
 
 - project:
     name: 10.x_Ironic
@@ -21,7 +23,6 @@
     config_path: templates/mos_10/ironic/default.yaml
     test_group: Ironic
     tox_test_name: ironic
-    nova_quotas: "FALSE"
     <<: *common_parameters
 
 - project:
@@ -41,7 +42,6 @@
     test_group: Glance(Ceph)
     node:  Slave-srv136
     tox_test_name: glance
-    nova_quotas: "FALSE"
     <<: *common_parameters
 
 - project:
@@ -51,7 +51,6 @@
     test_group: Nova
     node: Slave-7777
     tox_test_name: nova
-    nova_quotas: "FALSE"
     <<: *common_parameters
 
 - project:
@@ -61,5 +60,4 @@
     test_group: Nova(Ceph)
     node: Slave-7774
     tox_test_name: nova
-    nova_quotas: "FALSE"
     <<: *common_parameters

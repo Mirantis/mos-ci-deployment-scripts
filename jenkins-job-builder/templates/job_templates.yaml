@@ -358,7 +358,6 @@
     ldap_config_file: ../plugins_config/ldap_multidomains.yaml
 
     parameters:
-        - common_parameters
         - string:
             name: ENV_CHANGER
             default: '{env_changer}'
@@ -383,20 +382,24 @@
         - string:
             name: LDAP_CONFIG_FILE
             default: "{obj:ldap_config_file}"
-        - bool:
-            name: DEPLOY
-            default: true
-            description: "Erase and deploy new environment"
         - string:
             name: FUEL_QA_COMMIT
             default: ""
         - string:
             name: FUEL_QA_VER
             default: '{fuel_qa_ver}'
+        - string:
+            name: ISO_URL
+            default: '{iso_url}'
+        - bool:
+            name: DEPLOY
+            default: '{deploy}'
+            description: "Erase and deploy new environment"
 
     wrappers:
       - ansicolor
       - add_testrail_credentials
+      - common_properties
 
     scm:
         - git:

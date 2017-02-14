@@ -10,6 +10,7 @@
     start_timer: '5 21 * * *'
     fuel_qa_ver: 'stable/mitaka'
     destroy_env: 'FALSE'
+    disabled_var: true
     iso_url: ''
     weight: 4
 
