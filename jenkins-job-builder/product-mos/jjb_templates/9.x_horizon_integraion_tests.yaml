@@ -4,6 +4,7 @@
     suite: '[9.1][MOSQA] Automated Cloud Testing'
     jobs:
       - '9.x_horizon_integraion_test_{name}'
+    disabled_var: true
 
 - project:
     name: selenium

@@ -4,12 +4,12 @@
     milestone: '9.2'
     suite: '[9.1][MOSQA] Automated Cloud Testing'
     jobs:
-      - '{milestone}_{name}'
-    disabled: true
+      - 'mos_int_{name}'
+    disabled_var: true
     fuel_qa_ver: 'stable/mitaka'
 
 - project:
-    name: Ceilometer
+    name: 9.x_Ceilometer
     weight: 2
     env_changer: _ceilometer
     env_inject_file: env_inject_ceilometer.properties
@@ -25,7 +25,7 @@
     <<: *common_parameters
 
 - project:
-    name: Ironic
+    name: 9.x_Ironic
     weight: 2
     env_changer: _ironic
     env_inject_file: env_inject_ironic.properties
@@ -41,7 +41,7 @@
     <<: *common_parameters
 
 - project:
-    name: Glance_Swift
+    name: 9.x_Glance_Swift
     weight: 2
     env_changer: _glance_swift
     env_inject_file: env_inject_glance_swift.properties
@@ -56,7 +56,7 @@
     <<: *common_parameters
 
 - project:
-    name: Glance_Ceph
+    name: 9.x_Glance_Ceph
     weight: 2
     env_changer: _glance_ceph
     env_inject_file: env_inject_glance_ceph.properties
@@ -71,7 +71,7 @@
     <<: *common_parameters
 
 - project:
-    name: VLAN
+    name: 9.x_VLAN
     weight: 2
     env_changer: _vlan
     env_inject_file: env_inject_vlan.properties
@@ -86,7 +86,7 @@
     <<: *common_parameters
 
 - project:
-    name: VLAN_L3_HA
+    name: 9.x_VLAN_L3_HA
     weight: 2
     env_changer: _vlan_l3_ha
     env_inject_file: env_inject_vlan_l3_ha.properties
@@ -101,7 +101,7 @@
     <<: *common_parameters
 
 - project:
-    name: VLAN_DVR
+    name: 9.x_VLAN_DVR
     weight: 2
     env_changer: _vlan_dvr
     env_inject_file: env_inject_vlan_dvr.properties
@@ -116,7 +116,7 @@
     <<: *common_parameters
 
 - project:
-    name: VxLAN
+    name: 9.x_VxLAN
     weight: 2
     env_changer: _vxlan
     env_inject_file: env_inject_vxlan.properties
@@ -131,7 +131,7 @@
     <<: *common_parameters
 
 - project:
-    name: VxLAN_L2_POP
+    name: 9.x_VxLAN_L2_POP
     weight: 2
     env_changer: _vxlan_l2_pop
     env_inject_file: env_inject_vxlan_l2_pop.properties
@@ -146,7 +146,7 @@
     <<: *common_parameters
 
 - project:
-    name: VxLAN_L2_POP_DVR
+    name: 9.x_VxLAN_L2_POP_DVR
     weight: 2
     env_changer: _vxlan_l2_pop_dvr
     env_inject_file: env_inject_vxlan_l2_pop_dvr.properties
@@ -161,7 +161,7 @@
     <<: *common_parameters
 
 - project:
-    name: VxLAN_L2_POP_L3_HA
+    name: 9.x_VxLAN_L2_POP_L3_HA
     weight: 2
     env_changer: _vxlan_l2_pop_l3_ha
     env_inject_file: env_inject_vxlan_l2_pop_l3_ha.properties
@@ -176,7 +176,7 @@
     <<: *common_parameters
 
 - project:
-    name: Nova
+    name: 9.x_Nova
     weight: 4
     env_changer: _nova
     env_inject_file: env_inject_nova.properties
@@ -191,7 +191,7 @@
     <<: *common_parameters
 
 - project:
-    name: NovaCeph
+    name: 9.x_NovaCeph
     weight: 4
     env_changer: _nova_ceph
     env_inject_file: env_inject_nova_ceph.properties
@@ -206,7 +206,7 @@
     <<: *common_parameters
 
 - project:
-    name: Fuel_LDAP
+    name: 9.x_Fuel_LDAP
     weight: 2
     env_changer: _ldap
     env_inject_file: env_inject.properties
@@ -221,7 +221,7 @@
     <<: *common_parameters
 
 - project:
-    name: Fuel_LDAP_no_proxy
+    name: 9.x_Fuel_LDAP_no_proxy
     weight: 2
     env_changer: _ldap_no_proxy
     env_inject_file: env_inject.properties
@@ -237,7 +237,7 @@
     <<: *common_parameters
 
 - project:
-    name: Noop
+    name: 9.x_Noop
     weight: 2
     env_changer: _noop
     env_inject_file: env_inject_noop.properties
@@ -252,7 +252,7 @@
     <<: *common_parameters
 
 - project:
-    name: rabbitmq_oslo
+    name: 9.x_rabbitmq_oslo
     weight: 2
     env_changer: _glance_swift
     env_inject_file: env_inject_vlan_rabbitmq_oslo.properties
@@ -271,7 +271,7 @@
     <<: *common_parameters
 
 - project:
-    name: rabbit_oslo_detached
+    name: 9.x_rabbit_oslo_detached
     weight: 2
     env_changer: _rabbit
     env_inject_file: env_inject_vlan_rabbitmq_oslo.properties
@@ -288,6 +288,3 @@
           notify-every-unstable-build: true
     nova_quotas: "FALSE"
     <<: *common_parameters
-
-
-
