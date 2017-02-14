@@ -7,284 +7,183 @@
       - 'mos_int_{name}'
     disabled_var: true
     fuel_qa_ver: 'stable/mitaka'
+    display_name: "{name}"
+    start_timer: "5 21 * * *"
+    weight: 2
+    node: single_template
+    nova_quotas: "FALSE"
+    iso_url: ''
+    deploy: 'true'
 
 - project:
     name: 9.x_Ceilometer
-    weight: 2
     env_changer: _ceilometer
-    env_inject_file: env_inject_ceilometer.properties
     config_path: templates/ceilometer/default.yaml
     test_group: Ceilometer
-    tox_propertires: ''
-    start_timer: "5 21 * * *"
     node: Slave-srv135
-    description: Ceilometer tests
-    display_name: "{milestone}_Ceilometer_t"
     tox_test_name: ceilometer
-    nova_quotas: "FALSE"
     <<: *common_parameters
 
 - project:
     name: 9.x_Ironic
-    weight: 2
     env_changer: _ironic
-    env_inject_file: env_inject_ironic.properties
     config_path: templates/ironic/default.yaml
     test_group: Ironic
-    tox_propertires: ''
-    start_timer: "5 21 * * *"
-    node: single_template
-    description: Ironic tests
-    display_name: "{milestone}_Ironic_t"
     tox_test_name: ironic
-    nova_quotas: "FALSE"
     <<: *common_parameters
 
 - project:
     name: 9.x_Glance_Swift
-    weight: 2
     env_changer: _glance_swift
-    env_inject_file: env_inject_glance_swift.properties
     config_path: templates/glance/swift.yaml
     test_group: Glance(Swift)
-    start_timer: "5 21 * * *"
     node: Slave-srv135
-    description: Glance tests on Swift
-    display_name: "{milestone}_Glance(Swift)"
     tox_test_name: glance
     nova_quotas: "TRUE"
     <<: *common_parameters
 
 - project:
     name: 9.x_Glance_Ceph
-    weight: 2
     env_changer: _glance_ceph
-    env_inject_file: env_inject_glance_ceph.properties
     config_path: templates/glance/ceph.yaml
     test_group: Glance(Ceph)
-    start_timer: "5 21 * * *"
     node:  Slave-srv136
-    description: Glance tests on Ceph
-    display_name: "{milestone}_Glance(Ceph)"
     tox_test_name: glance
-    nova_quotas: "FALSE"
     <<: *common_parameters
 
 - project:
     name: 9.x_VLAN
-    weight: 2
     env_changer: _vlan
-    env_inject_file: env_inject_vlan.properties
     config_path: templates/neutron/vlan_qos.yaml
     test_group: Neutron(VLAN)
-    start_timer: "5 21 * * *"
-    node: single_template
-    description: Neutron(VLAN)
-    display_name: "{milestone}_Neutron_VLAN"
+    display_name: "9.x_Neutron_VLAN"
     tox_test_name: neutron
-    nova_quotas: "FALSE"
     <<: *common_parameters
 
 - project:
     name: 9.x_VLAN_L3_HA
-    weight: 2
     env_changer: _vlan_l3_ha
-    env_inject_file: env_inject_vlan_l3_ha.properties
     config_path: templates/neutron/vlan_l3ha.yaml
     test_group: Neutron(VLAN,L3_HA)
-    start_timer: "5 21 * * *"
-    node: single_template
-    description: Neutron(VLAN,L3_HA)
-    display_name: "{milestone}_Neutron_VLAN_L3_HA"
+    display_name: "9.x_Neutron_VLAN_L3_HA"
     tox_test_name: neutron
-    nova_quotas: "FALSE"
     <<: *common_parameters
 
 - project:
     name: 9.x_VLAN_DVR
-    weight: 2
     env_changer: _vlan_dvr
-    env_inject_file: env_inject_vlan_dvr.properties
     config_path: templates/neutron/vlan_dvr.yaml
     test_group: Neutron(VLAN,DVR)
-    start_timer: "5 21 * * *"
-    node: single_template
-    description: Neutron tests(VLAN,DVR)
-    display_name: "{milestone}_Neutron_VLAN_DVR"
+    display_name: "9.x_Neutron_VLAN_DVR"
     tox_test_name: neutron
-    nova_quotas: "FALSE"
     <<: *common_parameters
 
 - project:
     name: 9.x_VxLAN
-    weight: 2
     env_changer: _vxlan
-    env_inject_file: env_inject_vxlan.properties
     config_path: templates/neutron/vxlan_qos.yaml
     test_group: Neutron(VxLAN)
-    start_timer: "5 21 * * *"
-    node: single_template
-    description: Neutron tests(VxLAN)
-    display_name: "{milestone}_Neutron_VxLAN"
+    display_name: "9.x_Neutron_VxLAN"
     tox_test_name: neutron
-    nova_quotas: "FALSE"
     <<: *common_parameters
 
 - project:
     name: 9.x_VxLAN_L2_POP
-    weight: 2
     env_changer: _vxlan_l2_pop
-    env_inject_file: env_inject_vxlan_l2_pop.properties
     config_path: templates/neutron/vxlan_l2pop.yaml
     test_group: Neutron(VxLAN,L2_POP)
-    start_timer: "5 21 * * *"
-    node: single_template
-    description: Neutron tests(VxLAN,L2_POP)
-    display_name: "{milestone}_Neutron_VxLAN_L2_POP"
+    display_name: "9.x_Neutron_VxLAN_L2_POP"
     tox_test_name: neutron
-    nova_quotas: "FALSE"
     <<: *common_parameters
 
 - project:
     name: 9.x_VxLAN_L2_POP_DVR
-    weight: 2
     env_changer: _vxlan_l2_pop_dvr
-    env_inject_file: env_inject_vxlan_l2_pop_dvr.properties
     config_path: templates/neutron/vxlan_l2pop_dvr.yaml
     test_group: Neutron(VxLAN,L2_POP,DVR)
-    start_timer: "5 21 * * *"
-    node: single_template
-    description: Neutron tests(VxLAN,L2_POP,DVR)
-    display_name: "{milestone}_Neutron_VxLAN_L2_POP_DVR"
+    display_name: "9.x_Neutron_VxLAN_L2_POP_DVR"
     tox_test_name: neutron
-    nova_quotas: "FALSE"
     <<: *common_parameters
 
 - project:
     name: 9.x_VxLAN_L2_POP_L3_HA
-    weight: 2
     env_changer: _vxlan_l2_pop_l3_ha
-    env_inject_file: env_inject_vxlan_l2_pop_l3_ha.properties
     config_path: templates/neutron/vxlan_l2pop_l3ha.yaml
     test_group: Neutron(VxLAN,L2_POP,L3_HA)
-    start_timer: "5 21 * * *"
-    node: single_template
-    description: Neutron tests(VxLAN,L2_POP,L3_HA)
-    display_name: "{milestone}_Neutron_VxLAN_L2_POP_L3_HA"
+    display_name: "9.x_Neutron_VxLAN_L2_POP_L3_HA"
     tox_test_name: neutron
-    nova_quotas: "FALSE"
     <<: *common_parameters
 
 - project:
     name: 9.x_Nova
     weight: 4
     env_changer: _nova
-    env_inject_file: env_inject_nova.properties
     config_path: templates/nova/default.yaml
     test_group: Nova
-    start_timer: "5 21 * * *"
     node: Slave-7777
-    description: Nova tests
-    display_name: "{milestone}_Nova"
     tox_test_name: nova
-    nova_quotas: "FALSE"
     <<: *common_parameters
 
 - project:
     name: 9.x_NovaCeph
     weight: 4
     env_changer: _nova_ceph
-    env_inject_file: env_inject_nova_ceph.properties
     config_path: templates/nova/ceph.yaml
     test_group: Nova(Ceph)
-    start_timer: "5 21 * * *"
     node: Slave-7774
-    description: Nova-Ceph tests
-    display_name: "{milestone}_Nova_Ceph"
     tox_test_name: nova
-    nova_quotas: "FALSE"
     <<: *common_parameters
 
 - project:
     name: 9.x_Fuel_LDAP
-    weight: 2
     env_changer: _ldap
-    env_inject_file: env_inject.properties
     config_path: templates/ldap/default.yaml
     test_group: Fuel_LDAP_plugin
-    start_timer: "5 21 * * *"
-    node: single_template
-    description: LDAP plugin tests
-    display_name: '{milestone}_{name}'
     tox_test_name: fuel-ldap
-    nova_quotas: "FALSE"
     <<: *common_parameters
 
 - project:
     name: 9.x_Fuel_LDAP_no_proxy
-    weight: 2
     env_changer: _ldap_no_proxy
-    env_inject_file: env_inject.properties
     config_path: templates/ldap/default.yaml
     test_group: Fuel_LDAP_plugin_no_proxy
     start_timer: "10 21 * * *"
-    node: single_template
-    description: LDAP plugin tests wo proxy
-    display_name: '{milestone}_{name}'
     tox_test_name: fuel-ldap
-    nova_quotas: "FALSE"
     ldap_config_file: ../plugins_config/ldap_without_proxy.yaml
     <<: *common_parameters
 
 - project:
     name: 9.x_Noop
-    weight: 2
     env_changer: _noop
-    env_inject_file: env_inject_noop.properties
     config_path: templates/noop/default.yaml
     test_group: Noop feature
-    start_timer: "5 21 * * *"
-    node: single_template
-    description: Neutron tests(VxLAN,L2_POP,L3_HA)
-    display_name: "{milestone}_Noop"
     tox_test_name: noop_run_fuel
-    nova_quotas: "FALSE"
     <<: *common_parameters
 
 - project:
     name: 9.x_rabbitmq_oslo
-    weight: 2
     env_changer: _glance_swift
-    env_inject_file: env_inject_vlan_rabbitmq_oslo.properties
     config_path: templates/glance/swift.yaml
     test_group: RabbitMQ_OSLO
     start_timer: "0 22 * * *"
-    node: single_template
-    description: RabbitMQ_OSLO tests
-    display_name: "{milestone}_RabbitMQ_OSLO_VLAN"
+    display_name: "9.x_RabbitMQ_OSLO_VLAN"
     tox_test_name: rabbitmq_oslo
     publishers:
       - email:
           recipients: agalkin@mirantis.com ogubanov@mirantis.com
           notify-every-unstable-build: true
-    nova_quotas: "FALSE"
     <<: *common_parameters
 
 - project:
     name: 9.x_rabbit_oslo_detached
-    weight: 2
     env_changer: _rabbit
-    env_inject_file: env_inject_vlan_rabbitmq_oslo.properties
     config_path: templates/separate_componenets/rabbit_3nodes.yaml
     test_group: RabbitMQ_OSLO_Detached
     start_timer: "0 1 * * *"
-    node: single_template
-    description: RabbitMQ_OSLO tests
-    display_name: "{milestone}_RabbitMQ_OSLO_Detached"
+    display_name: "9.x_RabbitMQ_OSLO_Detached"
     tox_test_name: rabbitmq_oslo-detach
     publishers:
       - email:
           recipients: agalkin@mirantis.com ogubanov@mirantis.com
           notify-every-unstable-build: true
-    nova_quotas: "FALSE"
     <<: *common_parameters
