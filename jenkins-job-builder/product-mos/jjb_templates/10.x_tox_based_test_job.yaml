@@ -42,6 +42,69 @@
     <<: *common_parameters
 
 - project:
+    name: 10.x_VLAN
+    env_changer: _vlan
+    config_path: templates/mos_10/neutron/vlan_qos.yaml
+    test_group: Neutron(VLAN)
+    display_name: "10.x_Neutron_VLAN"
+    tox_test_name: neutron
+    <<: *common_parameters
+
+- project:
+    name: 10.x_VLAN_L3_HA
+    env_changer: _vlan_l3_ha
+    config_path: templates/mos_10/neutron/vlan_l3ha.yaml
+    test_group: Neutron(VLAN,L3_HA)
+    display_name: "10.x_Neutron_VLAN_L3_HA"
+    tox_test_name: neutron
+    <<: *common_parameters
+
+- project:
+    name: 10.x_VLAN_DVR
+    env_changer: _vlan_dvr
+    config_path: templates/mos_10/neutron/vlan_dvr.yaml
+    test_group: Neutron(VLAN,DVR)
+    display_name: "10.x_Neutron_VLAN_DVR"
+    tox_test_name: neutron
+    <<: *common_parameters
+
+- project:
+    name: 10.x_VxLAN
+    env_changer: _vxlan
+    config_path: templates/mos_10/neutron/vxlan_qos.yaml
+    test_group: Neutron(VxLAN)
+    display_name: "10.x_Neutron_VxLAN"
+    tox_test_name: neutron
+    <<: *common_parameters
+
+- project:
+    name: 10.x_VxLAN_L2_POP
+    env_changer: _vxlan_l2_pop
+    config_path: templates/mos_10/neutron/vxlan_l2pop.yaml
+    test_group: Neutron(VxLAN,L2_POP)
+    display_name: "10.x_Neutron_VxLAN_L2_POP"
+    tox_test_name: neutron
+    <<: *common_parameters
+
+- project:
+    name: 10.x_VxLAN_L2_POP_DVR
+    env_changer: _vxlan_l2_pop_dvr
+    config_path: templates/mos_10/neutron/vxlan_l2pop_dvr.yaml
+    test_group: Neutron(VxLAN,L2_POP,DVR)
+    display_name: "10.x_Neutron_VxLAN_L2_POP_DVR"
+    tox_test_name: neutron
+    <<: *common_parameters
+
+- project:
+    name: 10.x_VxLAN_L2_POP_L3_HA
+    env_changer: _vxlan_l2_pop_l3_ha
+    config_path: templates/mos_10/neutron/vxlan_l2pop_l3ha.yaml
+    test_group: Neutron(VxLAN,L2_POP,L3_HA)
+    display_name: "10.x_Neutron_VxLAN_L2_POP_L3_HA"
+    tox_test_name: neutron
+    <<: *common_parameters
+
+- project:
     name: 10.x_Nova
     env_changer: _nova
     config_path: templates/mos_10/nova/default.yaml
@@ -57,4 +120,58 @@
     test_group: Nova(Ceph)
     node: Slave-7774
     tox_test_name: nova
+    <<: *common_parameters
+
+- project:
+    name: 10.x_Fuel_LDAP
+    env_changer: _ldap
+    config_path: templates/mos_10/ldap/default.yaml
+    test_group: Fuel_LDAP_plugin
+    tox_test_name: fuel-ldap
+    <<: *common_parameters
+
+- project:
+    name: 10.x_Fuel_LDAP_no_proxy
+    env_changer: _ldap_no_proxy
+    config_path: templates/mos_10/ldap/default.yaml
+    test_group: Fuel_LDAP_plugin_no_proxy
+    start_timer: "10 21 * * *"
+    tox_test_name: fuel-ldap
+    ldap_config_file: ../plugins_config/ldap_without_proxy.yaml
+    <<: *common_parameters
+
+- project:
+    name: 10.x_Noop
+    env_changer: _noop
+    config_path: templates/mos_10/noop/default.yaml
+    test_group: Noop feature
+    tox_test_name: noop_run_fuel
+    <<: *common_parameters
+
+- project:
+    name: 10.x_rabbitmq_oslo
+    env_changer: _glance_swift
+    config_path: templates/mos_10/glance/swift.yaml
+    test_group: RabbitMQ_OSLO
+    start_timer: "0 22 * * *"
+    display_name: "10.x_RabbitMQ_OSLO_VLAN"
+    tox_test_name: rabbitmq_oslo
+    publishers:
+      - email:
+          recipients: agalkin@mirantis.com ogubanov@mirantis.com
+          notify-every-unstable-build: true
+    <<: *common_parameters
+
+- project:
+    name: 10.x_rabbit_oslo_detached
+    env_changer: _rabbit
+    config_path: templates/mos_10/separate_componenets/rabbit_3nodes.yaml
+    test_group: RabbitMQ_OSLO_Detached
+    start_timer: "0 1 * * *"
+    display_name: "10.x_RabbitMQ_OSLO_Detached"
+    tox_test_name: rabbitmq_oslo-detach
+    publishers:
+      - email:
+          recipients: agalkin@mirantis.com ogubanov@mirantis.com
+          notify-every-unstable-build: true
     <<: *common_parameters

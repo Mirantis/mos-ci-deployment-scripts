@@ -1,6 +1,6 @@
 template:
   cluster_template:
-    name: temptest_ironic_cinder
+    name: neutron-vlan-dvr
     network:
       neutron-dvr: true
       neutron-l2-pop: false
@@ -12,16 +12,16 @@ template:
       - count: 3
         roles: [controller]
       - count: 2
-        roles: [compute, cinder]
+        roles: [compute]
       - count: 1
-        roles: [ironic]
+        roles: [cinder]
     release: ubuntu
     settings:
       components:
         ceilometer: false
-        ironic: true
+        ironic: false
         murano: false
-        sahara: true
+        sahara: false
       storages:
         ephemeral-ceph: false
         image-ceph: false
@@ -86,12 +86,34 @@ template:
           networks:
            - baremetal
 
-      rack-01-controller-node-params: &node-params
+      rack-01-controller-node-params: &controller-node-params
         boot: [network, hd]
         interfaces: *rack-01-slave-interfaces
-        memory: 10240
+        memory: 4096
         network_config: *rack-01-slave-network_config
         vcpu: 2
+        volumes:
+        - {capacity: 55, format: qcow2, name: system}
+        - {capacity: 55, format: qcow2, name: cinder}
+        - {capacity: 55, format: qcow2, name: swift}
+
+      rack-01-compute-node-params: &compute-node-params
+        boot: [network, hd]
+        interfaces: *rack-01-slave-interfaces
+        memory: 4096
+        network_config: *rack-01-slave-network_config
+        vcpu: 4
+        volumes:
+        - {capacity: 55, format: qcow2, name: system}
+        - {capacity: 55, format: qcow2, name: cinder}
+        - {capacity: 55, format: qcow2, name: swift}
+
+      rack-01-storage-node-params: &storage-node-params
+        boot: [network, hd]
+        interfaces: *rack-01-slave-interfaces
+        memory: 2048
+        network_config: *rack-01-slave-network_config
+        vcpu: 1
         volumes:
         - {capacity: 55, format: qcow2, name: system}
         - {capacity: 55, format: qcow2, name: cinder}
@@ -136,22 +158,22 @@ template:
           - {bus: ide, device: cdrom, format: raw, name: iso, source_image: !os_env ISO_PATH}
         role: fuel_master
       - name: slave-01
-        params: *node-params
+        params: *controller-node-params
         role: fuel_slave
       - name: slave-02
-        params: *node-params
+        params: *controller-node-params
         role: fuel_slave
       - name: slave-03
-        params: *node-params
+        params: *controller-node-params
         role: fuel_slave
       - name: slave-04
-        params: *node-params
+        params: *compute-node-params
         role: fuel_slave
       - name: slave-05
-        params: *node-params
+        params: *compute-node-params
         role: fuel_slave
       - name: slave-06
-        params: *node-params
+        params: *storage-node-params
         role: fuel_slave
-  name: 3 Controller + Mongo, 2 Compute+Cinder, Neutron, VLAN
+  name: 3 Controller, 2 Compute, 1 Cinder, Neutron, VLAN
   slaves: 6

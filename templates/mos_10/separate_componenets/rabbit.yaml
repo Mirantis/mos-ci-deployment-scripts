@@ -1,6 +1,6 @@
 template:
   cluster_template:
-    name: temptest_ironic_cinder
+    name: standalone_rabbitmq
     network:
       neutron-dvr: true
       neutron-l2-pop: false
@@ -13,7 +13,9 @@ template:
         roles: [controller]
       - count: 2
         roles: [compute, cinder]
-      - count: 1
+      - count: 3
+        roles: [standalone-rabbitmq]
+      - count: 2
         roles: [ironic]
     release: ubuntu
     settings:
@@ -21,7 +23,7 @@ template:
         ceilometer: false
         ironic: true
         murano: false
-        sahara: true
+        sahara: false
       storages:
         ephemeral-ceph: false
         image-ceph: false
@@ -89,13 +91,25 @@ template:
       rack-01-controller-node-params: &node-params
         boot: [network, hd]
         interfaces: *rack-01-slave-interfaces
-        memory: 10240
+        memory: 4096
         network_config: *rack-01-slave-network_config
         vcpu: 2
         volumes:
         - {capacity: 55, format: qcow2, name: system}
         - {capacity: 55, format: qcow2, name: cinder}
         - {capacity: 55, format: qcow2, name: swift}
+
+      rack-01-compute-node-params: &compute-node-params
+        boot: [network, hd]
+        interfaces: *rack-01-slave-interfaces
+        memory: 8192
+        network_config: *rack-01-slave-network_config
+        vcpu: 4
+        volumes:
+        - {capacity: 100, format: qcow2, name: system}
+        - {capacity: 100, format: qcow2, name: cinder}
+        - {capacity: 100, format: qcow2, name: swift}
+
 
     env_name: !os_env ENV_NAME
     groups:
@@ -145,13 +159,28 @@ template:
         params: *node-params
         role: fuel_slave
       - name: slave-04
-        params: *node-params
+        params: *compute-node-params
         role: fuel_slave
       - name: slave-05
-        params: *node-params
+        params: *compute-node-params
         role: fuel_slave
       - name: slave-06
         params: *node-params
         role: fuel_slave
-  name: 3 Controller + Mongo, 2 Compute+Cinder, Neutron, VLAN
-  slaves: 6
+      - name: slave-07
+        params: *node-params
+        role: fuel_slave
+      - name: slave-08
+        params: *node-params
+        role: fuel_slave
+      - name: slave-09
+        params: *node-params
+        role: fuel_slave
+      - name: slave-10
+        params: *node-params
+        role: fuel_slave
+  name: 3 Controller+Mongo, 2 Compute+Cinder, 3 Standalone RabbitMQ, 2 Ironic, Neutron, VLAN
+  slaves: 10
+
+plugins:
+  - detach-rabbitmq:

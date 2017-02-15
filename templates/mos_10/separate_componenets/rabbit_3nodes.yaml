@@ -1,6 +1,6 @@
 template:
   cluster_template:
-    name: temptest_ironic_cinder
+    name: standalone_rabbitmq
     network:
       neutron-dvr: true
       neutron-l2-pop: false
@@ -9,19 +9,19 @@ template:
       pubip-to-all: false
       segment-type: vlan
     nodes:
-      - count: 3
-        roles: [controller]
-      - count: 2
-        roles: [compute, cinder]
       - count: 1
-        roles: [ironic]
+        roles: [controller]
+      - count: 1
+        roles: [compute, cinder]
+      - count: 3
+        roles: [standalone-rabbitmq]
     release: ubuntu
     settings:
       components:
         ceilometer: false
-        ironic: true
+        ironic: false
         murano: false
-        sahara: true
+        sahara: false
       storages:
         ephemeral-ceph: false
         image-ceph: false
@@ -89,7 +89,7 @@ template:
       rack-01-controller-node-params: &node-params
         boot: [network, hd]
         interfaces: *rack-01-slave-interfaces
-        memory: 10240
+        memory: 4096
         network_config: *rack-01-slave-network_config
         vcpu: 2
         volumes:
@@ -150,8 +150,8 @@ template:
       - name: slave-05
         params: *node-params
         role: fuel_slave
-      - name: slave-06
-        params: *node-params
-        role: fuel_slave
-  name: 3 Controller + Mongo, 2 Compute+Cinder, Neutron, VLAN
-  slaves: 6
+  name: 1 Controller+Mongo, 1 Compute+Cinder, 3 Standalone RabbitMQ, Neutron, VLAN
+  slaves: 5
+
+plugins:
+  - detach-rabbitmq:
