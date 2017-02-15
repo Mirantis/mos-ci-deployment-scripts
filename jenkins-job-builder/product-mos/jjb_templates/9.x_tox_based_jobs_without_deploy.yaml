@@ -1,181 +1,130 @@
 - common_parameters: &common_parameters
-    name: 'common tox wo deploy projects parameters'
+    name: 'common projects parameters'
     tox_properties: ''
     milestone: '9.2'
     suite: '[9.1][MOSQA] Automated Cloud Testing'
+    jobs:
+      - 'mos_int_{name}'
     disabled_var: true
+    fuel_qa_ver: 'stable/mitaka'
+    iface_model: 'virtio'
+    display_name: "{name}"
+    start_timer: "0 22 * * *"
+    weight: 2
+    node: single_template
+    nova_quotas: "FALSE"
+    iso_url: ''
+    deploy: 'false'
 
 - project:
-    name: keystone
-    weight: 2
+    name: 9.x_keystone
     env_changer: _glance_swift
-    env_inject_file: env_inject_vlan_keystone.properties
     config_path: templates/glance/swift.yaml
     test_group: Keystone
     start_timer: "0 23 * * *"
     node: Slave-srv135
-    description: Keystone tests
-    display_name: 9.0_Keystone_VLAN
     tox_test_name: keystone
-    jobs:
-      - '9.x_wo_deploy_{name}'
     <<: *common_parameters
 
 - project:
-    name: Object_Storage_Swift
-    weight: 2
+    name: 9.x_Object_Storage_Swift
     env_changer: _glance_swift
-    env_inject_file: env_inject_glance_swift.properties
     config_path: templates/glance/swift.yaml
     test_group: Object Storage(Swift)
-    start_timer: "0 22 * * *"
     node: Slave-srv135
-    description: Object Storage tests for Swift
-    display_name: 9.0_Object_Storage(Swift)
     tox_test_name: object_storage
-    jobs:
-      - '9.x_wo_deploy_{name}'
     <<: *common_parameters
 
 - project:
-    name: Object_Storage_Ceph
-    weight: 2
+    name: 9.x_Object_Storage_Ceph
     env_changer: _glance_ceph
-    env_inject_file: env_inject_glance_ceph.properties
     config_path: templates/glance/ceph.yaml
     test_group: Object Storage(RadosGW)
-    start_timer: "0 22 * * *"
     node: Slave-srv136
-    description: Object Storage tests for RadosGW
-    display_name: 9.0_Object_Storage(RadosGW)
     tox_test_name: object_storage
-    jobs:
-      - '9.x_wo_deploy_{name}'
     <<: *common_parameters
 
 - project:
-    name: cinder
+    name: 9.x_cinder
     weight: 4
     env_changer: _nova
-    env_inject_file: env_inject_cinder.properties
     config_path: templates/nova/default.yaml
     test_group: Cinder(Swift)
     start_timer: "0 23 * * *"
     node: Slave-7777
     description: Cinder tests
-    display_name: 9.0_Cinder_Swift
+    display_name: 9.x_Cinder_Swift
     tox_test_name: cinder
-    jobs:
-      - '9.x_wo_deploy_{name}'
     <<: *common_parameters
 
 - project:
-    name: cinder_ceph
-    weight: 2
+    name: 9.x_cinder_ceph
     env_changer: _glance_ceph
-    env_inject_file: env_inject_cinder.properties
     config_path: templates/glance/ceph.yaml
     test_group: Cinder(Ceph)
     start_timer: "0 24 * * *"
     node: Slave-srv136
-    description: Cinder tests
-    display_name: 9.0_Cinder_Ceph
+    display_name: 9.x_Cinder_Ceph
     tox_test_name: cinder
-    jobs:
-      - '9.x_wo_deploy_{name}'
     <<: *common_parameters
 
 - project:
-    name: glare_swift
-    weight: 2
+    name: 9.x_glare_swift
     env_changer: _glance_swift
-    env_inject_file: env_inject_glare_swift.properties
     config_path: templates/glance/swift.yaml
     test_group: Glare(Swift)
-    start_timer: "0 22 * * *"
     node: Slave-srv135
-    description: Glare tests
-    display_name: '9.0_{name}'
     tox_test_name: glare
-    jobs:
-      - '9.x_wo_deploy_{name}'
     <<: *common_parameters
 
 - project:
-    name: glare_ceph
-    weight: 2
+    name: 9.x_glare_ceph
     env_changer: _glance_ceph
-    env_inject_file: env_inject_glare_ceph.properties
     config_path: templates/glance/ceph.yaml
     test_group: Glare(Ceph)
-    start_timer: "0 22 * * *"
     node: Slave-srv136
-    description: Glare tests
-    display_name: '9.0_{name}'
     tox_test_name: glare
-    jobs:
-      - '9.x_wo_deploy_{name}'
     <<: *common_parameters
 
 - project:
-    name: failover
-    weight: 2
+    name: 9.x_failover
     env_changer: _glance_swift
-    env_inject_file: env_inject_vlan_failover.properties
     config_path: templates/glance/swift.yaml
     test_group: Failover
     start_timer: "0 23 * * *"
     node: Slave-srv135
-    description: Failover tests
-    display_name: 9.0_Failover_VLAN
+    display_name: 9.x_Failover_VLAN
     tox_test_name: failover
-    jobs:
-      - '9.x_wo_deploy_{name}'
     <<: *common_parameters
 
 - project:
-    name: heat
-    weight: 2
+    name: 9.x_heat
     env_changer: _glance_swift
-    env_inject_file: env_inject_heat.properties
     config_path: templates/glance/swift.yaml
     test_group: Heat(Swift)
-    start_timer: "0 22 * * *"
     node: Slave-srv135
-    description: Heat tests
-    display_name: 9.0_Heat
+    display_name: 9.x_Heat
     tox_test_name: heat
-    jobs:
-      - '9.x_wo_deploy_{name}'
     <<: *common_parameters
 
 - project:
-    name: heat_ceph
-    weight: 2
+    name: 9.x_heat_ceph
     env_changer: _glance_ceph
-    env_inject_file: env_inject_heat.properties
     config_path: templates/glance/ceph.yaml
     test_group: Heat(Ceph)
-    start_timer: "0 22 * * *"
     node: Slave-srv136
-    description: Heat tests
-    display_name: 9.0_Heat_Ceph
+    display_name: 9.x_Heat_Ceph
     tox_test_name: heat
-    jobs:
-      - '9.x_wo_deploy_{name}'
     <<: *common_parameters
 
 - project:
-    name: heat_upstream
-    weight: 2
+    name: 9.x_heat_upstream
     env_changer: _glance_swift
-    env_inject_file: env_inject_heat.properties
     config_path: templates/glance/swift.yaml
     test_group: Heat upstream integration (Swift)
     start_timer: "0 23 * * *"
     node: Slave-srv135
-    description: Heat tests
-    display_name: 9.0_Heat_upstream_integration
+    display_name: 9.x_Heat_upstream_integration
     git_url: 'https://github.com/openstack/heat.git'
     git_branch: 'origin/stable/mitaka'
     jobs:
@@ -183,10 +132,8 @@
     <<: *common_parameters
 
 - project:
-    name: sahara
-    weight: 2
+    name: 9.x_sahara
     env_changer: _ceilometer
-    env_inject_file: env_inject_ceilometer.properties
     config_path: templates/ceilometer/default.yaml
     test_group: Sahara upstream integration (Swift)
     start_timer: "0 24 * * *"

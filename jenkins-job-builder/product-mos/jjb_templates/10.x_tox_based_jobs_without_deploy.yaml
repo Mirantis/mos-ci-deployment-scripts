@@ -1,0 +1,116 @@
+- common_parameters: &common_parameters
+    name: 'common projects parameters for 10.0 jobs wo deploy'
+    milestone: '10.0'
+    suite: '[10.0][MOSQA] Automated Cloud Testing'
+    jobs:
+      - 'mos_int_{name}'
+    iface_model: 'e1000'
+    fuel_qa_ver: 'stable/newton'
+    iso_url: 'http://172.18.173.8:8080/jenkins/view/System%20Jobs/job/get_mos_10_iso_link/lastSuccessfulBuild/artifact/magnet_link.txt'
+    deploy: 'false'
+    start_timer: "0 22 * * *"
+    weight: 2
+    node: single_template
+    display_name: '{name}'
+    nova_quotas: "FALSE"
+
+- project:
+    name: 10.x_keystone
+    env_changer: _glance_swift
+    config_path: templates/mos_10/glance/swift.yaml
+    test_group: Keystone
+    start_timer: "0 23 * * *"
+    node: Slave-srv135
+    tox_test_name: keystone
+    <<: *common_parameters
+
+- project:
+    name: 10.x_Object_Storage_Swift
+    env_changer: _glance_swift
+    config_path: templates/mos_10/glance/swift.yaml
+    test_group: Object Storage(Swift)
+    node: Slave-srv135
+    tox_test_name: object_storage
+    <<: *common_parameters
+
+- project:
+    name: 10.x_Object_Storage_Ceph
+    env_changer: _glance_ceph
+    config_path: templates/mos_10/glance/ceph.yaml
+    test_group: Object Storage(RadosGW)
+    node: Slave-srv136
+    tox_test_name: object_storage
+    <<: *common_parameters
+
+- project:
+    name: 10.x_cinder
+    weight: 4
+    env_changer: _nova
+    config_path: templates/mos_10/nova/default.yaml
+    test_group: Cinder(Swift)
+    start_timer: "0 23 * * *"
+    node: Slave-7777
+    description: Cinder tests
+    display_name: 10.x_Cinder_Swift
+    tox_test_name: cinder
+    <<: *common_parameters
+
+- project:
+    name: 10.x_cinder_ceph
+    env_changer: _glance_ceph
+    config_path: templates/mos_10/glance/ceph.yaml
+    test_group: Cinder(Ceph)
+    start_timer: "0 24 * * *"
+    node: Slave-srv136
+    display_name: 10.x_Cinder_Ceph
+    tox_test_name: cinder
+    <<: *common_parameters
+
+- project:
+    name: 10.x_glare_swift
+    env_changer: _glance_swift
+    config_path: templates/mos_10/glance/swift.yaml
+    test_group: Glare(Swift)
+    node: Slave-srv135
+    tox_test_name: glare
+    <<: *common_parameters
+
+- project:
+    name: 10.x_glare_ceph
+    env_changer: _glance_ceph
+    config_path: templates/mos_10/glance/ceph.yaml
+    test_group: Glare(Ceph)
+    node: Slave-srv136
+    tox_test_name: glare
+    <<: *common_parameters
+
+- project:
+    name: 10.x_failover
+    env_changer: _glance_swift
+    config_path: templates/mos_10/glance/swift.yaml
+    test_group: Failover
+    start_timer: "0 23 * * *"
+    node: Slave-srv135
+    display_name: 10.x_Failover_VLAN
+    tox_test_name: failover
+    <<: *common_parameters
+
+- project:
+    name: 10.x_heat
+    env_changer: _glance_swift
+    config_path: templates/mos_10/glance/swift.yaml
+    test_group: Heat(Swift)
+    node: Slave-srv135
+    display_name: 10.x_Heat
+    tox_test_name: heat
+    <<: *common_parameters
+
+- project:
+    name: 10.x_heat_ceph
+    env_changer: _glance_ceph
+    config_path: templates/mos_10/glance/ceph.yaml
+    test_group: Heat(Ceph)
+    node: Slave-srv136
+    display_name: 10.x_Heat_Ceph
+    tox_test_name: heat
+    <<: *common_parameters
