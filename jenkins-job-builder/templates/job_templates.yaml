@@ -1,5 +1,5 @@
 - job-template:
-    name: '9.x_horizon_integraion_test_{name}'
+    name: 'horizon_integraion_test_{name}'
 
     defaults: common_job_settings
 
@@ -126,7 +126,7 @@
             !include-raw-escape: ../shell_scripts/template_scripts/upstream_sahara_test_runner.sh
 
 - job-template:
-    name: '9.x_openstack_cli_{name}'
+    name: 'openstack_cli_{name}'
 
     defaults: common_job_settings
 

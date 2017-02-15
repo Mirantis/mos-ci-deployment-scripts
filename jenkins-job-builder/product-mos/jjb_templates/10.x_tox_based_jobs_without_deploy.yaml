@@ -114,3 +114,45 @@
     display_name: 10.x_Heat_Ceph
     tox_test_name: heat
     <<: *common_parameters
+
+- project:
+    name: 10.x_selenium
+    start_timer: "0 23 * * *"
+    weight: 4
+    env_changer: _nova
+    config_path: templates/nova/default.yaml
+    test_group: Horizon
+    node: Slave-7777
+    display_name: 10.x_Horizon_integration_tests_Swift
+    jobs:
+      - 'horizon_integraion_test_{name}'
+    <<: *common_parameters
+
+- project:
+    name: 10.x_selenium_ceph
+    start_timer: "0 23 * * *"
+    weight: 4
+    env_changer: _nova_ceph
+    config_path: templates/nova/ceph.yaml
+    test_group: Horizon(Ceph)
+    node: Slave-7774
+    display_name: 10.x_Horizon_integration_tests_Ceph
+    jobs:
+      - 'horizon_integraion_test_{name}'
+    <<: *common_parameters
+
+- project:
+    name: 10.x_Openstack_CLI
+    env_changer: _glance_swift
+    config_path: templates/glance/swift.yaml
+    test_group: Openstack CLI
+    report_prefix: /srv/jenkins/openstack_cli/
+    start_timer: "0 0 * * *"
+    node: Slave-srv135
+    description:  |
+      Openstack CLI tests
+      (from https://github.com/openstack/python-openstackclient)
+    display_name: 10.x Openstack CLI
+    jobs:
+      - 'openstack_cli_{name}'
+    <<: *common_parameters
