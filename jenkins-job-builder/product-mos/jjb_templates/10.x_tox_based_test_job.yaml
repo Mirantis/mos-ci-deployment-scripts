@@ -106,6 +106,7 @@
 
 - project:
     name: 10.x_Nova
+    weight: 4
     env_changer: _nova
     config_path: templates/mos_10/nova/default.yaml
     test_group: Nova
@@ -115,6 +116,7 @@
 
 - project:
     name: 10.x_NovaCeph
+    weight: 4
     env_changer: _nova_ceph
     config_path: templates/mos_10/nova/ceph.yaml
     test_group: Nova(Ceph)
