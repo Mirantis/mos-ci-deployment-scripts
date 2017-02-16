@@ -25,7 +25,7 @@
 - project:
     name: 10.x_Ceph_no_ssl
     display_name: 'Tempest-{milestone}_Ceph_DVR_Sahara_Ceilometer_Ironic'
-    env_changer: _ironic_ceph
+    env_changer: _ironic_ceph_ssl
     config_path: templates/mos_10/tempest/ironic_ceph.yaml
     test_group: 'Tempest (Ceph,DVR,Sahara,Ceilometer)'
     is_ssl_disabled: 'TRUE'
@@ -34,7 +34,7 @@
 - project:
     name: 10.x_LVM_SSL
     display_name: 'Tempest-{milestone}_LVM_Cinder_DVR_Sahara_Ceilometer_Ironic_SSL'
-    env_changer: _ironic_cinder
+    env_changer: _ironic_cinder_ssl
     config_path: templates/mos_10/tempest/ironic_cinder.yaml
     test_group: 'Tempest (SSL,LVM,Cinder,DVR,Sahara,Ceilometer,Ironic)'
     is_ssl_disabled: 'FALSE'

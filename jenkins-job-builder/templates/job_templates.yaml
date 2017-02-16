@@ -363,6 +363,9 @@
         - env_variables_export
         - get_plugins
         - erase_and_deploy_env
+        - get_fuel_creds
+        - make_snapshot:
+            suffix: '_patched'
         - get_last_snapshot
         - shell:
             !include-raw: ../shell_scripts/template_scripts/tox_based_test_runner.sh

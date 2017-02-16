@@ -132,6 +132,14 @@
           properties-file: "$ENV_INJECT_PATH"
 
 - builder:
+    name: make_snapshot
+    builders:
+      - shell: |
+            dos.py suspend $ENV_NAME
+            dos.py snapshot $ENV_NAME $SNAPSHOT_NAME{suffix}
+            dos.py resume $ENV_NAME
+
+- builder:
     name: get_last_snapshot
     builders:
         - shell:

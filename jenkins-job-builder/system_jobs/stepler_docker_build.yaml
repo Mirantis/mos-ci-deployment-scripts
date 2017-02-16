@@ -20,11 +20,12 @@
         - timed: "0 21 * * *"
 
     builders:
-      - shell: sudo docker build --pull -t mostestci/stepler:latest .
-      - shell: docker login --password=$DOCKERHUB_PASSWORD --username=$DOCKERHUB_USER --email=mostestci@gmail.com
-      - shell: docker push mostestci/stepler
-      - shell: docker logout
-      - shell: sudo docker rmi $(sudo docker images -f "dangling=true" -q) || true
+      - shell: |
+          sudo docker build --pull -t mostestci/stepler:latest .
+          docker login --password=$DOCKERHUB_PASSWORD --username=$DOCKERHUB_USER --email=mostestci@gmail.com
+          docker push mostestci/stepler
+          docker logout
+          sudo docker rmi $(sudo docker images -f "dangling=true" -q) || true
 
     display-name: 'stepler_docker_build'
     concurrent: false
