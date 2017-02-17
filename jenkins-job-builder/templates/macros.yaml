@@ -136,7 +136,7 @@
     builders:
       - shell: |
             dos.py suspend $ENV_NAME
-            dos.py snapshot $ENV_NAME $SNAPSHOT_NAME{suffix}
+            dos.py snapshot $ENV_NAME ${{SNAPSHOT_NAME}}{suffix}
             dos.py resume $ENV_NAME
 
 - builder:

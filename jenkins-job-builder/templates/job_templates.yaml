@@ -363,6 +363,7 @@
         - env_variables_export
         - get_plugins
         - erase_and_deploy_env
+        - revert_last_snapshot
         - get_fuel_creds
         - make_snapshot:
             suffix: '_patched'
