@@ -1,0 +1,97 @@
+- stepler_parameters: &stepler_parameters
+    name: 'common stepler mos10 parameters'
+    milestone: '10.0'
+    suite: '[10.0][MOSQA] Stepler Testing 10.0'
+    start_timer: '5 21 * * *'
+    nova_quotas: 'TRUE'
+    deploy: 'TRUE'
+    jobs:
+      - 'Stepler_{name}'
+    weight: 4
+    display_name: '{name}'
+    test_group: '{name}'
+    iface_model: 'e1000'
+    node: single_template
+    is_ssl_disabled: 'TRUE'
+    fuel_qa_ver: 'stable/newton'
+    iso_url: 'http://172.18.173.8:8080/jenkins/view/System%20Jobs/job/get_mos_10_iso_link/lastSuccessfulBuild/artifact/magnet_link.txt'
+
+- project:
+    name: 10.x_Cinder_LVM
+    display_name: Cinder_LVM + Keystone + Heat + Cli_Clients + Swift + Glance
+    env_changer: _ironic_cinder
+    config_path: templates/mos_10/tempest/ironic_cinder.yaml
+    stepler_args: 'stepler/cinder stepler/cli_clients stepler/heat stepler/keystone stepler/object_storage stepler/glance -S $SNAPSHOT_NAME'
+    <<: *stepler_parameters
+
+- project:
+    name: 10.x_Nova_LVM
+    env_changer: _ironic_cinder
+    config_path: templates/mos_10/tempest/ironic_cinder.yaml
+    node: single_template
+    stepler_args: 'stepler/nova -S $SNAPSHOT_NAME'
+    <<: *stepler_parameters
+
+- project:
+    name: 10.x_Horizon
+    env_changer: _ironic_ceph
+    config_path: templates/mos_10/tempest/ironic_ceph.yaml
+    is_ssl_disabled: 'FALSE'
+    stepler_args: 'stepler/horizon'
+    <<: *stepler_parameters
+
+- project:
+    name: 10.x_Neutron_VLAN
+    weight: 2
+    env_changer: _neutron_vlan
+    config_path: templates/mos_10/neutron/vlan_qos.yaml
+    stepler_args: 'stepler/neutron -S $SNAPSHOT_NAME'
+    <<: *stepler_parameters
+
+- project:
+    name: 10.x_Neutron_VxLAN
+    weight: 2
+    env_changer: _neutron_vxlan
+    config_path: templates/mos_10/neutron/vxlan_qos.yaml
+    stepler_args: 'stepler/neutron -S $SNAPSHOT_NAME'
+    <<: *stepler_parameters
+
+- project:
+    name: 10.x_Neutron_VLAN_DVR
+    weight: 2
+    env_changer: _neutron_vlan_dvr
+    config_path: templates/mos_10/neutron/vlan_dvr.yaml
+    stepler_args: 'stepler/neutron -S $SNAPSHOT_NAME'
+    <<: *stepler_parameters
+
+- project:
+    name: 10.x_Neutron_VLAN_L3HA
+    weight: 2
+    env_changer: _neutron_vlan_l3ha
+    config_path: templates/mos_10/neutron/vlan_l3ha.yaml
+    stepler_args: 'stepler/neutron -S $SNAPSHOT_NAME'
+    <<: *stepler_parameters
+
+- project:
+    name: 10.x_Neutron_VxLAN_L2POP
+    weight: 2
+    env_changer: _neutron_vxlan_l2pop
+    config_path: templates/mos_10/neutron/vxlan_l2pop.yaml
+    stepler_args: 'stepler/neutron -S $SNAPSHOT_NAME'
+    <<: *stepler_parameters
+
+- project:
+    name: 10.x_Neutron_VxLAN_L2POP_DVR
+    weight: 2
+    env_changer: _neutron_vxlan_l2pop_dvr
+    config_path: templates/mos_10/neutron/vxlan_l2pop_dvr.yaml
+    stepler_args: 'stepler/neutron -S $SNAPSHOT_NAME'
+    <<: *stepler_parameters
+
+- project:
+    name: 10.x_Neutron_VxLAN_L2POP_L3HA
+    weight: 2
+    env_changer: _neutron_vxlan_l2pop_l3ha
+    config_path: templates/mos_10/neutron/vxlan_l2pop_l3ha.yaml
+    stepler_args: 'stepler/neutron -S $SNAPSHOT_NAME'
+    <<: *stepler_parameters

@@ -6,124 +6,93 @@
     nova_quotas: 'TRUE'
     deploy: 'TRUE'
     jobs:
-      - '9.x_Stepler_{name}'
+      - 'Stepler_{name}'
+    weight: 4
+    display_name: '{name}'
+    test_group: '{name}'
+    iface_model: 'virtio'
+    node: single_template
+    is_ssl_disabled: 'TRUE'
+    fuel_qa_ver: 'stable/mitaka'
+    iso_url: ''
+    disabled_var: true
 
 - project:
-    name: Cinder_LVM
+    name: 9.x_Cinder_LVM
     display_name: Cinder_LVM + Keystone + Heat + Cli_Clients + Swift + Glance
-    weight: 4
     env_changer: _ironic_cinder
     config_path: templates/stepler_tempest/ironic_cinder.yaml
-    test_group: '{display_name}'
-    is_ssl_disabled: 'TRUE'
-    node: single_template
     stepler_args: 'stepler/cinder stepler/cli_clients stepler/heat stepler/keystone stepler/object_storage stepler/glance -S $SNAPSHOT_NAME'
     <<: *stepler_parameters
 
 - project:
-    name: Nova_LVM
-    weight: 4
-    display_name: '{name}'
+    name: 9.x_Nova_LVM
     env_changer: _ironic_cinder
     config_path: templates/stepler_tempest/ironic_cinder.yaml
-    test_group: '{name}'
-    is_ssl_disabled: 'TRUE'
     node: single_template
     stepler_args: 'stepler/nova -S $SNAPSHOT_NAME'
     <<: *stepler_parameters
 
 - project:
-    name: Horizon
-    weight: 4
-    display_name: '{name}'
+    name: 9.x_Horizon
     env_changer: _ironic_ceph
     config_path: templates/stepler_tempest/ironic_ceph.yaml
-    test_group: '{name}'
     is_ssl_disabled: 'FALSE'
     stepler_args: 'stepler/horizon'
-    node: single_template
     <<: *stepler_parameters
 
 - project:
-    name: Neutron_VLAN
+    name: 9.x_Neutron_VLAN
     weight: 2
-    display_name: '{name}'
     env_changer: _neutron_vlan
     config_path: templates/neutron/vlan_qos.yaml
-    test_group: '{name}'
-    is_ssl_disabled: 'TRUE'
     stepler_args: 'stepler/neutron -S $SNAPSHOT_NAME'
-    node: single_template
     <<: *stepler_parameters
 
 - project:
-    name: Neutron_VxLAN
+    name: 9.x_Neutron_VxLAN
     weight: 2
-    display_name: '{name}'
     env_changer: _neutron_vxlan
     config_path: templates/neutron/vxlan_qos.yaml
-    test_group: '{name}'
-    is_ssl_disabled: 'TRUE'
     stepler_args: 'stepler/neutron -S $SNAPSHOT_NAME'
-    node: single_template
     <<: *stepler_parameters
 
 - project:
-    name: Neutron_VLAN_DVR
+    name: 9.x_Neutron_VLAN_DVR
     weight: 2
-    display_name: '{name}'
     env_changer: _neutron_vlan_dvr
     config_path: templates/neutron/vlan_dvr.yaml
-    test_group: '{name}'
-    is_ssl_disabled: 'TRUE'
     stepler_args: 'stepler/neutron -S $SNAPSHOT_NAME'
-    node: single_template
     <<: *stepler_parameters
 
 - project:
-    name: Neutron_VLAN_L3HA
+    name: 9.x_Neutron_VLAN_L3HA
     weight: 2
-    display_name: '{name}'
     env_changer: _neutron_vlan_l3ha
     config_path: templates/neutron/vlan_l3ha.yaml
-    test_group: '{name}'
-    is_ssl_disabled: 'TRUE'
     stepler_args: 'stepler/neutron -S $SNAPSHOT_NAME'
-    node: single_template
     <<: *stepler_parameters
 
 - project:
-    name: Neutron_VxLAN_L2POP
+    name: 9.x_Neutron_VxLAN_L2POP
     weight: 2
-    display_name: '{name}'
     env_changer: _neutron_vxlan_l2pop
     config_path: templates/neutron/vxlan_l2pop.yaml
-    test_group: '{name}'
-    is_ssl_disabled: 'TRUE'
     stepler_args: 'stepler/neutron -S $SNAPSHOT_NAME'
-    node: single_template
     <<: *stepler_parameters
 
 - project:
-    name: Neutron_VxLAN_L2POP_DVR
+    name: 9.x_Neutron_VxLAN_L2POP_DVR
     weight: 2
-    display_name: '{name}'
     env_changer: _neutron_vxlan_l2pop_dvr
     config_path: templates/neutron/vxlan_l2pop_dvr.yaml
-    test_group: '{name}'
-    is_ssl_disabled: 'TRUE'
     stepler_args: 'stepler/neutron -S $SNAPSHOT_NAME'
-    node: single_template
     <<: *stepler_parameters
 
 - project:
-    name: Neutron_VxLAN_L2POP_L3HA
+    name: 9.x_Neutron_VxLAN_L2POP_L3HA
     weight: 2
-    display_name: '{name}'
     env_changer: _neutron_vxlan_l2pop_l3ha
     config_path: templates/neutron/vxlan_l2pop_l3ha.yaml
-    test_group: '{name}'
-    is_ssl_disabled: 'TRUE'
     stepler_args: 'stepler/neutron -S $SNAPSHOT_NAME'
-    node: single_template
     <<: *stepler_parameters

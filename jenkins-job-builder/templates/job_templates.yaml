@@ -547,7 +547,7 @@
 
     disabled: '{obj:disabled_var}'
 
-    name: '9.x_Stepler_{name}'
+    name: 'Stepler_{name}'
 
     defaults: common_job_settings
 
@@ -574,13 +574,19 @@
         - string:
             name: STEPLER_TESTS
             default: "TRUE"
+        - string:
+            name: INTERFACE_MODEL
+            default: "{iface_model}"
+        - string:
+            name: FUEL_QA_VER
+            default: '{fuel_qa_ver}'
+        - string:
+            name: ISO_URL
+            default: '{iso_url}'
         - bool:
             name: DEPLOY
             default: "{deploy}"
             description: "Erase and deploy new environment"
-        - string:
-            name: FUEL_QA_VER
-            default: 'stable/mitaka'
 
     wrappers:
       - ansicolor
