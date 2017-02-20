@@ -1,0 +1,8 @@
+Code-Review+1: Mirantis Jenkins <qa-stepler-ci@mirantis.com>
+Code-Review+2: Georgy Dyuldin <gdyuldin@mirantis.com>
+Verified+1: Georgy Dyuldin <gdyuldin@mirantis.com>
+Submitted-by: Georgy Dyuldin <gdyuldin@mirantis.com>
+Submitted-at: Mon, 20 Feb 2017 06:18:03 -0500
+Reviewed-on: https://review.gerrithub.io/349448
+Project: Mirantis/mos-ci-deployment-scripts
+Branch: refs/heads/master
