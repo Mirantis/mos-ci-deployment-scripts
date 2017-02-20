@@ -16,7 +16,10 @@ if [[ -n $ISO_URL ]]; then
     fi
     #Download provided iso into tmp folder
     aria2c --seed-time=0 $ISO_URL
-    ISO_NAME=$(ls | grep .*iso$)
+    if [[ $ISO_URL == "archive.zip" ]]; then
+        unzip archive.zip
+    fi
+    ISO_NAME=$(find . -name "fuel*iso")
     export ISO_NAME=$(echo $ISO_NAME | sed 's/.torrent//')
     export ISO_PATH=$PWD/$(ls | grep .*iso$)
     popd

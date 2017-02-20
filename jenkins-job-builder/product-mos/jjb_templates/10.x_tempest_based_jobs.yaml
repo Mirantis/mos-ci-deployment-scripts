@@ -10,7 +10,7 @@
     fuel_qa_ver: 'stable/newton'
     destroy_env: 'TRUE'
     node: tempest_band
-    iso_url: 'http://172.18.173.8:8080/jenkins/view/System%20Jobs/job/get_mos_10_iso_link/lastSuccessfulBuild/artifact/magnet_link.txt'
+    iso_url: 'http://cz7776.bud.mirantis.net:8080/jenkins/view/System%20Jobs/job/get_mos_10_iso_link/lastSuccessfulBuild/artifact/*zip*/archive.zip'
     weight: 4
 
 - project:

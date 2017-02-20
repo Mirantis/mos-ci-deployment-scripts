@@ -1,8 +1,15 @@
 - job:
     name: get_mos_10_iso_link
     node: master
+    parameters:
+        - string:
+            name: ISO_URL
+            default: 'https://product-ci.infra.mirantis.net/job/10.0.all/lastSuccessfulBuild/artifact/artifacts/magnet_link.txt'
     builders:
-        - shell: wget https://product-ci.infra.mirantis.net/job/10.0.all/lastSuccessfulBuild/artifact/artifacts/magnet_link.txt
+        - shell: |
+              aria2c $ISO_URL
+              export `cat $(ls | grep .*txt$)`
+              aria2c --seed-time=0 $MAGNET_LINK
 
     project-type: freestyle
     defaults: global
@@ -20,6 +27,6 @@
       - workspace-cleanup:
           fail-build: false
       - archive:
-          artifacts: 'magnet_link.txt'
+          artifacts: '*'
           allow-empty: 'true'
           fingerprint: true
