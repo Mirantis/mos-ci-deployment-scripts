@@ -16,16 +16,18 @@ if [[ -n $ISO_URL ]]; then
     fi
     #Download provided iso into tmp folder
     aria2c --seed-time=0 $ISO_URL
-    if [[ $ISO_URL == "archive.zip" ]]; then
+    if [[ $ISO_URL == *archive\.zip ]]; then
         unzip archive.zip
     fi
     ISO_NAME=$(find . -name "fuel*iso")
-    export ISO_NAME=$(echo $ISO_NAME | sed 's/.torrent//')
-    export ISO_PATH=$PWD/$(ls | grep .*iso$)
+    export ISO_PATH=$PWD/$ISO_NAME
+    export ISO_NAME=$(basename `echo $ISO_NAME | sed 's/.torrent//'`)
     popd
 else
-    export ISO_NAME=$(ls "$ISO_DIR")
+    # TBD: Left for current compatibility with 9.x
+    # Need to update SNAPSHOT_ID processing for these tracks first
     export ISO_PATH="$ISO_DIR/$ISO_NAME"
+    export ISO_NAME=$(ls "$ISO_DIR")
 fi
 
 ISO_ID=$(echo "$ISO_NAME" | cut -f3 -d-)
