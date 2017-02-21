@@ -1,6 +1,6 @@
 - job:
     name: rally_tempest_docker_build
-    node: Slave-7775
+    node: master
 
     builders:
         - shell:
