@@ -14,7 +14,7 @@
             ERASE_PREV_ENV=$ERASE_PREV_ENV
             SKIP_INSTALL_ENV=$SKIP_INSTALL_ENV
             DISABLE_SSL=$DISABLE_SSL
-            ENV_NAME=8.0.tempest
+            ENV_NAME={name}
             FILE=test_tempest_8_0.py
             GROUP={group}
             FUEL_QA_VER=$FUEL_QA_VER
@@ -25,7 +25,7 @@
           block-thresholds:
             build-step-failure-threshold: 'never'
           predefined-parameters: |
-            ENV_NAME=8.0.tempest
+            ENV_NAME={name}
             SNAPSHOT_NAME={group}
             REPORT_PREFIX=/srv/jenkins/rally-tempest
             VENV_PATH=/home/jenkins/qa-venv-8.0
@@ -39,7 +39,7 @@
             build-step-failure-threshold: 'never'
           predefined-parameters: |
             REPORT_PREFIX=/srv/jenkins/rally-tempest
-            ENV_NAME=8.0.tempest
+            ENV_NAME={name}
             SNAPSHOT_NAME={group}
             REPORT_FILE=verification.xml
             TESTRAIL_PLAN_NAME=$TESTRAIL_PLAN_NAME
