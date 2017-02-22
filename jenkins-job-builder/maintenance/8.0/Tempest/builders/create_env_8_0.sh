@@ -20,7 +20,21 @@ set -ex
 ISO_PATH=$(seedclient-wrapper -d -m "${MAGNET_LINK}" -v --force-set-symlink -o "${WORKSPACE}")
 
 # Source python virtualenv and run db migration
-source ${VENV_PATH}/bin/activate
+if [ ! -d ${VENV_PATH}/bin/activate ]
+then
+    virtualenv --clear ${VENV_PATH}
+    source ${VENV_PATH}/bin/activate
+    pip install -r ./fuelweb_test/requirements.txt
+    # fuel devops requirement is stored in separate file so far
+    if [ -f ./fuelweb_test/requirements-devops-source.txt ]
+    then
+        pip install -r ./fuelweb_test/requirements-devops-source.txt
+    fi
+else
+    source ${VENV_PATH}/bin/activate
+fi
+
+
 
 if [ -z "$ISO_PATH" ]
 then
@@ -50,10 +64,9 @@ DISABLE_SSL=${DISABLE_SSL:-false}
 
 OPENSTACK_RELEASE=${OPENSTACK_RELEASE:-ubuntu}
 
-dos.py list | tail -n+3 | xargs -I {} dos.py destroy {}
 # erase previous environments
 if ${ERASE_PREV_ENV} ; then
-    dos.py list | tail -n+3 | xargs -I {} dos.py erase {}
+    dos.py erase $ENV_NAME
 fi
 
 if [ -n "${FILE}" ]; then
