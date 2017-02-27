@@ -21,6 +21,7 @@ scp -i $FUEL_KEY $SSH_OPTIONS root@$CONTROLLER_IP:openrc .
 if [[ $MILESTONE == 10.* ]]; then
     virtualenv --clear venv
     . venv/bin/activate
+    pip install -U pip
     pip install git+git://github.com/openstack/python-openstackclient
     set +e
 
