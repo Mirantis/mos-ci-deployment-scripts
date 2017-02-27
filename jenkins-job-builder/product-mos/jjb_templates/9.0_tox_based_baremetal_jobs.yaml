@@ -8,6 +8,7 @@
     deploy: 'TRUE'
     tox_test_name: nfv
     nova_quotas: "TRUE"
+    disabled_var: true
 
     jobs:
       - '9.x_{name}_baremetal'
@@ -118,7 +119,6 @@
 
 - project:
     name: apps_from_catalog
-    disable_var: true
     weight: 1
     env_changer: _murano_baremetal
     config_path: templates/murano_baremetal/murano_app.yaml
@@ -144,7 +144,6 @@
 
 - project:
     name: apps_from_repo
-    disable_var: true
     weight: 1
     env_changer: _murano_baremetal
     config_path: templates/murano_baremetal/murano_app.yaml
