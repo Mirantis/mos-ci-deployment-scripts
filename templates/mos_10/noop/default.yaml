@@ -20,7 +20,7 @@ template:
       components:
         ceilometer: false
         ironic: true
-        murano: true
+        murano: false
         sahara: false
       storages:
         ephemeral-ceph: false

@@ -15,7 +15,10 @@ if [[ -n $ISO_URL ]]; then
         ISO_URL=$MAGNET_LINK
     fi
     #Download provided iso into tmp folder
-    aria2c --seed-time=0 $ISO_URL
+    #TBD unfortunately aria2 sometimes fails to get image
+    #probably due to many connections to the artifact at the moment
+    #wget however works quite fine in this case
+    wget -q $ISO_URL
     if [[ $ISO_URL == *archive\.zip ]]; then
         unzip archive.zip
     fi

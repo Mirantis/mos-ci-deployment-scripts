@@ -14,7 +14,7 @@ TMPFILE=$(mktemp)
 
 # TBD temp solution for mos10 runs:
 
-wget https://plugin-ci.fuel-infra.org/view/rabbitmq/job/10.0.fuel-plugin.detach-rabbitmq.build/8/artifact/plugin/detach-rabbitmq-1.1-1.1.1-1.noarch.rpm -O $PLUGINS_PATH
+wget https://plugin-ci.fuel-infra.org/view/rabbitmq/job/10.0.fuel-plugin.detach-rabbitmq.build/8/artifact/plugin/detach-rabbitmq-1.1-1.1.1-1.noarch.rpm -P $PLUGINS_PATH
 
 rm $TMPFILE
 
