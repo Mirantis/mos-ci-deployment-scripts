@@ -1,38 +1,33 @@
 - job:
     name: get_snaphots_for_all_slaves
+    node: master
     parameters:
-      - node:
-          name: all_nodes
-          description: "Select slave"
-          default-slaves:
-            !include: ../shell_scripts/slaves.list
-          allowed-slaves:
-            !include: ../shell_scripts/slaves.list
-          ignore-offline-nodes: true
-          allowed-multiselect: true
-
       - string:
-          name: ENV_INJECT_PATH
-          default: "/home/jenkins/env_inject.properties"
-      - string:
-          name: ISO_DIR
-          default: "/var/www/fuelweb-iso"
-      - string:
-          name: PY_VENV
-          default: "jvenv"
+          name: SNAPSHOT_PARAMS
+          default: https://product-ci.infra.mirantis.net/job/9.x.snapshot/lastSuccessfulBuild/artifact/snapshots.params
+    scm:
+        - git:
+            url: https://github.com/Mirantis/stepler.git
+            branches:
+                - stable/mitaka
     builders:
-        - shell:
-            !include-raw: ../shell_scripts/get_snapshots.sh
+        - shell: |
+            wget $SNAPSHOT_PARAMS
+            python ./utils/jenkins/conv_snapshot_file.py
+            # get SNAPSHOT_ID for TestRail
+            SNAPSHOT_ID=$(awk '/CUSTOM_VERSION/ {print $2}' snapshots.params)
+            export MOS_UBUNTU_MIRROR_ID=$(awk '/MOS_UBUNTU_MIRROR_ID/ {print $1}' snapshots.params)
+            echo "SNAPSHOT_ID=$SNAPSHOT_ID" > set_snapshot_vars.sh
+            echo "export $MOS_UBUNTU_MIRROR_ID" >> set_snapshot_vars.sh
+            cat extra_repos.sh >> set_snapshot_vars.sh
 
     project-type: freestyle
     defaults: global
-    node: master
     triggers:
         - timed: "0 21 * * *"
 
-    description: 'Get snapshots for all slaves'
     disabled: false
-    display-name: 'Get_snapshots'
+    display-name: 'Get 9.x snapshots'
     concurrent: true
     browser: githubweb
     retry-count: 3
@@ -44,3 +39,7 @@
           fail-build: false
       - email:
           recipients: vskybin@mirantis.com
+      - archive:
+          artifacts: 'set_snapshot_vars.sh'
+          allow-empty: 'true'
+          fingerprint: true
