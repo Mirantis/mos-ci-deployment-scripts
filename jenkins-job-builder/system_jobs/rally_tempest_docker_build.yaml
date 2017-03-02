@@ -8,7 +8,6 @@
 
     project-type: freestyle
     defaults: global
-    node: Slave-7775
     triggers:
         - timed: "0 12 * * *"
 
