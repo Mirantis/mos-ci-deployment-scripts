@@ -29,8 +29,8 @@ if [[ -n $ISO_URL ]]; then
 else
     # TBD: Left for current compatibility with 9.x
     # Need to update SNAPSHOT_ID processing for these tracks first
-    export ISO_PATH="$ISO_DIR/$ISO_NAME"
     export ISO_NAME=$(ls "$ISO_DIR")
+    export ISO_PATH="$ISO_DIR/$ISO_NAME"
 fi
 
 ISO_ID=$(echo "$ISO_NAME" | cut -f3 -d-)
