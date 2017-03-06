@@ -14,7 +14,7 @@ export PLUGINS_PATH=$(pwd)/fuel_plugins
 #rm $TMPFILE
 
 # TBD temp solution for mos10 runs:
-wget https://product-ci.infra.mirantis.net/job/10.0.build-fuel-plugins/lastSuccessfulBuild/artifact/built_plugins/detach-rabbitmq-1.1-1.1.2-1.noarch.rpm -P $PLUGINS_PATH
-wget https://product-ci.infra.mirantis.net/job/10.0.build-fuel-plugins/lastSuccessfulBuild/artifact/built_plugins/fuel_plugin_example_v4-4.0-4.0.0-1.noarch.rpm -P $PLUGINS_PATH
+set +e
+wget https://product-ci.infra.mirantis.net/job/10.0.build-fuel-plugins/lastSuccessfulBuild/artifact/built_plugins/detach-rabbitmq-1.2-1.2.1-1.noarch.rpm -P $PLUGINS_PATH
 
 env > "$ENV_INJECT_PATH"
