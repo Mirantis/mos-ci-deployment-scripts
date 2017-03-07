@@ -105,7 +105,6 @@ patch_fuel_qa dns_list.patch
 pip install dpath --upgrade
 
 pip install -r fuel-qa/fuelweb_test/requirements.txt --upgrade
-pip install -r fuel-qa/fuelweb_test/requirements-devops-source.txt --upgrade
 
 # if we want to use devops 3.0
 if [ ! -z "$FUEL_DEVOPS_VER" ]; then
@@ -113,6 +112,8 @@ if [ ! -z "$FUEL_DEVOPS_VER" ]; then
 
     # workaround for devops 3.0 installation
     pip install psycopg2 --upgrade
+else:
+    pip install -r fuel-qa/fuelweb_test/requirements-devops-source.txt --upgrade
 fi
 
 django-admin.py syncdb --settings=devops.settings

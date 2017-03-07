@@ -198,3 +198,4 @@
               TESTRAIL_PROJECT=Mirantis OpenStack
               PLUGINS_DIR=/var/www/detach-plugins
               PARSED_PLUGINS_LINK=http://jenkins-product.srt.mirantis.net:8080/view/plugins/job/build-fuel-plugins/
+              FUEL_DEVOPS_VER=2.9.23
