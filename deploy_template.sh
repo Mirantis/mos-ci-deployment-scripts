@@ -112,7 +112,7 @@ if [ ! -z "$FUEL_DEVOPS_VER" ]; then
 
     # workaround for devops 3.0 installation
     pip install psycopg2 --upgrade
-else:
+else
     pip install -r fuel-qa/fuelweb_test/requirements-devops-source.txt --upgrade
 fi
 
