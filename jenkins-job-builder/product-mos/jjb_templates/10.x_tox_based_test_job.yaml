@@ -130,6 +130,7 @@
     config_path: templates/mos_10/ldap/default.yaml
     test_group: Fuel_LDAP_plugin
     tox_test_name: fuel-ldap
+    disabled_var: true
     <<: *common_parameters
 
 - project:
@@ -140,6 +141,7 @@
     start_timer: "10 21 * * *"
     tox_test_name: fuel-ldap
     ldap_config_file: ../plugins_config/ldap_without_proxy.yaml
+    disabled_var: true
     <<: *common_parameters
 
 - project:
