@@ -203,6 +203,12 @@
         - string:
             name: NOVA_QUOTAS_ENABLED
             default: "{nova_quotas}"
+        - bool:
+            name: UPDATE_MASTER_VIA_MOS_MU
+            default: "{update_master_mu}"
+        - string:
+            name: V_ENV_DIR
+            default: "{v_env_dir}"
         - string:
             name: TESTRAIL_TEMPEST
             default: "TRUE"
@@ -211,7 +217,7 @@
             default: "FALSE"
         - string:
             name: FUEL_QA_COMMIT
-            default: "88acc73a3d0e27dd50c09315d271b321151dac3c"
+            default: "{fuel_qa_commit}"
         - string:
             name: INTERFACE_MODEL
             default: "{iface_model}"
