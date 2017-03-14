@@ -7,12 +7,15 @@
       - 'Tempest_{name}'
     nova_quotas: 'TRUE'
     iface_model: ''
-    start_timer: '5 21 * * *'
+    start_timer: ''
     fuel_qa_ver: 'stable/mitaka'
     destroy_env: 'FALSE'
-    disabled_var: true
     iso_url: ''
+    update_master_mu: true
+    v_env_dir: '/home/jenkins/qa-venv-9.2'
+    fuel_qa_commit: 'stable/mitaka'
     weight: 4
+    node: maintenance
 
 - project:
     name: 9.x_LVM_no_ssl
@@ -21,7 +24,6 @@
     config_path: templates/tempest/ironic_cinder.yaml
     test_group: 'Tempest (LVM,Cinder,DVR,Sahara,Ceilometer,Ironic)'
     is_ssl_disabled: 'TRUE'
-    node: Slave-srv137
     <<: *common_parameters_9_0
 
 - project:
@@ -31,7 +33,6 @@
     config_path: templates/tempest/ironic_ceph.yaml
     test_group: 'Tempest (Ceph,DVR,Sahara,Ceilometer)'
     is_ssl_disabled: 'TRUE'
-    node: Slave-srv138
     <<: *common_parameters_9_0
 
 - project:
@@ -41,7 +42,6 @@
     config_path: templates/tempest/ironic_cinder.yaml
     test_group: 'Tempest (SSL,LVM,Cinder,DVR,Sahara,Ceilometer,Ironic)'
     is_ssl_disabled: 'FALSE'
-    node: Slave-srv139
     <<: *common_parameters_9_0
 
 - project:
@@ -51,7 +51,6 @@
     config_path: templates/tempest/ironic_ceph.yaml
     test_group: 'Tempest (Ceph,SSL,DVR,Sahara,Ceilometer)'
     is_ssl_disabled: 'FALSE'
-    node: Slave-7775
     <<: *common_parameters_9_0
 
 - project:
