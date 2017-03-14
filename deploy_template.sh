@@ -54,7 +54,7 @@ SNAPSHOT_NAME=${SNAPSHOT_NAME:-$CONFIG_FOLDER"_"$CONFIG_NAME}
 # https://github.com/openstack/fuel-qa/branches
 FUEL_QA_VER=${FUEL_QA_VER:-'master'}
 
-V_ENV_DIR="$(pwd)/fuel-devops-venv"
+V_ENV_DIR=${V_ENV_DIR:-"$(pwd)/fuel-devops-venv"}
 
 # set ENV_NAME if it is not defined
 ENV_NAME=${ENV_NAME:-"$CONFIG_FOLDER"_"$CONFIG_NAME"_"$RANDOM"}

@@ -203,6 +203,12 @@
         - string:
             name: NOVA_QUOTAS_ENABLED
             default: "{nova_quotas}"
+        - bool:
+            name: UPDATE_MASTER_VIA_MOS_MU
+            default: true
+        - string:
+            name: V_ENV_DIR
+            default: '/home/jenkins/qa-venv-9.2'
         - string:
             name: TESTRAIL_TEMPEST
             default: "TRUE"
