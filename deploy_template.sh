@@ -61,6 +61,9 @@ ENV_NAME=${ENV_NAME:-"$CONFIG_FOLDER"_"$CONFIG_NAME"_"$RANDOM"}
 DISABLE_SSL=${DISABLE_SSL:-TRUE}
 KVM_USE=${KVM_USE:-true}
 INTERFACE_MODEL=${INTERFACE_MODEL:-virtio}
+
+# Should script change default interfaces names to eth0...eth5
+INTERFACE_PREFIX_CHANGE=${INTERFACE_PREFIX_CHANGE:-TRUE}
 PLUGINS_CONFIG_PATH=${PLUGINS_CONFIG_PATH:-$(pwd)/plugins.yaml}
 # more time can be required to deploy env
 DEPLOYMENT_TIMEOUT=${DEPLOYMENT_TIMEOUT:-10000}
@@ -126,7 +129,7 @@ cp $CONFIG_PATH fuel-qa/system_test/tests_templates/tests_configs/
 cd fuel-qa
 
 
-if [ "${INTERFACE_MODEL}" == 'virtio' ]; then
+if [ "${INTERFACE_MODEL}" == 'virtio' && "${INTERFACE_PREFIX_CHANGE}" == 'TRUE' ]; then
     # Virtio network interfaces have names eth0..eth5
     # (rather than default names - enp0s3..enp0s8)
     for i in {0..5}; do
