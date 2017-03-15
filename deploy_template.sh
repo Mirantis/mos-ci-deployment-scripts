@@ -128,7 +128,7 @@ cp $CONFIG_PATH fuel-qa/system_test/tests_templates/tests_configs/
 cd fuel-qa
 
 
-if [ "${INTERFACE_MODEL}" == 'virtio' && "${INTERFACE_PREFIX_CHANGE}" == 'TRUE' ]; then
+if [ "${INTERFACE_MODEL}"=='virtio' ] && [ "${INTERFACE_PREFIX_CHANGE}"=='TRUE' ]; then
     # Virtio network interfaces have names eth0..eth5
     # (rather than default names - enp0s3..enp0s8)
     for i in {0..5}; do
